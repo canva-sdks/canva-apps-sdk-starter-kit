@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2018",
+      "es2019.array",
+      "es2019.object",
+      "es2019.string",
+      "es2020.promise",
+      "es2020.string"
+    ],
+    "types": ["node"],
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "noImplicitOverride": true,
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "outDir": "dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "ES2019",
+    "sourceMap": true,
+    "inlineSources": true,
+    "module": "ESNext",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "assets": ["./assets"],
+      "styles": ["./styles"],
+      "components": ["./components"],
+      "@canva/asset/*": ["./sdk/asset/*"],
+      "@canva/design/*": ["./sdk/design/*"],
+      "@canva/error/*": ["./sdk/error/*"],
+      "@canva/preview/*": ["./sdk/preview/*"],
+      "@canva/user/*": ["./sdk/user/*"]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./examples/**/*",
+    "./components/**/*",
+    "./declarations/declarations.d.ts",
+    "./utils/**/*",
+    "./styles/**/*",
+    "./node_modules/@types/**/*"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}
