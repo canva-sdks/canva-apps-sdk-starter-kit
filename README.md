@@ -44,7 +44,7 @@ To preview an app:
 
 1. Create an app via the [Developer Portal](https://www.canva.com/developers).
 2. Select **Extension source > Development URL**.
-3. In the **Development URL** field, enter the URL of the development server.
+3. In the **Development URL** field, enter the URL of the development server. This can be a local development URL, e.g. `http://localhost:8080`.
 4. Click **Preview**. This opens the Canva editor (and the app) in a new tab.
 5. Click **Use**. (This screen only appears when when using an app for the first time.)
 
