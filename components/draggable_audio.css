@@ -1,0 +1,41 @@
+.draggableAudioContainer {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.draggableAudioInner {
+    align-items: center;
+    display: flex;
+    min-width: 0;
+    height: 56px;
+}
+
+.draggableAudioContainer:hover {
+    background-color: var(--color-background);
+}
+
+.draggableAudioDetails {
+    overflow: hidden;
+    padding-left: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.draggableAudioText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.6;
+    font-size: 1.4rem;
+}
+
+.draggableAudioDuration {
+    align-items: center;
+    height: 24px;
+    display: flex;
+    font-size: 1.2rem;
+}
+

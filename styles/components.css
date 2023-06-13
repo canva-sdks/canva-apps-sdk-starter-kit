@@ -1,0 +1,109 @@
+.draggable {
+  cursor: pointer;
+  display: inline-block;
+}
+/* List item */
+.listItem {
+  margin-bottom: var(--xx-small-space);
+}
+
+/* Code */
+.code {
+  font-family: "Menlo";
+}
+
+/* Thumbnail */
+.thumbnailGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--x-small-space);
+  margin-bottom: var(--medium-space);
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.thumbnail {
+  width: 100%;
+  position: relative;
+  border-radius: calc(var(--border-radius) / 2);
+  cursor: pointer;
+}
+
+.thumbnail.active {
+  outline: solid 2px var(--color-primary);
+  outline-offset: var(--xxx-small-space);
+}
+
+/* Scroll container */
+.scrollContainer {
+    box-sizing: border-box;
+    overflow-y: scroll;
+    height: 100%;
+    padding-top: var(--small-space);
+    padding-right: var(--grid-baseline);
+    padding-bottom: calc(2 * var(--grid-baseline));
+
+    /* for firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-scrollbar-thumb) transparent;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    position: absolute;
+    width: var(--grid-baseline);
+    height: 0;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+    width: var(--grid-baseline);
+    margin-top: var(--grid-baseline);
+    margin-bottom: var(--grid-baseline);
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    border-radius: var(--border-radius);
+    background: var(--color-scrollbar-thumb);
+    visibility: hidden;
+}
+
+.scrollContainer:hover::-webkit-scrollbar-thumb,
+.scrollContainer:focus::-webkit-scrollbar-thumb,
+.scrollContainer:focus-within::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+/* Draggable Video Component Styles */
+.draggableVideoContainer {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.previewVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.videoBadge { 
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+}
+
+.badgeInner {
+  border-radius: 8px;
+  background-color: rgba(17, 23, 29, 0.6);
+  color: rgb(255,255,255);
+  padding: 0 6px;
+  height: 16px;
+  font-size: 10px;
+  font-family: "Canva Sans", Helvetica, sans-serif;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@canva/design",
+  "version": "1.0.0",
+  "description": "The Canva Apps SDK design library",
+  "author": "Canva Pty Ltd.",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "private": true,
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "peerDependencies": {
+    "@canva/error": "^1.0.0"
+  }
+}
