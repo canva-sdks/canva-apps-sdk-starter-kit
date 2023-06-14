@@ -4,7 +4,7 @@
 }
 /* List item */
 .listItem {
-  margin-bottom: var(--xx-small-space);
+  margin-bottom: var(--ui-kit-space-1);
 }
 
 /* Code */
@@ -16,8 +16,8 @@
 .thumbnailGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--x-small-space);
-  margin-bottom: var(--medium-space);
+  gap: var(--ui-kit-space-150);
+  margin-bottom: var(--ui-kit-space-3);
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -25,13 +25,13 @@
 .thumbnail {
   width: 100%;
   position: relative;
-  border-radius: calc(var(--border-radius) / 2);
+  border-radius: calc(var(--ui-kit-border-radius) / 2);
   cursor: pointer;
 }
 
 .thumbnail.active {
-  outline: solid 2px var(--color-primary);
-  outline-offset: var(--xxx-small-space);
+  outline: solid 2px var(--ui-kit-color-primary);
+  outline-offset: var(--ui-kit-space-050);
 }
 
 /* Scroll container */
@@ -39,31 +39,31 @@
     box-sizing: border-box;
     overflow-y: scroll;
     height: 100%;
-    padding-top: var(--small-space);
-    padding-right: var(--grid-baseline);
-    padding-bottom: calc(2 * var(--grid-baseline));
+    padding-top: var(--ui-kit-space-2);
+    padding-right: var(--ui-kit-space-1);
+    padding-bottom: var(--ui-kit-space-2);
 
     /* for firefox */
     scrollbar-width: thin;
-    scrollbar-color: var(--color-scrollbar-thumb) transparent;
+    scrollbar-color: var(--ui-kit-color-typography-quaternary) transparent;
 }
 
 .scrollContainer::-webkit-scrollbar {
     position: absolute;
-    width: var(--grid-baseline);
+    width: var(--ui-kit-base-unit);
     height: 0;
 }
 
 .scrollContainer::-webkit-scrollbar-track {
     background: transparent;
-    width: var(--grid-baseline);
-    margin-top: var(--grid-baseline);
-    margin-bottom: var(--grid-baseline);
+    width: var(--ui-kit-base-unit);
+    margin-top: var(--ui-kit-space-1);
+    margin-bottom: var(--ui-kit-space-1);
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-    border-radius: var(--border-radius);
-    background: var(--color-scrollbar-thumb);
+    border-radius: var(--ui-kit-border-radius);
+    background: var(--ui-kit-color-typography-quaternary);
     visibility: hidden;
 }
 
@@ -98,8 +98,8 @@
 
 .badgeInner {
   border-radius: 8px;
-  background-color: rgba(17, 23, 29, 0.6);
-  color: rgb(255,255,255);
+  background-color: var(--ui-kit-color-contrast);
+  color: var(--ui-kit-color-contrast-fore);
   padding: 0 6px;
   height: 16px;
   font-size: 10px;
