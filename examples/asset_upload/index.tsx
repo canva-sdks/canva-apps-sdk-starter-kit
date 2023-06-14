@@ -2,7 +2,7 @@ import * as React from "react";
 import { AppUiProvider } from "@canva/app-ui-kit";
 import { createRoot } from "react-dom/client";
 import "@canva/app-ui-kit/styles.css";
-import "styles/base.css";
+
 import { App } from "./app";
 
 const root = createRoot(document.getElementById("root")!);

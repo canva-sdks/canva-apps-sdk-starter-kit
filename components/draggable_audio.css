@@ -13,7 +13,7 @@
 }
 
 .draggableAudioContainer:hover {
-    background-color: var(--color-background);
+    background-color: var(--ui-kit-color-tertiary-hover);
 }
 
 .draggableAudioDetails {

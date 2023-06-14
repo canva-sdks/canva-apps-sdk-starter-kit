@@ -23,7 +23,7 @@
 
 .draggableAudioCover {
     border: none;
-    background-color: var(--color-background);
+    background-color: var(--ui-kit-color-neutral);
     padding: 0;
     align-items: center;
     display: flex;
@@ -62,7 +62,7 @@
 }
 
 .audioIcon {
-    fill: white;
+    fill: var(--ui-kit-color-neutral-fore);
     width: 100%;
     height: 100%;
     stroke: transparent;
@@ -86,7 +86,7 @@
   animation-name: dash;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  stroke: var(--color-primary);
+  stroke: var(--ui-kit-color-primary);
   stroke-width: 2;
   fill: none,
 }

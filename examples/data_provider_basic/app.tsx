@@ -5,7 +5,7 @@ import {
 } from "@canva/preview/data-provider";
 import styles from "styles/components.css";
 import React from "react";
-import { tokens } from "styles/tokens";
+import { tokens } from "@canva/app-ui-kit";
 import { Rows, Text, Title } from "@canva/app-ui-kit";
 
 const breedsDataTable: DataTable = {
@@ -78,7 +78,7 @@ export const App = () => {
               {breedsDataTable.columns.map(({ name }, idx) => (
                 <th
                   key={idx}
-                  style={{ textAlign: "left", padding: tokens.gridBaseline }}
+                  style={{ textAlign: "left", padding: tokens.space1 }}
                 >
                   {formatColumnName(name)}
                 </th>
@@ -92,7 +92,7 @@ export const App = () => {
                   <td
                     key={idx}
                     style={{
-                      padding: tokens.gridBaseline,
+                      padding: tokens.space1,
                       textAlign: column.type === "boolean" ? "center" : "start",
                     }}
                   >
