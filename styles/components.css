@@ -97,6 +97,8 @@
 }
 
 .badgeInner {
+  display: flex;
+  align-items: center;
   border-radius: 8px;
   background-color: var(--ui-kit-color-contrast);
   color: var(--ui-kit-color-contrast-fore);
