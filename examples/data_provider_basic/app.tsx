@@ -1,12 +1,8 @@
-import {
-  DataTable,
-  DataTableColumn,
-  getDataProvider,
-} from "@canva/preview/data-provider";
-import styles from "styles/components.css";
+import { Rows, Text, Title, tokens } from "@canva/app-ui-kit";
+import type { DataTable, DataTableColumn } from "@canva/preview/data";
+import { onSelectDataTable } from "@canva/preview/data";
 import React from "react";
-import { tokens } from "@canva/app-ui-kit";
-import { Rows, Text, Title } from "@canva/app-ui-kit";
+import styles from "styles/components.css";
 
 const breedsDataTable: DataTable = {
   name: "Dog breeds",
@@ -40,17 +36,15 @@ const numRows = breedsDataTable.columns.sort(
   (a, b) => b.values.length - a.values.length
 )[0].values.length;
 
-// An app that uses the Data Provider capability to return a single data table to a consumer (e.g. Bulk Create)
+// An app that uses the Data SDK to return a single data table to a consumer (e.g. Bulk Create)
 export const App = () => {
-  const dataProvider = getDataProvider();
-
   React.useEffect(() => {
     // This callback runs when Bulk Create wants to receive data
-    dataProvider.onSelectDataTable(async (opts) => {
+    onSelectDataTable(async (opts) => {
       // This callback returns the single data table to Bulk Create
       opts.selectDataTable(breedsDataTable);
     });
-  }, [dataProvider]);
+  }, []);
 
   return (
     <div className={styles.scrollContainer}>

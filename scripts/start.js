@@ -20,6 +20,7 @@ const { argv } = yargs(hideBin(process.argv))
     description: "Start local development server on HTTPS.",
     type: "boolean",
   });
+const { maybeCreateCertificates } = require("./ssl");
 
 const ROOT_DIR = path.join(__dirname, "..");
 const SRC_DIR = path.join(ROOT_DIR, "src");
@@ -33,7 +34,6 @@ const {
   CANVA_HMR_ENABLED,
 } = process.env;
 
-const BACKEND_URL = `http://localhost:${CANVA_BACKEND_PORT}`;
 const getFrontendUrl = (protocol) =>
   `${protocol}://localhost:${CANVA_FRONTEND_PORT}`;
 
@@ -55,6 +55,10 @@ const SHOULD_RUN_NGROK = argv.ngrok || process.env.npm_config_ngrok;
 const SHOULD_ENABLE_HTTPS = argv.useHttps || process.env.npm_config_use_https;
 const HMR_ENABLED = CANVA_HMR_ENABLED?.toLowerCase().trim() === "true";
 const APP_ID = CANVA_APP_ID?.toLowerCase().trim() ?? "";
+
+const BACKEND_URL = `http${
+  SHOULD_ENABLE_HTTPS ? "s" : ""
+}://localhost:${CANVA_BACKEND_PORT}`;
 
 if (HMR_ENABLED && APP_ID.length === 0) {
   throw new Error(
@@ -94,8 +98,15 @@ async function start() {
   }
 
   let backendHost = CANVA_BACKEND_HOST;
-  if (!backendHost || backendHost.trim() === '') {
+  if (!backendHost || backendHost.trim() === "") {
     backendHost = BACKEND_URL;
+  }
+
+  let certs;
+  if (SHOULD_ENABLE_HTTPS) {
+    console.log("Generating SSL Certificates...");
+    certs = await maybeCreateCertificates();
+    console.log("HTTPS will be enabled. Certificates generated.");
   }
 
   const runtimeWebpackConfig = buildConfig({
@@ -106,6 +117,7 @@ async function start() {
       enableHmr: HMR_ENABLED,
       appId: APP_ID,
       enableHttps: SHOULD_ENABLE_HTTPS,
+      ...certs,
     },
   });
 
@@ -113,14 +125,19 @@ async function start() {
   if (fs.existsSync(developerBackendEntry)) {
     if (!CANVA_APP_ID) {
       throw new Error(
-        `'CANVA_APP_ID' environment variable is undefined. Refer to the instructions in the README.md on starting a backend example.
-      `);
+        `'CANVA_APP_ID' environment variable is undefined. Refer to the instructions in the README.md on starting a backend example.`
+      );
     }
 
     await new Promise((resolve) => {
       nodemon({
         script: developerBackendEntry,
         ext: "ts",
+        env: {
+          SHOULD_ENABLE_HTTPS,
+          HTTPS_CERT_FILE: certs?.certFile,
+          HTTPS_KEY_FILE: certs?.keyFile,
+        },
       });
 
       nodemon.on("start", resolve);
@@ -142,10 +159,7 @@ async function start() {
         : BACKEND_URL;
       table.push(["Base URL (Backend)", chalk.cyan(url)]);
     } catch (error) {
-      console.log(
-        chalk.bold.bgRed("Error:"),
-        "Unable to start ngrok server."
-      );
+      console.log(chalk.bold.bgRed("Error:"), "Unable to start ngrok server.");
     }
   }
 

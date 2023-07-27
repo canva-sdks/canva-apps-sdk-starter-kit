@@ -5,7 +5,7 @@ import type {
 } from "@canva/design";
 import { ui } from "@canva/design";
 import type { VideoMimeType } from "@canva/asset";
-import styles from "../styles/components.css";
+import styles from "./styles.css";
 
 const SECONDS_IN_MINUTE = 60;
 const DEFAULT_VIDEO_BADGE_LABEL = "VIDEO";

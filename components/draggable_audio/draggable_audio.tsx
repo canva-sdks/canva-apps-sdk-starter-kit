@@ -4,7 +4,7 @@ import type {
 } from "@canva/design";
 import { addAudioTrack, ui } from "@canva/design";
 import * as React from "react";
-import { AudioCover } from "./audio_cover";
+import { AudioCover } from "../audio_player";
 import styles from "./draggable_audio.css";
 
 type ElementProps = React.HTMLAttributes<HTMLDivElement> &

@@ -22,30 +22,9 @@ export declare type BooleanDataTableColumn = {
 
 /**
  * @beta
- * An API for providing data to consumers within Canva.
- */
-export declare type DataProvider = {
-    /**
-     * @beta
-     * Registers a callback that runs when a data consumer requests data from an app.
-     *
-     * @param callback - The callback to run when a data consumer requests data from an app.
-     *
-     * @remarks
-     * When this callback runs, an app can either:
-     *
-     * * Call the `opts.selectDataTable` function to immediately send a data table to the consumer.
-     * * Render a UI that lets users browse and select from one or more data tables. Then, once the
-     * user selects a data table, the app calls the `opts.selectDataTable` function.
-     */
-    onSelectDataTable: (callback: OnSelectDataTableCallback) => void;
-};
-
-/**
- * @beta
  * The types of data that data table columns can contain.
  */
-export declare type DataProviderColumnType = DataTableColumn['type'];
+export declare type DataColumnType = DataTableColumn['type'];
 
 /**
  * @beta
@@ -93,8 +72,6 @@ export declare type DateDataTableColumn = {
     values: (Date | void)[];
 };
 
-export declare function getDataProvider(): DataProvider
-
 /**
  * @beta
  * A data table column that contains numeric values.
@@ -116,6 +93,21 @@ export declare type NumberDataTableColumn = {
      */
     values: (number | void)[];
 };
+
+/**
+ * @beta
+ * Registers a callback that runs when a data consumer requests data from an app.
+ *
+ * @param callback - The callback to run when a data consumer requests data from an app.
+ *
+ * @remarks
+ * When this callback runs, an app can either:
+ *
+ * * Call the `opts.selectDataTable` function to immediately send a data table to the consumer.
+ * * Render a UI that lets users browse and select from one or more data tables. Then, once the
+ * user selects a data table, the app calls the `opts.selectDataTable` function.
+ */
+export declare function onSelectDataTable(callback: OnSelectDataTableCallback): void;
 
 /**
  * @beta

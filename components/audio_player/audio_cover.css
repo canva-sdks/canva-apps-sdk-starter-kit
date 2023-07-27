@@ -1,0 +1,95 @@
+.draggableAudioCoverContainer {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.audioIconContainer {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.draggableAudioCoverContainer:hover .audioIconContainer {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.draggableAudioCover {
+  border: none;
+  background-color: var(--ui-kit-color-neutral);
+  padding: 0;
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+  position: relative;
+  border-radius: 4px;
+  transition: all 0.8s;
+  overflow: hidden;
+}
+
+.draggableAudioCoverPlaying {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.draggableAudioImage {
+  object-fit: cover;
+}
+
+.draggableAudioImagePlaying {
+  animation: rotation 8s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.audioIcon {
+  fill: var(--ui-kit-color-neutral-fore);
+  width: 100%;
+  height: 100%;
+  stroke: transparent;
+}
+
+.playingCircle {
+  fill: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.animatedCircle {
+  stroke-dasharray: 170;
+  stroke-dashoffset: 170;
+  animation-name: dash;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  stroke: var(--ui-kit-color-primary);
+  stroke-width: 2;
+  fill: none;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

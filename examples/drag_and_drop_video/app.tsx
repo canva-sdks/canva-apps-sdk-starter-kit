@@ -34,8 +34,8 @@ export const App = () => {
         <Rows spacing="1u">
           <Title size="small">External Video</Title>
           <Text size="small" tone="tertiary">
-            This video is an external https video. It uses the content
-            capability in conjunction with drag and drop.
+            This video is an external https video made draggable via drag and
+            drop and asset upload.
           </Text>
           <DraggableVideo
             width={320}

@@ -98,6 +98,10 @@ export const App = () => {
           This example demonstrates how apps can allow users to authenticate
           with the app via a third-party platform.
         </Text>
+        <Text>
+          To set up please see the README.md in the /examples/authentication
+          folder
+        </Text>
         <Rows spacing="1u">
           <Title size="small">Try the authentication flow</Title>
           <Text size="small" tone="tertiary">

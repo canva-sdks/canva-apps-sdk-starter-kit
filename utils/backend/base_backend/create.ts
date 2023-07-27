@@ -1,4 +1,7 @@
 import * as express from "express";
+import * as http from "http";
+import * as https from "https";
+import * as fs from "fs";
 import type { Request, Response, NextFunction } from "express";
 import debug from "debug";
 
@@ -26,6 +29,10 @@ interface BaseServer {
  * @returns BaseServer object containing the express app and a start function
  */
 export function createBaseServer(router: express.Router): BaseServer {
+  const SHOULD_ENABLE_HTTPS = process.env?.SHOULD_ENABLE_HTTPS === "true";
+  const HTTPS_CERT_FILE = process.env?.HTTPS_CERT_FILE;
+  const HTTPS_KEY_FILE = process.env?.HTTPS_KEY_FILE;
+
   const app = express();
   app.use(express.json());
 
@@ -61,11 +68,30 @@ export function createBaseServer(router: express.Router): BaseServer {
     });
   });
 
+  let server;
+  if (SHOULD_ENABLE_HTTPS) {
+    if (!HTTPS_CERT_FILE || !HTTPS_KEY_FILE) {
+      throw new Error(
+        "Looks like you're running the example with --use-https flag, but SSL certificates haven't been generated. Please remove the .ssl/ folder and re-run the command again."
+      );
+    }
+
+    server = https.createServer(
+      {
+        key: fs.readFileSync(HTTPS_KEY_FILE),
+        cert: fs.readFileSync(HTTPS_CERT_FILE),
+      },
+      app
+    );
+  } else {
+    server = http.createServer(app);
+  }
+
   return {
     app,
     start: (address: number | string | undefined) => {
       console.log(`Listening on '${address}'`);
-      const server = app.listen(address);
+      server.listen(address);
       process.on("SIGTERM", () => {
         serverDebug("SIGTERM signal received: closing HTTP server");
         server.close(() => {

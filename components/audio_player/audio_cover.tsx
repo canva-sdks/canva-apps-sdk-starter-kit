@@ -1,11 +1,11 @@
 import * as React from "react";
 import clsx from "clsx";
-import styles from "./audio_cover.css";
-import Music from "../assets/icons/music.svg";
-import Pause from "../assets/icons/pause.svg";
-import Play from "../assets/icons/play.svg";
-import Warning from "../assets/icons/warning.svg";
+import Music from "assets/icons/music.svg";
+import Pause from "assets/icons/pause.svg";
+import Play from "assets/icons/play.svg";
+import Warning from "assets/icons/warning.svg";
 import { AudioContext } from "./audio_context";
+import styles from "./audio_cover.css";
 
 type AudioCoverProps = {
   /*

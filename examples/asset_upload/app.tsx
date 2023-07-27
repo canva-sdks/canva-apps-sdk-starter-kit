@@ -1,7 +1,7 @@
+import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addAudioTrack, addNativeElement } from "@canva/design";
 import React from "react";
-import { Button, Rows, Text } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 
 export const App = () => {
@@ -93,7 +93,7 @@ export const App = () => {
 
     // Wait for the upload to finish so we can report errors if it fails to
     // upload
-    const result = await queuedAudio.whenUploaded();
+    await queuedAudio.whenUploaded();
 
     // upload is completed
     console.log("Upload complete!");
@@ -103,8 +103,8 @@ export const App = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
         <Text>
-          This example demonstrates how apps can import media with the Content
-          capability.
+          This example demonstrates how apps can import video, audio and image
+          assets into Canva.
         </Text>
         <Rows spacing="1.5u">
           <Button onClick={importAndAddImage} variant="secondary" stretch>
