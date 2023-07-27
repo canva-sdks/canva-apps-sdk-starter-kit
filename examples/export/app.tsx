@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Button,
   FormField,
@@ -8,6 +7,7 @@ import {
 } from "@canva/app-ui-kit";
 import type { ExportResponse } from "@canva/design";
 import { requestExport } from "@canva/design";
+import React, { useState } from "react";
 import styles from "styles/components.css";
 
 export const App = () => {
@@ -46,10 +46,7 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
-        <Text>
-          This example demonstrates how apps can export designs with the Export
-          capability.
-        </Text>
+        <Text>This example demonstrates how apps can export designs.</Text>
         <Button
           variant="primary"
           onClick={exportDocument}

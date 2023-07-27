@@ -14,6 +14,8 @@ const chalk = require("chalk");
  * @param {boolean} [options.devConfig.enableHmr]
  * @param {boolean} [options.devConfig.enableHttps]
  * @param {string} [options.devConfig.appId]
+ * @param {string} [options.devConfig.certFile]
+ * @param {string} [options.devConfig.keyFile]
  * @returns {Object}
  */
 function buildConfig({
@@ -84,15 +86,13 @@ function buildConfig({
               },
             },
             {
-              loader: 'postcss-loader',
+              loader: "postcss-loader",
               options: {
                 postcssOptions: {
-                  plugins: [
-                    require('cssnano')({ preset: 'default' }),
-                  ]
-                }
-              }
-            }
+                  plugins: [require("cssnano")({ preset: "default" })],
+                },
+              },
+            },
           ],
         },
         {
@@ -163,7 +163,7 @@ function buildConfig({
               ascii_only: true,
             },
           },
-        })
+        }),
       ],
     },
     output: {
@@ -216,6 +216,8 @@ ${variables.exports};
  * @param {boolean} [options.enableHmr]
  * @param {boolean} [options.enableHttps]
  * @param {string} [options.appId]
+ * @param {string} [options.certFile]
+ * @param {string} [options.keyFile]
  * @returns {Object|null}
  */
 function buildDevConfig(options) {
@@ -223,10 +225,19 @@ function buildDevConfig(options) {
     return null;
   }
 
-  const { port, enableHmr, appId, enableHttps } = options;
+  const { port, enableHmr, appId, enableHttps, certFile, keyFile } = options;
 
   let devServer = {
-    server: enableHttps ? "https" : "http",
+    server: enableHttps
+      ? {
+          type: "https",
+          options: {
+            cert: certFile,
+            key: keyFile,
+          },
+        }
+      : "http",
+    host: "localhost",
     historyApiFallback: {
       rewrites: [{ from: /^\/$/, to: "/app.js" }],
     },
@@ -244,7 +255,6 @@ function buildDevConfig(options) {
     const appDomain = `app-${appId}.canva-apps.com`;
     devServer = {
       ...devServer,
-      host: "localhost",
       allowedHosts: appDomain,
       headers: {
         "Access-Control-Allow-Origin": `https://${appDomain}`,

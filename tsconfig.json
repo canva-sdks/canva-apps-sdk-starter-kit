@@ -36,11 +36,11 @@
       "assets": ["./assets"],
       "styles": ["./styles"],
       "components": ["./components"],
-      "@canva/asset/*": ["./sdk/asset/*"],
-      "@canva/design/*": ["./sdk/design/*"],
-      "@canva/error/*": ["./sdk/error/*"],
-      "@canva/preview/*": ["./sdk/preview/*"],
-      "@canva/user/*": ["./sdk/user/*"]
+      "@canva/asset": ["./sdk/asset"],
+      "@canva/design": ["./sdk/design"],
+      "@canva/error": ["./sdk/error"],
+      "@canva/user": ["./sdk/user"],
+      "@canva/preview/*": ["./sdk/preview/*"]
     }
   },
   "include": [
@@ -50,7 +50,8 @@
     "./declarations/declarations.d.ts",
     "./utils/**/*",
     "./styles/**/*",
-    "./node_modules/@types/**/*"
+    "./node_modules/@types/**/*",
+    "./sdk/**/*"
   ],
   "ts-node": {
     "compilerOptions": {

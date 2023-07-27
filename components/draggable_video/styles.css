@@ -1,0 +1,33 @@
+.draggableVideoContainer {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.previewVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.videoBadge {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+}
+
+.badgeInner {
+  border-radius: 8px;
+  background-color: var(--ui-kit-color-contrast);
+  color: var(--ui-kit-color-contrast-fore);
+  padding: 0 6px;
+  height: 16px;
+  font-size: 10px;
+  font-family: "Canva Sans", Helvetica, sans-serif;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+}

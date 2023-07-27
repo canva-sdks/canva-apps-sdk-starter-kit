@@ -1,4 +1,3 @@
-import { auth } from "@canva/user";
 import {
   Button,
   FormField,
@@ -7,6 +6,7 @@ import {
   Text,
   Title,
 } from "@canva/app-ui-kit";
+import { auth } from "@canva/user";
 import React, { useState } from "react";
 import styles from "styles/components.css";
 
@@ -43,8 +43,8 @@ export const App = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
         <Text>
-          This example demonstrates how apps can send GET requests with the
-          Fetch capability.
+          This example demonstrates how apps can securely communicate with their
+          servers via the browser's Fetch API.
         </Text>
         {/* Idle and loading state */}
         {state !== "error" && (

@@ -1,7 +1,7 @@
-import { upload } from "@canva/asset";
 import { Rows, Text, Title } from "@canva/app-ui-kit";
-import { DraggableImage } from "components/draggable_image";
+import { upload } from "@canva/asset";
 import dog from "assets/images/dog.jpg";
+import { DraggableImage } from "components/draggable_image";
 import React from "react";
 import styles from "styles/components.css";
 
@@ -63,8 +63,8 @@ export const App = () => {
         <Rows spacing="1u">
           <Title size="small">External Image</Title>
           <Text size="small" tone="tertiary">
-            This image is an external https image. It uses the content
-            capability in conjunction with drag and drop.
+            This image is an external https image made draggable via drag and
+            drop and asset upload.
           </Text>
           <DraggableImage
             src={
