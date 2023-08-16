@@ -234,6 +234,7 @@ const createSquareShapeElement = ({
       {
         d: `M 0 0 H ${width} V ${height} H 0 L 0 0`,
         fill: {
+          dropTarget: false,
           color: "#ff0099",
         },
       },

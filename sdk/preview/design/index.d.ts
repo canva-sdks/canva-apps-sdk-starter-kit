@@ -77,7 +77,7 @@ export declare type AppElementRendererOutput = (Exclude<NativeSimpleElementWithB
 
 /**
  * @public
- * A unique identifier that references an audio asset in the user's media library.
+ * A unique identifier that references an audio asset in Canva's backend.
  */
 export declare type AudioRef = string & {
     __audioRef: never;
@@ -102,6 +102,14 @@ export declare type AudioTrack = {
  * Units are relative to the parent container both in terms of position and size
  */
 declare type Box = Position & (WidthAndHeight | Width | Height);
+
+/**
+ * @beta
+ * Canva drag event for the drag-and-drop behavior.
+ */
+export declare type CanvaDragEvent<E extends Element> = Pick<DragEvent, 'dataTransfer' | 'currentTarget' | 'preventDefault' | 'clientX' | 'clientY'> & {
+    currentTarget: E;
+};
 
 declare type CommonImageDragData = {
     /**
@@ -143,13 +151,13 @@ export declare type Coordinates = {
 };
 
 /** @beta */
-declare type DesignSelection = {
+export declare type DesignSelection = {
     /**
      * @beta
      * Registers a callback for a specific type of element content, which is called when the user
      * changes the selection.
-     * @param opts.scope The type of element content to subscribe to selection changes for
-     * @param opts.onChange The callback that runs when the selection changes.
+     * @param opts.scope - The type of element content to subscribe selection changes for
+     * @param opts.onChange - The callback that runs when the selection changes.
      */
     registerOnChange<Scope extends SelectionScope>(opts: {
         scope: Scope;
@@ -162,8 +170,8 @@ declare type DesignSelection = {
      * selection event.
      * This "setContent" is best-effort, and the final state of the element is not guaranteed
      * to be identical to the specified state.
-     * @param event The selection event that `applier` will be executed over
-     * @param applier A mapping / transformation function to be executed, per-element, over the
+     * @param event - The selection event that `applier` will be executed over
+     * @param applier - A mapping / transformation function to be executed, per-element, over the
      *           elements contained in the selection event. This function is expected to return a
      *           new content state, and the matching element will be coerced with a best-effort
      *           attempt to match that specified state.
@@ -189,7 +197,7 @@ export declare type Dimensions = {
 
 /**
  * @public
- * Callbacks that run during the lifecycle of a drag and drop.
+ * Callbacks that run during the lifecycle of a drag-and-drop.
  */
 export declare type DragCallback = {
     /**
@@ -222,7 +230,7 @@ export declare type ElementData = DragCallback & {
      */
     node: HTMLElement;
     /**
-     * Options for defining the drag and drop behavior.
+     * Options for defining the drag-and-drop behavior.
      *
      * @remarks
      * This data is required because it can't be inferred from the `node` property.
@@ -288,6 +296,10 @@ export declare type ExportCompleted = {
      */
     status: 'COMPLETED';
     /**
+     * The title of the successful export of a design, if it has been set by the user.
+     */
+    title?: string;
+    /**
      * The exported files.
      *
      * @remarks
@@ -328,11 +340,10 @@ export declare type ExportResponse = ExportCompleted | ExportAborted;
  */
 export declare type Fill = {
     /**
-     * @beta
      * Boolean defining whether image or video can be dropped on the fill by the user.
      * If set to true, images or videos can be dropped on the fill.
      */
-    dropTarget: boolean;
+    dropTarget?: boolean;
     /**
      * The color of the fill as a hex code.
      *
@@ -342,25 +353,12 @@ export declare type Fill = {
      */
     color?: string;
     /**
-     * @beta
-     * Image that will be used to fill the given path.
+     * An asset (image or video) that will be used to fill the given path.
      *
      * @remarks
      * Only one type of fill (color, image or video) can be set.
      */
-    image?: {
-        ref: ImageRef;
-    };
-    /**
-     * @beta
-     * Video that will be used to fill the given path.
-     *
-     * @remarks
-     * Only one type of fill (color, image or video) can be set.
-     */
-    video?: {
-        ref: VideoRef;
-    };
+    asset?: ImageFill | VideoFill;
 };
 
 /**
@@ -385,12 +383,27 @@ export declare type ImageElementData = DragCallback & {
      */
     node: HTMLImageElement;
     /**
-     * Options for defining the drag and drop behavior.
+     * Options for defining the drag-and-drop behavior.
      *
      * @remarks
      * If any of this data is omitted, it's inferred from the `node` property.
      */
     dragData?: Partial<UserSuppliedImageDragData> | (Partial<UserSuppliedVideoDragData> & Pick<UserSuppliedVideoDragData, 'type' | 'resolveVideoRef'>);
+};
+
+/**
+ * @public
+ * An image asset that will be used to fill the given path.
+ */
+declare type ImageFill = {
+    /**
+     * Type of an asset that will be used to fill the given path.
+     */
+    type: 'IMAGE';
+    /**
+     * A unique identifier that references an image asset in Canva's backend.
+     */
+    ref: ImageRef;
 };
 
 /**
@@ -403,7 +416,7 @@ export declare type ImageRef = string & {
 
 /**
  * @public
- * @param appElementConfig
+ * @param appElementConfig - Configuration for an AppElementClient
  */
 export declare function initAppElement<A extends AppElementData>(appElementConfig: AppElementClientConfiguration<A>): AppElementClient<A>;
 
@@ -951,16 +964,24 @@ declare type TextAttributes = {
 };
 
 /**
- * The methods for adding drag-and-drop behavior to an app.
  * @public
+ * The methods for adding drag-and-drop behavior to an app.
  */
 export declare interface UI {
     /**
+     * @public
      * Makes the specified node draggable.
      *
      * @param options - Options for making an element draggable.
      */
     makeDraggable(options: DraggableElementData): void;
+    /**
+     * @beta
+     * Handles the start of a drag event.
+     * @evt - The drag event.
+     * @param dragData - The data to be passed to the drag handler.
+     */
+    startDrag<E extends HTMLElement>(evt: CanvaDragEvent<E>, data: UserSuppliedTextDragData | UserSuppliedAudioDragData | UserSuppliedVideoDragDataForElement<E> | UserSuppliedImageDragDataForElement<E>): Promise<void>;
 }
 
 /**
@@ -971,7 +992,7 @@ export declare const ui: UI;
 
 /**
  * @public
- * Options for defining the drag and drop behavior of audio tracks.
+ * Options for defining the drag-and-drop behavior of audio tracks.
  */
 export declare type UserSuppliedAudioDragData = {
     /**
@@ -1033,7 +1054,7 @@ export declare type UserSuppliedDataUrlImageDragData = CommonImageDragData & {
 
 /**
  * @public
- * Options for defining the drag and drop behavior that can be defined by an app developer.
+ * Options for defining the drag-and-drop behavior that can be defined by an app developer.
  */
 export declare type UserSuppliedDragData = UserSuppliedImageDragData | UserSuppliedTextDragData | UserSuppliedVideoDragData | UserSuppliedAudioDragData;
 
@@ -1077,14 +1098,20 @@ export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
 
 /**
  * @public
- * Options for defining the drag and drop behavior of an image element that can be defined by an
+ * Options for defining the drag-and-drop behavior of an image element that can be defined by an
  * app developer.
  */
 export declare type UserSuppliedImageDragData = UserSuppliedDataUrlImageDragData | UserSuppliedExternalImageDragData;
 
 /**
+ * @beta
+ * Options for defining the drag-and-drop behavior for images.
+ */
+export declare type UserSuppliedImageDragDataForElement<E extends Element> = E extends HTMLImageElement ? (Partial<UserSuppliedImageDragData> & Pick<UserSuppliedImageDragData, 'type'>) : UserSuppliedImageDragData;
+
+/**
  * @public
- * Options for defining the drag and drop behavior of a text element.
+ * Options for defining the drag-and-drop behavior of a text element.
  */
 export declare type UserSuppliedTextDragData = {
     /**
@@ -1115,7 +1142,7 @@ export declare type UserSuppliedTextDragData = {
 
 /**
  * @public
- * Options for defining the drag and drop behavior for videos.
+ * Options for defining the drag-and-drop behavior for videos.
  */
 export declare type UserSuppliedVideoDragData = {
     /**
@@ -1155,12 +1182,33 @@ export declare type UserSuppliedVideoDragData = {
 };
 
 /**
+ * @beta
+ * Options for defining the drag-and-drop behavior for videos.
+ */
+export declare type UserSuppliedVideoDragDataForElement<E extends Element> = E extends HTMLImageElement ? (Partial<UserSuppliedVideoDragData> & Pick<UserSuppliedVideoDragData, 'type' | 'resolveVideoRef'>) : UserSuppliedVideoDragData;
+
+/**
  * @public
  * The types of values that can be stored within an app element's data.
  */
 export declare type Value = Primitive | ObjectPrimitive | Value[] | {
     [key: string]: Value;
 } | Map<Value, Value> | Set<Value>;
+
+/**
+ * @public
+ * A video asset that will be used to fill the given path.
+ */
+declare type VideoFill = {
+    /**
+     * Type of an asset that will be used to fill the given path.
+     */
+    type: 'VIDEO';
+    /**
+     * A unique identifier that references a video asset in Canva's backend.
+     */
+    ref: VideoRef;
+};
 
 /**
  * @public

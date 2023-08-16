@@ -1,5 +1,6 @@
 import { Rows, Text, Title } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
+import { addNativeElement } from "@canva/design";
 import dog from "assets/images/dog.jpg";
 import { DraggableImage } from "components/draggable_image";
 import React from "react";
@@ -22,6 +23,15 @@ const uploadImage = async () => {
   return image;
 };
 
+const insertFromDataUrl = () => {
+  addNativeElement({ type: "IMAGE", dataUrl: dog });
+};
+
+const insertExternalImage = async () => {
+  const { ref } = await uploadImage();
+  addNativeElement({ type: "IMAGE", ref });
+};
+
 export const App = () => {
   return (
     <div className={styles.scrollContainer}>
@@ -39,6 +49,7 @@ export const App = () => {
           </Text>
           <DraggableImage
             src={dog}
+            onClick={insertFromDataUrl}
             style={{ width: "100px", height: "100px", borderRadius: "2px" }}
           />
         </Rows>
@@ -52,6 +63,7 @@ export const App = () => {
           <div>
             <DraggableImage
               src={dog}
+              onClick={insertFromDataUrl}
               style={{ width: "100x", height: "100px", borderRadius: "2px" }}
               fullSize={{
                 width: 50,
@@ -70,6 +82,7 @@ export const App = () => {
             src={
               "https://www.canva.dev/example-assets/image-import/grass-image.jpg"
             }
+            onClick={insertExternalImage}
             width="320px"
             height="212px"
             resolveImageRef={uploadImage}

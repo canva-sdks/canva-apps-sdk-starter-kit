@@ -7,7 +7,7 @@ import * as React from "react";
 import { AudioCover } from "../audio_player";
 import styles from "./draggable_audio.css";
 
-type ElementProps = React.HTMLAttributes<HTMLDivElement> &
+type ElementProps = React.HTMLAttributes<HTMLButtonElement> &
   Omit<UserSuppliedAudioDragData, "type"> & {
     /*
      * Url of the audio to play in the app when the user clicks the play button.
@@ -27,7 +27,7 @@ const getDragDataAndProps = (
   props: ElementProps
 ): {
   data: UserSuppliedAudioDragData;
-  props: React.HTMLAttributes<HTMLDivElement> & {
+  props: React.HTMLAttributes<HTMLButtonElement> & {
     previewUrl: string;
   };
 } => {
@@ -52,14 +52,14 @@ const getDragDataAndProps = (
 export const DraggableAudio = (props: ElementProps) => {
   const [isHovering, setIsHovering] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
-  const [node, setNode] = React.useState<HTMLDivElement | null>();
+  const [node, setNode] = React.useState<HTMLButtonElement | null>();
   const {
     data: dragData,
     props: { previewUrl, ...imgProps },
   } = getDragDataAndProps(props);
   const opacity = isDragging ? 0 : props.style?.opacity || 1;
 
-  const makeDraggable = (node: HTMLDivElement) => {
+  const makeDraggable = (node: HTMLButtonElement) => {
     if (!node) {
       return;
     }
@@ -94,9 +94,8 @@ export const DraggableAudio = (props: ElementProps) => {
   });
 
   return (
-    <div
+    <button
       {...imgProps}
-      role="button"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       ref={setNode}
@@ -120,6 +119,6 @@ export const DraggableAudio = (props: ElementProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
