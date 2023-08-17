@@ -88,7 +88,7 @@ export declare type AppElementRendererOutput = Exclude<
 
 /**
  * @public
- * A unique identifier that references an audio asset in the user's media library.
+ * A unique identifier that references an audio asset in Canva's backend.
  */
 export declare type AudioRef = string & {
   __audioRef: never;
@@ -161,7 +161,7 @@ export declare type Dimensions = {
 
 /**
  * @public
- * Callbacks that run during the lifecycle of a drag and drop.
+ * Callbacks that run during the lifecycle of a drag-and-drop.
  */
 export declare type DragCallback = {
   /**
@@ -194,7 +194,7 @@ export declare type ElementData = DragCallback & {
    */
   node: HTMLElement;
   /**
-   * Options for defining the drag and drop behavior.
+   * Options for defining the drag-and-drop behavior.
    *
    * @remarks
    * This data is required because it can't be inferred from the `node` property.
@@ -260,6 +260,10 @@ export declare type ExportCompleted = {
    */
   status: "COMPLETED";
   /**
+   * The title of the successful export of a design, if it has been set by the user.
+   */
+  title?: string;
+  /**
    * The exported files.
    *
    * @remarks
@@ -307,6 +311,11 @@ export declare type ExportResponse = ExportCompleted | ExportAborted;
  */
 export declare type Fill = {
   /**
+   * Boolean defining whether image or video can be dropped on the fill by the user.
+   * If set to true, images or videos can be dropped on the fill.
+   */
+  dropTarget?: boolean;
+  /**
    * The color of the fill as a hex code.
    *
    * @remarks
@@ -314,6 +323,13 @@ export declare type Fill = {
    * Only one type of fill (color, image or video) can be set.
    */
   color?: string;
+  /**
+   * An asset (image or video) that will be used to fill the given path.
+   *
+   * @remarks
+   * Only one type of fill (color, image or video) can be set.
+   */
+  asset?: ImageFill | VideoFill;
 };
 
 /**
@@ -338,7 +354,7 @@ export declare type ImageElementData = DragCallback & {
    */
   node: HTMLImageElement;
   /**
-   * Options for defining the drag and drop behavior.
+   * Options for defining the drag-and-drop behavior.
    *
    * @remarks
    * If any of this data is omitted, it's inferred from the `node` property.
@@ -351,6 +367,21 @@ export declare type ImageElementData = DragCallback & {
 
 /**
  * @public
+ * An image asset that will be used to fill the given path.
+ */
+declare type ImageFill = {
+  /**
+   * Type of an asset that will be used to fill the given path.
+   */
+  type: "IMAGE";
+  /**
+   * A unique identifier that references an image asset in Canva's backend.
+   */
+  ref: ImageRef;
+};
+
+/**
+ * @public
  * A unique identifier that references an image asset in Canva's backend.
  */
 export declare type ImageRef = string & {
@@ -359,7 +390,7 @@ export declare type ImageRef = string & {
 
 /**
  * @public
- * @param appElementConfig
+ * @param appElementConfig - Configuration for an AppElementClient
  */
 export declare function initAppElement<A extends AppElementData>(
   appElementConfig: AppElementClientConfiguration<A>
@@ -873,11 +904,12 @@ declare type TextAttributes = {
 };
 
 /**
- * The methods for adding drag-and-drop behavior to an app.
  * @public
+ * The methods for adding drag-and-drop behavior to an app.
  */
 export declare interface UI {
   /**
+   * @public
    * Makes the specified node draggable.
    *
    * @param options - Options for making an element draggable.
@@ -893,7 +925,7 @@ export declare const ui: UI;
 
 /**
  * @public
- * Options for defining the drag and drop behavior of audio tracks.
+ * Options for defining the drag-and-drop behavior of audio tracks.
  */
 export declare type UserSuppliedAudioDragData = {
   /**
@@ -955,7 +987,7 @@ export declare type UserSuppliedDataUrlImageDragData = CommonImageDragData & {
 
 /**
  * @public
- * Options for defining the drag and drop behavior that can be defined by an app developer.
+ * Options for defining the drag-and-drop behavior that can be defined by an app developer.
  */
 export declare type UserSuppliedDragData =
   | UserSuppliedImageDragData
@@ -1003,7 +1035,7 @@ export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
 
 /**
  * @public
- * Options for defining the drag and drop behavior of an image element that can be defined by an
+ * Options for defining the drag-and-drop behavior of an image element that can be defined by an
  * app developer.
  */
 export declare type UserSuppliedImageDragData =
@@ -1012,7 +1044,7 @@ export declare type UserSuppliedImageDragData =
 
 /**
  * @public
- * Options for defining the drag and drop behavior of a text element.
+ * Options for defining the drag-and-drop behavior of a text element.
  */
 export declare type UserSuppliedTextDragData = {
   /**
@@ -1043,7 +1075,7 @@ export declare type UserSuppliedTextDragData = {
 
 /**
  * @public
- * Options for defining the drag and drop behavior for videos.
+ * Options for defining the drag-and-drop behavior for videos.
  */
 export declare type UserSuppliedVideoDragData = {
   /**
@@ -1095,6 +1127,21 @@ export declare type Value =
     }
   | Map<Value, Value>
   | Set<Value>;
+
+/**
+ * @public
+ * A video asset that will be used to fill the given path.
+ */
+declare type VideoFill = {
+  /**
+   * Type of an asset that will be used to fill the given path.
+   */
+  type: "VIDEO";
+  /**
+   * A unique identifier that references a video asset in Canva's backend.
+   */
+  ref: VideoRef;
+};
 
 /**
  * @public

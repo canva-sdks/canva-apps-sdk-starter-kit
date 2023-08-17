@@ -18,6 +18,7 @@ type UIState = {
   paths: {
     d: string;
     fill: {
+      dropTarget: boolean;
       color: string;
     };
   }[];
@@ -34,6 +35,7 @@ const initialState: UIState = {
     {
       d: "M 0 0 H 100 V 100 H 0 L 0 0",
       fill: {
+        dropTarget: false,
         color: "#ff0099",
       },
     },
@@ -77,6 +79,7 @@ export const App = () => {
                             {
                               d: "",
                               fill: {
+                                dropTarget: false,
                                 color: "#000000",
                               },
                             },

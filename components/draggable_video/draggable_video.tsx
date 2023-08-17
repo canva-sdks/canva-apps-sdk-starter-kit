@@ -13,10 +13,13 @@ const DEFAULT_VIDEO_BADGE_LABEL = "VIDEO";
 type PartialVideoDragData = Partial<UserSuppliedVideoDragData> &
   Pick<UserSuppliedVideoDragData, "resolveVideoRef">;
 
-type ElementProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {
+type ElementProps = Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  "src" | "onClick"
+> & {
   /**
    * The thumbnail to display in the object panel. For Gifs, this can just be the gif to upload.
-   * Otherwise, this should be a poster frame from tge video.
+   * Otherwise, this should be a poster frame from the video.
    */
   thumbnailImageSrc: string;
   /**
@@ -32,7 +35,22 @@ type ElementProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {
    * The mime-type of the video to be imported.
    */
   mimeType: VideoMimeType;
-};
+} & (
+    | {
+        /**
+         * ClassNames for the button containing the video.
+         * When an onClick is supplied, the video will be wrapped with a button.
+         * Use this prop to adjust the styles of that button.
+         */
+        containerClassName?: string;
+        /**
+         * Handler for when a user clicks the video.
+         * Ideally should be configured to insert the video via the design api.
+         */
+        onClick: (evt: React.MouseEvent<HTMLElement>) => void;
+      }
+    | { onClick?: never; containerClassName?: never }
+  );
 
 function getBadgeLabel(mimeType: VideoMimeType, duration?: number): string {
   if (mimeType === "image/gif") {
@@ -101,6 +119,7 @@ export const DraggableVideo = (props: DraggableVideoProps) => {
       thumbnailVideoSrc,
       durationInSeconds,
       mimeType,
+      onClick,
       ...imgProps
     },
   } = getDragDataAndProps(props);
@@ -139,13 +158,8 @@ export const DraggableVideo = (props: DraggableVideoProps) => {
     }
   };
 
-  return (
-    <div
-      onMouseEnter={() => setShowVideo(true)}
-      onMouseLeave={() => setShowVideo(false)}
-      style={{ opacity }}
-      className={styles.draggableVideoContainer}
-    >
+  const Content = (
+    <>
       <img
         {...imgProps}
         src={thumbnailImageSrc}
@@ -166,6 +180,31 @@ export const DraggableVideo = (props: DraggableVideoProps) => {
       <Badge className={styles.videoBadge}>
         {getBadgeLabel(props.mimeType, props.durationInSeconds)}
       </Badge>
+    </>
+  );
+
+  if (onClick) {
+    return (
+      <button
+        onMouseEnter={() => setShowVideo(true)}
+        onMouseLeave={() => setShowVideo(false)}
+        style={{ opacity }}
+        onClick={onClick}
+        className={styles.draggableVideoContainer}
+      >
+        {Content}
+      </button>
+    );
+  }
+
+  return (
+    <div
+      onMouseEnter={() => setShowVideo(true)}
+      onMouseLeave={() => setShowVideo(false)}
+      style={{ opacity }}
+      className={styles.draggableVideoContainer}
+    >
+      {Content}
     </div>
   );
 };

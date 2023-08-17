@@ -1,4 +1,5 @@
 import { FormField, Rows, Select, Text } from "@canva/app-ui-kit";
+import { addNativeElement } from "@canva/design";
 import { DraggableText } from "components/draggable_text";
 import React from "react";
 import styles from "styles/components.css";
@@ -14,6 +15,8 @@ type DraggableTextProperties = {
   fontStyle?: FontStyle;
   decoration?: Decoration;
 };
+
+const content = "Drag me!";
 
 export const App = () => {
   const [{ fontStyle, fontWeight, decoration, textAlign }, setState] =
@@ -126,9 +129,19 @@ export const App = () => {
               fontStyle,
               fontWeight,
             }}
+            onClick={() =>
+              addNativeElement({
+                type: "TEXT",
+                textAlign,
+                decoration,
+                fontStyle,
+                fontWeight,
+                children: [content],
+              })
+            }
           >
             <Text variant={fontWeight === "bold" ? "bold" : "regular"}>
-              Drag me!
+              {content}
             </Text>
           </DraggableText>
         </Rows>

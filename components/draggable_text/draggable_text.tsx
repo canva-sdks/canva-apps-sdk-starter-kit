@@ -2,13 +2,32 @@ import type { DraggableElementData } from "@canva/design";
 import * as React from "react";
 import styles from "styles/components.css";
 import { ui } from "@canva/design";
+import textStyles from "./styles.css";
+import clsx from "clsx";
 
 type DragProps = Omit<
   DraggableElementData["dragData"] & { type: "TEXT" },
   "type" | "children"
 >;
 
-export type DraggableTextProps = React.HTMLAttributes<HTMLElement> & DragProps;
+export type DraggableTextProps = React.HTMLAttributes<HTMLElement> &
+  DragProps &
+  (
+    | {
+        /**
+         * ClassNames for the button containing the text.
+         * When an onClick is supplied, the text will be wrapped with a button.
+         * Use this prop to adjust the styles of that button.
+         */
+        containerClassName?: string;
+        /**
+         * Handler for when a user clicks the text.
+         * Ideally should be configured to insert the image via the design api.
+         */
+        onClick: (evt: React.MouseEvent<HTMLElement>) => void;
+      }
+    | { containerClassName?: never; onClick?: never }
+  );
 
 export const DraggableText = (props: DraggableTextProps) => {
   const [node, setNode] = React.useState<HTMLElement | null>();
@@ -20,6 +39,8 @@ export const DraggableText = (props: DraggableTextProps) => {
     fontWeight,
     fontStyle,
     children,
+    onClick,
+    containerClassName,
     ...nodeProps
   } = props;
 
@@ -59,16 +80,28 @@ export const DraggableText = (props: DraggableTextProps) => {
     opacity,
   };
 
-  return (
-    <div style={style}>
-      <p
-        {...nodeProps}
-        draggable={canDrag}
-        className={styles.draggable}
-        ref={setNode}
-      >
-        {children}
-      </p>
-    </div>
+  const Content = (
+    <p
+      {...nodeProps}
+      draggable={canDrag}
+      className={styles.draggable}
+      ref={setNode}
+    >
+      {children}
+    </p>
   );
+
+  if (onClick) {
+    return (
+      <button
+        style={style}
+        onClick={onClick}
+        className={clsx(textStyles.draggableButton, containerClassName)}
+      >
+        {Content}
+      </button>
+    );
+  }
+
+  return <div style={style}>{Content}</div>;
 };

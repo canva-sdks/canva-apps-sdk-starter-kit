@@ -8,6 +8,7 @@ export const ui = (() => {
   const ui = window.canva.dragAndDrop;
   return Object.freeze({
     makeDraggable: ui.makeDraggable.bind(ui),
+    startDrag: ui.startDrag.bind(ui),
   });
 })();
 

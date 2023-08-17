@@ -1,22 +1,53 @@
 import * as React from "react";
+import clsx from "clsx";
 import type {
   UserSuppliedExternalImageDragData,
   UserSuppliedDataUrlImageDragData,
   UserSuppliedImageDragData,
 } from "@canva/design";
 import { ui } from "@canva/design";
+import styles from "./styles.css";
+
+type ClickableImageProps = Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  "onClick"
+> & {
+  /**
+   * @deprecated use the previewSize, previewSrc, fullSize, fullSizeSrc props instead
+   */
+  dragData?: Partial<UserSuppliedDataUrlImageDragData>;
+} & {
+  /**
+   * ClassNames for the button containing the image.
+   * When an onClick is supplied, the image will be wrapped with a button.
+   * Use this prop to adjust the styles of that button.
+   */
+  containerClassName?: string;
+  /**
+   * Handler for when a user clicks the image.
+   * Ideally should be configured to insert the image via the design api.
+   */
+  onClick: (evt: React.MouseEvent<HTMLElement>) => void;
+};
+
+type StaticImageProps = Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  "onClick"
+> & {
+  /**
+   * @deprecated use the previewSize, previewSrc, fullSize, fullSizeSrc props instead
+   */
+  dragData?: Partial<UserSuppliedDataUrlImageDragData>;
+} & { onClick?: never; containerClassName?: never };
+
+type ImageProps = ClickableImageProps | StaticImageProps;
 
 type DraggableExternalUrlProps = Partial<UserSuppliedExternalImageDragData> &
   Pick<UserSuppliedExternalImageDragData, "resolveImageRef"> &
-  React.ImgHTMLAttributes<HTMLImageElement>;
+  ImageProps;
 
 type DraggableDataUrlProps = Partial<UserSuppliedDataUrlImageDragData> &
-  React.ImgHTMLAttributes<HTMLImageElement> & {
-    /**
-     * @deprecated use the previewSize, previewSrc, fullSize, fullSizeSrc props instead
-     */
-    dragData?: Partial<UserSuppliedDataUrlImageDragData>;
-  };
+  ImageProps;
 
 export type DraggableImageProps =
   | DraggableDataUrlProps
@@ -32,7 +63,7 @@ const getDragDataAndProps = (
   props: DraggableImageProps
 ): {
   data: Partial<UserSuppliedImageDragData>;
-  props: React.ImgHTMLAttributes<HTMLImageElement>;
+  props: ImageProps;
 } => {
   if (isExternalProps(props)) {
     const { fullSize, previewSize, resolveImageRef, previewSrc, ...imgProps } =
@@ -85,7 +116,10 @@ const getDragDataAndProps = (
 export const DraggableImage = (props: DraggableImageProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
   const [canDrag, setCanDrag] = React.useState(false);
-  const { data: dragData, props: imgProps } = getDragDataAndProps(props);
+  const {
+    data: dragData,
+    props: { onClick, containerClassName, ...imgProps },
+  } = getDragDataAndProps(props);
   const opacity = isDragging ? 0 : props.style?.opacity || 1;
 
   const makeDraggable = (
@@ -110,12 +144,26 @@ export const DraggableImage = (props: DraggableImageProps) => {
     }
   };
 
-  return (
+  const Content = (
     <img
       {...imgProps}
       onLoad={makeDraggable}
       draggable={canDrag}
-      style={{ cursor: "pointer", ...props.style, opacity }}
+      style={{ ...imgProps.style }}
     />
   );
+
+  if (onClick) {
+    return (
+      <button
+        className={clsx(styles.draggableButton, containerClassName)}
+        style={{ opacity }}
+        onClick={onClick}
+      >
+        {Content}
+      </button>
+    );
+  }
+
+  return Content;
 };

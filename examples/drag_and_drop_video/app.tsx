@@ -1,6 +1,7 @@
 import { Rows, Text, Title } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { DraggableVideo } from "components/draggable_video";
+import { addNativeElement } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
 
@@ -23,6 +24,11 @@ const uploadVideo = async () => {
   return video;
 };
 
+const insertVideo = async () => {
+  const { ref } = await uploadVideo();
+  return addNativeElement({ type: "VIDEO", ref });
+};
+
 export const App = () => {
   return (
     <div className={styles.scrollContainer}>
@@ -38,6 +44,7 @@ export const App = () => {
             drop and asset upload.
           </Text>
           <DraggableVideo
+            onClick={insertVideo}
             width={320}
             height={180}
             thumbnailImageSrc="https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg"

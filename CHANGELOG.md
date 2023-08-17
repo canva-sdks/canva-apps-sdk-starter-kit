@@ -1,5 +1,23 @@
 # Changelog
 
+## 2023-08-17 
+
+### 🧰 Added
+- `@canva/design`
+  - Added a `title` property to the response payload of `requestExport`, which represents the title of a successful export.
+  - Support shape element with image or video fill.
+- `@canva/preview`
+  - Added `ui.startDrag` method for drag and drop behaviour.
+- Added `rotate` and `reload` icon. Shout out to [NoahDavey](https://github.com/canva-sdks/canva-apps-sdk-starter-kit/pull/6) for submiting a PR to add the rotate icon.
+
+### 🐞 Fixed
+- Fixed an issue where the `DraggableVideo` component would ignore onClick events.
+- Community shout out:
+   - [srelbo](https://github.com/canva-sdks/canva-apps-sdk-starter-kit/pull/4) submitted a fix to an issue with the video badge where text would not be vertically centered.
+
+### 🔧 Changed
+- Updated draggable example apps to include click to insert functionality by default.
+
 ## 2023-07-27 
 
 ### 💥 Breaking changes
