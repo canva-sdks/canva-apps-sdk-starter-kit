@@ -1,5 +1,12 @@
 # Changelog
 
+## 2023-08-24
+
+### 🧰 Added
+- `@canva/asset`
+  - Added support for Lottie in `upload`
+  - Added support for WebP in `upload`
+
 ## 2023-08-17 
 
 ### 🧰 Added

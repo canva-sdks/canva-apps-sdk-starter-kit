@@ -1,23 +1,5 @@
 declare type AllOrNone<T> = T | Never<T>;
 
-declare type AllOrNone_2<T> = T | Never_2<T>;
-
-/**
- * @public
- * An API for operating the user's content.
- */
-export declare interface Asset {
-  /**
-   * This method creates a new asset upload task and adds it to the upload queue.
-   * It returns a asset reference, and a function called `whenUploaded()` that can
-   * be used to await the upload task completion.
-   */
-  upload(options: ImageUploadOptions): Promise<QueuedImage>;
-  upload(options: VideoUploadOptions): Promise<QueuedVideo>;
-  upload(options: AudioUploadOptions): Promise<QueuedAudio>;
-  upload(options: AssetUploadOptions): Promise<QueuedAsset>;
-}
-
 /**
  * @public
  * Options that the app must supply to initiate an asset upload.
@@ -117,7 +99,8 @@ export declare type ImageMimeType =
   | "image/jpeg"
   | "image/heic"
   | "image/png"
-  | "image/svg+xml";
+  | "image/svg+xml"
+  | "image/webp";
 
 /**
  * @public
@@ -153,6 +136,7 @@ export declare type ImageUploadOptions = {
    * - image/heic
    * - image/png
    * - image/svg+xml
+   * - image/webp
    */
   readonly mimeType: ImageMimeType;
   /**
@@ -163,10 +147,6 @@ export declare type ImageUploadOptions = {
 } & AllOrNone<Dimensions>;
 
 declare type Never<T> = {
-  [key in keyof T]?: never;
-};
-
-declare type Never_2<T> = {
   [key in keyof T]?: never;
 };
 
@@ -237,17 +217,32 @@ export declare function upload(
   options: ImageUploadOptions
 ): Promise<QueuedImage>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(
   options: VideoUploadOptions
 ): Promise<QueuedVideo>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(
   options: AudioUploadOptions
 ): Promise<QueuedAudio>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(
   options: AssetUploadOptions
 ): Promise<QueuedAsset>;
@@ -264,7 +259,8 @@ export declare type VideoMimeType =
   | "video/quicktime"
   | "video/mp4"
   | "video/mpeg"
-  | "video/webm";
+  | "video/webm"
+  | "application/json";
 
 /**
  * @public
@@ -304,6 +300,7 @@ export declare type VideoUploadOptions = {
    * - video/mp4
    * - video/mpeg
    * - video/webm
+   * - application/json (Lottie files only)
    */
   readonly mimeType: VideoMimeType;
   /**

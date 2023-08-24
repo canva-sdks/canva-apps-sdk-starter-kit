@@ -1,36 +1,5 @@
 declare type AllOrNone<T> = T | Never<T>;
 
-declare type AllOrNone_2<T> = T | Never_2<T>;
-
-/**
- * @public
- * An API for operating the user's content.
- */
-export declare interface Asset {
-
-
-
-
-    /**
-     * This method creates a new asset upload task and adds it to the upload queue.
-     * It returns a asset reference, and a function called `whenUploaded()` that can
-     * be used to await the upload task completion.
-     */
-    upload(options: ImageUploadOptions): Promise<QueuedImage>;
-    upload(options: VideoUploadOptions): Promise<QueuedVideo>;
-    upload(options: AudioUploadOptions): Promise<QueuedAudio>;
-    upload(options: AssetUploadOptions): Promise<QueuedAsset>;
-    /**
-     * @beta
-     * Returns a temporary URL to an asset already present in the current design.
-     */
-    getTemporaryUrl(options: GetTemporaryUrlForImageOptions): Promise<TemporaryUrlForImage>;
-    /** @beta */
-    getTemporaryUrl(options: GetTemporaryUrlForVideoOptions): Promise<TemporaryUrlForVideo>;
-    /** @beta */
-    getTemporaryUrl(options: GetTemporaryUrlOptions): Promise<TemporaryUrl>;
-}
-
 /**
  * @public
  * Options that the app must supply to initiate an asset upload.
@@ -91,6 +60,7 @@ export declare type AudioUploadOptions = {
      * in milliseconds.
      */
     readonly durationMs: number;
+
 };
 
 /**
@@ -114,16 +84,22 @@ export declare type Dimensions = {
  */
 export declare function getTemporaryUrl(options: GetTemporaryUrlForImageOptions): Promise<TemporaryUrlForImage>;
 
-/** @beta */
+/**
+ * @beta
+ * Returns a temporary URL to an asset already present in the current design.
+ */
 export declare function getTemporaryUrl(options: GetTemporaryUrlForVideoOptions): Promise<TemporaryUrlForVideo>;
 
-/** @beta */
+/**
+ * @beta
+ * Returns a temporary URL to an asset already present in the current design.
+ */
 export declare function getTemporaryUrl(options: GetTemporaryUrlOptions): Promise<TemporaryUrl>;
 
 /**
  * @beta
- * Options that must be passed to the capability for getting a temporary URL to an image present in
- * the current design.
+ * Options that must be passed when obtaining a temporary URL to an image present in the current
+ * design.
  */
 export declare type GetTemporaryUrlForImageOptions = {
     readonly type: 'IMAGE';
@@ -132,8 +108,8 @@ export declare type GetTemporaryUrlForImageOptions = {
 
 /**
  * @beta
- * Options that must be passed to the capability for getting a temporary URL to a video present in
- * the current design.
+ * Options that must be passed when obtaining a temporary URL to a video present in the current
+ * design.
  */
 export declare type GetTemporaryUrlForVideoOptions = {
     readonly type: 'VIDEO';
@@ -142,8 +118,8 @@ export declare type GetTemporaryUrlForVideoOptions = {
 
 /**
  * @beta
- * Options that must be passed to the capability for getting a temporary URL to an asset present in
- * the current design.
+ * Options that must be passed when obtaining a temporary URL to an asset present in the current
+ * design.
  */
 export declare type GetTemporaryUrlOptions = GetTemporaryUrlForImageOptions | GetTemporaryUrlForVideoOptions;
 
@@ -151,7 +127,7 @@ export declare type GetTemporaryUrlOptions = GetTemporaryUrlForImageOptions | Ge
  * @public
  * The supported MIME types for image assets in Canva.
  */
-export declare type ImageMimeType = 'image/jpeg' | 'image/heic' | 'image/png' | 'image/svg+xml';
+export declare type ImageMimeType = 'image/jpeg' | 'image/heic' | 'image/png' | 'image/svg+xml' | 'image/webp';
 
 /**
  * @public
@@ -191,6 +167,7 @@ export declare type ImageUploadOptions = {
      * - image/heic
      * - image/png
      * - image/svg+xml
+     * - image/webp
      */
     readonly mimeType: ImageMimeType;
     /**
@@ -198,13 +175,10 @@ export declare type ImageUploadOptions = {
      * is still in progress. Must be a valid HTTPS URL of up to 4096 characters.
      */
     readonly thumbnailUrl: string;
+
 } & AllOrNone<Dimensions>;
 
 declare type Never<T> = {
-    [key in keyof T]?: never;
-};
-
-declare type Never_2<T> = {
     [key in keyof T]?: never;
 };
 
@@ -299,20 +273,35 @@ export declare type TemporaryUrlForVideo = {
  */
 export declare function upload(options: ImageUploadOptions): Promise<QueuedImage>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(options: VideoUploadOptions): Promise<QueuedVideo>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(options: AudioUploadOptions): Promise<QueuedAudio>;
 
-/** @public */
+/**
+ * @public
+ * This method creates a new asset upload task and adds it to the upload queue.
+ * It returns a asset reference, and a function called `whenUploaded()` that can
+ * be used to await the upload task completion.
+ */
 export declare function upload(options: AssetUploadOptions): Promise<QueuedAsset>;
 
 /**
  * @public
  * The supported MIME types for video assets in Canva.
  */
-export declare type VideoMimeType = 'video/avi' | 'image/gif' | 'video/x-m4v' | 'video/x-matroska' | 'video/quicktime' | 'video/mp4' | 'video/mpeg' | 'video/webm';
+export declare type VideoMimeType = 'video/avi' | 'image/gif' | 'video/x-m4v' | 'video/x-matroska' | 'video/quicktime' | 'video/mp4' | 'video/mpeg' | 'video/webm' | 'application/json';
 
 /**
  * @public
@@ -356,6 +345,7 @@ export declare type VideoUploadOptions = {
      * - video/mp4
      * - video/mpeg
      * - video/webm
+     * - application/json (Lottie files only)
      */
     readonly mimeType: VideoMimeType;
     /**
@@ -368,6 +358,7 @@ export declare type VideoUploadOptions = {
      * is still in progress. Must be a valid HTTPS URL of up to 4096 characters.
      */
     readonly thumbnailImageUrl: string;
+
 } & AllOrNone<Dimensions>;
 
 export { }
