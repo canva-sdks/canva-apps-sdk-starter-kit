@@ -149,7 +149,7 @@ export const DraggableImage = (props: DraggableImageProps) => {
       {...imgProps}
       onLoad={makeDraggable}
       draggable={canDrag}
-      style={{ ...imgProps.style }}
+      style={{ ...imgProps.style, opacity }}
     />
   );
 

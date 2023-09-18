@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-09-18 
+
+### 🧰 Added
+- Added an `open-in-new-tab` icon
+- `@canva/preview`
+  - Added `design.addPage`, which allows adding a page with pre-populated elements. See docs [here](https://www.canva.dev/docs/apps/api/design-add-page).
+  - Added `design.getDefaultPageDimensions` which retrieves the default dimensions of a new page in the design. See docs [here](https://www.canva.dev/docs/apps/api/design-get-default-page-dimensions).
+
+### 🐞 Fixed
+- Fixed a number of occurrences where some icons had inconsistent dimensions and fill color.
+- Fixed an issue where draggable images did not have the correct opacity.
+
 ## 2023-08-24
 
 ### 🧰 Added
@@ -15,7 +27,7 @@
   - Support shape element with image or video fill.
 - `@canva/preview`
   - Added `ui.startDrag` method for drag and drop behaviour.
-- Added `rotate` and `reload` icon. Shout out to [NoahDavey](https://github.com/canva-sdks/canva-apps-sdk-starter-kit/pull/6) for submiting a PR to add the rotate icon.
+- Added `rotate` and `reload` icon. Shout out to [NoahDavey](https://github.com/canva-sdks/canva-apps-sdk-starter-kit/pull/6) for submitting a PR to add the rotate icon.
 
 ### 🐞 Fixed
 - Fixed an issue where the `DraggableVideo` component would ignore onClick events.

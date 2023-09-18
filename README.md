@@ -8,7 +8,8 @@ This repo contains everything you need to get an app up and running in a matter 
 
 ## Requirements
 
-- Node.js `v18` (npm v9) or higher
+- Node.js `v18`
+- npm `v9`
 
 **Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The .nvmrc file in the root directory of this repo will ensure the correct version is used.
 
@@ -154,7 +155,7 @@ To run examples that have a backend:
    npm start fetch
    ```
 
-The ID of the app must be explicitly defined because it's required to [send and verify HTTP requests](https://www.canva.dev/docs/apps/send-request/). If you don't set up the ID in the `.env` file, an error will be thrown when attempting to run the example.
+The ID of the app must be explicitly defined because it's required to [send and verify HTTP requests](https://www.canva.dev/docs/apps/verifying-http-requests/). If you don't set up the ID in the `.env` file, an error will be thrown when attempting to run the example.
 
 ## Customizing the backend host
 

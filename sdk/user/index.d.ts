@@ -5,8 +5,8 @@
 export declare const auth: Authentication;
 
 /**
- * An API for authenticating from apps.
  * @public
+ * An API for authenticating from apps.
  */
 export declare interface Authentication {
   /**
