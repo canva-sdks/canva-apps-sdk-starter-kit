@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require("webpack");
 const chalk = require("chalk");
 
@@ -22,6 +23,7 @@ function buildConfig({
   devConfig,
   appEntry = path.join(__dirname, "src", "index.tsx"),
   backendHost = process.env.CANVA_BACKEND_HOST,
+  hasIndexHTML = false,
 } = {}) {
   const mode = devConfig ? "development" : "production";
 
@@ -175,6 +177,7 @@ function buildConfig({
       new DefinePlugin({
         BACKEND_HOST: JSON.stringify(backendHost),
       }),
+        hasIndexHTML ? new HtmlWebpackPlugin() : null,
     ],
     ...buildDevConfig(devConfig),
   };
