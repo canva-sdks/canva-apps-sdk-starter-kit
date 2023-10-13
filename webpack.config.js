@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require("webpack");
 const chalk = require("chalk");
 
@@ -8,8 +9,10 @@ const chalk = require("chalk");
  *
  * @param {Object} [options]
  * @param {string} [options.appEntry=./src/index.tsx]
+ * @param {string} [options.mockCanvaEntry=./src/mockWindowCanva.ts]
  * @param {string} [options.backendHost]
  * @param {Object} [options.devConfig]
+ * @param {boolean} [options.hasIndexHTML]
  * @param {string} options.devConfig.port
  * @param {boolean} [options.devConfig.enableHmr]
  * @param {boolean} [options.devConfig.enableHttps]
@@ -21,7 +24,9 @@ const chalk = require("chalk");
 function buildConfig({
   devConfig,
   appEntry = path.join(__dirname, "src", "index.tsx"),
+  mockCanvaEntry = path.join(__dirname, "src", "mockWindowCanva.ts"),
   backendHost = process.env.CANVA_BACKEND_HOST,
+  hasIndexHTML = false,
 } = {}) {
   const mode = devConfig ? "development" : "production";
 
@@ -39,11 +44,13 @@ function buildConfig({
       `Refer to "Customizing the backend host" in the README.md for more information.`
     );
   }
-
   return {
     mode,
     context: path.resolve(__dirname, "./"),
-    entry: {
+    entry: hasIndexHTML ? {
+      app: appEntry,
+      mockCanva:mockCanvaEntry,
+    }:{
       app: appEntry,
     },
     target: "web",
@@ -174,8 +181,13 @@ function buildConfig({
     plugins: [
       new DefinePlugin({
         BACKEND_HOST: JSON.stringify(backendHost),
+        MOCK_WINDOW_CANVA:process.env.MOCK_WINDOW_CANVA?.toLowerCase().trim() === "true"
       }),
-    ],
+      hasIndexHTML ? new HtmlWebpackPlugin({
+        template: 'src/index.html',
+        inject: 'body',
+      }) : null,
+    ]?.filter(e=>!!e),
     ...buildDevConfig(devConfig),
   };
 }
