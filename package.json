@@ -1,6 +1,10 @@
 {
   "name": "canva-apps-sdk-starter-kit",
   "description": "A boilerplate for creating Canva Apps.",
+  "engines": {
+    "node": "^18",
+    "npm": "^9"
+  },
   "scripts": {
     "start": "node ./scripts/start.js",
     "dev": "node ./scripts/dev.js",
