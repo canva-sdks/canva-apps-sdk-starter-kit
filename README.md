@@ -78,6 +78,33 @@ To enable HMR:
 
 4. Restart the local server.
 
+## Developing apps UI in local environment without Canva Editor
+
+### Step 1: Start the local development server
+
+The `src` directory contains the boilerplate of an app.
+
+To start the boilerplate's development server, run the following command:
+
+```bash
+npm run dev
+```
+
+The Web Application becomes available at http://localhost:8080.
+
+The app's source code is in the `src/app.tsx` file.
+
+### Step 2: Preview the app in Browser with http://localhost:8080
+
+Now you can see the Web Application in http://localhost:8080, you can change the code in
+`src/app.tsx` and see what happened.
+
+But all function related window.canva is mocked, you can only update your Web App UI
+in this solution. This is what we design it for, give you a quickest way to adjust your
+Web App UI without the online environment of Canva Editor.
+
+You should double-check the functionality works well by `Using the boilerplate` way.
+
 ## Previewing apps in Safari
 
 By default, the development server is not HTTPS-enabled. This is convenient, as there's no need for a security certificate, but it prevents apps from being previewed in Safari.
