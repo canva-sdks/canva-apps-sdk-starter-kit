@@ -9,6 +9,8 @@ import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
  */
 const debugLogger = debug("express:middleware:jwt");
 
+const CANVA_BASE_URL = "https://api.canva.com";
+
 /**
  * Augment the Express request context to include the appId/userId/brandId fields decoded
  * from the JWT.
@@ -38,7 +40,7 @@ const sendUnauthorizedResponse = (res: Response, message?: string) =>
   res.status(401).json({ error: "unauthorized", message });
 
 const createJwksUrl = (appId: string) =>
-  `https://api.canva.com/rest/v1/apps/${appId}/jwks`;
+  `${CANVA_BASE_URL}/rest/v1/apps/${appId}/jwks`;
 
 /**
  * An Express.js middleware for decoding and verifying a JSON Web Token (JWT).

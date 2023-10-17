@@ -27,11 +27,13 @@
     "@canva/preview": "./sdk/preview",
     "@canva/user": "./sdk/user",
     "clsx": "^1.2.1",
+    "cookie-parser": "^1.4.6",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
+    "@types/cookie-parser": "^1.4.4",
     "@types/cors": "^2.8.13",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
