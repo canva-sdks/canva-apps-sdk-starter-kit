@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-10-18 
+
+### 🔨 Breaking changes
+
+#### Authentication flow
+
+- Updated the authentication flow for Canva Apps. This change impacts the app's backend, so there are no frontend changes required. To learn how to update the backend, see [the migration guide](https://www.canva.dev/docs/apps/authentication-migration-guide).
+- Updated [the authentication example](https://github.com/canva-sdks/canva-apps-sdk-starter-kit/blob/main/examples/authentication/backend/server.ts) to demonstrate the new authentication flow.
+
+### 🐞 Fixed
+- Corrected CORS documentation in the authentication example as it incorrectly stated that the policy should be set to your backends domain rather than the domain of your app in Canva.
+
 ## 2023-09-18 
 
 ### 🧰 Added
