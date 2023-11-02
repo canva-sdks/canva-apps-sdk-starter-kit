@@ -36,6 +36,3 @@ export const ProgressBarTone = (_) => (
     <ProgressBar value={50} tone="critical" />
   </Rows>
 );
-export const ProgressBarWithBubblesDisabled: Story = {
-  args: { disableBubbles: true },
-};

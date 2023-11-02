@@ -1,19 +1,19 @@
-import React from "react";
-import cat from "assets/images/cat.jpg";
-import dog from "assets/images/dog.jpg";
-import rabbit from "assets/images/rabbit.jpg";
-import styles from "styles/components.css";
-import { initAppElement } from "@canva/design";
 import {
   Box,
   Button,
   FormField,
+  Grid,
   NumberInput,
   Rows,
   Text,
-  TextInput,
 } from "@canva/app-ui-kit";
+import { initAppElement } from "@canva/design";
+import cat from "assets/images/cat.jpg";
+import dog from "assets/images/dog.jpg";
+import rabbit from "assets/images/rabbit.jpg";
 import clsx from "clsx";
+import React from "react";
+import styles from "styles/components.css";
 
 // We can't store the image's data URL in the app element's data, since it
 // exceeds the 5kb limit. We can, however, store an ID that references the
@@ -94,7 +94,7 @@ export const App = () => {
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="3u">
+      <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can create image elements inside
           app elements. This makes the element re-editable and lets apps control
@@ -103,8 +103,8 @@ export const App = () => {
         <FormField
           label="Select an image"
           control={(props) => (
-            <Box id={props.id} paddingTop="1u">
-              <div className={styles.thumbnailGrid}>
+            <Box id={props.id} padding="1u">
+              <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <img
                     className={clsx(
@@ -117,16 +117,9 @@ export const App = () => {
                     alt={item.title}
                   />
                 ))}
-              </div>
+              </Grid>
             </Box>
           )}
-        />
-      </Rows>
-      <Rows spacing="2u">
-        <FormField
-          label="Data URL"
-          value={images[imageId].imageSrc}
-          control={(props) => <TextInput {...props} onChange={() => {}} />}
         />
         <FormField
           label="Width"
@@ -191,7 +184,7 @@ export const App = () => {
           disabled={disabled}
           stretch
         >
-          Add image to design
+          Add or update image
         </Button>
       </Rows>
     </div>

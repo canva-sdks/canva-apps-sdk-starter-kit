@@ -1,12 +1,5 @@
+import { Box, Button, FormField, Grid, Rows, Text } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
-import {
-  Box,
-  Button,
-  FormField,
-  Rows,
-  Text,
-  TextInput,
-} from "@canva/app-ui-kit";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
@@ -49,7 +42,7 @@ export const App = () => {
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="3u">
+      <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can add native image elements to a
           design.
@@ -57,8 +50,8 @@ export const App = () => {
         <FormField
           label="Select an image"
           control={(props) => (
-            <Box id={props.id} paddingTop="1u">
-              <div className={styles.thumbnailGrid}>
+            <Box id={props.id} padding="1u">
+              <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <img
                     className={clsx(
@@ -71,16 +64,9 @@ export const App = () => {
                     alt={item.title}
                   />
                 ))}
-              </div>
+              </Grid>
             </Box>
           )}
-        />
-      </Rows>
-      <Rows spacing="3u">
-        <FormField
-          label="Data URL"
-          value={dataUrl}
-          control={(props) => <TextInput {...props} disabled />}
         />
         <Button
           variant="primary"

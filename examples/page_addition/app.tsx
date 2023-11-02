@@ -58,7 +58,6 @@ export const App = () => {
             // Shift it by 50% of the page width, then subtract 50% of the group element width.
             left: defaultPageDimensions.width / 2 - headerElementWidth / 2,
           },
-          // Position the image element in the bottom right corner
           {
             ...embedElement,
             width: embedElementWidth,

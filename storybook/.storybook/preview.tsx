@@ -1,11 +1,11 @@
-import type { Preview } from "@storybook/react";
-import "@canva/app-ui-kit/styles.css";
-import React from "react";
-import { themes } from "@storybook/theming";
-import "./preview.css";
 import { AppUiProvider } from "@canva/app-ui-kit";
+import "@canva/app-ui-kit/styles.css";
+import type { Preview } from "@storybook/react";
+import { themes } from "@storybook/theming";
+import React from "react";
+import "./preview.css";
 
-type theme = "light" | "dark";
+type Theme = "light" | "dark";
 
 const preview: Preview = {
   parameters: {
@@ -36,7 +36,8 @@ const preview: Preview = {
 
       return (
         <AppUiProvider>
-          <Story />
+          {/* https://github.com/storybookjs/storybook/issues/15223#issuecomment-1092837912 */}
+          {Story(context)}
         </AppUiProvider>
       );
     },
@@ -48,8 +49,8 @@ const preview: Preview = {
       toolbar: {
         title: "Theme",
         items: [
-          { title: "Light", value: "light" as theme },
-          { title: "Dark", value: "dark" as theme },
+          { title: "Light", value: "light" as Theme },
+          { title: "Dark", value: "dark" as Theme },
         ],
         dynamicTitle: true,
       },

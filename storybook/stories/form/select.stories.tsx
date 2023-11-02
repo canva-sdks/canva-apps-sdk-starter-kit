@@ -26,7 +26,7 @@ export const SimpleSelect: Story = {};
 export const SelectWithPlaceholder: Story = {
   args: { placeholder: "Custom select placeholder" },
 };
-export const StretchedPlaceholder: Story = {
+export const Stretched: Story = {
   args: { stretch: true },
 };
 export const DisabledSelect: Story = {

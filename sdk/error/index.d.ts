@@ -1,12 +1,19 @@
+/** @public */
 declare interface BaseCanvaError extends Error {
   code: ErrorCode;
 }
 
 /**
  * @public
- * Base Error thrown by Canva API clients
+ * Base Error thrown by Apps SDK methods
  */
-export declare class CanvaError extends Error implements BaseCanvaError {
+export declare const CanvaError: typeof CanvaErrorClass;
+
+/**
+ * @public
+ * Base Error thrown by Apps SDK methods
+ */
+declare class CanvaErrorClass extends Error implements BaseCanvaError {
   readonly code: ErrorCode;
 
   constructor(opts: { code: ErrorCode; message: string });
@@ -14,7 +21,7 @@ export declare class CanvaError extends Error implements BaseCanvaError {
 
 /**
  * @public
- * Error codes that could be thrown by Canva SDK clients
+ * Error codes that could be thrown by Apps SDK methods
  */
 export declare type ErrorCode =
   /**

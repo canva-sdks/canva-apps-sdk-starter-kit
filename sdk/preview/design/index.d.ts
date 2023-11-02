@@ -10,7 +10,9 @@ export declare function addAudioTrack(audioTrack: AudioTrack): Promise<void>;
  * Adds a native element to the user's design.
  * @param element - The element to add to the user's design.
  */
-export declare function addNativeElement(element: NativeElement | NativeElementWithBox): Promise<void>;
+export declare function addNativeElement(
+  element: NativeElement | NativeElementWithBox
+): Promise<void>;
 
 /**
  * @beta
@@ -18,7 +20,7 @@ export declare function addNativeElement(element: NativeElement | NativeElementW
  * @param opts - Configuration for the new page to be added.
  */
 export declare function addPage(opts?: {
-    elements?: NativeElementWithBox[];
+  elements?: NativeElementWithBox[];
 }): Promise<void>;
 
 /**
@@ -26,29 +28,33 @@ export declare function addPage(opts?: {
  * A callback that runs when an app element's data is created or updated,
  * or when the user selects an existing app element.
  */
-export declare type AppElementChangeHandler<A extends AppElementData> = (appElement: {
-    data: A;
-    version: number;
-} | undefined) => void;
+export declare type AppElementChangeHandler<A extends AppElementData> = (
+  appElement:
+    | {
+        data: A;
+        version: number;
+      }
+    | undefined
+) => void;
 
 /**
  * @public
  * A client interface for managing app elements and app element data.
  */
 export declare interface AppElementClient<A extends AppElementData> {
-    /**
-     * Attaches data to the selected app element or creates a new app element if one is not selected.
-     * If data already exists, it's overwritten.
-     * @param appElementData - The data to attach to the app element.
-     */
-    addOrUpdateElement(appElementData: A, placement?: Placement): Promise<void>;
-    /**
-     * Registers a callback that runs when the app element's data is created or
-     * updated and when the user selects an existing app element.
-     * @param handler - The callback to run when the app element's data is changed
-     * and when the user selects an existing app element.
-     */
-    registerOnElementChange(handler: AppElementChangeHandler<A>): void;
+  /**
+   * Attaches data to the selected app element or creates a new app element if one is not selected.
+   * If data already exists, it's overwritten.
+   * @param appElementData - The data to attach to the app element.
+   */
+  addOrUpdateElement(appElementData: A, placement?: Placement): Promise<void>;
+  /**
+   * Registers a callback that runs when the app element's data is created or
+   * updated and when the user selects an existing app element.
+   * @param handler - The callback to run when the app element's data is changed
+   * and when the user selects an existing app element.
+   */
+  registerOnElementChange(handler: AppElementChangeHandler<A>): void;
 }
 
 /**
@@ -56,10 +62,10 @@ export declare interface AppElementClient<A extends AppElementData> {
  * Configuration for an AppElementClient
  */
 export declare type AppElementClientConfiguration<A extends AppElementData> = {
-    /**
-     * The AppElementRenderer to use when rendering the app element
-     */
-    render: AppElementRenderer<A>;
+  /**
+   * The AppElementRenderer to use when rendering the app element
+   */
+  render: AppElementRenderer<A>;
 };
 
 /**
@@ -75,21 +81,51 @@ export declare type AppElementData = Record<string, Value>;
  * @remarks
  * This callback must return one or more elements to render within the app element.
  */
-export declare type AppElementRenderer<A extends AppElementData> = (appElementData: A) => AppElementRendererOutput;
+export declare type AppElementRenderer<A extends AppElementData> = (
+  appElementData: A
+) => AppElementRendererOutput;
 
 /**
  * @public
  * A return value of {@link AppElementRenderer} function.
  * It is an array of elements to render within an app element.
  */
-export declare type AppElementRendererOutput = (Exclude<NativeSimpleElementWithBox, NativeVideoElementWithBox>)[];
+export declare type AppElementRendererOutput = Exclude<
+  NativeSimpleElementWithBox,
+  NativeVideoElementWithBox
+>[];
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior of audio tracks.
+ */
+export declare type AudioDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "AUDIO";
+  /**
+   * A function that returns a reference (ref) to an audio asset in Canva's backend.
+   */
+  resolveAudioRef: () => Promise<{
+    ref: AudioRef;
+  }>;
+  /**
+   * The duration of the audio track, in milliseconds.
+   */
+  durationMs: number;
+  /**
+   * A human readable title for the audio track.
+   */
+  title: string;
+};
 
 /**
  * @public
  * A unique identifier that references an audio asset in Canva's backend.
  */
 export declare type AudioRef = string & {
-    __audioRef: never;
+  __audioRef: never;
 };
 
 /**
@@ -97,10 +133,10 @@ export declare type AudioRef = string & {
  * An audio track that can be added to a user's design.
  */
 export declare type AudioTrack = {
-    /**
-     * A unique identifier that references an audio asset in Canva's backend.
-     */
-    ref: AudioRef;
+  /**
+   * A unique identifier that references an audio asset in Canva's backend.
+   */
+  ref: AudioRef;
 };
 
 /**
@@ -112,27 +148,19 @@ export declare type AudioTrack = {
  */
 declare type Box = Position & (WidthAndHeight | Width | Height);
 
-/**
- * @beta
- * Canva drag event for the drag-and-drop behavior.
- */
-export declare type CanvaDragEvent<E extends Element> = Pick<DragEvent, 'dataTransfer' | 'currentTarget' | 'preventDefault' | 'clientX' | 'clientY'> & {
-    currentTarget: E;
-};
-
-declare type CommonImageDragData = {
-    /**
-     * The type of element.
-     */
-    type: 'IMAGE';
-    /**
-     * The dimensions of the preview image.
-     *
-     * @remarks
-     * The preview image is the image that users see under their cursor while dragging
-     * it into their design.
-     */
-    previewSize: Dimensions;
+declare type CommonImageDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "IMAGE";
+  /**
+   * The dimensions of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewSize: Dimensions;
 };
 
 /**
@@ -142,51 +170,55 @@ declare type CommonImageDragData = {
  * new content state, and the matching element will be coerced with a best-effort
  * attempt to match that specified state.
  */
-export declare type ContentUpdateApplier<Scope extends SelectionScope> = (state: SelectionValue<Scope>) => SelectionUpdateValue<Scope> | Promise<SelectionUpdateValue<Scope>>;
+export declare type ContentUpdateApplier<Scope extends SelectionScope> = (
+  state: SelectionValue<Scope>
+) => SelectionUpdateValue<Scope> | Promise<SelectionUpdateValue<Scope>>;
 
 /**
  * @public
  * Represents X and Y coordinates.
  */
 export declare type Coordinates = {
-    /**
-     * Represents an X coordinate, in pixels.
-     */
-    x: number;
-    /**
-     * Represents a Y coordinate, in pixels.
-     */
-    y: number;
+  /**
+   * Represents an X coordinate, in pixels.
+   */
+  x: number;
+  /**
+   * Represents a Y coordinate, in pixels.
+   */
+  y: number;
 };
 
 /** @beta */
 export declare type DesignSelection = {
-    /**
-     * @beta
-     * Registers a callback for a specific type of element content, which is called when the user
-     * changes the selection.
-     * @param opts.scope - The type of element content to subscribe selection changes for
-     * @param opts.onChange - The callback that runs when the selection changes.
-     */
-    registerOnChange<Scope extends SelectionScope>(opts: {
-        scope: Scope;
-        onChange(event: SelectionEvent<Scope>): void;
-    }): () => Promise<void>;
-    /**
-     * @beta
-     * Runs a transform function over the specified change event; the function is expected to
-     * return a new content state, which is applied to the elements that were contained in the
-     * selection event.
-     * This "setContent" is best-effort, and the final state of the element is not guaranteed
-     * to be identical to the specified state.
-     * @param event - The selection event that `applier` will be executed over
-     * @param applier - A mapping / transformation function to be executed, per-element, over the
-     *           elements contained in the selection event. This function is expected to return a
-     *           new content state, and the matching element will be coerced with a best-effort
-     *           attempt to match that specified state.
-     */
-    setContent<Scope extends SelectionScope>(event: SelectionEvent<Scope>, applier: ContentUpdateApplier<Scope>): Promise<void>;
-
+  /**
+   * @beta
+   * Registers a callback for a specific type of element content, which is called when the user
+   * changes the selection.
+   */
+  registerOnChange<Scope extends SelectionScope>(opts: {
+    /** The type of element content to subscribe selection changes for */
+    scope: Scope;
+    /** The callback that runs when the selection changes. */
+    onChange(event: SelectionEvent<Scope>): void;
+  }): () => Promise<void>;
+  /**
+   * @beta
+   * Runs a transform function over the specified change event; the function is expected to
+   * return a new content state, which is applied to the elements that were contained in the
+   * selection event.
+   * This "setContent" is best-effort, and the final state of the element is not guaranteed
+   * to be identical to the specified state.
+   * @param event - The selection event that `applier` will be executed over
+   * @param applier - A mapping / transformation function to be executed, per-element, over the
+   *           elements contained in the selection event. This function is expected to return a
+   *           new content state, and the matching element will be coerced with a best-effort
+   *           attempt to match that specified state.
+   */
+  setContent<Scope extends SelectionScope>(
+    event: SelectionEvent<Scope>,
+    applier: ContentUpdateApplier<Scope>
+  ): Promise<void>;
 };
 
 /**
@@ -194,14 +226,14 @@ export declare type DesignSelection = {
  * Represents a width and a height.
  */
 export declare type Dimensions = {
-    /**
-     * Represents a width, in pixels.
-     */
-    width: number;
-    /**
-     * Represents a height, in pixels.
-     */
-    height: number;
+  /**
+   * Represents a width, in pixels.
+   */
+  width: number;
+  /**
+   * Represents a height, in pixels.
+   */
+  height: number;
 };
 
 /**
@@ -209,18 +241,18 @@ export declare type Dimensions = {
  * Callbacks that run during the lifecycle of a drag-and-drop.
  */
 export declare type DragCallback = {
-    /**
-     * A callback that runs when the user starts dragging an element into their design.
-     *
-     * @param element - The element being dragged into the user's design.
-     */
-    onDragStart: (element: HTMLElement) => void;
-    /**
-     * A callback that runs when the user finishes dragging an element into their design.
-     *
-     * @param element - The element being dragged into the user's design.
-     */
-    onDragEnd: (element: HTMLElement) => void;
+  /**
+   * A callback that runs when the user starts dragging an element into their design.
+   *
+   * @param element - The element being dragged into the user's design.
+   */
+  onDragStart: (element: HTMLElement) => void;
+  /**
+   * A callback that runs when the user finishes dragging an element into their design.
+   *
+   * @param element - The element being dragged into the user's design.
+   */
+  onDragEnd: (element: HTMLElement) => void;
 };
 
 /**
@@ -231,20 +263,57 @@ export declare type DraggableElementData = ElementData | ImageElementData;
 
 /**
  * @public
+ * Represents a drag start event that occurs when initiating a drag-and-drop behavior inside the app.
+ */
+export declare type DragStartEvent<E extends Element> = Pick<
+  DragEvent,
+  "dataTransfer" | "currentTarget" | "preventDefault" | "clientX" | "clientY"
+> & {
+  currentTarget: E;
+};
+
+/**
+ * @public
  * Options for making an `HTMLElement` draggable.
  */
 export declare type ElementData = DragCallback & {
-    /**
-     * The element to be made draggable.
-     */
-    node: HTMLElement;
-    /**
-     * Options for defining the drag-and-drop behavior.
-     *
-     * @remarks
-     * This data is required because it can't be inferred from the `node` property.
-     */
-    dragData: UserSuppliedDragData;
+  /**
+   * The element to be made draggable.
+   */
+  node: HTMLElement;
+  /**
+   * Options for defining the drag-and-drop behavior.
+   *
+   * @remarks
+   * This data is required because it can't be inferred from the `node` property.
+   */
+  dragData: UserSuppliedDragData;
+};
+
+/**
+ * @public
+ *
+ * Options for defining the drag-and-drop behaviour for embeds.
+ */
+export declare type EmbedDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "EMBED";
+  /**
+   * The dimensions of the preview image.
+   * The preview image is the image that users see under their cursor
+   * while dragging it into their design.
+   */
+  previewSize: Dimensions;
+  /**
+   * Represents the preview image of the embed.
+   */
+  previewUrl: string;
+  /**
+   * Represents the embed source url.
+   */
+  embedUrl: string;
 };
 
 /**
@@ -256,10 +325,10 @@ export declare type ElementData = DragCallback & {
  * the export options menu.
  */
 export declare type ExportAborted = {
-    /**
-     * The status of the export flow when the user has aborted the export menu.
-     */
-    status: 'ABORTED';
+  /**
+   * The status of the export flow when the user has aborted the export menu.
+   */
+  status: "ABORTED";
 };
 
 /**
@@ -267,32 +336,32 @@ export declare type ExportAborted = {
  * The exported file.
  */
 export declare type ExportBlob = {
-    /**
-     * The URL of the exported design.
-     *
-     * @remarks
-     * If the user's design contains multiple pages but is exported in a format that doesn't support multiple pages, the URL will point to a ZIP file that contains each page as a separate file.
-     *
-     * For example:
-     *
-     * - If a single-page design is exported as a JPG, the URL will point to a JPG file
-     * - If a multi-page design is exported as a JPG, the URL will point to a ZIP file that contains a separate JPG file for each page
-     * - If a multi-page design is exported as a PDF, the URL will point to a PDF file that contains all of the pages
-     *
-     * The following file types support multiple pages:
-     *
-     * - `"GIF"`
-     * - `"PDF_STANDARD"`
-     * - `"PPTX"`
-     * - `"VIDEO"`
-     *
-     * The following file types do not support multiple pages:
-     *
-     * - `"JPG"`
-     * - `"PNG"`
-     * - `"SVG"`
-     */
-    url: string;
+  /**
+   * The URL of the exported design.
+   *
+   * @remarks
+   * If the user's design contains multiple pages but is exported in a format that doesn't support multiple pages, the URL will point to a ZIP file that contains each page as a separate file.
+   *
+   * For example:
+   *
+   * - If a single-page design is exported as a JPG, the URL will point to a JPG file
+   * - If a multi-page design is exported as a JPG, the URL will point to a ZIP file that contains a separate JPG file for each page
+   * - If a multi-page design is exported as a PDF, the URL will point to a PDF file that contains all of the pages
+   *
+   * The following file types support multiple pages:
+   *
+   * - `"GIF"`
+   * - `"PDF_STANDARD"`
+   * - `"PPTX"`
+   * - `"VIDEO"`
+   *
+   * The following file types do not support multiple pages:
+   *
+   * - `"JPG"`
+   * - `"PNG"`
+   * - `"SVG"`
+   */
+  url: string;
 };
 
 /**
@@ -300,41 +369,48 @@ export declare type ExportBlob = {
  * Export completed response
  */
 export declare type ExportCompleted = {
-    /**
-     * The status of the export flow when the user has submitted the export menu.
-     */
-    status: 'COMPLETED';
-    /**
-     * The title of the successful export of a design, if it has been set by the user.
-     */
-    title?: string;
-    /**
-     * The exported files.
-     *
-     * @remarks
-     * This array only contains one element. This is because, if a multi-page design is exported as multiple files, the files are exported in a ZIP file. In the future, there'll be an option for each file to be a separate element in the array.
-     */
-    exportBlobs: ExportBlob[];
+  /**
+   * The status of the export flow when the user has submitted the export menu.
+   */
+  status: "COMPLETED";
+  /**
+   * The title of the successful export of a design, if it has been set by the user.
+   */
+  title?: string;
+  /**
+   * The exported files.
+   *
+   * @remarks
+   * This array only contains one element. This is because, if a multi-page design is exported as multiple files, the files are exported in a ZIP file. In the future, there'll be an option for each file to be a separate element in the array.
+   */
+  exportBlobs: ExportBlob[];
 };
 
 /**
  * @public
  * The types of files that Canva supports for exported designs.
  */
-export declare type ExportFileType = 'PNG' | 'JPG' | 'PDF_STANDARD' | 'VIDEO' | 'GIF' | 'PPTX' | 'SVG';
+export declare type ExportFileType =
+  | "PNG"
+  | "JPG"
+  | "PDF_STANDARD"
+  | "VIDEO"
+  | "GIF"
+  | "PPTX"
+  | "SVG";
 
 /**
  * @public
  * The options for configuring the export of a design.
  */
 export declare type ExportRequest = {
-    /**
-     * The types of files the user can export their design as.
-     *
-     * @remarks
-     * You must provide at least one file type.
-     */
-    acceptedFileTypes: ExportFileType[];
+  /**
+   * The types of files the user can export their design as.
+   *
+   * @remarks
+   * You must provide at least one file type.
+   */
+  acceptedFileTypes: ExportFileType[];
 };
 
 /**
@@ -345,29 +421,67 @@ export declare type ExportResponse = ExportCompleted | ExportAborted;
 
 /**
  * @public
+ *
+ * Options for defining the Drag and Drop behaviour for images uploaded
+ * via the Content capability.
+ */
+export declare type ExternalImageDragConfig = CommonImageDragConfig & {
+  /**
+   * The function that resolves an image ref
+   * @remarks
+   *
+   * This function will be run during the drag process in order to fetch the media ref of the
+   * external image being fetched. This function should return the result of `upload`
+   * from the content capability.
+   */
+  resolveImageRef: () => Promise<{
+    ref: ImageRef;
+  }>;
+  /**
+   * The URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewUrl: string;
+  /**
+   * The dimensions of the full-size image.
+   *
+   * @remarks
+   * The full-size image is the image that Canva uploads to the user's account and
+   * adds to their design.
+   *
+   * If omitted, the value of the `previewSize` property is used as a fallback.
+   */
+  fullSize?: Dimensions;
+};
+
+/**
+ * @public
  * The appearance of a path's interior.
  */
 export declare type Fill = {
-    /**
-     * Boolean defining whether image or video can be dropped on the fill by the user.
-     * If set to true, images or videos can be dropped on the fill.
-     */
-    dropTarget?: boolean;
-    /**
-     * The color of the fill as a hex code.
-     *
-     * @remarks
-     * The hex code must include all six characters and be prefixed with a # symbol (e.g. #ff0099).
-     * Only one type of fill (color, image or video) can be set.
-     */
-    color?: string;
-    /**
-     * An asset (image or video) that will be used to fill the given path.
-     *
-     * @remarks
-     * Only one type of fill (color, image or video) can be set.
-     */
-    asset?: ImageFill | VideoFill;
+  /**
+   * Boolean defining whether image or video can be dropped on the fill by the user.
+   * If set to true, images or videos can be dropped on the fill.
+   */
+  dropTarget?: boolean;
+  /**
+   * The color of the fill as a hex code.
+   *
+   * @remarks
+   * The hex code must include all six characters and be prefixed with a # symbol (e.g. #ff0099).
+   * Only one type of fill (color, image or video) can be set.
+   */
+  color?: string;
+  /**
+   * An asset (image or video) that will be used to fill the given path.
+   *
+   * @remarks
+   * Only one type of fill (color, image or video) can be set.
+   */
+  asset?: ImageFill | VideoFill;
 };
 
 /**
@@ -387,26 +501,45 @@ export declare function getCurrentPageContext(): Promise<PageContext>;
 export declare function getDefaultPageDimensions(): Promise<PageDimensions>;
 
 declare type Height = {
-    width: 'auto';
-    height: number;
+  width: "auto";
+  height: number;
 };
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior of an image element that can be defined by an
+ * app developer.
+ */
+export declare type ImageDragConfig = ExternalImageDragConfig;
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for images.
+ */
+export declare type ImageDragConfigForElement<E extends Element> =
+  E extends HTMLImageElement
+    ? Partial<ImageDragConfig> & Pick<ImageDragConfig, "type">
+    : ImageDragConfig;
 
 /**
  * @public
  * Options for making an `HTMLImageElement` draggable.
  */
 export declare type ImageElementData = DragCallback & {
-    /**
-     * The element to be made draggable.
-     */
-    node: HTMLImageElement;
-    /**
-     * Options for defining the drag-and-drop behavior.
-     *
-     * @remarks
-     * If any of this data is omitted, it's inferred from the `node` property.
-     */
-    dragData?: Partial<UserSuppliedImageDragData> | (Partial<UserSuppliedVideoDragData> & Pick<UserSuppliedVideoDragData, 'type' | 'resolveVideoRef'>);
+  /**
+   * The element to be made draggable.
+   */
+  node: HTMLImageElement;
+  /**
+   * Options for defining the drag-and-drop behavior.
+   *
+   * @remarks
+   * If any of this data is omitted, it's inferred from the `node` property.
+   */
+  dragData?:
+    | Partial<UserSuppliedImageDragData>
+    | (Partial<UserSuppliedVideoDragData> &
+        Pick<UserSuppliedVideoDragData, "type" | "resolveVideoRef">);
 };
 
 /**
@@ -414,14 +547,14 @@ export declare type ImageElementData = DragCallback & {
  * An image asset that will be used to fill the given path.
  */
 declare type ImageFill = {
-    /**
-     * Type of an asset that will be used to fill the given path.
-     */
-    type: 'IMAGE';
-    /**
-     * A unique identifier that references an image asset in Canva's backend.
-     */
-    ref: ImageRef;
+  /**
+   * Type of an asset that will be used to fill the given path.
+   */
+  type: "IMAGE";
+  /**
+   * A unique identifier that references an image asset in Canva's backend.
+   */
+  ref: ImageRef;
 };
 
 /**
@@ -429,46 +562,65 @@ declare type ImageFill = {
  * A unique identifier that references an image asset in Canva's backend.
  */
 export declare type ImageRef = string & {
-    __imageRef: never;
+  __imageRef: never;
 };
 
 /**
  * @public
  * @param appElementConfig - Configuration for an AppElementClient
  */
-export declare function initAppElement<A extends AppElementData>(appElementConfig: AppElementClientConfiguration<A>): AppElementClient<A>;
+export declare function initAppElement<A extends AppElementData>(
+  appElementConfig: AppElementClientConfiguration<A>
+): AppElementClient<A>;
 
 /**
  * @public
  * A native element.
  */
-export declare type NativeElement = NativeImageElement | NativeVideoElement | NativeEmbedElement | NativeTextElement | NativeShapeElement | NativeGroupElement;
+export declare type NativeElement =
+  | NativeImageElement
+  | NativeVideoElement
+  | NativeEmbedElement
+  | NativeTextElement
+  | NativeShapeElement
+  | NativeGroupElement;
 
 /**
  * @public
  * The types of elements an app can add to a user's design.
  */
-export declare type NativeElementType = 'IMAGE' | 'EMBED' | 'TEXT' | 'SHAPE' | 'VIDEO';
+export declare type NativeElementType =
+  | "IMAGE"
+  | "EMBED"
+  | "TEXT"
+  | "SHAPE"
+  | "VIDEO";
 
 /**
  * @public
  * An element that exists within an app or group element.
  */
-export declare type NativeElementWithBox = NativeImageElementWithBox | NativeVideoElementWithBox | NativeEmbedElementWithBox | NativeTextElementWithBox | NativeShapeElementWithBox | NativeGroupElementWithBox;
+export declare type NativeElementWithBox =
+  | NativeImageElementWithBox
+  | NativeVideoElementWithBox
+  | NativeEmbedElementWithBox
+  | NativeTextElementWithBox
+  | NativeShapeElementWithBox
+  | NativeGroupElementWithBox;
 
 /**
  * @public
  * An element that renders an embeddable piece of media, such as a YouTube video.
  */
 export declare type NativeEmbedElement = {
-    /**
-     * The type of element.
-     */
-    type: 'EMBED';
-    /**
-     * The URL of the embed. This URL must be supported by the Iframely API.
-     */
-    url: string;
+  /**
+   * The type of element.
+   */
+  type: "EMBED";
+  /**
+   * The URL of the embed. This URL must be supported by the Iframely API.
+   */
+  url: string;
 };
 
 /**
@@ -482,17 +634,17 @@ export declare type NativeEmbedElement = {
  * The parent container may be an app element, or the current page.
  */
 export declare type NativeEmbedElementWithBox = {
-    /**
-     * The type of element.
-     */
-    type: 'EMBED';
-    /**
-     * The URL of the embed.
-     *
-     * @remarks
-     * This URL must be supported by the Iframely API.
-     */
-    url: string;
+  /**
+   * The type of element.
+   */
+  type: "EMBED";
+  /**
+   * The URL of the embed.
+   *
+   * @remarks
+   * This URL must be supported by the Iframely API.
+   */
+  url: string;
 } & Box;
 
 /**
@@ -500,15 +652,15 @@ export declare type NativeEmbedElementWithBox = {
  * An element containing two or more {@link NativeElementWithBox}.
  */
 export declare type NativeGroupElement = {
-    /**
-     * The type of element.
-     */
-    type: 'GROUP';
-    /**
-     * The inner elements contained by the group element. These elements require a Box as they are
-     * relatively positioned to the outer boundaries of the group element.
-     */
-    children: NativeSimpleElementWithBox[];
+  /**
+   * The type of element.
+   */
+  type: "GROUP";
+  /**
+   * The inner elements contained by the group element. These elements require a Box as they are
+   * relatively positioned to the outer boundaries of the group element.
+   */
+  children: NativeSimpleElementWithBox[];
 };
 
 /**
@@ -520,15 +672,15 @@ export declare type NativeGroupElement = {
  * of the element
  */
 declare type NativeGroupElementWithBox = {
-    /**
-     * The type of element.
-     */
-    type: 'GROUP';
-    /**
-     * The inner elements contained by the group element. These elements require a Box as they are
-     * relatively positioned to the outer boundaries of the group element.
-     */
-    children: NativeSimpleElementWithBox[];
+  /**
+   * The type of element.
+   */
+  type: "GROUP";
+  /**
+   * The inner elements contained by the group element. These elements require a Box as they are
+   * relatively positioned to the outer boundaries of the group element.
+   */
+  children: NativeSimpleElementWithBox[];
 } & Box;
 
 /**
@@ -536,30 +688,32 @@ declare type NativeGroupElementWithBox = {
  * An element that renders an image in the user's design.
  */
 export declare type NativeImageElement = {
-    /**
-     * The type of element.
-     */
-    type: 'IMAGE';
-} & ({
-    /**
-     * A data URL that contains the image data.
-     */
-    dataUrl: string;
-    /**
-     * A unique identifier that references an image asset in Canva's backend.
-     */
-    ref?: never;
-
-} | {
-    /**
-     * A data URL that contains the image data.
-     */
-    dataUrl?: never;
-    /**
-     * A unique identifier that references an image asset in Canva's backend.
-     */
-    ref: ImageRef;
-});
+  /**
+   * The type of element.
+   */
+  type: "IMAGE";
+} & (
+  | {
+      /**
+       * A data URL that contains the image data.
+       */
+      dataUrl: string;
+      /**
+       * A unique identifier that references an image asset in Canva's backend.
+       */
+      ref?: never;
+    }
+  | {
+      /**
+       * A data URL that contains the image data.
+       */
+      dataUrl?: never;
+      /**
+       * A unique identifier that references an image asset in Canva's backend.
+       */
+      ref: ImageRef;
+    }
+);
 
 /**
  * @public
@@ -578,25 +732,25 @@ export declare type NativeImageElementWithBox = NativeImageElement & Box;
  * An element that renders a vector shape.
  */
 export declare type NativeShapeElement = {
-    /**
-     * The type of element.
-     */
-    type: 'SHAPE';
-    /**
-     * Properties for configuring the scale and cropping of a shape.
-     *
-     * @remarks
-     * This is similar to the `viewBox` attribute of the <svg> element.
-     */
-    viewBox: ShapeViewBox;
-    /**
-     * The paths that define the shape of the element.
-     *
-     * @remarks
-     * There must be between 1 and 30 paths. The maximum combined size of all paths must
-     * not exceed 2kb. The maximum numbrer of unique fill colors across all paths is 6.
-     */
-    paths: ShapePath[];
+  /**
+   * The type of element.
+   */
+  type: "SHAPE";
+  /**
+   * Properties for configuring the scale and cropping of a shape.
+   *
+   * @remarks
+   * This is similar to the `viewBox` attribute of the <svg> element.
+   */
+  viewBox: ShapeViewBox;
+  /**
+   * The paths that define the shape of the element.
+   *
+   * @remarks
+   * There must be between 1 and 30 paths. The maximum combined size of all paths must
+   * not exceed 2kb. The maximum numbrer of unique fill colors across all paths is 6.
+   */
+  paths: ShapePath[];
 };
 
 /**
@@ -610,43 +764,46 @@ export declare type NativeShapeElement = {
  * The parent container may be an app element, or the current page.
  */
 export declare type NativeShapeElementWithBox = {
-    /**
-     * The type of element.
-     */
-    type: 'SHAPE';
-    /**
-     * Properties for configuring the scale and cropping of a shape.
-     *
-     * @remarks
-     * This is similar to the `viewBox` attribute of the <svg> element.
-     */
-    viewBox: ShapeViewBox;
-    /**
-     * The paths that define the shape of the element.
-     */
-    paths: ShapePath[];
+  /**
+   * The type of element.
+   */
+  type: "SHAPE";
+  /**
+   * Properties for configuring the scale and cropping of a shape.
+   *
+   * @remarks
+   * This is similar to the `viewBox` attribute of the <svg> element.
+   */
+  viewBox: ShapeViewBox;
+  /**
+   * The paths that define the shape of the element.
+   */
+  paths: ShapePath[];
 } & Box;
 
 /**
  * @public
  * An element that exists within a group element.
  */
-export declare type NativeSimpleElementWithBox = Exclude<NativeElementWithBox, NativeGroupElementWithBox>;
+export declare type NativeSimpleElementWithBox = Exclude<
+  NativeElementWithBox,
+  NativeGroupElementWithBox
+>;
 
 /**
  * @public
  * An element that renders text.
  */
 export declare type NativeTextElement = {
-    /**
-     * The type of element.
-     */
-    type: 'TEXT';
-    /**
-     * The text to render within the element. In the future, each item in this
-     * array will map to a paragraph. At the moment, only one item is supported.
-     */
-    children: string[];
+  /**
+   * The type of element.
+   */
+  type: "TEXT";
+  /**
+   * The text to render within the element. In the future, each item in this
+   * array will map to a paragraph. At the moment, only one item is supported.
+   */
+  children: string[];
 } & TextAttributes;
 
 /**
@@ -660,45 +817,45 @@ export declare type NativeTextElement = {
  * The parent container may be an app element, or the current page.
  */
 export declare type NativeTextElementWithBox = {
-    /**
-     * The type of element.
-     */
-    type: 'TEXT';
-    /**
-     * The text to render within the element.
-     *
-     * @remarks
-     * In the future, each item in this array will map to a paragraph. At the moment,
-     * only one item is supported.
-     */
-    children: [string];
-    /**
-     * The width of the element. This must be an integer between 0 and 32767.
-     */
-    width?: number;
-    /**
-     * The distance from the top edge of the container.
-     *
-     * @remarks
-     * This must be an integer between -32768 and 32767. This property doesn't have
-     * any effect if the app element only contains a single element.
-     */
-    top: number;
-    /**
-     * The distance from the left edge of the container.
-     *
-     * @remarks
-     * This must be an integer between -32768 and 32767. This property doesn't have
-     * any effect if the app element only contains a single element.
-     */
-    left: number;
-    /**
-     * The rotation of the element, in degrees.
-     *
-     * @remarks
-     * This must be an integer between -180 and 180.
-     */
-    rotation?: number;
+  /**
+   * The type of element.
+   */
+  type: "TEXT";
+  /**
+   * The text to render within the element.
+   *
+   * @remarks
+   * In the future, each item in this array will map to a paragraph. At the moment,
+   * only one item is supported.
+   */
+  children: [string];
+  /**
+   * The width of the element. This must be an integer between 0 and 32767.
+   */
+  width?: number;
+  /**
+   * The distance from the top edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't have
+   * any effect if the app element only contains a single element.
+   */
+  top: number;
+  /**
+   * The distance from the left edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't have
+   * any effect if the app element only contains a single element.
+   */
+  left: number;
+  /**
+   * The rotation of the element, in degrees.
+   *
+   * @remarks
+   * This must be an integer between -180 and 180.
+   */
+  rotation?: number;
 } & TextAttributes;
 
 /**
@@ -706,14 +863,14 @@ export declare type NativeTextElementWithBox = {
  * An element that renders a video in the user's design.
  */
 export declare type NativeVideoElement = {
-    /**
-     * The type of element.
-     */
-    type: 'VIDEO';
-    /**
-     * A unique identifier that references a video asset in Canva's backend.
-     */
-    ref: VideoRef;
+  /**
+   * The type of element.
+   */
+  type: "VIDEO";
+  /**
+   * A unique identifier that references a video asset in Canva's backend.
+   */
+  ref: VideoRef;
 };
 
 /**
@@ -738,13 +895,13 @@ declare type ObjectPrimitive = Boolean | String;
  * Page context
  */
 export declare type PageContext = {
-    /**
-     * Page dimensions in px
-     *
-     * @remarks
-     * This value is undefined for Whiteboard and Docs
-     */
-    dimensions: PageDimensions | undefined;
+  /**
+   * Page dimensions in px
+   *
+   * @remarks
+   * This value is undefined for Whiteboard and Docs
+   */
+  dimensions: PageDimensions | undefined;
 };
 
 /**
@@ -752,8 +909,8 @@ export declare type PageContext = {
  * Page Dimensions
  */
 declare type PageDimensions = {
-    width: number;
-    height: number;
+  width: number;
+  height: number;
 };
 
 /**
@@ -761,21 +918,21 @@ declare type PageDimensions = {
  * The outline of a path.
  */
 export declare type PathStroke = {
-    /**
-     * The weight of the stroke. This must be an integer between 0 and 100.
-     */
-    weight: number;
-    /**
-     * The color of the stroke as a hex code.
-     *
-     * @remarks
-     * The hex code must include all six characters and be prefixed with a # symbol (e.g. #ff0099).
-     */
-    color: string;
-    /**
-     * The alignment of the stroke. The only supported value is 'inset'.
-     */
-    strokeAlign: 'inset';
+  /**
+   * The weight of the stroke. This must be an integer between 0 and 100.
+   */
+  weight: number;
+  /**
+   * The color of the stroke as a hex code.
+   *
+   * @remarks
+   * The hex code must include all six characters and be prefixed with a # symbol (e.g. #ff0099).
+   */
+  color: string;
+  /**
+   * The alignment of the stroke. The only supported value is 'inset'.
+   */
+  strokeAlign: "inset";
 };
 
 /**
@@ -785,29 +942,29 @@ export declare type PathStroke = {
 export declare type Placement = Position & (WidthAndHeight | Width | Height);
 
 declare type Position = {
-    /**
-     * The distance from the top edge of the container.
-     *
-     * @remarks
-     * This must be an integer between -32768 and 32767. This property doesn't
-     * have any effect if the app element only contains a single element.
-     */
-    top: number;
-    /**
-     * The distance from the left edge of the container.
-     *
-     * @remarks
-     * This must be an integer between -32768 and 32767. This property doesn't
-     * have any effect if the app element only contains a single element.
-     */
-    left: number;
-    /**
-     * The rotation of the box, in degrees.
-     *
-     * @remarks
-     * This must be an integer between -180 and 180.
-     */
-    rotation?: number;
+  /**
+   * The distance from the top edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't
+   * have any effect if the app element only contains a single element.
+   */
+  top: number;
+  /**
+   * The distance from the left edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't
+   * have any effect if the app element only contains a single element.
+   */
+  left: number;
+  /**
+   * The rotation of the box, in degrees.
+   *
+   * @remarks
+   * This must be an integer between -180 and 180.
+   */
+  rotation?: number;
 };
 
 /**
@@ -823,7 +980,9 @@ declare type Primitive = undefined | null | number | boolean | string | bigint;
  * Exports the user's design as one or more static files.
  * @param request - The request object containing configurations of the design export.
  */
-export declare function requestExport(request: ExportRequest): Promise<ExportResponse>;
+export declare function requestExport(
+  request: ExportRequest
+): Promise<ExportResponse>;
 
 /**
  * @beta
@@ -837,38 +996,38 @@ export declare const selection: DesignSelection;
  * selection; to get the actual contents, you will need to use `selection.apply`.
  */
 export declare type SelectionEvent<Scope extends SelectionScope> = {
-    /** A binding ID for this event; this should not be used or modified. */
-    readonly _id: SelectionId;
-    /** The SelectionScope that this event is bound to. */
-    scope: Scope;
-    /** The number of elements in the selection. */
-    count: number;
+  /** A binding ID for this event; this should not be used or modified. */
+  readonly _id: SelectionId;
+  /** The SelectionScope that this event is bound to. */
+  scope: Scope;
+  /** The number of elements in the selection. */
+  count: number;
 };
 
 /**
  * @beta
  */
 export declare type SelectionId = string & {
-    _selectionEventId: never;
+  _selectionEventId: never;
 };
 
 /**
  * @beta
  * List of available selection scopes, to be used when registering a selection content listener.
  */
-export declare type SelectionScope = 'text' | 'image';
+export declare type SelectionScope = "text" | "image";
 
 /**
  * @beta
  * The state that the `selection.apply`'s transformer is expected to return.
  */
 export declare type SelectionUpdateValue<Scope extends SelectionScope> = {
-    ['text']: {
-        text: string;
-    };
-    ['image']: {
-        ref: ImageRef;
-    };
+  ["text"]: {
+    text: string;
+  };
+  ["image"]: {
+    ref: ImageRef;
+  };
 }[Scope];
 
 /**
@@ -877,12 +1036,12 @@ export declare type SelectionUpdateValue<Scope extends SelectionScope> = {
  * specified SelectionScope.x
  */
 export declare type SelectionValue<Scope extends SelectionScope> = {
-    ['text']: {
-        text: string;
-    };
-    ['image']: {
-        ref: ImageRef;
-    };
+  ["text"]: {
+    text: string;
+  };
+  ["image"]: {
+    ref: ImageRef;
+  };
 }[Scope];
 
 /**
@@ -890,30 +1049,30 @@ export declare type SelectionValue<Scope extends SelectionScope> = {
  * A path that defines the shape of a shape element.
  */
 export declare type ShapePath = {
-    /**
-     * The shape of the path.
-     *
-     * @remarks
-     * This accepts the same value as the `d` attribute of the SVG <path> element,
-     * with some limitations.
-     *
-     * The path must:
-     *
-     * - start with an M command
-     * - not have more than one M command
-     * - not use the Q command
-     * - be closed, either with a Z command at the end or by having the last
-     * coordinate match the first coordinate
-     */
-    d: string;
-    /**
-     * The appearance of the path's interior.
-     */
-    fill: Fill;
-    /**
-     * The outline of the path.
-     */
-    stroke?: PathStroke;
+  /**
+   * The shape of the path.
+   *
+   * @remarks
+   * This accepts the same value as the `d` attribute of the SVG <path> element,
+   * with some limitations.
+   *
+   * The path must:
+   *
+   * - start with an M command
+   * - not have more than one M command
+   * - not use the Q command
+   * - be closed, either with a Z command at the end or by having the last
+   * coordinate match the first coordinate
+   */
+  d: string;
+  /**
+   * The appearance of the path's interior.
+   */
+  fill: Fill;
+  /**
+   * The outline of the path.
+   */
+  stroke?: PathStroke;
 };
 
 /**
@@ -924,22 +1083,22 @@ export declare type ShapePath = {
  * This is similar to the `viewBox` attribute of the <svg> element.
  */
 export declare type ShapeViewBox = {
-    /**
-     * The distance of the shape from the top edge of the element.
-     */
-    top: number;
-    /**
-     * The distance of the shape from the left edge of the element.
-     */
-    left: number;
-    /**
-     * The width of the view box.
-     */
-    width: number;
-    /**
-     * The height of the view box.
-     */
-    height: number;
+  /**
+   * The distance of the shape from the top edge of the element.
+   */
+  top: number;
+  /**
+   * The distance of the shape from the left edge of the element.
+   */
+  left: number;
+  /**
+   * The width of the view box.
+   */
+  width: number;
+  /**
+   * The height of the view box.
+   */
+  height: number;
 };
 
 /**
@@ -947,38 +1106,69 @@ export declare type ShapeViewBox = {
  * Attributes for changing the appearance of text.
  */
 declare type TextAttributes = {
-    /**
-     * The size of the text.
-     *
-     * @remarks
-     * The default value is 16. This must be an integer between 1 and 1000.
-     * This property will be ignored when adding native text elements without specifying placement.
-     */
-    fontSize?: number;
-    /**
-     * The alignment of the text. The default value is 'start'.
-     */
-    textAlign?: 'start' | 'center' | 'end';
-    /**
-     * The color of the text as a hex code.
-     *
-     * @remarks
-     * The hex code must include all six characters and be prefixed with a # symbol
-     * (e.g. #ff0099). The default value is #000000.
-     */
-    color?: string;
-    /**
-     * The weight of the font. The default value is 'normal'.
-     */
-    fontWeight?: 'normal' | 'bold';
-    /**
-     * The style of the font. The default value is 'normal'.
-     */
-    fontStyle?: 'normal' | 'italic';
-    /**
-     * The decoration of the font. The default value is 'none'.
-     */
-    decoration?: 'none' | 'underline';
+  /**
+   * The size of the text.
+   *
+   * @remarks
+   * The default value is 16. This must be an integer between 1 and 1000.
+   * This property will be ignored when adding native text elements without specifying placement.
+   */
+  fontSize?: number;
+  /**
+   * The alignment of the text. The default value is 'start'.
+   */
+  textAlign?: "start" | "center" | "end";
+  /**
+   * The color of the text as a hex code.
+   *
+   * @remarks
+   * The hex code must include all six characters and be prefixed with a # symbol
+   * (e.g. #ff0099). The default value is #000000.
+   */
+  color?: string;
+  /**
+   * The weight of the font. The default value is 'normal'.
+   */
+  fontWeight?: "normal" | "bold";
+  /**
+   * The style of the font. The default value is 'normal'.
+   */
+  fontStyle?: "normal" | "italic";
+  /**
+   * The decoration of the font. The default value is 'none'.
+   */
+  decoration?: "none" | "underline";
+};
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior of a text element.
+ */
+export declare type TextDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "TEXT";
+  /**
+   * The text content to drag.
+   */
+  children?: string[];
+  /**
+   * The alignment of the text. The default value is 'start'.
+   */
+  textAlign?: "start" | "center" | "end";
+  /**
+   * The weight of the font. The default value is 'normal'.
+   */
+  fontWeight?: "normal" | "bold";
+  /**
+   * The style of the font. The default value is 'normal'.
+   */
+  fontStyle?: "normal" | "italic";
+  /**
+   * The decoration of the font. The default value is 'none'.
+   */
+  decoration?: "none" | "underline";
 };
 
 /**
@@ -986,20 +1176,30 @@ declare type TextAttributes = {
  * The methods for adding drag-and-drop behavior to an app.
  */
 export declare interface UI {
-    /**
-     * @public
-     * Makes the specified node draggable.
-     *
-     * @param options - Options for making an element draggable.
-     */
-    makeDraggable(options: DraggableElementData): void;
-    /**
-     * @beta
-     * Handles the start of a drag event.
-     * @evt - The drag event.
-     * @param dragData - The data to be passed to the drag handler.
-     */
-    startDrag<E extends HTMLElement>(evt: CanvaDragEvent<E>, data: UserSuppliedTextDragData | UserSuppliedAudioDragData | UserSuppliedVideoDragDataForElement<E> | UserSuppliedImageDragDataForElement<E>): Promise<void>;
+  /**
+   * @public
+   * Makes the specified node draggable.
+   *
+   * @deprecated use `UI.startDrag` instead
+   *
+   * @param options - Options for making an element draggable.
+   */
+  makeDraggable(options: DraggableElementData): void;
+  /**
+   * @public
+   * Handles a drag event initiated inside the app to Canva, enables drag-and_drop interactions with elements outside of the app.
+   * @param event - The drag start event.
+   * @param dragData - The data to be passed to the drag handler.
+   */
+  startDrag<E extends HTMLElement>(
+    event: DragStartEvent<E>,
+    data:
+      | TextDragConfig
+      | AudioDragConfig
+      | EmbedDragConfig
+      | VideoDragConfigForElement<E>
+      | ImageDragConfigForElement<E>
+  ): Promise<void>;
 }
 
 /**
@@ -1009,80 +1209,70 @@ export declare interface UI {
 export declare const ui: UI;
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of audio tracks.
  */
-export declare type UserSuppliedAudioDragData = {
-    /**
-     * The type of element.
-     */
-    type: 'AUDIO';
-    /**
-     * A function that returns a reference (ref) to an audio asset in Canva's backend.
-     */
-    resolveAudioRef: () => Promise<{
-        ref: AudioRef;
-    }>;
-    /**
-     * The duration of the audio track, in milliseconds.
-     */
-    durationMs: number;
-    /**
-     * A human readable title for the audio track.
-     */
-    title: string;
-};
+export declare type UserSuppliedAudioDragData = AudioDragConfig;
 
 /**
+ * @deprecated
  * @public
  *
  * Options for defining the Drag and Drop behaviour for images
  * which have been supplied as data urls
  */
-export declare type UserSuppliedDataUrlImageDragData = CommonImageDragData & {
-    /**
-     * The dimensions of the full-size image.
-     *
-     * @remarks
-     * The full-size image is the image that Canva uploads to the user's account and
-     * adds to their design.
-     *
-     * If omitted, the value of the `previewSize` property is used as a fallback.
-     */
-    fullSize?: Dimensions;
-    /**
-     * The data URL of the preview image.
-     *
-     * @remarks
-     * The preview image is the image that users see under their cursor while dragging
-     * it into their design.
-     *
-     * If omitted, the value of the `fullSizeSrc` property is used as a fallback.
-     */
-    previewSrc?: string;
-    /**
-     * The data URL of the full-size image.
-     *
-     * @remarks
-     * The full-size image is the image that Canva uploads to the user's account and
-     * adds to their design.
-     */
-    fullSizeSrc: string;
+export declare type UserSuppliedDataUrlImageDragData = CommonImageDragConfig & {
+  /**
+   * The dimensions of the full-size image.
+   *
+   * @remarks
+   * The full-size image is the image that Canva uploads to the user's account and
+   * adds to their design.
+   *
+   * If omitted, the value of the `previewSize` property is used as a fallback.
+   */
+  fullSize?: Dimensions;
+  /**
+   * The data URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   *
+   * If omitted, the value of the `fullSizeSrc` property is used as a fallback.
+   */
+  previewSrc?: string;
+  /**
+   * The data URL of the full-size image.
+   *
+   * @remarks
+   * The full-size image is the image that Canva uploads to the user's account and
+   * adds to their design.
+   */
+  fullSizeSrc: string;
 };
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior that can be defined by an app developer.
  */
-export declare type UserSuppliedDragData = UserSuppliedImageDragData | UserSuppliedTextDragData | UserSuppliedVideoDragData | UserSuppliedAudioDragData;
+export declare type UserSuppliedDragData =
+  | UserSuppliedImageDragData
+  | UserSuppliedTextDragData
+  | UserSuppliedVideoDragData
+  | UserSuppliedAudioDragData;
 
 /**
+ * @deprecated
  * @public
  *
  * Options for defining the Drag and Drop behaviour for images uploaded
  * via the Content capability.
  */
-export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
+export declare type UserSuppliedExternalImageDragData =
+  CommonImageDragConfig & {
     /**
      * The function that resolves an image ref
      * @remarks
@@ -1092,7 +1282,7 @@ export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
      * from the content capability.
      */
     resolveImageRef: () => Promise<{
-        ref: ImageRef;
+      ref: ImageRef;
     }>;
     /**
      * The URL of the preview image.
@@ -1112,120 +1302,145 @@ export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
      * If omitted, the value of the `previewSize` property is used as a fallback.
      */
     fullSize?: Dimensions;
-};
+  };
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of an image element that can be defined by an
  * app developer.
  */
-export declare type UserSuppliedImageDragData = UserSuppliedDataUrlImageDragData | UserSuppliedExternalImageDragData;
+export declare type UserSuppliedImageDragData =
+  | UserSuppliedDataUrlImageDragData
+  | UserSuppliedExternalImageDragData;
 
 /**
- * @beta
- * Options for defining the drag-and-drop behavior for images.
- */
-export declare type UserSuppliedImageDragDataForElement<E extends Element> = E extends HTMLImageElement ? (Partial<UserSuppliedImageDragData> & Pick<UserSuppliedImageDragData, 'type'>) : UserSuppliedImageDragData;
-
-/**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of a text element.
  */
-export declare type UserSuppliedTextDragData = {
-    /**
-     * The type of element.
-     */
-    type: 'TEXT';
-    /**
-     * The text content to drag.
-     */
-    children?: string[];
-    /**
-     * The alignment of the text. The default value is 'start'.
-     */
-    textAlign?: 'start' | 'center' | 'end';
-    /**
-     * The weight of the font. The default value is 'normal'.
-     */
-    fontWeight?: 'normal' | 'bold';
-    /**
-     * The style of the font. The default value is 'normal'.
-     */
-    fontStyle?: 'normal' | 'italic';
-    /**
-     * The decoration of the font. The default value is 'none'.
-     */
-    decoration?: 'none' | 'underline';
-};
+export declare type UserSuppliedTextDragData = TextDragConfig;
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior for videos.
  */
 export declare type UserSuppliedVideoDragData = {
-    /**
-     * The type of element.
-     */
-    type: 'VIDEO';
-    /**
-     * The function used resolve the video ref.
-     * This is used in conjunction with content import.
-     */
-    resolveVideoRef: () => Promise<{
-        ref: VideoRef;
-    }>;
-    /**
-     * The dimensions of the preview image.
-     * @remarks
-     * The preview image is the image that users see under their cursor
-     * while dragging it into their design.
-     */
-    previewSize: Dimensions;
-    /**
-     * The dimensions of the full-size video.
-     * These dimensions are used when adding the video to the design
-     *
-     * If omitted, the value of the `previewSize` property is
-     * used as a fallback.
-     */
-    fullSize?: Dimensions;
-    /**
-     * The URL of the preview image.
-     *
-     * @remarks
-     * The preview image is the image that users see under their cursor while dragging
-     * it into their design.
-     */
-    previewSrc: string;
+  /**
+   * The type of element.
+   */
+  type: "VIDEO";
+  /**
+   * The function used resolve the video ref.
+   * This is used in conjunction with content import.
+   */
+  resolveVideoRef: () => Promise<{
+    ref: VideoRef;
+  }>;
+  /**
+   * The dimensions of the preview image.
+   * @remarks
+   * The preview image is the image that users see under their cursor
+   * while dragging it into their design.
+   */
+  previewSize: Dimensions;
+  /**
+   * The dimensions of the full-size video.
+   * These dimensions are used when adding the video to the design
+   *
+   * If omitted, the value of the `previewSize` property is
+   * used as a fallback.
+   */
+  fullSize?: Dimensions;
+  /**
+   * The URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewSrc: string;
 };
-
-/**
- * @beta
- * Options for defining the drag-and-drop behavior for videos.
- */
-export declare type UserSuppliedVideoDragDataForElement<E extends Element> = E extends HTMLImageElement ? (Partial<UserSuppliedVideoDragData> & Pick<UserSuppliedVideoDragData, 'type' | 'resolveVideoRef'>) : UserSuppliedVideoDragData;
 
 /**
  * @public
  * The types of values that can be stored within an app element's data.
  */
-export declare type Value = Primitive | ObjectPrimitive | Value[] | {
-    [key: string]: Value;
-} | Map<Value, Value> | Set<Value>;
+export declare type Value =
+  | Primitive
+  | ObjectPrimitive
+  | Value[]
+  | {
+      [key: string]: Value;
+    }
+  | Map<Value, Value>
+  | Set<Value>;
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for videos.
+ */
+export declare type VideoDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "VIDEO";
+  /**
+   * The function used resolve the video ref.
+   * This is used in conjunction with content import.
+   */
+  resolveVideoRef: () => Promise<{
+    ref: VideoRef;
+  }>;
+  /**
+   * The dimensions of the preview image.
+   * @remarks
+   * The preview image is the image that users see under their cursor
+   * while dragging it into their design.
+   */
+  previewSize: Dimensions;
+  /**
+   * The dimensions of the full-size video.
+   * These dimensions are used when adding the video to the design
+   *
+   * If omitted, the value of the `previewSize` property is
+   * used as a fallback.
+   */
+  fullSize?: Dimensions;
+  /**
+   * The URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewUrl: string;
+};
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for videos.
+ */
+export declare type VideoDragConfigForElement<E extends Element> =
+  E extends HTMLImageElement
+    ? Partial<VideoDragConfig> &
+        Pick<VideoDragConfig, "type" | "resolveVideoRef">
+    : VideoDragConfig;
 
 /**
  * @public
  * A video asset that will be used to fill the given path.
  */
 declare type VideoFill = {
-    /**
-     * Type of an asset that will be used to fill the given path.
-     */
-    type: 'VIDEO';
-    /**
-     * A unique identifier that references a video asset in Canva's backend.
-     */
-    ref: VideoRef;
+  /**
+   * Type of an asset that will be used to fill the given path.
+   */
+  type: "VIDEO";
+  /**
+   * A unique identifier that references a video asset in Canva's backend.
+   */
+  ref: VideoRef;
 };
 
 /**
@@ -1233,25 +1448,25 @@ declare type VideoFill = {
  * A unique identifier that references a video asset in Canva's backend.
  */
 export declare type VideoRef = string & {
-    __videoRef: never;
+  __videoRef: never;
 };
 
 declare type Width = {
-    width: number;
-    height: 'auto';
+  width: number;
+  height: "auto";
 };
 
 declare type WidthAndHeight = {
-    /**
-     * The width of the box. If height is a number, this can be set to "auto".
-     * Otherwise, it must be an integer between 0 and 32767.
-     */
-    width: number;
-    /**
-     * The height of the box. If width is a number, this can be set to "auto".
-     * Otherwise, it must be an integer between 0 and 32767.
-     */
-    height: number;
+  /**
+   * The width of the box. If height is a number, this can be set to "auto".
+   * Otherwise, it must be an integer between 0 and 32767.
+   */
+  width: number;
+  /**
+   * The height of the box. If width is a number, this can be set to "auto".
+   * Otherwise, it must be an integer between 0 and 32767.
+   */
+  height: number;
 };
 
-export { }
+export {};

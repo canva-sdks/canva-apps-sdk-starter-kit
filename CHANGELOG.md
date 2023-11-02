@@ -1,5 +1,33 @@
 # Changelog
 
+## 2023-11-02
+
+### 🔨 Breaking changes
+
+- Upgraded `app-ui-kit` to version `3.0.0`. Please see the `api-ui-kit` [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog) for the list of new components added, and any breaking changes
+- Updated the `typescript` package to version 5.2.2. [See the release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/).
+
+### 🧰 Added
+- `@canva/design`
+  - Added `ui.startDrag`, which handles the `dragStart` event for drag-and-drop. [See the documentation](https://www.canva.dev/docs/apps/api/design-ui-start-drag/).
+- Added `DraggableEmbed` component
+- Added an example app `drag_and_drop_embed` demonstrating how to make embeds draggable
+
+### 🔧 Changed
+- Marked `ui.makeDraggable` as `@deprecated`.
+- Formatted SDK `*.d.ts` files
+- Minor TSDoc fixes and improvements
+- Updated all references to legacy icons, with ones from the `app-ui-kit`
+- Upgraded examples to use new `app-ui-kit` components where applicable
+- Various changes and improvements in the `/storybook` folder, per the latest version of `app-ui-kit`
+- Updated any references to old `app-ui-kit` color tokens according to the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/#200-2023-09-14)
+
+### 🗑️ Removed
+- `assets/icons`
+  - Removed all the icons from `assets/icons`, in favour of curated set of icons included in v3 of `@canva/app-ui-kit`
+  - Removed custom webpack loader for these icons
+- Removed `.thumbnailGrid` class from `styles/components.css`. Please use the `<Grid />` component from `app-ui-kit` instead
+
 ## 2023-10-18 
 
 ### 🔨 Breaking changes

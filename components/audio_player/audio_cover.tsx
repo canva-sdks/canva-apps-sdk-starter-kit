@@ -1,9 +1,11 @@
-import * as React from "react";
+import {
+  AlertTriangleIcon,
+  MusicIcon,
+  PauseIcon,
+  PlayFilledIcon,
+} from "@canva/app-ui-kit";
 import clsx from "clsx";
-import Music from "assets/icons/music.svg";
-import Pause from "assets/icons/pause.svg";
-import Play from "assets/icons/play.svg";
-import Warning from "assets/icons/warning.svg";
+import * as React from "react";
 import { AudioContext } from "./audio_context";
 import styles from "./audio_cover.css";
 
@@ -107,7 +109,6 @@ export function AudioCover({
         )}
         <span className={styles.audioIconContainer}>
           <AudioIcon
-            className={styles.audioIcon}
             canPlay={canPlay}
             isPlaying={!!isPlaying}
             hasCoverArt={coverArtUrl != null}
@@ -124,7 +125,6 @@ const AudioIcon = ({
   isPlaying,
   isHovering,
   hasCoverArt,
-  className,
 }: React.SVGProps<SVGElement> & {
   canPlay: boolean;
   isPlaying: boolean;
@@ -132,19 +132,19 @@ const AudioIcon = ({
   hasCoverArt: boolean;
 }) => {
   if (!canPlay) {
-    return <Warning className={className} />;
+    return <AlertTriangleIcon />;
   }
 
   if (isPlaying) {
-    return <Pause className={className} />;
+    return <PauseIcon />;
   }
 
   if (isHovering) {
-    return <Play className={className} />;
+    return <PlayFilledIcon />;
   }
 
   if (!hasCoverArt) {
-    return <Music className={className} />;
+    return <MusicIcon />;
   }
 
   return null;

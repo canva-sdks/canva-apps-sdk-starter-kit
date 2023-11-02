@@ -1,6 +1,6 @@
-import { initAppElement } from "@canva/design";
 import {
   Button,
+  ColorSelector,
   FormField,
   NumberInput,
   RadioGroup,
@@ -10,6 +10,7 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
+import { initAppElement } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
 
@@ -110,10 +111,9 @@ export const App = () => {
         <Title size="small">Custom options</Title>
         <FormField
           label="Color"
-          value={color}
-          control={(props) => (
-            <TextInput
-              {...props}
+          control={() => (
+            <ColorSelector
+              color={color}
               onChange={(value) => {
                 setState((prevState) => {
                   return {
@@ -288,7 +288,7 @@ export const App = () => {
           disabled={disabled}
           stretch
         >
-          Add or update element
+          Add or update text
         </Button>
       </Rows>
     </div>

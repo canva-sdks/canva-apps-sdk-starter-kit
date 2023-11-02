@@ -174,28 +174,3 @@ To more easily customize the URL of the server:
    **Note:** `BACKEND_HOST` is a global constant that contains the value of the `CANVA_BACKEND_HOST` environment variable. The variable is made available to the app via webpack and does not need to be imported.
 
 4. Before bundling the app for production, update `CANVA_BACKEND_HOST` to point to the production backend.
-
-## Using icons
-
-The `icons` directory contains a number of icons from Easel, Canva's design system. You can use these icons in your app to ensure that it has a consistent look and feel with the core Canva experience.
-
-To use an icon, import it:
-
-```tsx
-import AlignTextLeft from "assets/icons/align-text-left.svg";
-```
-
-Then use it like any other React component:
-
-```tsx
-<AlignTextLeft />
-```
-
-The icon components accept a `size` prop, which can be set to any of the following values:
-
-- `"tiny"`
-- `"small"`
-- `"medium"`
-- `"large"`
-
-The default value is `"medium"`.

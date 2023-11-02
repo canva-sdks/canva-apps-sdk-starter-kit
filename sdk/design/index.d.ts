@@ -88,6 +88,31 @@ export declare type AppElementRendererOutput = Exclude<
 
 /**
  * @public
+ * Options for defining the drag-and-drop behavior of audio tracks.
+ */
+export declare type AudioDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "AUDIO";
+  /**
+   * A function that returns a reference (ref) to an audio asset in Canva's backend.
+   */
+  resolveAudioRef: () => Promise<{
+    ref: AudioRef;
+  }>;
+  /**
+   * The duration of the audio track, in milliseconds.
+   */
+  durationMs: number;
+  /**
+   * A human readable title for the audio track.
+   */
+  title: string;
+};
+
+/**
+ * @public
  * A unique identifier that references an audio asset in Canva's backend.
  */
 export declare type AudioRef = string & {
@@ -114,7 +139,7 @@ export declare type AudioTrack = {
  */
 declare type Box = Position & (WidthAndHeight | Width | Height);
 
-declare type CommonImageDragData = {
+declare type CommonImageDragConfig = {
   /**
    * The type of element.
    */
@@ -186,6 +211,17 @@ export declare type DraggableElementData = ElementData | ImageElementData;
 
 /**
  * @public
+ * Represents a drag start event that occurs when initiating a drag-and-drop behavior inside the app.
+ */
+export declare type DragStartEvent<E extends Element> = Pick<
+  DragEvent,
+  "dataTransfer" | "currentTarget" | "preventDefault" | "clientX" | "clientY"
+> & {
+  currentTarget: E;
+};
+
+/**
+ * @public
  * Options for making an `HTMLElement` draggable.
  */
 export declare type ElementData = DragCallback & {
@@ -200,6 +236,32 @@ export declare type ElementData = DragCallback & {
    * This data is required because it can't be inferred from the `node` property.
    */
   dragData: UserSuppliedDragData;
+};
+
+/**
+ * @public
+ *
+ * Options for defining the drag-and-drop behaviour for embeds.
+ */
+export declare type EmbedDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "EMBED";
+  /**
+   * The dimensions of the preview image.
+   * The preview image is the image that users see under their cursor
+   * while dragging it into their design.
+   */
+  previewSize: Dimensions;
+  /**
+   * Represents the preview image of the embed.
+   */
+  previewUrl: string;
+  /**
+   * Represents the embed source url.
+   */
+  embedUrl: string;
 };
 
 /**
@@ -307,6 +369,44 @@ export declare type ExportResponse = ExportCompleted | ExportAborted;
 
 /**
  * @public
+ *
+ * Options for defining the Drag and Drop behaviour for images uploaded
+ * via the Content capability.
+ */
+export declare type ExternalImageDragConfig = CommonImageDragConfig & {
+  /**
+   * The function that resolves an image ref
+   * @remarks
+   *
+   * This function will be run during the drag process in order to fetch the media ref of the
+   * external image being fetched. This function should return the result of `upload`
+   * from the content capability.
+   */
+  resolveImageRef: () => Promise<{
+    ref: ImageRef;
+  }>;
+  /**
+   * The URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewUrl: string;
+  /**
+   * The dimensions of the full-size image.
+   *
+   * @remarks
+   * The full-size image is the image that Canva uploads to the user's account and
+   * adds to their design.
+   *
+   * If omitted, the value of the `previewSize` property is used as a fallback.
+   */
+  fullSize?: Dimensions;
+};
+
+/**
+ * @public
  * The appearance of a path's interior.
  */
 export declare type Fill = {
@@ -343,6 +443,22 @@ declare type Height = {
   width: "auto";
   height: number;
 };
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior of an image element that can be defined by an
+ * app developer.
+ */
+export declare type ImageDragConfig = ExternalImageDragConfig;
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for images.
+ */
+export declare type ImageDragConfigForElement<E extends Element> =
+  E extends HTMLImageElement
+    ? Partial<ImageDragConfig> & Pick<ImageDragConfig, "type">
+    : ImageDragConfig;
 
 /**
  * @public
@@ -905,6 +1021,37 @@ declare type TextAttributes = {
 
 /**
  * @public
+ * Options for defining the drag-and-drop behavior of a text element.
+ */
+export declare type TextDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "TEXT";
+  /**
+   * The text content to drag.
+   */
+  children?: string[];
+  /**
+   * The alignment of the text. The default value is 'start'.
+   */
+  textAlign?: "start" | "center" | "end";
+  /**
+   * The weight of the font. The default value is 'normal'.
+   */
+  fontWeight?: "normal" | "bold";
+  /**
+   * The style of the font. The default value is 'normal'.
+   */
+  fontStyle?: "normal" | "italic";
+  /**
+   * The decoration of the font. The default value is 'none'.
+   */
+  decoration?: "none" | "underline";
+};
+
+/**
+ * @public
  * The methods for adding drag-and-drop behavior to an app.
  */
 export declare interface UI {
@@ -912,9 +1059,26 @@ export declare interface UI {
    * @public
    * Makes the specified node draggable.
    *
+   * @deprecated use `UI.startDrag` instead
+   *
    * @param options - Options for making an element draggable.
    */
   makeDraggable(options: DraggableElementData): void;
+  /**
+   * @public
+   * Handles a drag event initiated inside the app to Canva, enables drag-and_drop interactions with elements outside of the app.
+   * @param event - The drag start event.
+   * @param dragData - The data to be passed to the drag handler.
+   */
+  startDrag<E extends HTMLElement>(
+    event: DragStartEvent<E>,
+    data:
+      | TextDragConfig
+      | AudioDragConfig
+      | EmbedDragConfig
+      | VideoDragConfigForElement<E>
+      | ImageDragConfigForElement<E>
+  ): Promise<void>;
 }
 
 /**
@@ -924,37 +1088,20 @@ export declare interface UI {
 export declare const ui: UI;
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of audio tracks.
  */
-export declare type UserSuppliedAudioDragData = {
-  /**
-   * The type of element.
-   */
-  type: "AUDIO";
-  /**
-   * A function that returns a reference (ref) to an audio asset in Canva's backend.
-   */
-  resolveAudioRef: () => Promise<{
-    ref: AudioRef;
-  }>;
-  /**
-   * The duration of the audio track, in milliseconds.
-   */
-  durationMs: number;
-  /**
-   * A human readable title for the audio track.
-   */
-  title: string;
-};
+export declare type UserSuppliedAudioDragData = AudioDragConfig;
 
 /**
+ * @deprecated
  * @public
  *
  * Options for defining the Drag and Drop behaviour for images
  * which have been supplied as data urls
  */
-export declare type UserSuppliedDataUrlImageDragData = CommonImageDragData & {
+export declare type UserSuppliedDataUrlImageDragData = CommonImageDragConfig & {
   /**
    * The dimensions of the full-size image.
    *
@@ -986,6 +1133,7 @@ export declare type UserSuppliedDataUrlImageDragData = CommonImageDragData & {
 };
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior that can be defined by an app developer.
  */
@@ -996,44 +1144,47 @@ export declare type UserSuppliedDragData =
   | UserSuppliedAudioDragData;
 
 /**
+ * @deprecated
  * @public
  *
  * Options for defining the Drag and Drop behaviour for images uploaded
  * via the Content capability.
  */
-export declare type UserSuppliedExternalImageDragData = CommonImageDragData & {
-  /**
-   * The function that resolves an image ref
-   * @remarks
-   *
-   * This function will be run during the drag process in order to fetch the media ref of the
-   * external image being fetched. This function should return the result of `upload`
-   * from the content capability.
-   */
-  resolveImageRef: () => Promise<{
-    ref: ImageRef;
-  }>;
-  /**
-   * The URL of the preview image.
-   *
-   * @remarks
-   * The preview image is the image that users see under their cursor while dragging
-   * it into their design.
-   */
-  previewSrc: string;
-  /**
-   * The dimensions of the full-size image.
-   *
-   * @remarks
-   * The full-size image is the image that Canva uploads to the user's account and
-   * adds to their design.
-   *
-   * If omitted, the value of the `previewSize` property is used as a fallback.
-   */
-  fullSize?: Dimensions;
-};
+export declare type UserSuppliedExternalImageDragData =
+  CommonImageDragConfig & {
+    /**
+     * The function that resolves an image ref
+     * @remarks
+     *
+     * This function will be run during the drag process in order to fetch the media ref of the
+     * external image being fetched. This function should return the result of `upload`
+     * from the content capability.
+     */
+    resolveImageRef: () => Promise<{
+      ref: ImageRef;
+    }>;
+    /**
+     * The URL of the preview image.
+     *
+     * @remarks
+     * The preview image is the image that users see under their cursor while dragging
+     * it into their design.
+     */
+    previewSrc: string;
+    /**
+     * The dimensions of the full-size image.
+     *
+     * @remarks
+     * The full-size image is the image that Canva uploads to the user's account and
+     * adds to their design.
+     *
+     * If omitted, the value of the `previewSize` property is used as a fallback.
+     */
+    fullSize?: Dimensions;
+  };
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of an image element that can be defined by an
  * app developer.
@@ -1043,37 +1194,14 @@ export declare type UserSuppliedImageDragData =
   | UserSuppliedExternalImageDragData;
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior of a text element.
  */
-export declare type UserSuppliedTextDragData = {
-  /**
-   * The type of element.
-   */
-  type: "TEXT";
-  /**
-   * The text content to drag.
-   */
-  children?: string[];
-  /**
-   * The alignment of the text. The default value is 'start'.
-   */
-  textAlign?: "start" | "center" | "end";
-  /**
-   * The weight of the font. The default value is 'normal'.
-   */
-  fontWeight?: "normal" | "bold";
-  /**
-   * The style of the font. The default value is 'normal'.
-   */
-  fontStyle?: "normal" | "italic";
-  /**
-   * The decoration of the font. The default value is 'none'.
-   */
-  decoration?: "none" | "underline";
-};
+export declare type UserSuppliedTextDragData = TextDragConfig;
 
 /**
+ * @deprecated
  * @public
  * Options for defining the drag-and-drop behavior for videos.
  */
@@ -1127,6 +1255,57 @@ export declare type Value =
     }
   | Map<Value, Value>
   | Set<Value>;
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for videos.
+ */
+export declare type VideoDragConfig = {
+  /**
+   * The type of element.
+   */
+  type: "VIDEO";
+  /**
+   * The function used resolve the video ref.
+   * This is used in conjunction with content import.
+   */
+  resolveVideoRef: () => Promise<{
+    ref: VideoRef;
+  }>;
+  /**
+   * The dimensions of the preview image.
+   * @remarks
+   * The preview image is the image that users see under their cursor
+   * while dragging it into their design.
+   */
+  previewSize: Dimensions;
+  /**
+   * The dimensions of the full-size video.
+   * These dimensions are used when adding the video to the design
+   *
+   * If omitted, the value of the `previewSize` property is
+   * used as a fallback.
+   */
+  fullSize?: Dimensions;
+  /**
+   * The URL of the preview image.
+   *
+   * @remarks
+   * The preview image is the image that users see under their cursor while dragging
+   * it into their design.
+   */
+  previewUrl: string;
+};
+
+/**
+ * @public
+ * Options for defining the drag-and-drop behavior for videos.
+ */
+export declare type VideoDragConfigForElement<E extends Element> =
+  E extends HTMLImageElement
+    ? Partial<VideoDragConfig> &
+        Pick<VideoDragConfig, "type" | "resolveVideoRef">
+    : VideoDragConfig;
 
 /**
  * @public
