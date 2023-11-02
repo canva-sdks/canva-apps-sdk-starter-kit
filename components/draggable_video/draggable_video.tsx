@@ -5,7 +5,7 @@ import type {
 } from "@canva/design";
 import { ui } from "@canva/design";
 import type { VideoMimeType } from "@canva/asset";
-import styles from "./styles.css";
+import styles from "./draggable_video.css";
 
 const SECONDS_IN_MINUTE = 60;
 const DEFAULT_VIDEO_BADGE_LABEL = "VIDEO";
@@ -174,6 +174,8 @@ export const DraggableVideo = (props: DraggableVideoProps) => {
           muted={true}
           loop={true}
           src={thumbnailVideoSrc}
+          width={imgProps.width}
+          height={imgProps.height}
           className={styles.previewVideo}
         />
       )}

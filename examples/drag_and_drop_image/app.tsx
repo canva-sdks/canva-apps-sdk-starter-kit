@@ -60,17 +60,15 @@ export const App = () => {
             <code className={styles.code}>dragData</code>, so the dragged image
             is a custom size.
           </Text>
-          <div>
-            <DraggableImage
-              src={dog}
-              onClick={insertFromDataUrl}
-              style={{ width: "100x", height: "100px", borderRadius: "2px" }}
-              fullSize={{
-                width: 50,
-                height: 50,
-              }}
-            />
-          </div>
+          <DraggableImage
+            src={dog}
+            onClick={insertFromDataUrl}
+            style={{ width: "100px", height: "100px", borderRadius: "2px" }}
+            fullSize={{
+              width: 50,
+              height: 50,
+            }}
+          />
         </Rows>
         <Rows spacing="1u">
           <Title size="small">External Image</Title>
@@ -85,6 +83,7 @@ export const App = () => {
             onClick={insertExternalImage}
             width="320px"
             height="212px"
+            style={{ width: "100%" }}
             resolveImageRef={uploadImage}
           />
         </Rows>

@@ -1,18 +1,19 @@
-import { addNativeElement } from "@canva/design";
 import {
   Button,
+  ColorSelector,
   Column,
   Columns,
   FormField,
+  MultilineInput,
   NumberInput,
+  PlusIcon,
   Rows,
   Text,
-  TextInput,
   Title,
 } from "@canva/app-ui-kit";
+import { addNativeElement } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
-import PlusIcon from "assets/icons/plus.svg";
 
 type UIState = {
   paths: {
@@ -106,7 +107,7 @@ export const App = () => {
                     label="Line commands"
                     value={path.d}
                     control={(props) => (
-                      <TextInput
+                      <MultilineInput
                         {...props}
                         onChange={(value) => {
                           setState((prevState) => {
@@ -129,10 +130,9 @@ export const App = () => {
                   />
                   <FormField
                     label="Color"
-                    value={paths[outerIndex].fill.color}
-                    control={(props) => (
-                      <TextInput
-                        {...props}
+                    control={() => (
+                      <ColorSelector
+                        color={paths[outerIndex].fill.color}
                         onChange={(value) => {
                           setState((prevState) => {
                             return {

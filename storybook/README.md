@@ -4,7 +4,7 @@ This directory is a self contained project which runs Storybook. It can be used 
 
 ## Setup steps
 
-- Install the dependancies for the project
+- Install the dependencies for the project
   ```
   cd storybook
   npm install

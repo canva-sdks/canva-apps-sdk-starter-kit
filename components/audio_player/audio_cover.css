@@ -60,13 +60,6 @@
   }
 }
 
-.audioIcon {
-  fill: var(--ui-kit-color-neutral-fore);
-  width: 100%;
-  height: 100%;
-  stroke: transparent;
-}
-
 .playingCircle {
   fill: none;
   position: absolute;

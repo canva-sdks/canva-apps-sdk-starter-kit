@@ -1,0 +1,7 @@
+.draggableButton {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  width: fit-content;
+  cursor: pointer;
+}

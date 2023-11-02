@@ -1,17 +1,17 @@
+import {
+  Button,
+  FormField,
+  NumberInput,
+  Rows,
+  Text,
+  Title,
+} from "@canva/app-ui-kit";
 import type {
   AppElementRendererOutput,
   NativeShapeElementWithBox,
 } from "@canva/design";
 import { initAppElement } from "@canva/design";
 import React from "react";
-import {
-  Button,
-  Rows,
-  FormField,
-  NumberInput,
-  Text,
-  Title,
-} from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 
 // The data that will be attached to the app element
@@ -208,7 +208,7 @@ export const App = () => {
           }}
           disabled={disabled}
         >
-          Add element to design
+          Add or update element
         </Button>
       </Rows>
     </div>

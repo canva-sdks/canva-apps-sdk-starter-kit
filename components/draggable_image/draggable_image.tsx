@@ -6,7 +6,7 @@ import type {
   UserSuppliedImageDragData,
 } from "@canva/design";
 import { ui } from "@canva/design";
-import styles from "./styles.css";
+import styles from "./draggable_image.css";
 
 type ClickableImageProps = Omit<
   React.ImgHTMLAttributes<HTMLImageElement>,

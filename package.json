@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
-    "@canva/app-ui-kit": "^1.0.0",
+    "@canva/app-ui-kit": "^3.0.0",
     "@canva/asset": "./sdk/asset",
     "@canva/design": "./sdk/design",
     "@canva/error": "./sdk/error",
@@ -70,7 +70,7 @@
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.2",
+    "typescript": "^5.2.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",

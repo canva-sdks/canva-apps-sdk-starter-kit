@@ -8,7 +8,8 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "lint:types": "tsc"
   },
   "author": "Canva Pty Ltd.",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -30,6 +31,6 @@
     "storybook": "^7.0.20"
   },
   "dependencies": {
-    "@canva/app-ui-kit": "^1.0.0-beta.2"
+    "@canva/app-ui-kit": "^3.0.0"
   }
 }

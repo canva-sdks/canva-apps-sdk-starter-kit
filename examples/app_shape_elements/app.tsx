@@ -1,17 +1,18 @@
-import { initAppElement } from "@canva/design";
 import {
   Button,
+  ColorSelector,
   Column,
   Columns,
   FormField,
+  MultilineInput,
   NumberInput,
+  PlusIcon,
   Rows,
   Text,
-  TextInput,
   Title,
 } from "@canva/app-ui-kit";
+import { initAppElement } from "@canva/design";
 import React from "react";
-import PlusIcon from "assets/icons/plus.svg";
 import styles from "styles/components.css";
 
 type AppElementData = {
@@ -120,12 +121,12 @@ export const App = () => {
           </Columns>
           {paths.map((path, outerIndex) => {
             return (
-              <Rows spacing="2u">
+              <Rows spacing="2u" key={outerIndex}>
                 <FormField
                   label="Line commands"
                   value={path.d}
                   control={(props) => (
-                    <TextInput
+                    <MultilineInput
                       {...props}
                       onChange={(value) => {
                         setState((prevState) => {
@@ -148,10 +149,9 @@ export const App = () => {
                 />
                 <FormField
                   label="Color"
-                  value={paths[outerIndex].fill.color}
-                  control={(props) => (
-                    <TextInput
-                      {...props}
+                  control={() => (
+                    <ColorSelector
+                      color={paths[outerIndex].fill.color}
                       onChange={(value) => {
                         setState((prevState) => {
                           return {
@@ -341,7 +341,7 @@ export const App = () => {
             disabled={disabled}
             stretch
           >
-            Add shape to design
+            Add or update shape
           </Button>
         </Rows>
       </Rows>

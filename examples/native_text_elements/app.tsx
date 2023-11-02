@@ -1,8 +1,6 @@
-import { addNativeElement } from "@canva/design";
-import React from "react";
-import styles from "styles/components.css";
 import {
   Button,
+  ColorSelector,
   FormField,
   Rows,
   Select,
@@ -10,6 +8,9 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
+import { addNativeElement } from "@canva/design";
+import React from "react";
+import styles from "styles/components.css";
 
 type FontStyle = "normal" | "italic";
 type FontWeight = "normal" | "bold";
@@ -67,10 +68,9 @@ export const App = () => {
         <Title size="small">Custom options</Title>
         <FormField
           label="Color"
-          value={color}
-          control={(props) => (
-            <TextInput
-              {...props}
+          control={() => (
+            <ColorSelector
+              color={color}
               onChange={(value) => {
                 setState((prevState) => {
                   return {

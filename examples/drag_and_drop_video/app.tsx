@@ -1,7 +1,7 @@
 import { Rows, Text, Title } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
-import { DraggableVideo } from "components/draggable_video";
 import { addNativeElement } from "@canva/design";
+import { DraggableVideo } from "components/draggable_video";
 import React from "react";
 import styles from "styles/components.css";
 

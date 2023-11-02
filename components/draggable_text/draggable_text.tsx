@@ -1,9 +1,8 @@
 import type { DraggableElementData } from "@canva/design";
-import * as React from "react";
-import styles from "styles/components.css";
 import { ui } from "@canva/design";
-import textStyles from "./styles.css";
 import clsx from "clsx";
+import * as React from "react";
+import styles from "./draggable_text.css";
 
 type DragProps = Omit<
   DraggableElementData["dragData"] & { type: "TEXT" },
@@ -96,7 +95,7 @@ export const DraggableText = (props: DraggableTextProps) => {
       <button
         style={style}
         onClick={onClick}
-        className={clsx(textStyles.draggableButton, containerClassName)}
+        className={clsx(styles.draggableButton, containerClassName)}
       >
         {Content}
       </button>

@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { MultilineInput } from "../../index";
+import React from "react";
+import {
+  CharacterCountDecorator,
+  MultilineInput,
+  WordCountDecorator,
+} from "../../index";
 
 /**
  * `<MultilineInput/>` allows users to enter longer text, potentially spanning multiple lines or paragraphs.
@@ -14,6 +19,12 @@ const meta: Meta<typeof MultilineInput> = {
   tags: ["autodocs"],
   args: {
     autoGrow: true,
+  },
+  argTypes: {
+    footer: {
+      // set the type to function to tell storybook not to allow users to provide input for this prop
+      type: "function",
+    },
   },
 };
 
@@ -53,4 +64,28 @@ export const MultilineInputWithMaxRows: Story = {
     placeholder:
       "This multiline input will only show a maximum of 2 row. Longer text will cause the input to scroll.",
   },
+};
+export const MultilineInputWithWordCountDecorator = (_) => {
+  const [value, setValue] = React.useState("hello world");
+
+  return (
+    <MultilineInput
+      placeholder="Placeholder"
+      value={value}
+      onChange={setValue}
+      footer={<WordCountDecorator max={10} />}
+    />
+  );
+};
+export const MultilineInputWithCharacterCountDecorator = (_) => {
+  const [value, setValue] = React.useState("hello world");
+
+  return (
+    <MultilineInput
+      placeholder="Placeholder"
+      value={value}
+      onChange={setValue}
+      footer={<CharacterCountDecorator max={15} />}
+    />
+  );
 };

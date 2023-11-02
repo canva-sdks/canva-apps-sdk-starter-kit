@@ -105,20 +105,6 @@ function buildConfig({
         },
         {
           test: /\.svg$/,
-          include: path.resolve(__dirname, "assets", "icons"),
-          use: [
-            {
-              loader: "@svgr/webpack",
-              options: {
-                icon: true,
-                template: createIconTemplate,
-              },
-            },
-          ],
-        },
-        {
-          test: /\.svg$/,
-          exclude: path.resolve(__dirname, "assets", "icons"),
           oneOf: [
             {
               issuer: /\.[jt]sx?$/,
@@ -178,35 +164,6 @@ function buildConfig({
     ],
     ...buildDevConfig(devConfig),
   };
-}
-
-/**
- * Defines the template that @svgr/webpack uses to generate React
- * components for the starter kit's icons.
- *
- * Learn more: https://react-svgr.com/docs/options/#template
- */
-function createIconTemplate(variables, { tpl }) {
-  return tpl`
-${variables.imports};
-${variables.interfaces};
-
-const SIZES_PX = {
-  tiny: 12,
-  small: 16,
-  medium: 24,
-  large: 32,
-}
-
-const DEFAULT_SIZE = "medium";
-
-const ${variables.componentName} = (${variables.props}) => {
-  const size = SIZES_PX[props.size] || SIZES_PX[DEFAULT_SIZE];
-  return React.cloneElement(${variables.jsx}, { ...props, width: size, height: size });
-};
- 
-${variables.exports};
-`;
 }
 
 /**

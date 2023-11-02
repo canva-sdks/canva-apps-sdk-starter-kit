@@ -83,16 +83,24 @@ export const App = () => {
           <Text>To use the data this app provides:</Text>
           <ul>
             <li className={styles.listItem}>
-              Mark your app as a data provider via the toggle in the developer
-              portal.
+              <Text>
+                Mark your app as a data provider via the toggle in the developer
+                portal.
+              </Text>
             </li>
             <li className={styles.listItem}>
-              Go to "Bulk Create" via the "Apps" tab in the Side Panel.
+              <Text>
+                Go to "Bulk Create" via the "Apps" tab in the Side Panel.
+              </Text>
             </li>
-            <li className={styles.listItem}>Select "More data sources".</li>
-            <li className={styles.listItem}>Select this app.</li>
             <li className={styles.listItem}>
-              Select which city's data you'd like to consume.
+              <Text>Select "More data sources".</Text>
+            </li>
+            <li className={styles.listItem}>
+              <Text>Select this app.</Text>
+            </li>
+            <li className={styles.listItem}>
+              <Text>Select which city's data you'd like to consume.</Text>
             </li>
           </ul>
         </Rows>

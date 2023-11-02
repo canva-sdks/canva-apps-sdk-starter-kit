@@ -5,6 +5,7 @@
   border-radius: 4px;
   cursor: pointer;
   background: transparent;
+  box-sizing: border-box;
 }
 
 .draggableAudioInner {

@@ -1,18 +1,18 @@
+import {
+  Box,
+  Button,
+  FormField,
+  Grid,
+  Rows,
+  Select,
+  Text,
+} from "@canva/app-ui-kit";
 import type { Placement } from "@canva/design";
 import {
   addNativeElement,
   getCurrentPageContext,
   initAppElement,
 } from "@canva/design";
-import {
-  Box,
-  Button,
-  FormField,
-  Rows,
-  Select,
-  Text,
-  TextInput,
-} from "@canva/app-ui-kit";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
@@ -179,8 +179,8 @@ export const App = () => {
         <FormField
           label="Select an image"
           control={(props) => (
-            <Box id={props.id} paddingTop="1u">
-              <div className={styles.thumbnailGrid}>
+            <Box id={props.id} padding="1u">
+              <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <img
                     className={clsx(
@@ -193,14 +193,9 @@ export const App = () => {
                     alt={item.title}
                   />
                 ))}
-              </div>
+              </Grid>
             </Box>
           )}
-        />
-        <FormField
-          label="Data URL"
-          value={images[imageId].imageSrc}
-          control={(props) => <TextInput {...props} />}
         />
         <FormField
           label="Placement"
@@ -227,37 +222,33 @@ export const App = () => {
             />
           )}
         />
-        <Rows spacing="3u">
-          <Button
-            variant="secondary"
-            onClick={async () => {
-              const placement = await getPlacement(state.placement);
-              appElementClient.addOrUpdateElement(
-                { imageId: state.imageId },
-                placement
-              );
-            }}
-            disabled={disabled}
-          >
-            {state.isEditingAppElement
-              ? "Update app element"
-              : "Add app element"}
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={async () => {
-              const placement = await getPlacement(state.placement);
-              addNativeElement({
-                type: "IMAGE",
-                dataUrl: state.dataUrl,
-                ...placement,
-              });
-            }}
-            disabled={disabled}
-          >
-            Add native element
-          </Button>
-        </Rows>
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            const placement = await getPlacement(state.placement);
+            appElementClient.addOrUpdateElement(
+              { imageId: state.imageId },
+              placement
+            );
+          }}
+          disabled={disabled}
+        >
+          {state.isEditingAppElement ? "Update app element" : "Add app element"}
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            const placement = await getPlacement(state.placement);
+            addNativeElement({
+              type: "IMAGE",
+              dataUrl: state.dataUrl,
+              ...placement,
+            });
+          }}
+          disabled={disabled}
+        >
+          Add native element
+        </Button>
       </Rows>
     </div>
   );
