@@ -12,7 +12,7 @@ import { Box } from "../../index";
  * To adjust spacing between elements, use layout components (e.g: Rows, Columns).
  */
 const meta: Meta<typeof Box> = {
-  title: "@canva/app-ui-kit/Box",
+  title: "@canva/app-ui-kit/Layout/Box",
   component: Box,
   tags: ["autodocs"],
   args: { children: "Child of Box" },

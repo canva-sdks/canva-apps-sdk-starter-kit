@@ -1,10 +1,10 @@
 import { Box, Rows } from "@canva/app-ui-kit";
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { Text } from "../index";
+import { Text } from "../../index";
 
 const meta: Meta<typeof Text> = {
-  title: "@canva/app-ui-kit/Text",
+  title: "@canva/app-ui-kit/Typography/Text",
   component: Text,
   tags: ["autodocs"],
   args: {

@@ -1,6 +1,7 @@
 const di = window.canva.designInteraction;
 export const addNativeElement = di.addNativeElement.bind(di);
 export const addPage = di.addPage.bind(di);
+export const setCurrentPageBackground = di.setCurrentPageBackground.bind(di);
 export const addAudioTrack = di.addAudioTrack.bind(di);
 export const getCurrentPageContext = di.getCurrentPageContext.bind(di);
 export const getDefaultPageDimensions = di.getDefaultPageDimensions.bind(di);
