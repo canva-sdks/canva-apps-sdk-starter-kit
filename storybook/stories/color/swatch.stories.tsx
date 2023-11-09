@@ -2,10 +2,14 @@ import { action } from "@storybook/addon-actions";
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Column, Columns, Rows, Title } from "@canva/app-ui-kit";
-import { Swatch } from "../index";
+import { Swatch } from "../../index";
 
+/**
+ * The `<Swatch/>` component provides a visual representation of a color.
+ * It is often used as a trigger to open a Color Picker dropdown and represent the color selected by the user.
+ */
 const meta: Meta<typeof Swatch> = {
-  title: "@canva/app-ui-kit/Swatch",
+  title: "@canva/app-ui-kit/Color/Swatch",
   component: Swatch,
   tags: ["autodocs"],
   args: {
@@ -20,10 +24,6 @@ const meta: Meta<typeof Swatch> = {
   },
 };
 
-/**
- * The <Swatch/> component provides a visual representation of a color.
- * It is often used as a trigger to open a Color Picker dropdown and represent the color selected by the user.
- */
 export default meta;
 type Story = StoryObj<typeof Swatch>;
 

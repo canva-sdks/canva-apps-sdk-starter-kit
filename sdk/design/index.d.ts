@@ -16,6 +16,19 @@ export declare function addNativeElement(
 
 /**
  * @public
+ * Adds a new page immediately after the currently selected page.
+ * @param opts - Configuration for the new page to be added.
+ */
+export declare function addPage(opts?: {
+  /**  Elements to be added to the page */
+  elements?: NativeElementWithBox[];
+
+  /**  A page title which must be no longer than 255 characters */
+  title?: string;
+}): Promise<void>;
+
+/**
+ * @public
  * A callback that runs when an app element's data is created or updated,
  * or when the user selects an existing app element.
  */
@@ -438,6 +451,19 @@ export declare type Fill = {
  * @returns Page context of currently selected page
  */
 export declare function getCurrentPageContext(): Promise<PageContext>;
+
+/**
+ * @public
+ * Gets the default dimensions that a new page will have when it is added to a design.
+ * It is possible for a user to resize a page without resizing the entire design, e.g. by clicking
+ * "Expand to Whiteboard". However, there will always be a single set of default dimensions for a
+ * design that is applied whenever a new page is created.
+ *
+ * Returns `undefined` if the design is unbounded (e.g. Whiteboard or Doc).
+ */
+export declare function getDefaultPageDimensions(): Promise<
+  Dimensions | undefined
+>;
 
 declare type Height = {
   width: "auto";
@@ -1072,7 +1098,7 @@ export declare interface UI {
    */
   startDrag<E extends HTMLElement>(
     event: DragStartEvent<E>,
-    data:
+    dragData:
       | TextDragConfig
       | AudioDragConfig
       | EmbedDragConfig

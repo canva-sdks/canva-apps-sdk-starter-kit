@@ -1,7 +1,11 @@
-import { Button, Rows, Text, Title } from "@canva/app-ui-kit";
-import type { NativeEmbedElement, NativeGroupElement } from "@canva/design";
+import { Button, Rows, Text } from "@canva/app-ui-kit";
+import type {
+  Dimensions,
+  NativeEmbedElement,
+  NativeGroupElement,
+} from "@canva/design";
+import { addPage, getDefaultPageDimensions } from "@canva/design";
 import { CanvaError } from "@canva/error";
-import { addPage, getDefaultPageDimensions } from "@canva/preview/design";
 import weather from "assets/images/weather.png";
 import React from "react";
 import styles from "styles/components.css";
@@ -40,14 +44,37 @@ const embedElement: NativeEmbedElement = {
 
 export const App = () => {
   const [error, setError] = React.useState<string | undefined>();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [defaultPageDimensions, setDefaultPageDimensions] = React.useState<
+    Dimensions | undefined
+  >();
+
+  React.useEffect(() => {
+    getDefaultPageDimensions().then((dimensions) => {
+      // Dimensions are undefined if the user is in an unbounded design (e.g. Whiteboard).
+      if (!dimensions) {
+        setError(
+          "Adding pages in unbounded documents, such as Whiteboards, is not supported."
+        );
+      }
+      setDefaultPageDimensions(dimensions);
+    });
+  }, []);
+
   const addNewPage = async () => {
+    setIsLoading(true);
     try {
-      const defaultPageDimensions = await getDefaultPageDimensions();
+      // Dimensions are undefined if the user is in an unbounded design (e.g. Whiteboard).
+      if (!defaultPageDimensions) {
+        return;
+      }
+      setError(undefined);
       const headerElementWidth =
         defaultPageDimensions.width * HEADER_ELEMENT_SCALE_FACTOR;
       const embedElementWidth =
         defaultPageDimensions.width * EMBED_ELEMENT_SCALE_FACTOR;
       await addPage({
+        title: "Weather forecast",
         elements: [
           {
             ...headerElement,
@@ -88,19 +115,27 @@ export const App = () => {
             break;
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
-        <Title>Pages Example App</Title>
         <Text>
           This example demonstrates how apps can add a new page with
           pre-populated elements.
         </Text>
         {error && <Text tone="critical">{error}</Text>}
-        <Button variant="primary" onClick={addNewPage} stretch>
+        <Button
+          variant="primary"
+          onClick={addNewPage}
+          stretch
+          // Default page dimensions are undefined in unbounded designs, so the button remains disabled.
+          disabled={!defaultPageDimensions}
+          loading={isLoading}
+        >
           Add page
         </Button>
       </Rows>

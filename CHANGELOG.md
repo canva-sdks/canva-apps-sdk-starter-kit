@@ -1,9 +1,29 @@
 # Changelog
 
+## 2023-11-09
+
+### 🔨 Breaking changes
+- `@canva/preview/design`
+  - Updated the `design.getDefaultPageDimensions` to return `Promise<undefined>` when in an unbounded document. [See the documentation](https://www.canva.dev/docs/apps/api/design-get-default-page-dimensions/).
+
+### 🧰 Added
+- `@canva/design`
+  - Added `addPage` which was previously in preview mode. [See the documentation](https://www.canva.dev/docs/apps/api/design-add-page/).
+    - Added a `title` option, which sets the title for the new page being added.
+  - Added `getDefaultPageDimensions` which was previously in preview mode. [See the documentation](https://www.canva.dev/docs/apps/api/design-get-default-page-dimensions/).
+- `@canva/preview`
+  - Added a `background` option in the `design.addPage` API, which sets the background for the new page being added.
+  - Added `design.setCurrentPageBackground`, which sets the background for the currently opened page.
+
+### 🐞 Fixed
+- Made `ColorSelector` component story stateful, such that the component is updated whenever the color changes
+
+### 🔧 Changed
+- Grouped stories in `/storybook/stories` by functionality
+
 ## 2023-11-02
 
 ### 🔨 Breaking changes
-
 - Upgraded `app-ui-kit` to version `3.0.0`. Please see the `api-ui-kit` [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog) for the list of new components added, and any breaking changes
 - Updated the `typescript` package to version 5.2.2. [See the release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/).
 
