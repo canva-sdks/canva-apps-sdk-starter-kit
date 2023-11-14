@@ -1,5 +1,14 @@
-import { Button, Rows, FileInput, Text } from "@canva/app-ui-kit";
-import { ImageMimeType } from "@canva/asset";
+import {
+  Button,
+  Rows,
+  FileInput,
+  Text,
+  FileInputItem,
+  Title,
+} from "@canva/app-ui-kit";
+import { ImageMimeType, upload } from "@canva/asset";
+import { addNativeElement } from "@canva/design";
+import { auth } from "@canva/user";
 import * as React from "react";
 import styles from "styles/components.css";
 
@@ -65,19 +74,52 @@ export const App = () => {
     }
     setIsLoading(true);
 
+    const token = await auth.getCanvaUserToken();
+
     // TODO: Make fetch API call to get colorized image
+    const response = await fetch(COLORIZER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ dataUri: file.dataUri }),
+    });
+
+    const { id, mimeType, thumbnailUrl, url }: ColorizedImage =
+      await response.json();
 
     // TODO: Set colorized image URL
+    setColorizedImageUrl(url);
 
     // TODO: Upload asset to user library
+    const result = await upload({
+      type: "IMAGE",
+      id,
+      mimeType,
+      thumbnailUrl,
+      url,
+    });
 
     // TODO: Add to design
+    await addNativeElement({
+      type: "IMAGE",
+      ref: result.ref,
+    });
 
     setIsLoading(false);
   };
 
   const onDropAcceptedFiles = async ([file]: File[]) => {
     // TODO: Encode file to base64 and set file state
+    const dataUri = await fileToBase64(file);
+
+    setFile({
+      dataUri,
+      name: file.name,
+    });
+
+    setColorizedImageUrl(undefined);
   };
 
   return (
@@ -95,18 +137,28 @@ export const App = () => {
         />
         {file && (
           <>
-            {/** TODO: Preview selected file and image */}
+            <FileInputItem
+              label={file.name}
+              onDeleteClick={() => {
+                setFile(undefined);
+                setColorizedImageUrl(undefined);
+              }}
+            />
+            <Title>Original:</Title>
+            <img src={file.dataUri} alt={file.name} />
           </>
         )}
         {colorizedImageUrl && (
           <>
-            {/** TODO: Preview colorized image */}
+            <Title>Colorized:</Title>
+            <img src={colorizedImageUrl} alt={file!.name} />
           </>
         )}
         <Button
           variant="primary"
           onClick={colorize}
           loading={isLoading}
+          disabled={file === undefined}
           stretch
         >
           Colorize
