@@ -11,15 +11,49 @@ This repo contains everything you need to get an app up and running in a matter 
 - Node.js `v18`
 - npm `v9`
 
-**Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The .nvmrc file in the root directory of this repo will ensure the correct version is used.
+**Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The `.nvmrc` file in the root directory of this repo will ensure the correct version is used.
+
+### Installing or updating nvm
+
+To install or update nvm, you should run the [install script](https://github.com/nvm-sh/nvm#installing-and-updating). This can be done either by downloading and running the script manually or by using the following cURL or Wget command:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+```
+
+```bash
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+```
+
+**Note:**
+After installing or updating nvm, you need to restart your terminal to apply the changes.
 
 ## Quick start
 
-```bash
-git clone git@github.com:canva-sdks/canva-apps-sdk-starter-kit.git
-cd canva-apps-sdk-starter-kit
-npm install
-```
+1. **Clone this repository:**
+ 
+   ```bash
+   git clone git@github.com:canva-sdks/canva-apps-sdk-starter-kit.git
+   ```
+   
+2. **Navigate to the repository directory**:
+   ```bash
+   cd canva-apps-sdk-starter-kit
+   ```
+
+3. **Switch to the required Node.js version:** 
+This repository includes an `.nvmrc` file in the root directory. If you are using nvm, navigate to the root directory of the project and run the following command to switch to the correct Node.js version:
+   ```bash
+   nvm use
+   ```
+
+4. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+These steps will ensure that you are using the correct version of Node.js as specified by the project and that all necessary dependencies are installed.
 
 ## Using the boilerplate
 
