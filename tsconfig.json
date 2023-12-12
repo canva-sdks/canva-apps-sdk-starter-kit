@@ -40,6 +40,7 @@
       "@canva/design": ["./sdk/design"],
       "@canva/error": ["./sdk/error"],
       "@canva/user": ["./sdk/user"],
+      "@canva/platform": ["./sdk/platform"],
       "@canva/preview/*": ["./sdk/preview/*"]
     }
   },
