@@ -1,5 +1,14 @@
 # Changelog
 
+## 2023-12-12
+
+### 🧰 Added
+- `@canva/platform`
+  - A new SDK which contains the [requestOpenExternalUrl](https://www.canva.dev/docs/apps/api/platform-request-open-external-url) and [getPlatformInfo](https://www.canva.dev/docs/apps/api/platform-get-platform-info/) methods.
+
+### 🔧 Changed
+- Updated `nodemon` to version `3.0.1`. [Changelog](https://github.com/remy/nodemon/releases).
+
 ## 2023-11-09
 
 ### 🔨 Breaking changes
