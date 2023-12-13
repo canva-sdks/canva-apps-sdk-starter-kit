@@ -9,8 +9,8 @@
     "start": "node ./scripts/start.js",
     "build": "webpack --config webpack.config.js --mode production",
     "lint:types": "tsc",
-    "format": "prettier '{components,examples,src,utils,storybook}/**/*.{css,ts,tsx}' --no-config --write",
-    "format:check": "prettier '{components,examples,src,utils,storybook}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
+    "format": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --write",
+    "format:check": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
     "format:file": "prettier $1 --no-config --write",
     "test": "jest --no-cache",
     "test:watch": "jest --no-cache --watch"
