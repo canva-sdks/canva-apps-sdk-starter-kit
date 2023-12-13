@@ -108,6 +108,9 @@ const getDragDataAndProps = (
   };
 };
 
+/**
+ * @deprecated use `VideoCard` from `@canva/app-ui-kit` instead.
+ */
 export const DraggableVideo = (props: DraggableVideoProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
   const [showVideo, setShowVideo] = React.useState(false);

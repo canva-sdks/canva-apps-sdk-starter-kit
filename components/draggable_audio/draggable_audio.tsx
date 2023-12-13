@@ -49,6 +49,9 @@ const getDragDataAndProps = (
   };
 };
 
+/**
+ * @deprecated use `AudioCard` from `@canva/app-ui-kit` instead.
+ */
 export const DraggableAudio = (props: ElementProps) => {
   const [isHovering, setIsHovering] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);

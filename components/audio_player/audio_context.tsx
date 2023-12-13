@@ -12,6 +12,7 @@ export const AudioContext = React.createContext<AudioContextValue | undefined>(
 );
 
 /**
+ *  @deprecated use `AudioContextProvider` along with `AudioCard` from `@canva/app-ui-kit` instead.
  *  This provider is used to track the currently playing audio track
  *  By using this, we can ensure only 1 audio track is playing at a time.
  *  It also manages the situation where a user tries to play an audio file while another is playing.

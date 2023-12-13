@@ -1,16 +1,15 @@
-import { Rows, Text, Title } from "@canva/app-ui-kit";
+import { Rows, Text, Title, ImageCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
-import { addNativeElement } from "@canva/design";
+import { addNativeElement, ui } from "@canva/design";
 import dog from "assets/images/dog.jpg";
-import { DraggableImage } from "components/draggable_image";
 import React from "react";
 import styles from "styles/components.css";
 
-const uploadImage = async () => {
-  const image = await upload({
+const uploadExternalImage = () => {
+  return upload({
     // An alphanumeric string that is unique for each asset. If given the same
     // id, the existing asset for that id will be used instead.
-    id: "uniqueImageIdentifier",
+    id: "uniqueExternalImageIdentifier",
     mimeType: "image/jpeg",
     thumbnailUrl:
       "https://www.canva.dev/example-assets/image-import/grass-image-thumbnail.jpg",
@@ -19,20 +18,65 @@ const uploadImage = async () => {
     width: 320,
     height: 212,
   });
-
-  return image;
 };
 
-const insertFromDataUrl = () => {
+const uploadLocalImage = () => {
+  return upload({
+    // An alphanumeric string that is unique for each asset. If given the same
+    // id, the existing asset for that id will be used instead.
+    id: "uniqueLocalImageIdentifier",
+    mimeType: "image/jpeg",
+    thumbnailUrl: dog,
+    type: "IMAGE",
+    url: dog,
+    width: 100,
+    height: 100,
+  });
+};
+
+const insertLocalImage = () => {
   addNativeElement({ type: "IMAGE", dataUrl: dog });
 };
 
 const insertExternalImage = async () => {
-  const { ref } = await uploadImage();
+  const { ref } = await uploadExternalImage();
   addNativeElement({ type: "IMAGE", ref });
 };
 
 export const App = () => {
+  const onDragStartForLocalImage = (event: React.DragEvent<HTMLElement>) => {
+    ui.startDrag(event, {
+      type: "IMAGE",
+      resolveImageRef: uploadLocalImage,
+      previewUrl: dog,
+      previewSize: {
+        width: 100,
+        height: 100,
+      },
+      fullSize: {
+        width: 100,
+        height: 100,
+      },
+    });
+  };
+
+  const onDragStartForExternalImage = (event: React.DragEvent<HTMLElement>) => {
+    ui.startDrag(event, {
+      type: "IMAGE",
+      resolveImageRef: uploadExternalImage,
+      previewUrl:
+        "https://www.canva.dev/example-assets/image-import/grass-image.jpg",
+      previewSize: {
+        width: 320,
+        height: 212,
+      },
+      fullSize: {
+        width: 320,
+        height: 212,
+      },
+    });
+  };
+
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
@@ -41,33 +85,17 @@ export const App = () => {
           images.
         </Text>
         <Rows spacing="1u">
-          <Title size="small">Default size</Title>
+          <Title size="small">Local image</Title>
           <Text size="small" tone="tertiary">
-            This image doesn't alter the{" "}
-            <code className={styles.code}>dragData</code>, so the dragged image
-            is the default size.
+            This local image is made draggable via drag and drop and asset
+            upload.
           </Text>
-          <DraggableImage
-            src={dog}
-            onClick={insertFromDataUrl}
-            style={{ width: "100px", height: "100px", borderRadius: "2px" }}
-          />
-        </Rows>
-        <Rows spacing="1u">
-          <Title size="small">Custom size</Title>
-          <Text size="small" tone="tertiary">
-            This image <em>does</em> alter the{" "}
-            <code className={styles.code}>dragData</code>, so the dragged image
-            is a custom size.
-          </Text>
-          <DraggableImage
-            src={dog}
-            onClick={insertFromDataUrl}
-            style={{ width: "100px", height: "100px", borderRadius: "2px" }}
-            fullSize={{
-              width: 50,
-              height: 50,
-            }}
+          <ImageCard
+            ariaLabel="Add image to design"
+            alt="dog image"
+            thumbnailUrl={dog}
+            onDragStart={onDragStartForLocalImage}
+            onClick={insertLocalImage}
           />
         </Rows>
         <Rows spacing="1u">
@@ -76,15 +104,12 @@ export const App = () => {
             This image is an external https image made draggable via drag and
             drop and asset upload.
           </Text>
-          <DraggableImage
-            src={
-              "https://www.canva.dev/example-assets/image-import/grass-image.jpg"
-            }
+          <ImageCard
+            ariaLabel="Add image to design"
+            alt="grass image"
+            thumbnailUrl="https://www.canva.dev/example-assets/image-import/grass-image.jpg"
             onClick={insertExternalImage}
-            width="320px"
-            height="212px"
-            style={{ width: "100%" }}
-            resolveImageRef={uploadImage}
+            onDragStart={onDragStartForExternalImage}
           />
         </Rows>
       </Rows>
