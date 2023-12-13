@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
-    "@canva/app-ui-kit": "^3.0.0",
+    "@canva/app-ui-kit": "^3.1.0",
     "@canva/asset": "./sdk/asset",
     "@canva/design": "./sdk/design",
     "@canva/error": "./sdk/error",
