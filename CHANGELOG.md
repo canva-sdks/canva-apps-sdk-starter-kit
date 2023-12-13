@@ -1,5 +1,31 @@
 # Changelog
 
+## 2023-12-13
+
+### 🧰 Added
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.1.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of new components added.
+- `@canva/platform`
+  - Added an example in [/examples/open_external_link](/examples/open_external_link)
+
+### 🗑️ Removed
+- `/storybook`
+  - App UI Kit stories are now published on [canva.dev](https://www.canva.dev/docs/apps/app-ui-kit/storybook/) 🎉 therefore its source code is removed from the starter kit.
+
+### ⛔️ Deprecated
+- The following components in [/components](/components/) have been deprecated in favor of new ones from `app-ui-kit`:
+
+  | Deprecated Component   | New Component         |
+  |------------------------|-----------------------|
+  | `DraggableVideo`       | `VideoCard`           |
+  | `DraggableText`        | `TypographyCard`      |
+  | `DraggableImage`       | `ImageCard`           |
+  | `DraggableEmbed`       | `EmbedCard`           |
+  | `DraggableAudio`       | `AudioCard`           |
+  | `AudioContextProvider` | `AudioContextProvider`|
+
+  The drag and drop example apps have been updated to use the new components accordingly.
+
 ## 2023-12-12
 
 ### 🧰 Added
