@@ -38,6 +38,9 @@ function PlayingCircle({ duration }: { duration: number }) {
   );
 }
 
+/**
+ * @deprecated use `AudioCard` from `@canva/app-ui-kit` instead
+ */
 export function AudioCover({
   isHovering = false,
   url,

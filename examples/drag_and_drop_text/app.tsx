@@ -1,6 +1,11 @@
-import { FormField, Rows, Select, Text } from "@canva/app-ui-kit";
-import { addNativeElement } from "@canva/design";
-import { DraggableText } from "components/draggable_text";
+import {
+  FormField,
+  Rows,
+  Select,
+  Text,
+  TypographyCard,
+} from "@canva/app-ui-kit";
+import { addNativeElement, ui } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
 
@@ -16,7 +21,7 @@ type DraggableTextProperties = {
   decoration?: Decoration;
 };
 
-const content = "Drag me!";
+const content = "Add a little bit of body text";
 
 export const App = () => {
   const [{ fontStyle, fontWeight, decoration, textAlign }, setState] =
@@ -26,6 +31,17 @@ export const App = () => {
       fontWeight: "normal",
       textAlign: "start",
     });
+
+  const onDragStart = (event: React.DragEvent<HTMLElement>) => {
+    ui.startDrag(event, {
+      type: "TEXT",
+      textAlign,
+      decoration,
+      fontStyle,
+      fontWeight,
+      children: [content],
+    });
+  };
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="4u">
@@ -122,13 +138,8 @@ export const App = () => {
               />
             )}
           />
-          <DraggableText
-            style={{
-              textAlign,
-              textDecorationLine: decoration,
-              fontStyle,
-              fontWeight,
-            }}
+          <TypographyCard
+            ariaLabel="Add text to design"
             onClick={() =>
               addNativeElement({
                 type: "TEXT",
@@ -139,11 +150,12 @@ export const App = () => {
                 children: [content],
               })
             }
+            onDragStart={onDragStart}
           >
             <Text variant={fontWeight === "bold" ? "bold" : "regular"}>
               {content}
             </Text>
-          </DraggableText>
+          </TypographyCard>
         </Rows>
       </Rows>
     </div>

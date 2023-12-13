@@ -113,6 +113,9 @@ const getDragDataAndProps = (
   }
 };
 
+/**
+ * @deprecated use `ImageCard` from `@canva/app-ui-kit` instead.
+ */
 export const DraggableImage = (props: DraggableImageProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
   const [canDrag, setCanDrag] = React.useState(false);

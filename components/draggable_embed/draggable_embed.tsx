@@ -15,6 +15,9 @@ export type DraggableEmbedProps = React.HTMLAttributes<HTMLElement> &
     subtitle?: string;
   };
 
+/**
+ * @deprecated use `EmbedCard` from `@canva/app-ui-kit` instead.
+ */
 export const DraggableEmbed: React.FC<DraggableEmbedProps> = ({
   previewUrl,
   embedUrl,

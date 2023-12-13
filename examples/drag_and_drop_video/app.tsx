@@ -1,12 +1,11 @@
-import { Rows, Text, Title } from "@canva/app-ui-kit";
+import { Rows, Text, Title, VideoCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
-import { addNativeElement } from "@canva/design";
-import { DraggableVideo } from "components/draggable_video";
+import { VideoDragConfig, addNativeElement, ui } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
 
-const uploadVideo = async () => {
-  const video = await upload({
+const uploadVideo = () => {
+  return upload({
     // An alphanumeric string that is unique for each asset. If given the same
     // id, the existing asset for that id will be used instead.
     id: "uniqueBeachVideoIdentifier",
@@ -20,13 +19,25 @@ const uploadVideo = async () => {
     width: 320,
     height: 180,
   });
-
-  return video;
 };
 
 const insertVideo = async () => {
   const { ref } = await uploadVideo();
   return addNativeElement({ type: "VIDEO", ref });
+};
+
+const onDragStart = (event: React.DragEvent<HTMLElement>) => {
+  const dragData: VideoDragConfig = {
+    type: "VIDEO",
+    resolveVideoRef: uploadVideo,
+    previewSize: {
+      width: 320,
+      height: 180,
+    },
+    previewUrl:
+      "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",
+  };
+  ui.startDrag(event, dragData);
 };
 
 export const App = () => {
@@ -43,15 +54,14 @@ export const App = () => {
             This video is an external https video made draggable via drag and
             drop and asset upload.
           </Text>
-          <DraggableVideo
-            onClick={insertVideo}
-            width={320}
-            height={180}
-            thumbnailImageSrc="https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg"
-            thumbnailVideoSrc="https://www.canva.dev/example-assets/video-import/beach-thumbnail-video.mp4"
+          <VideoCard
+            ariaLabel="Add video to design"
+            thumbnailUrl="https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg"
+            videoPreviewUrl="https://www.canva.dev/example-assets/video-import/beach-thumbnail-video.mp4"
             durationInSeconds={7}
-            resolveVideoRef={uploadVideo}
             mimeType="video/mp4"
+            onDragStart={onDragStart}
+            onClick={insertVideo}
           />
         </Rows>
       </Rows>

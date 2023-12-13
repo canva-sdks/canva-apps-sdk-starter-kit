@@ -9,8 +9,8 @@
     "start": "node ./scripts/start.js",
     "build": "webpack --config webpack.config.js --mode production",
     "lint:types": "tsc",
-    "format": "prettier '{components,examples,src,utils,storybook}/**/*.{css,ts,tsx}' --no-config --write",
-    "format:check": "prettier '{components,examples,src,utils,storybook}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
+    "format": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --write",
+    "format:check": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
     "format:file": "prettier $1 --no-config --write",
     "test": "jest --no-cache",
     "test:watch": "jest --no-cache --watch"
@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
-    "@canva/app-ui-kit": "^3.0.0",
+    "@canva/app-ui-kit": "^3.1.0",
     "@canva/asset": "./sdk/asset",
     "@canva/design": "./sdk/design",
     "@canva/error": "./sdk/error",

@@ -28,6 +28,9 @@ export type DraggableTextProps = React.HTMLAttributes<HTMLElement> &
     | { containerClassName?: never; onClick?: never }
   );
 
+/**
+ * @deprecated use `TypographCard` from `@canva/app-ui-kit` instead.
+ */
 export const DraggableText = (props: DraggableTextProps) => {
   const [node, setNode] = React.useState<HTMLElement | null>();
   const [isDragging, setIsDragging] = React.useState(false);

@@ -6,5 +6,3 @@ node_modules
 yarn-error.log
 dist
 secrets.json
-
-/storybook/storybook-static
