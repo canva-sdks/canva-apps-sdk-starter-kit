@@ -20,7 +20,7 @@ const checkAuthenticationStatus = async (
 ): Promise<State> => {
   /**
    * Send a request to an endpoint that checks if the user is authenticated.
-   * This is a (very) rudimentary implementation.
+   * This is example code, intended to convey the basic idea. When implementing this in your app, you might want more advanced checks.
    *
    * Note: You must register the provided endpoint via the Developer Portal.
    */

@@ -27,7 +27,7 @@ type AppElementData = {
   decoration: Decoration;
   textAlign: TextAlign;
   width: number;
-  rotation: number | undefined;
+  rotation: number;
   useCustomWidth: boolean;
 };
 
