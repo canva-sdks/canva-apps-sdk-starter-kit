@@ -23,7 +23,6 @@ export declare function addPage(opts?: {
   /**  Elements to be added to the page */
   elements?: NativeElementWithBox[];
   /**
-   * @beta
    * The page background. This can be a solid color, an image or a video.
    **/
   background?: PageBackgroundFill;
@@ -98,10 +97,7 @@ export declare type AppElementRenderer<A extends AppElementData> = (
  * A return value of {@link AppElementRenderer} function.
  * It is an array of elements to render within an app element.
  */
-export declare type AppElementRendererOutput = Exclude<
-  NativeSimpleElementWithBox,
-  NativeVideoElementWithBox
->[];
+export declare type AppElementRendererOutput = NativeSimpleElementWithBox[];
 
 /**
  * @public
@@ -172,15 +168,27 @@ declare type CommonImageDragConfig = {
 };
 
 /**
- * @beta
- * A mapping / transformation function to be executed, per-element, over the
- * elements contained in a selection event. This function is expected to return a
- * new content state, and the matching element will be coerced with a best-effort
- * attempt to match that specified state.
+ * @public
+ * A snapshot of some part of the document content.
+ *
+ * @remarks
+ * You can mutate the values in the `contents` array and then persist those changes with the `save` method.
  */
-export declare type ContentUpdateApplier<Scope extends SelectionScope> = (
-  state: SelectionValue<Scope>
-) => SelectionUpdateValue<Scope> | Promise<SelectionUpdateValue<Scope>>;
+export declare interface ContentDraft<T> {
+  /**
+   * The selected content.
+   */
+  readonly contents: readonly T[];
+  /**
+   * Saves changes made to items in the `contents` array.
+   * Once saved, those changes are reflected in the user's design.
+   *
+   * @remarks
+   * Any other changes to the content since calling the `read` method, such as the user editing the content directly, will be overwritten.
+   * Only properties that are different from the original state are written to the design.
+   */
+  save(): Promise<void>;
+}
 
 /**
  * @public
@@ -197,36 +205,27 @@ export declare type Coordinates = {
   y: number;
 };
 
-/** @beta */
+/**
+ * @public
+ * Provides methods for interacting with the user's selected content, such as images or text.
+ */
 export declare type DesignSelection = {
   /**
-   * @beta
-   * Registers a callback for a specific type of element content, which is called when the user
-   * changes the selection.
+   * Registers a callback that runs when a user selects an element that contains the specified type of content.
+   *
+   * @remarks
+   * The callback fires immediately if content is already selected.
    */
   registerOnChange<Scope extends SelectionScope>(opts: {
-    /** The type of element content to subscribe selection changes for */
+    /**
+     * The type of content that, when selected, triggers the `onChange` callback.
+     */
     scope: Scope;
-    /** The callback that runs when the selection changes. */
+    /**
+     * The callback to run when the selection changes.
+     */
     onChange(event: SelectionEvent<Scope>): void;
-  }): () => Promise<void>;
-  /**
-   * @beta
-   * Runs a transform function over the specified change event; the function is expected to
-   * return a new content state, which is applied to the elements that were contained in the
-   * selection event.
-   * This "setContent" is best-effort, and the final state of the element is not guaranteed
-   * to be identical to the specified state.
-   * @param event - The selection event that `applier` will be executed over
-   * @param applier - A mapping / transformation function to be executed, per-element, over the
-   *           elements contained in the selection event. This function is expected to return a
-   *           new content state, and the matching element will be coerced with a best-effort
-   *           attempt to match that specified state.
-   */
-  setContent<Scope extends SelectionScope>(
-    event: SelectionEvent<Scope>,
-    applier: ContentUpdateApplier<Scope>
-  ): Promise<void>;
+  }): () => void;
 };
 
 /**
@@ -491,6 +490,29 @@ export declare type Fill = {
    */
   asset?: ImageFill | VideoFill;
 };
+
+/**
+ * @beta
+ * A reference to a font that can be used in other parts of the SDK.
+ */
+export declare type FontRef = string & {
+  __fontRef: never;
+};
+
+/**
+ * @public
+ * Font weights supported in the SDK.
+ **/
+declare type FontWeight =
+  | "normal"
+  | "thin"
+  | "extralight"
+  | "light"
+  | "medium"
+  | "semibold"
+  | "bold"
+  | "ultrabold"
+  | "heavy";
 
 /**
  * Allows to get the context of currently selected page.
@@ -903,7 +925,7 @@ export declare type NativeVideoElementWithBox = NativeVideoElement & Box;
 declare type ObjectPrimitive = Boolean | String;
 
 /**
- * @beta
+ * @public
  * The appearance of a page's background.
  */
 export declare type PageBackgroundFill = Pick<Fill, "asset" | "color">;
@@ -989,9 +1011,9 @@ declare type Position = {
  * The types of primitive values that can be stored within an app element's data.
  *
  * @remarks
- * All types of primitives are supported except for symbols.
+ * All types of primitives are supported except for symbols and bigints.
  */
-declare type Primitive = undefined | null | number | boolean | string | bigint;
+declare type Primitive = undefined | null | number | boolean | string;
 
 /**
  * @public
@@ -1003,67 +1025,82 @@ export declare function requestExport(
 ): Promise<ExportResponse>;
 
 /**
- * @beta
+ * @public
  * An alias for the DesignSelection interface, providing access to design selection related functionality
  */
 export declare const selection: DesignSelection;
 
 /**
- * @beta
- * An event representing a new selection. This event only contains basic information about the
- * selection; to get the actual contents, you will need to use `selection.apply`.
+ * @public
+ * Information about the user's selection. To access the selected content, call the `read` method.
  */
-export declare type SelectionEvent<Scope extends SelectionScope> = {
-  /** A binding ID for this event; this should not be used or modified. */
-  readonly _id: SelectionId;
-  /** The SelectionScope that this event is bound to. */
-  scope: Scope;
-  /** The number of elements in the selection. */
-  count: number;
-};
+export declare interface SelectionEvent<Scope extends SelectionScope> {
+  /**
+   * The type of content that's selected.
+   */
+  readonly scope: Scope;
+  /**
+   * The number of selected elements.
+   */
+  readonly count: number;
+  /**
+   * Creates a snapshot of the selected content and returns a *draft* object.
+   * The draft has a mutable `contents` property for making changes to the selected content.
+   * Any changes made to `contents` are not immediately persisted or reflected in the user's design.
+   * To persist the changes, call the `save` method that's available via the draft.
+   *
+   * @example Replacing text
+   * ```
+   * const draft = await selectionEvent.read();
+   *
+   * for(const content of draft.contents) {
+   *     // This change won't immediately appear in the user's design
+   *     content.text = "This is the new text";
+   * }
+   *
+   * // The changes will now appear in the user's design
+   * await draft.save();
+   * ```
+   */
+  read(): Promise<ContentDraft<SelectionValue<Scope>>>;
+}
 
 /**
- * @beta
+ * @public
+ * The type of content that apps can detect selection changes on.
  */
-export declare type SelectionId = string & {
-  _selectionEventId: never;
-};
+export declare type SelectionScope = "plaintext" | "image";
 
 /**
- * @beta
- * List of available selection scopes, to be used when registering a selection content listener.
- */
-export declare type SelectionScope = "text" | "image";
-
-/**
- * @beta
- * The state that the `selection.apply`'s transformer is expected to return.
- */
-export declare type SelectionUpdateValue<Scope extends SelectionScope> = {
-  ["text"]: {
-    text: string;
-  };
-  ["image"]: {
-    ref: ImageRef;
-  };
-}[Scope];
-
-/**
- * @beta
- * The state that the `selection.apply` function passes as a parameter to the applier, based on the
- * specified SelectionScope.x
+ * @public
+ * The selected content.
+ *
+ * @remarks
+ * The value depends on the {@link SelectionScope}.
  */
 export declare type SelectionValue<Scope extends SelectionScope> = {
-  ["text"]: {
+  /**
+   * The selected content when {@link SelectionScope} is `"plaintext"`.
+   */
+  ["plaintext"]: {
+    /**
+     * The text content of the element as plain text.
+     */
     text: string;
   };
+  /**
+   * The selected content when {@link SelectionScope} is `"image"`.
+   */
   ["image"]: {
+    /**
+     * A unique identifier that points to an image asset in Canva's backend.
+     */
     ref: ImageRef;
   };
 }[Scope];
 
 /**
- * @beta
+ * @public
  * Updates the background of the user's current page. The background can be a solid color,
  * an image or a video.
  */
@@ -1154,9 +1191,14 @@ declare type TextAttributes = {
    */
   color?: string;
   /**
+   * @beta
+   * A reference to the font to use for this text element.
+   */
+  fontRef?: FontRef;
+  /**
    * The weight of the font. The default value is 'normal'.
    */
-  fontWeight?: "normal" | "bold";
+  fontWeight?: FontWeight;
   /**
    * The style of the font. The default value is 'normal'.
    */
@@ -1397,12 +1439,10 @@ export declare type UserSuppliedVideoDragData = {
 export declare type Value =
   | Primitive
   | ObjectPrimitive
-  | Value[]
+  | Exclude<Value, undefined>[]
   | {
       [key: string]: Value;
-    }
-  | Map<Value, Value>
-  | Set<Value>;
+    };
 
 /**
  * @public

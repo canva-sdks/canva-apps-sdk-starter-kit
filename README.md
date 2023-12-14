@@ -8,10 +8,10 @@ This repo contains everything you need to get an app up and running in a matter 
 
 ## Requirements
 
-- Node.js `v18`
-- npm `v9`
+- Node.js `v18` or `v20.10.0`
+- npm `v9` or `v10`
 
-**Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The .nvmrc file in the root directory of this repo will ensure the correct version is used.
+**Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The [.nvmrc](/.nvmrc) file in the root directory of this repo will ensure the correct version is used once you run `nvm install`.
 
 ## Quick start
 

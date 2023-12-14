@@ -22,7 +22,7 @@ type AppElementData = {
   imageId: string;
   width: number;
   height: number;
-  rotation: number | undefined;
+  rotation: number;
 };
 
 type UIState = AppElementData;

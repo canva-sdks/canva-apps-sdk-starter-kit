@@ -93,6 +93,94 @@ export declare type Dimensions = {
 
 /**
  * @beta
+ * Lists fonts available for use within Canva.
+ */
+export declare function findFonts(): Promise<FindFontsResponse>;
+
+/**
+ * @beta
+ * A response to the findFonts method.
+ */
+export declare type FindFontsResponse = {
+  fonts: readonly Font[];
+};
+
+/**
+ * @beta
+ * A font which reference can be used in other parts of the SDK.
+ */
+export declare type Font = {
+  /**
+   * A unique font identifier that can be used in other parts of the SDK.
+   */
+  ref: FontRef;
+  /**
+   * Name of the font.
+   */
+  name: string;
+  /**
+   * Available weights of the font, together with information about styles usable for each weight
+   */
+  weights: readonly FontWeight[];
+  /**
+   * An URL to the preview image of the font that can be displayed in the app UI.
+   */
+  previewUrl?: string;
+};
+
+/**
+ * @beta
+ * A unique identifier that references a font in Canva
+ */
+export declare type FontRef = string & {
+  __fontRef: never;
+};
+
+/**
+ * @beta
+ * A response to the requestFontSelection method.
+ */
+export declare type FontSelectionResponse =
+  | {
+      type: "COMPLETED";
+      font: Font;
+    }
+  | {
+      type: "ABORTED";
+    };
+
+/**
+ * @beta
+ * Available font styles
+ */
+export declare type FontStyle = "normal" | "italic";
+
+/**
+ * @beta
+ * Information about a specific available font weight, and which styles it can be used with
+ */
+export declare type FontWeight = {
+  weight: FontWeightName;
+  styles: FontStyle[];
+};
+
+/**
+ * @beta
+ * Available font weights
+ */
+export declare type FontWeightName =
+  | "normal"
+  | "thin"
+  | "extralight"
+  | "light"
+  | "medium"
+  | "semibold"
+  | "bold"
+  | "ultrabold"
+  | "heavy";
+
+/**
+ * @public
  * Returns a temporary URL to an asset already present in the current design.
  */
 export declare function getTemporaryUrl(
@@ -100,7 +188,7 @@ export declare function getTemporaryUrl(
 ): Promise<TemporaryUrlForImage>;
 
 /**
- * @beta
+ * @public
  * Returns a temporary URL to an asset already present in the current design.
  */
 export declare function getTemporaryUrl(
@@ -108,7 +196,7 @@ export declare function getTemporaryUrl(
 ): Promise<TemporaryUrlForVideo>;
 
 /**
- * @beta
+ * @public
  * Returns a temporary URL to an asset already present in the current design.
  */
 export declare function getTemporaryUrl(
@@ -116,7 +204,7 @@ export declare function getTemporaryUrl(
 ): Promise<TemporaryUrl>;
 
 /**
- * @beta
+ * @public
  * Options that must be passed when obtaining a temporary URL to an image present in the current
  * design.
  */
@@ -126,7 +214,7 @@ export declare type GetTemporaryUrlForImageOptions = {
 };
 
 /**
- * @beta
+ * @public
  * Options that must be passed when obtaining a temporary URL to a video present in the current
  * design.
  */
@@ -136,7 +224,7 @@ export declare type GetTemporaryUrlForVideoOptions = {
 };
 
 /**
- * @beta
+ * @public
  * Options that must be passed when obtaining a temporary URL to an asset present in the current
  * design.
  */
@@ -179,7 +267,6 @@ export declare type ImageUploadOptions = {
    */
   readonly id: string;
   /**
-   * @beta
    * A reference to the image that this image was derived from.
    */
   readonly parentRef?: ImageRef;
@@ -266,12 +353,18 @@ export declare type Ref = ImageRef | VideoRef | AudioRef;
 
 /**
  * @beta
+ * Prompts the user to choose a font that can be used within Canva.
+ */
+export declare function requestFontSelection(): Promise<FontSelectionResponse>;
+
+/**
+ * @public
  * An object containing a temporary URL to an asset present in the current design.
  */
 export declare type TemporaryUrl = TemporaryUrlForImage | TemporaryUrlForVideo;
 
 /**
- * @beta
+ * @public
  * An object containing a temporary URL to an image present in the current design.
  */
 export declare type TemporaryUrlForImage = {
@@ -281,7 +374,7 @@ export declare type TemporaryUrlForImage = {
 };
 
 /**
- * @beta
+ * @public
  * An object containing a temporary URL to a video present in the current design.
  */
 export declare type TemporaryUrlForVideo = {
@@ -369,7 +462,6 @@ export declare type VideoUploadOptions = {
    */
   readonly id: string;
   /**
-   * @beta
    * A reference to the video that this video was derived from.
    */
   readonly parentRef?: VideoRef;

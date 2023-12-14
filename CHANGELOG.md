@@ -1,5 +1,47 @@
 # Changelog
 
+## 2023-12-14
+
+### 🧰 Added
+- `@canva/design`
+  - Added a `background` property in the options for [addPage](https://www.canva.dev/docs/apps/api/design-add-page/), which was previously available in preview mode.
+  - Added [setCurrentPageBackground](https://www.canva.dev/docs/apps/api/design-set-current-page-background/) which was previously in preview mode.
+  - Added an example for using `setCurrentPageBackground` in [/examples/page_background](examples/page_background/).
+  - Added the ability to [read plaintext and images](https://www.canva.dev/docs/apps/reading-elements/) from the user's selection, and [edit it too](https://www.canva.dev/docs/apps/replacing-elements/). This was previously available in preview mode. Please note that there have been some changes from the preview API.
+- `@canva/asset`
+  - Added [getTemporaryUrl](https://www.canva.dev/docs/apps/api/asset-get-temporary-url/) to get URL of an asset, which was previously available in preview mode.
+  - Added [parentRef](https://www.canva.dev/docs/apps/api/asset-upload/#parameters) in `ImageUploadOptions` and `VideoUploadOptions` to a reference to the original asset, which was previously available in preview mode.
+- `@canva/preview/asset`
+  - Added [findFonts](https://www.canva.dev/docs/apps/api/asset-find-fonts/) method for listing available fonts within Canva.
+  - Added [requestFontSelection](https://www.canva.dev/docs/apps/api/asset-request-font-selection/) to support font selection through font family panel.
+
+### 🐞 Fixed
+- `@canva/design`
+  - Excluded `undefined` in `Array` type, and removed `bigint`, `Set`, and `Map` types from `AppElementData` to align with existing internal validation.
+
+### 🔧 Changed
+- `@canva/design`
+  - Updated `fontWeight` to allow more values.
+- `@canva/preview/design`
+  - Updated `NativeTextElement` to support the `fontRef` property.
+- Migration of SDKs to NPM
+  - The following SDKs are now available as NPM packages:
+      - [@canva/asset](https://www.npmjs.com/package/@canva/asset)
+      - [@canva/design](https://www.npmjs.com/package/@canva/design)
+      - [@canva/error](https://www.npmjs.com/package/@canva/error)
+      - [@canva/platform](https://www.npmjs.com/package/@canva/platform)
+      - [@canva/user](https://www.npmjs.com/package/@canva/user)
+  - Dependencies in [package.json](./package.json) were changed to use the NPM registry accordingly.
+- Updated node version in [.nvmrc](.nvmrc) to LTS version of [v20.10.0](https://nodejs.org/en/blog/release/v20.10.0)
+  - Run the below command at the repo root to upgrade via [nvm](https://github.com/nvm-sh/nvm#intro)
+    ```
+    nvm install
+    ```
+
+### 🗑️ Removed
+- [/sdk](/sdk)
+  - Bundled source directories for the SDKs published to NPM have been removed.
+
 ## 2023-12-13
 
 ### 🧰 Added
