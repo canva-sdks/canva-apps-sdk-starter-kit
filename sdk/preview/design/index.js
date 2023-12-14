@@ -6,6 +6,7 @@ export const addAudioTrack = di.addAudioTrack.bind(di);
 export const getCurrentPageContext = di.getCurrentPageContext.bind(di);
 export const getDefaultPageDimensions = di.getDefaultPageDimensions.bind(di);
 export const initAppElement = di.initAppElement.bind(di);
+export const selection = di.selection;
 
 export const ui = (() => {
   const ui = window.canva.dragAndDrop;
@@ -17,6 +18,3 @@ export const ui = (() => {
 
 const exp = window.canva.export;
 export const requestExport = exp.requestExport.bind(exp);
-
-/** beta */
-export const selection = window.canva.designInteraction.selection;
