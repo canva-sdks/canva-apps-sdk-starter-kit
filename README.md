@@ -115,7 +115,13 @@ You need to bypass the invalid security certificate warning every time you start
 
 The `examples` directory contains example apps that demonstrate the available APIs.
 
-To start an example's development server, run the following command:
+To explore all of our different examples, run the following command:
+
+```bash
+npm start examples
+```
+
+Alternatively, you can run a particular example directly via the following command:
 
 ```bash
 npm start <example-name>

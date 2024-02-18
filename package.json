@@ -6,11 +6,11 @@
     "npm": "^9 || ^10"
   },
   "scripts": {
-    "start": "node ./scripts/start.js",
+    "start": "ts-node ./scripts/start/start.ts",
     "build": "webpack --config webpack.config.js --mode production",
     "lint:types": "tsc",
-    "format": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --write",
-    "format:check": "prettier '{components,examples,src,utils}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
+    "format": "prettier '{components,examples,src,utils,scripts}/**/*.{css,ts,tsx}' --no-config --write",
+    "format:check": "prettier '{components,examples,src,utils,scripts}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",
     "format:file": "prettier $1 --no-config --write",
     "test": "jest --no-cache",
     "test:watch": "jest --no-cache --watch"
@@ -20,9 +20,9 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
-    "@canva/app-ui-kit": "^3.1.0",
+    "@canva/app-ui-kit": "^3.2.0",
     "@canva/asset": "^1.2.0",
-    "@canva/design": "^1.4.0",
+    "@canva/design": "^1.5.0",
     "@canva/error": "^1.1.0",
     "@canva/platform": "^1.0.1",
     "@canva/preview": "./sdk/preview",
@@ -30,7 +30,8 @@
     "clsx": "^1.2.1",
     "cookie-parser": "^1.4.6",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-infinite-scroller": "^1.2.6"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
@@ -42,8 +43,11 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^20.10.0",
     "@types/node-fetch": "^2.6.2",
+    "@types/node-forge": "^1.3.1",
     "@types/nodemon": "^1.19.2",
+    "@types/prompts": "^2.4.2",
     "@types/react-dom": "^18.1.0",
+    "@types/react-infinite-scroller": "^1.2.5",
     "@types/webpack-env": "^1.18.0",
     "chalk": "^4.1.2",
     "cli-table3": "^0.6.2",
@@ -66,6 +70,7 @@
     "nodemon": "^3.0.1",
     "postcss-loader": "^7.3.3",
     "prettier": "^2.7.1",
+    "prompts": "^2.4.2",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.5",
     "ts-jest": "^29.0.5",

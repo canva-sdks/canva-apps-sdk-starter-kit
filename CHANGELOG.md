@@ -1,5 +1,38 @@
 # Changelog
 
+## 2024-02-19
+
+### 🔨 Breaking changes
+
+- Increased the right padding in the `.scrollContainer` class from `--ui-kit-space-1` to `--ui-kit-space-2`
+
+### 🧰 Added
+- `examples`
+  - Added an app examples explorer which can be run via `npm start examples`.
+  - Added an example app [/examples/fonts](examples/fonts/) to demonstrate [requestFontSelection](https://www.canva.dev/docs/apps/api/asset-request-font-selection/) and [findFonts](https://www.canva.dev/docs/apps/api/asset-find-fonts/).
+  - Added two examples that use [selection.registerOnChange](https://www.canva.dev/docs/apps/api/design-selection-register-on-change/) in [/examples/image_replacement](examples/image_replacement/) and [/examples/text_replacement](examples/text_replacement/).
+  - Added an example to show how to use the [Masonry](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-layout-masonry--docs) component from the App UI Kit.
+
+### 🐞 Fixed
+
+- Updated the [webpack config](/webpack.config.js) to always output at most a single JS bundle.
+  - At times, when using certain libraries, multiple chunks will be outputted, but given our apps platform doesn't support lazy loading, we must always output at most 1 chunk.
+
+### 🔧 Changed
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.2.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of new components added.
+- `@canva/design`
+  - Upgraded to version `1.5.0` which has the following changes:
+    - Updated `fontWeight` of `startDrag` to allow more values.
+    - Exported some additional types, such as `FontWeight` and `TextAttributes`.
+- `@canva/preview/design`
+    - Updated `startDrag` to support `fontRef` for text drag.
+- `@canva/preview/asset`
+    - Updated `requestFontSelection` to accept a `FontSelectionRequest` object.
+- examples:
+  - Updated [drag_and_drop_text](examples/drag_and_drop_text), [app_text_elements](examples/app_text_elements), [native_text_elements](examples/native_text_elements) example apps to use more `fontWeight` values.
+- Refactored the app start script in `/scripts` to use typescript, and better organized the code.
+
 ## 2023-12-14
 
 ### 🧰 Added
