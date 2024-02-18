@@ -5,20 +5,20 @@ import {
   Text,
   TypographyCard,
 } from "@canva/app-ui-kit";
-import { addNativeElement, ui } from "@canva/design";
+import {
+  addNativeElement,
+  ui,
+  FontWeight,
+  TextAttributes,
+} from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
 
-type TextAlign = "start" | "center" | "end";
-type FontWeight = "normal" | "bold";
-type FontStyle = "normal" | "italic";
-type Decoration = "none" | "underline";
-
 type DraggableTextProperties = {
-  textAlign?: TextAlign;
-  fontWeight?: FontWeight;
-  fontStyle?: FontStyle;
-  decoration?: Decoration;
+  textAlign: TextAttributes["textAlign"];
+  fontWeight: FontWeight;
+  fontStyle: TextAttributes["fontStyle"];
+  decoration: TextAttributes["decoration"];
 };
 
 const content = "Add a little bit of body text";
@@ -53,7 +53,7 @@ export const App = () => {
             label="Font style"
             value={fontStyle}
             control={(props) => (
-              <Select<FontStyle>
+              <Select<TextAttributes["fontStyle"]>
                 {...props}
                 options={[
                   { value: "normal", label: "Normal" },
@@ -79,7 +79,13 @@ export const App = () => {
                 {...props}
                 options={[
                   { value: "normal", label: "Normal" },
+                  { value: "thin", label: "Thin" },
+                  { value: "extralight", label: "Extra light" },
+                  { value: "light", label: "Light" },
+                  { value: "medium", label: "Medium" },
+                  { value: "semibold", label: "Semibold" },
                   { value: "bold", label: "Bold" },
+                  { value: "heavy", label: "Heavy" },
                 ]}
                 onChange={(value) => {
                   setState((prevState) => {
@@ -97,7 +103,7 @@ export const App = () => {
             label="Decoration"
             value={decoration}
             control={(props) => (
-              <Select<Decoration>
+              <Select<TextAttributes["decoration"]>
                 {...props}
                 options={[
                   { value: "none", label: "None" },
@@ -119,7 +125,7 @@ export const App = () => {
             label="Text align"
             value={textAlign}
             control={(props) => (
-              <Select<TextAlign>
+              <Select<TextAttributes["textAlign"]>
                 {...props}
                 options={[
                   { value: "start", label: "Start" },
@@ -152,7 +158,13 @@ export const App = () => {
             }
             onDragStart={onDragStart}
           >
-            <Text variant={fontWeight === "bold" ? "bold" : "regular"}>
+            <Text
+              variant={
+                ["semibold", "bold", "heavy"].includes(fontWeight)
+                  ? "bold"
+                  : "regular"
+              }
+            >
               {content}
             </Text>
           </TypographyCard>

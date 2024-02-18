@@ -1,16 +1,18 @@
-const crypto = require("crypto");
-const { pki } = require("node-forge");
-const path = require("path");
-const fs = require("fs/promises");
+import * as crypto from "crypto";
+import { pki } from "node-forge";
+import * as path from "path";
+import * as fs from "fs/promises";
 
-const SSL_CERT_DIR = path.resolve(__dirname, "..", ".ssl");
+const SSL_CERT_DIR = path.resolve(__dirname, "..", "..", ".ssl");
 const CERT_FILE = path.resolve(SSL_CERT_DIR, "certificate.pem");
 const KEY_FILE = path.resolve(SSL_CERT_DIR, "private-key.pem");
 
-/**
- * @type {{ name: string, value: string }[]}
- */
-const CERT_ATTRS = [
+export type Certificate = {
+  keyFile: string;
+  certFile: string;
+};
+
+const CERT_ATTRS: { name: string; value: string }[] = [
   {
     name: "commonName",
     value: "localhost",
@@ -37,10 +39,10 @@ const CERT_ATTRS = [
   },
 ];
 
-/**
- * @return {Promise<{ publicKey: string, privateKey: string }>}
- */
-const generateRsaKeys = async () =>
+const generateRsaKeys = async (): Promise<{
+  publicKey: string;
+  privateKey: string;
+}> =>
   new Promise((resolve, reject) => {
     crypto.generateKeyPair(
       "rsa",
@@ -65,13 +67,10 @@ const generateRsaKeys = async () =>
     );
   });
 
-/**
- * @param {object} opts
- * @param {string} opts.privateKey
- * @param {string} opts.publicKey
- * @return {string}
- */
-const generateCertificate = (opts) => {
+const generateCertificate = (opts: {
+  privateKey: string;
+  publicKey: string;
+}): string => {
   const privateKey = pki.privateKeyFromPem(opts.privateKey);
   const publicKey = pki.publicKeyFromPem(opts.publicKey);
 
@@ -93,12 +92,12 @@ const generateCertificate = (opts) => {
   return pki.certificateToPem(cert);
 };
 
-/**
- * @param {string} cert
- * @param {string} privateKey
- * @return {Promise<void>}
- */
-const writeCertFiles = async ({ cert, privateKey }) => {
+const writeCertFiles = async (opts: {
+  cert: string;
+  privateKey: string;
+}): Promise<void> => {
+  const { cert, privateKey } = opts;
+
   await fs.mkdir(SSL_CERT_DIR, { recursive: true });
   await Promise.all([
     fs.writeFile(CERT_FILE, cert, { encoding: "utf8" }),
@@ -106,10 +105,7 @@ const writeCertFiles = async ({ cert, privateKey }) => {
   ]);
 };
 
-/**
- * @return {Promise<boolean>}
- */
-const cerfFilesExist = async () => {
+const cerfFilesExist = async (): Promise<boolean> => {
   try {
     await Promise.all([
       fs.access(CERT_FILE, fs.constants.R_OK | fs.constants.W_OK),
@@ -121,10 +117,7 @@ const cerfFilesExist = async () => {
   }
 };
 
-/**
- * @return {Promise<{ keyFile: string, certFile: string }>}
- */
-const maybeCreateCertificates = async () => {
+export const createOrRetrieveCertificate = async (): Promise<Certificate> => {
   if (!(await cerfFilesExist())) {
     const keys = await generateRsaKeys();
     const cert = generateCertificate(keys);
@@ -135,8 +128,4 @@ const maybeCreateCertificates = async () => {
     certFile: CERT_FILE,
     keyFile: KEY_FILE,
   };
-};
-
-module.exports = {
-  maybeCreateCertificates,
 };

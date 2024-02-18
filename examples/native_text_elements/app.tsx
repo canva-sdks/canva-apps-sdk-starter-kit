@@ -8,22 +8,17 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import { addNativeElement } from "@canva/design";
+import { addNativeElement, FontWeight, TextAttributes } from "@canva/design";
 import React from "react";
 import styles from "styles/components.css";
-
-type FontStyle = "normal" | "italic";
-type FontWeight = "normal" | "bold";
-type Decoration = "none" | "underline";
-type TextAlign = "start" | "center" | "end";
 
 type UIState = {
   text: string;
   color: string;
-  fontStyle: FontStyle;
   fontWeight: FontWeight;
-  decoration: Decoration;
-  textAlign: TextAlign;
+  fontStyle: TextAttributes["fontStyle"];
+  decoration: TextAttributes["decoration"];
+  textAlign: TextAttributes["textAlign"];
 };
 
 const initialState: UIState = {
@@ -86,7 +81,7 @@ export const App = () => {
           label="Font style"
           value={fontStyle}
           control={(props) => (
-            <Select<FontStyle>
+            <Select<TextAttributes["fontStyle"]>
               {...props}
               stretch
               onChange={(style) => {
@@ -121,7 +116,13 @@ export const App = () => {
               }}
               options={[
                 { value: "normal", label: "Normal" },
+                { value: "thin", label: "Thin" },
+                { value: "extralight", label: "Extra light" },
+                { value: "light", label: "Light" },
+                { value: "medium", label: "Medium" },
+                { value: "semibold", label: "Semibold" },
                 { value: "bold", label: "Bold" },
+                { value: "heavy", label: "Heavy" },
               ]}
             />
           )}
@@ -130,7 +131,7 @@ export const App = () => {
           label="Decoration"
           value={decoration}
           control={(props) => (
-            <Select<Decoration>
+            <Select<TextAttributes["decoration"]>
               {...props}
               stretch
               onChange={(decoration) => {
@@ -152,7 +153,7 @@ export const App = () => {
           label="Text align"
           value={textAlign}
           control={(props) => (
-            <Select<TextAlign>
+            <Select<TextAttributes["textAlign"]>
               {...props}
               stretch
               onChange={(textAlign) => {

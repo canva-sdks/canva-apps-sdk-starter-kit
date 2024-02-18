@@ -503,7 +503,7 @@ export declare type FontRef = string & {
  * @public
  * Font weights supported in the SDK.
  **/
-declare type FontWeight =
+export declare type FontWeight =
   | "normal"
   | "thin"
   | "extralight"
@@ -1179,7 +1179,8 @@ declare type TextAttributes = {
    */
   fontSize?: number;
   /**
-   * The alignment of the text. The default value is 'start'.
+   * The alignment of the text.
+   * @defaultValue 'start'
    */
   textAlign?: "start" | "center" | "end";
   /**
@@ -1196,15 +1197,18 @@ declare type TextAttributes = {
    */
   fontRef?: FontRef;
   /**
-   * The weight of the font. The default value is 'normal'.
+   * The weight of the font.
+   * @defaultValue 'normal'
    */
   fontWeight?: FontWeight;
   /**
-   * The style of the font. The default value is 'normal'.
+   * The style of the font.
+   * @defaultValue 'normal'
    */
   fontStyle?: "normal" | "italic";
   /**
-   * The decoration of the font. The default value is 'none'.
+   * The decoration of the font.
+   * @defaultValue 'none'
    */
   decoration?: "none" | "underline";
 };
@@ -1223,21 +1227,30 @@ export declare type TextDragConfig = {
    */
   children?: string[];
   /**
-   * The alignment of the text. The default value is 'start'.
+   * The alignment of the text.
+   * @defaultValue 'start'
    */
   textAlign?: "start" | "center" | "end";
   /**
-   * The weight of the font. The default value is 'normal'.
+   * The weight of the font.
+   * @defaultValue 'normal'
    */
-  fontWeight?: "normal" | "bold";
+  fontWeight?: FontWeight;
   /**
-   * The style of the font. The default value is 'normal'.
+   * The style of the font.
+   * @defaultValue 'normal'
    */
   fontStyle?: "normal" | "italic";
   /**
-   * The decoration of the font. The default value is 'none'.
+   * The decoration of the font.
+   * @defaultValue 'none'
    */
   decoration?: "none" | "underline";
+  /**
+   * @beta
+   * A unique identifier that references a font asset in Canva's backend.
+   */
+  fontRef?: FontRef;
 };
 
 /**

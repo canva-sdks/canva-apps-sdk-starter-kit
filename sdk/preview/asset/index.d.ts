@@ -138,6 +138,17 @@ export declare type FontRef = string & {
 
 /**
  * @beta
+ * Arguments to the requestFontSelection method.
+ */
+export declare type FontSelectionRequest = {
+  /**
+   * The ref for the font that's initially selected when the font panel opens.
+   */
+  selectedFontRef?: FontRef;
+};
+
+/**
+ * @beta
  * A response to the requestFontSelection method.
  */
 export declare type FontSelectionResponse =
@@ -355,7 +366,9 @@ export declare type Ref = ImageRef | VideoRef | AudioRef;
  * @beta
  * Prompts the user to choose a font that can be used within Canva.
  */
-export declare function requestFontSelection(): Promise<FontSelectionResponse>;
+export declare function requestFontSelection(
+  request?: FontSelectionRequest
+): Promise<FontSelectionResponse>;
 
 /**
  * @public
