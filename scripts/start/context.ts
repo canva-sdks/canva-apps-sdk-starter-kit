@@ -14,6 +14,7 @@ type EnvVars = {
   backendPort: number;
   hmrEnabled: boolean;
   appId?: string;
+  appOrigin?: string;
   backendHost?: string;
 };
 
@@ -122,6 +123,10 @@ export class Context {
     return this.envVars.backendPort;
   }
 
+  get appOrigin(): string | undefined {
+    return this.envVars.appOrigin;
+  }
+
   get appId(): string | undefined {
     return this.envVars.appId;
   }
@@ -154,6 +159,7 @@ export class Context {
       CANVA_BACKEND_PORT,
       CANVA_BACKEND_HOST,
       CANVA_APP_ID,
+      CANVA_APP_ORIGIN,
       CANVA_HMR_ENABLED,
     } = this.env;
 
@@ -171,13 +177,14 @@ export class Context {
       frontendPort: parseInt(CANVA_FRONTEND_PORT),
       backendPort: parseInt(CANVA_BACKEND_PORT),
       hmrEnabled: CANVA_HMR_ENABLED?.toLowerCase().trim() === "true",
-      appId: CANVA_APP_ID?.toLowerCase().trim(),
+      appId: CANVA_APP_ID,
+      appOrigin: CANVA_APP_ORIGIN,
       backendHost: CANVA_BACKEND_HOST,
     };
 
-    if (envVars.hmrEnabled && envVars.appId == null) {
+    if (envVars.hmrEnabled && envVars.appOrigin == null) {
       throw new Error(
-        "CANVA_HMR_ENABLED environment variable is TRUE, but CANVA_APP_ID is not set. Refer to the instructions in the README.md on configuring HMR."
+        "CANVA_HMR_ENABLED environment variable is TRUE, but CANVA_APP_ORIGIN is not set. Refer to the instructions in the README.md on configuring HMR."
       );
     }
 

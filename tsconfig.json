@@ -35,7 +35,6 @@
     "paths": {
       "assets": ["./assets"],
       "styles": ["./styles"],
-      "components": ["./components"],
       "@canva/preview/*": ["./sdk/preview/*"]
     }
   },
@@ -43,7 +42,6 @@
     "./src/**/*",
     "./scripts/**/*",
     "./examples/**/*",
-    "./components/**/*",
     "./declarations/declarations.d.ts",
     "./utils/**/*",
     "./styles/**/*",

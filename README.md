@@ -59,24 +59,24 @@ By default, every time you make a change to an app, you have to reload the entir
 
 To enable HMR:
 
-1. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
-2. Copy the ID of an app from the **App ID** column.
-3. In the starter kit's `.env` file:
-
-   1. Set `CANVA_APP_ID` to the ID of the app.
-   2. Set `CANVA_HMR_ENABLED` to `TRUE`.
-
-   For example:
+1. Navigate to an app via the [Your apps](https://www.canva.com/developers/apps).
+2. Select **Configure your app**.
+3. Copy the value from the **App origin** field. This value is unique to each app and cannot be customized.
+4. In the starter kit's directory, open the `.env` file.
+5. Set the `CANVA_APP_ORIGIN` environment variable to the value copied from the **App origin** field:
 
    ```bash
-   CANVA_APP_ID=AABBccddeeff
-   CANVA_BACKEND_PORT=3001
-   CANVA_FRONTEND_PORT=8080
-   CANVA_BACKEND_HOST=http://localhost:3001
-   CANVA_HMR_ENABLED=TRUE
+   CANVA_APP_ORIGIN=# YOUR APP ORIGIN GOES HERE 
    ```
 
-4. Restart the local server.
+6. Set the `CANVA_HMR_ENABLED` environment variable to `true`:
+
+   ```bash
+   CANVA_HMR_ENABLED=true
+   ```
+
+7. Restart the local development server.
+8. Reload the app manually to ensure that HMR takes effect.
 
 ## Previewing apps in Safari
 
@@ -149,10 +149,11 @@ To run examples that have a backend:
 
    ```bash
    CANVA_APP_ID=AABBccddeeff
+   CANVA_APP_ORIGIN=#
    CANVA_BACKEND_PORT=3001
    CANVA_FRONTEND_PORT=8080
    CANVA_BACKEND_HOST=http://localhost:3001
-   CANVA_HMR_ENABLED=TRUE
+   CANVA_HMR_ENABLED=FALSE
    ```
 
 4. Start the example:

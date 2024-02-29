@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  ChevronDownIcon,
   FormField,
   Rows,
   Select,
   Text,
   TextInput,
   Title,
+  SegmentedControl,
 } from "@canva/app-ui-kit";
 import {
   findFonts,
@@ -14,8 +16,8 @@ import {
   FontStyle,
   FontWeightName,
   requestFontSelection,
-} from "@canva/preview/asset";
-import { addNativeElement } from "@canva/preview/design";
+} from "@canva/asset";
+import { addNativeElement } from "@canva/design";
 import React, { useEffect } from "react";
 import styles from "styles/components.css";
 
@@ -33,9 +35,20 @@ const initialConfig: TextConfig = {
   fontStyle: "normal",
 };
 
+const fontStyleOptions: {
+  value: FontStyle;
+  label: FontStyle;
+  disabled?: boolean;
+}[] = [
+  { value: "normal", label: "normal", disabled: false },
+  { value: "italic", label: "italic", disabled: false },
+];
+
 export const App = () => {
   const [textConfig, setTextConfig] = React.useState<TextConfig>(initialConfig);
-  const [font, setFont] = React.useState<Font | undefined>(undefined);
+  const [selectedFont, setSelectedFont] = React.useState<Font | undefined>(
+    undefined
+  );
   const [availableFonts, setAvailableFonts] = React.useState<readonly Font[]>(
     []
   );
@@ -51,8 +64,21 @@ export const App = () => {
 
   const { text, fontWeight, fontStyle } = textConfig;
   const disabled = text.trim().length === 0;
-  const availableFontStyles = getFontStyles(fontWeight, font);
-  const availableFontWeights = getFontWeights(font);
+  const availableFontWeights = getFontWeights(selectedFont);
+
+  const availableFontStyles = getFontStyles(fontWeight, selectedFont);
+  const availableStyleValues = new Set(
+    availableFontStyles.map((style) => style.value)
+  ); // Create a Set for lookup
+  const availableFontStyleOptions = fontStyleOptions.map((styleOption) => {
+    // Check if the current style option is NOT present in the available styles.
+    if (!availableStyleValues.has(styleOption.value)) {
+      // If so, return a new object with `disabled` set to true, keeping the rest of the object the same.
+      return { ...styleOption, disabled: true };
+    }
+    // If the style is available, return it as is. Also ensures disabled is set to false explicitly if not already defined.
+    return { ...styleOption, disabled: false };
+  });
 
   const resetSelectedFontStyleAndWeight = (selectedFont?: Font) => {
     setTextConfig((prevState) => {
@@ -93,14 +119,14 @@ export const App = () => {
         {availableFonts.length > 0 && (
           <FormField
             label="Font family"
-            value={font?.ref}
+            value={selectedFont?.ref}
             control={(props) => (
               <Select
                 {...props}
                 stretch
                 onChange={(ref) => {
                   const selected = availableFonts.find((f) => f.ref === ref);
-                  setFont(selected);
+                  setSelectedFont(selected);
                   resetSelectedFontStyleAndWeight(selected);
                 }}
                 options={availableFonts.map((f) => ({
@@ -112,23 +138,28 @@ export const App = () => {
           />
         )}
         <Button
-          variant="primary"
+          variant="secondary"
+          icon={ChevronDownIcon}
+          iconPosition="end"
+          alignment="start"
+          stretch={true}
           onClick={async () => {
-            const response = await requestFontSelection();
+            const response = await requestFontSelection({
+              selectedFontRef: selectedFont?.ref,
+            });
             if (response.type === "COMPLETED") {
-              setFont(response.font);
+              setSelectedFont(response.font);
               resetSelectedFontStyleAndWeight(response.font);
             }
           }}
           disabled={disabled}
-          stretch
         >
-          Open font family panel
+          {selectedFont?.name || "Select a font"}
         </Button>
-        {font?.previewUrl && (
+        {selectedFont?.previewUrl && (
           <Box background="neutralLow" padding="2u" width="full">
             <Rows spacing="0" align="center">
-              <img src={font.previewUrl} style={{ maxWidth: "100%" }} />
+              <img src={selectedFont.previewUrl} style={{ maxWidth: "100%" }} />
             </Rows>
           </Box>
         )}
@@ -148,7 +179,7 @@ export const App = () => {
                   };
                 });
               }}
-              disabled={!font || availableFontWeights.length === 0}
+              disabled={!selectedFont || availableFontWeights.length === 0}
               options={availableFontWeights}
             />
           )}
@@ -157,9 +188,10 @@ export const App = () => {
           label="Font style"
           value={fontStyle}
           control={(props) => (
-            <Select
+            <SegmentedControl
               {...props}
-              stretch
+              options={availableFontStyleOptions}
+              value={fontStyle}
               onChange={(style) => {
                 setTextConfig((prevState) => {
                   return {
@@ -168,8 +200,6 @@ export const App = () => {
                   };
                 });
               }}
-              disabled={!font || availableFontStyles.length === 0}
-              options={availableFontStyles}
             />
           )}
         />
@@ -179,7 +209,7 @@ export const App = () => {
             addNativeElement({
               type: "TEXT",
               ...textConfig,
-              fontRef: font?.ref,
+              fontRef: selectedFont?.ref,
               children: [textConfig.text],
             });
           }}
