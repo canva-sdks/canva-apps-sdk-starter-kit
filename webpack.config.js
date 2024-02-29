@@ -10,9 +10,10 @@ const chalk = require("chalk");
  * @param {string} [options.appEntry=./src/index.tsx]
  * @param {string} [options.backendHost]
  * @param {Object} [options.devConfig]
- * @param {string} options.devConfig.port
+ * @param {number} options.devConfig.port
  * @param {boolean} [options.devConfig.enableHmr]
  * @param {boolean} [options.devConfig.enableHttps]
+ * @param {string} [options.devConfig.appOrigin]
  * @param {string} [options.devConfig.appId]
  * @param {string} [options.devConfig.certFile]
  * @param {string} [options.devConfig.keyFile]
@@ -50,7 +51,6 @@ function buildConfig({
     resolve: {
       alias: {
         assets: path.resolve(__dirname, "assets"),
-        components: path.resolve(__dirname, "components"),
         utils: path.resolve(__dirname, "utils"),
         styles: path.resolve(__dirname, "styles"),
         src: path.resolve(__dirname, "src"),
@@ -174,7 +174,8 @@ function buildConfig({
  * @param {string} options.port
  * @param {boolean} [options.enableHmr]
  * @param {boolean} [options.enableHttps]
- * @param {string} [options.appId]
+ * @param {string} [options.appOrigin]
+ * @param {string} [options.appId] - Deprecated in favour of appOrigin
  * @param {string} [options.certFile]
  * @param {string} [options.keyFile]
  * @returns {Object|null}
@@ -184,7 +185,7 @@ function buildDevConfig(options) {
     return null;
   }
 
-  const { port, enableHmr, appId, enableHttps, certFile, keyFile } = options;
+  const { port, enableHmr, appOrigin, appId, enableHttps, certFile, keyFile } = options;
 
   let devServer = {
     server: enableHttps
@@ -210,8 +211,25 @@ function buildDevConfig(options) {
     },
   };
 
-  if (enableHmr && appId) {
-    const appDomain = `app-${appId}.canva-apps.com`;
+  if (enableHmr && appOrigin) {
+    devServer = {
+      ...devServer,
+      allowedHosts: new URL(appOrigin).hostname,
+      headers: {
+        "Access-Control-Allow-Origin": appOrigin,
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Private-Network": "true",
+      },
+    };
+  } else if (enableHmr && appId) {
+    // Deprecated - App ID should not be used to configure HMR in the future and can be safely removed
+    // after a few months.
+
+    console.warn(
+      "Enabling HMR with an App ID is deprecated, please see the README.md on how to update."
+    );
+
+    const appDomain = `app-${appId.toLowerCase().trim()}.canva-apps.com`;
     devServer = {
       ...devServer,
       allowedHosts: appDomain,
@@ -222,9 +240,9 @@ function buildDevConfig(options) {
       },
     };
   } else {
-    if (enableHmr && !appId) {
+    if (enableHmr && !appOrigin) {
       console.warn(
-        "Attempted to enable HMR without supplying an App ID... Disabling HMR."
+        "Attempted to enable HMR without configuring App Origin... Disabling HMR."
       );
     }
     devServer.webSocketServer = false;

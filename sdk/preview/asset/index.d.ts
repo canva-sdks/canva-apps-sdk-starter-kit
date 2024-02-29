@@ -92,13 +92,16 @@ export declare type Dimensions = {
 };
 
 /**
- * @beta
- * Lists fonts available for use within Canva.
+ * @public
+ * Lists a curated selection of fonts available for use within Canva.
+ *
+ * @remarks
+ * To list all available fonts, please use the `requestFontSelection` method.
  */
 export declare function findFonts(): Promise<FindFontsResponse>;
 
 /**
- * @beta
+ * @public
  * A response to the findFonts method.
  */
 export declare type FindFontsResponse = {
@@ -106,7 +109,7 @@ export declare type FindFontsResponse = {
 };
 
 /**
- * @beta
+ * @public
  * A font which reference can be used in other parts of the SDK.
  */
 export declare type Font = {
@@ -129,7 +132,7 @@ export declare type Font = {
 };
 
 /**
- * @beta
+ * @public
  * A unique identifier that references a font in Canva
  */
 export declare type FontRef = string & {
@@ -137,7 +140,7 @@ export declare type FontRef = string & {
 };
 
 /**
- * @beta
+ * @public
  * Arguments to the requestFontSelection method.
  */
 export declare type FontSelectionRequest = {
@@ -148,7 +151,7 @@ export declare type FontSelectionRequest = {
 };
 
 /**
- * @beta
+ * @public
  * A response to the requestFontSelection method.
  */
 export declare type FontSelectionResponse =
@@ -161,13 +164,13 @@ export declare type FontSelectionResponse =
     };
 
 /**
- * @beta
+ * @public
  * Available font styles
  */
 export declare type FontStyle = "normal" | "italic";
 
 /**
- * @beta
+ * @public
  * Information about a specific available font weight, and which styles it can be used with
  */
 export declare type FontWeight = {
@@ -176,7 +179,7 @@ export declare type FontWeight = {
 };
 
 /**
- * @beta
+ * @public
  * Available font weights
  */
 export declare type FontWeightName =
@@ -363,7 +366,7 @@ export declare type QueuedVideo = {
 export declare type Ref = ImageRef | VideoRef | AudioRef;
 
 /**
- * @beta
+ * @public
  * Prompts the user to choose a font that can be used within Canva.
  */
 export declare function requestFontSelection(

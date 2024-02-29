@@ -1,5 +1,55 @@
 # Changelog
 
+## 2024-02-29
+
+### 🧰 Added
+- The Canva Developer Portal now provides the apps origin under the `Configure your app` tab, to simplify
+  configuring HMR for your app we have added the `CANVA_APP_ORIGIN` to the environment configuration. Please
+  see the updated README.md for how to configure your app for HMR
+
+- Added a [digital asset management app](./examples/digital_asset_management/README.md) example, which
+  helps developers create a digital asset management app within Canva.
+
+### 🐞 Fixed
+- ngrok now requires an account and `authtoken`. To address this, updated the authentication example's [readme](/examples/authentication/README.md) to describe the ngrok configuration process.
+
+### 🔧 Changed
+- `examples`
+  - Updated example app [/examples/fonts](examples/fonts/) to align with design guidelines.
+- `@canva/preview/design`
+  - Updated `fontRef` of `TextAttributes` to `public`.
+- `@canva/preview/asset`
+  - Updated `requestFontSelection` and `findFonts` to `public`.
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.3.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/).
+
+- Swapped out the community maintained `ngrok` package with the official `@ngrok/ngrok` SDK.
+- Minor refactor to the start app script:
+  - Improve error messaging when ngrok forward fails.
+  - Improved logging readability by utilizing colored messaged more.
+
+### 🗑️ Removed
+
+- Removed the `components` directory, and all of the `Draggable*` components which were `deprecated` in favour of new components from the [App UI Kit](https://www.npmjs.com/package/@canva/app-ui-kit):
+
+  | Deprecated Component   | New Component         |
+  |------------------------|-----------------------|
+  | `DraggableVideo`       | [VideoCard](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-videocard--docs)           |
+  | `DraggableText`        | [TypographyCard](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-typographycard--docs)      |
+  | `DraggableImage`       | [ImageCard](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-imagecard--docs)           |
+  | `DraggableEmbed`       | [EmbedCard](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-embedcard--docs)           |
+  | `DraggableAudio`       | [AudioCard](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-audiocard--docs)           |
+  | `AudioContextProvider` | [AudioContextProvider](https://www.canva.dev/docs/apps/app-ui-kit/storybook/?path=/docs/canva-app-ui-kit-card-audiocard--docs)|
+
+  For more information, refer to our docs on [Supporting drag-and-drop](https://www.canva.dev/docs/apps/supporting-drag-drop/).
+
+- Removed references to the now deleted `components` directory from the following files:
+  - `tsconfig.json`
+  - `webpack.config.js`
+  - `package.json`
+  
+  > If you've added new components in `/components`, you'll have to re-add the config changes mentioned above.
+
 ## 2024-02-19
 
 ### 🔨 Breaking changes

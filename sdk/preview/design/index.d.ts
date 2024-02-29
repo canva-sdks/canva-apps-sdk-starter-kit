@@ -492,7 +492,7 @@ export declare type Fill = {
 };
 
 /**
- * @beta
+ * @public
  * A reference to a font that can be used in other parts of the SDK.
  */
 export declare type FontRef = string & {
@@ -580,7 +580,7 @@ export declare type ImageElementData = DragCallback & {
  * @public
  * An image asset that will be used to fill the given path.
  */
-declare type ImageFill = {
+export declare type ImageFill = {
   /**
    * Type of an asset that will be used to fill the given path.
    */
@@ -705,7 +705,7 @@ export declare type NativeGroupElement = {
  * This type includes properties for controlling the position and dimensions
  * of the element
  */
-declare type NativeGroupElementWithBox = {
+export declare type NativeGroupElementWithBox = {
   /**
    * The type of element.
    */
@@ -948,7 +948,7 @@ export declare type PageContext = {
  * @public
  * Page Dimensions
  */
-declare type PageDimensions = {
+export declare type PageDimensions = {
   width: number;
   height: number;
 };
@@ -1169,7 +1169,7 @@ export declare type ShapeViewBox = {
  * @public
  * Attributes for changing the appearance of text.
  */
-declare type TextAttributes = {
+export declare type TextAttributes = {
   /**
    * The size of the text.
    *
@@ -1192,7 +1192,7 @@ declare type TextAttributes = {
    */
   color?: string;
   /**
-   * @beta
+   * @public
    * A reference to the font to use for this text element.
    */
   fontRef?: FontRef;
@@ -1512,7 +1512,7 @@ export declare type VideoDragConfigForElement<E extends Element> =
  * @public
  * A video asset that will be used to fill the given path.
  */
-declare type VideoFill = {
+export declare type VideoFill = {
   /**
    * Type of an asset that will be used to fill the given path.
    */

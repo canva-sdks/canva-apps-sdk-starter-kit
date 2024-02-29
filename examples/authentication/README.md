@@ -9,7 +9,33 @@
 2. Open the starter kit's `.env` file.
 3. Set the `APP_ID` environment variable to the ID of the app.
 
-## Step 2: Run the development servers
+## Step 2: Configure ngrok
+
+You server needs to be exposed via a publicly available URL, so that Canva can send requests to it. This step explains how to do this with [ngrok](https://ngrok.com/).
+
+**Note:** ngrok is a useful tool, but it has inherent security risks, such as someone figuring out the URL of your server and accessing proprietary information. Be mindful of the risks, and if you're working as part of an organization, talk to your IT department.
+
+To use ngrok, you'll need to do the following:
+
+1. Sign up for a ngrok account at https://ngrok.com/.
+2. Locate your ngrok [authtoken](https://dashboard.ngrok.com/get-started/your-authtoken). 
+3. Set an environment variable for your authtoken, using the command line. Replace `<YOUR_AUTH_TOKEN>` with your actual ngrok authtoken:
+
+   For macOS and Linux:
+   ```bash
+   export NGROK_AUTHTOKEN=<YOUR_AUTH_TOKEN>
+   ```
+   
+   For Windows PowerShell:
+   ```shell
+   $Env:NGROK_AUTHTOKEN = "<YOUR_AUTH_TOKEN>"
+   ```
+
+This environment variable is available for the current terminal session, so the command must be re-run for each new session. Alternatively, you can add the variable to your terminal's default parameters.
+
+## Step 3: Run the development servers
+
+These steps demonstrate how to start the local development servers:
 
 1. Navigate into the starter kit:
 
@@ -17,23 +43,13 @@
    cd canva-apps-sdk-starter-kit
    ```
 
-2. Run the following command:
+2. Run the following command to launch the backend and frontend development servers. The `--ngrok` parameter exposes the backend server via a publicly accessible URL.
 
    ```
-   npm start authentication
+   npm start authentication --ngrok
    ```
 
-   This will launch two development servers: one for the frontend and one for the backend.
-
-3. Use a tool, such as [ngrok](https://ngrok.com/) to expose the backend server via a public URL:
-
-   ```
-   ngrok http http://localhost:3001
-   ```
-
-   The backend must be exposed via a public URL because Canva must be able to send requests to it.
-
-## Step 3: Configure the app
+## Step 4: Configure the app
 
 1. Navigate to the app via the Developer Portal.
 2. In the **App source > Development URL** field, enter `http://localhost:8080`.

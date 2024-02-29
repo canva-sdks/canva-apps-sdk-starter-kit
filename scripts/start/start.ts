@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 import * as yargs from "yargs";
-import { AppRunner } from "./app_runner";
+import { AppRunner, errorChalk } from "./app_runner";
 import { hideBin } from "yargs/helpers";
 import { Context } from "./context";
 import * as prompts from "prompts";
-import * as chalk from "chalk";
 
 const appRunner = new AppRunner();
 
@@ -61,14 +60,14 @@ yargs(hideBin(process.argv))
         },
         {
           onCancel: () => {
-            console.log(chalk.bold.bgRed("Aborted by the user."));
+            console.log(errorChalk("Aborted by the user."));
             process.exit(0);
           },
         }
       );
 
       if (example == null) {
-        console.log(`${chalk.bold.bgRed("Error:")} No such example exists 😢`);
+        console.log(`${errorChalk("Error:")} No such example exists 😢`);
         process.exit(1);
       }
 
