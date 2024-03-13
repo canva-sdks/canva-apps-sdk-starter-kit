@@ -11,6 +11,7 @@ export const config: Config<ContainerTypes> = {
         {
           filterType: "CHECKBOX",
           label: "File Type",
+          key: "fileType",
           options: [
             { value: "mp4", label: "MP4" },
             { value: "png", label: "PNG" },
@@ -21,6 +22,7 @@ export const config: Config<ContainerTypes> = {
         {
           filterType: "RADIO",
           label: "Size",
+          key: "size",
           options: [
             {
               label: "Large (800+ px)",
@@ -37,6 +39,7 @@ export const config: Config<ContainerTypes> = {
         {
           filterType: "RADIO",
           label: "Update Date",
+          key: "updateDate",
           options: [
             { value: ">now-30m", label: "Last 30 Minutes" },
             { value: ">now-7d", label: "Last 7 days" },
@@ -47,6 +50,7 @@ export const config: Config<ContainerTypes> = {
         {
           filterType: "RADIO",
           label: "Design Status",
+          key: "designStatus",
           options: [
             { value: "approved", label: "Approved" },
             { value: "rejected", label: "Rejected" },

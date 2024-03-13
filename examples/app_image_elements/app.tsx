@@ -13,7 +13,8 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import clsx from "clsx";
 import React from "react";
-import styles from "styles/components.css";
+import baseStyles from "styles/components.css";
+import styles from "./styles.css";
 
 // We can't store the image's data URL in the app element's data, since it
 // exceeds the 5kb limit. We can, however, store an ID that references the
@@ -93,7 +94,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className={styles.scrollContainer}>
+    <div className={baseStyles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can create image elements inside

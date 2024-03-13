@@ -17,13 +17,6 @@ import { generatePlaceholders } from "./utils";
 const TARGET_ROW_HEIGHT_PX = 100;
 const NUM_PLACEHOLDERS = 10;
 
-// In this example, we will use random ids.
-// In a real app, you must use stable unique ids instead of random ids.
-const generateRandomId = (prefix: string) =>
-  `${prefix}${btoa(Date.now().toString())}${btoa(
-    (Math.random() * 1_000_000_000_000).toString()
-  )}`.replace(/=+/g, "");
-
 const uploadImage = async (image: Image): Promise<QueuedImage> => {
   // This example uses Picsum image URLs, which undergo redirects to the final URL.
   // Since the `upload` method cannot handle redirect URLs, we fetch the image to resolve the final URL directly.
@@ -35,9 +28,6 @@ const uploadImage = async (image: Image): Promise<QueuedImage> => {
     mimeType: "image/jpeg",
     url,
     thumbnailUrl: url,
-    // An alphanumeric string that is unique for each image. If given the same
-    // id, the existing image for that id will be used instead.
-    id: generateRandomId("i"),
     width: image.width,
     height: image.height,
   });

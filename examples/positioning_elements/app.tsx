@@ -18,7 +18,8 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import clsx from "clsx";
 import React from "react";
-import styles from "styles/components.css";
+import baseStyles from "styles/components.css";
+import styles from "./styles.css";
 
 // Below values are only for demonstration purposes.0
 // You can position your elements anywhere on the page by providing arbitrary
@@ -170,7 +171,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className={styles.scrollContainer}>
+    <div className={baseStyles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can get the dimensions of the

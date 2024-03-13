@@ -5,13 +5,6 @@ import React from "react";
 import styles from "styles/components.css";
 
 export const App = () => {
-  // In this example, we will use random ids.
-  // In a real app, you must use stable unique ids instead of random ids.
-  const generateRandomId = (prefix: string) =>
-    `${prefix}${btoa(Date.now().toString())}${btoa(
-      (Math.random() * 1_000_000_000_000).toString()
-    )}`.replace(/=+/g, "");
-
   const importAndAddImage = async () => {
     // Start uploading the image
     const image = await upload({
@@ -20,9 +13,6 @@ export const App = () => {
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
       thumbnailUrl:
         "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
-      // An alphanumeric string that is unique for each image. If given the same
-      // id, the existing image for that id will be used instead.
-      id: generateRandomId("i"),
       width: 540,
       height: 720,
     });
@@ -52,9 +42,6 @@ export const App = () => {
         "https://www.canva.dev/example-assets/video-import/thumbnail-image.jpg",
       thumbnailVideoUrl:
         "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
-      // An alphanumeric string that is unique for each video. If given the same
-      // id, the existing video for that id will be used instead.
-      id: generateRandomId("v"),
       width: 405,
       height: 720,
     });
@@ -79,9 +66,6 @@ export const App = () => {
       type: "AUDIO",
       mimeType: "audio/mp3",
       url: "https://www.canva.dev/example-assets/audio-import/audio.mp3",
-      // An alphanumeric string that is unique for each audio. If given the same
-      // id, the existing audio for that id will be used instead.
-      id: generateRandomId("a"),
       durationMs: 86047,
       title: "Example audio",
     });

@@ -1,0 +1,26 @@
+name: Continuous integration checks on public components
+run-name: ${{ github.actor }} pushed a commit 🚀
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - 'internal/**'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: NPM ci
+        run: npm ci
+      - name: Run prettier
+        run: npm run format:check
+      - name: Lint types
+        run: npm run lint:types
+      - name: Run build
+        run: npm run build

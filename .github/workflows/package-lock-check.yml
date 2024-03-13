@@ -1,0 +1,30 @@
+name: Check package-lock.json updated
+run-name: ${{ github.actor }} pushed a commit 🚀
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - 'internal/**'
+
+jobs:
+  check-package-lock:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install Node.js and NPM
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+
+    - name: Install NPM packages
+      run: npm install
+
+    - name: Check for package-lock.json changes
+      run: |
+        if git diff --name-only | grep --quiet 'package-lock.json'; then
+          echo "::error::Please run 'npm install' before committing your changes and make sure package-lock.json is up to date."
+          exit 1
+        fi

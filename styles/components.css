@@ -1,26 +1,3 @@
-/* List item */
-.listItem {
-  margin-bottom: var(--ui-kit-space-1);
-}
-
-/* Code */
-.code {
-  font-family: "Menlo";
-}
-
-/* Thumbnail */
-.thumbnail {
-  width: 100%;
-  position: relative;
-  border-radius: calc(var(--ui-kit-border-radius) / 2);
-  cursor: pointer;
-}
-
-.thumbnail.active {
-  outline: solid 2px var(--ui-kit-color-primary);
-  outline-offset: var(--ui-kit-space-050);
-}
-
 /* Scroll container */
 .scrollContainer {
   box-sizing: border-box;
