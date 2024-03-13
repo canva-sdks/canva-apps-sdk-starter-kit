@@ -23,9 +23,6 @@ export const App = () => {
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
       thumbnailUrl:
         "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
-      // In this example, we will use static ids.
-      // In a real app, you must use stable ids that are unique per image.
-      id: "pageBackgroundImageId",
       width: 540,
       height: 720,
     });
@@ -45,9 +42,6 @@ export const App = () => {
         "https://www.canva.dev/example-assets/video-import/thumbnail-image.jpg",
       thumbnailVideoUrl:
         "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
-      // In this example, we will use static ids.
-      // In a real app, you must use stable ids that are unique per video.
-      id: "pageBackgroundVideoId",
       width: 405,
       height: 720,
     });

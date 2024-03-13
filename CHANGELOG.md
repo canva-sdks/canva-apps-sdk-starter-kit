@@ -1,5 +1,23 @@
 # Changelog
 
+## 2024-03-13
+
+### 🧰 Added
+- Basic CI github actions steps to format, type-check and ensure `package-lock.json` is up-to-date.
+
+### 🐞 Fixed
+- `examples`
+  - Replaced previewUrl with thumbnail image in [/examples/drag_and_drop_image](/examples/drag_and_drop_image).
+- `webpack.config.js`
+  - Fixed a few incorrectly types and missing config property JSDocs.
+
+### 🔧 Changed
+- Moved styles from `styles/components.css` that were only used in examples, into the example folders.
+- `@canva/asset` 
+  - Upgraded `asset` to version `1.4.0`. Which transitions the `id` field to optional from required.
+  - Updated example apps to remove usages of the `id` field.
+- Updated `@canva/app-components` to version `1.0.0-beta.10` in `digital_asset_management` example.
+
 ## 2024-02-29
 
 ### 🧰 Added

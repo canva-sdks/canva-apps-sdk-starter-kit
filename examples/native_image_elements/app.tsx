@@ -5,7 +5,8 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import clsx from "clsx";
 import React from "react";
-import styles from "styles/components.css";
+import baseStyles from "styles/components.css";
+import styles from "./styles.css";
 
 const images = {
   dog: {
@@ -41,7 +42,7 @@ export const App = () => {
   });
 
   return (
-    <div className={styles.scrollContainer}>
+    <div className={baseStyles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can add native image elements to a

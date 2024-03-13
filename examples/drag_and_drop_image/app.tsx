@@ -65,7 +65,7 @@ export const App = () => {
       type: "IMAGE",
       resolveImageRef: uploadExternalImage,
       previewUrl:
-        "https://www.canva.dev/example-assets/image-import/grass-image.jpg",
+        "https://www.canva.dev/example-assets/image-import/grass-image-thumbnail.jpg",
       previewSize: {
         width: 320,
         height: 212,

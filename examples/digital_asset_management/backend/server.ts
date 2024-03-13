@@ -8,7 +8,11 @@ import { getTokenFromQueryString } from "../../../utils/backend/jwt_middleware/j
 import { createBaseServer } from "../../../utils/backend/base_backend/create";
 import { createJwtMiddleware } from "../../../utils/backend/jwt_middleware";
 import { JSONFileDatabase } from "./database";
-import { FindResourcesRequest, Resource } from "@canva/app-components";
+import {
+  Container,
+  FindResourcesRequest,
+  Resource,
+} from "@canva/app-components";
 
 /**
  * Generates a unique hash for a url.
@@ -30,7 +34,6 @@ const imageUrls = [
   "https://cdn.pixabay.com/photo/2023/12/20/07/04/mountains-8459056_1280.jpg",
   "https://cdn.pixabay.com/photo/2023/11/26/07/29/sparrow-8413000_1280.jpg",
   "https://cdn.pixabay.com/photo/2023/12/12/16/11/mountain-8445543_1280.jpg",
-  "https://cdn.pixabay.com/photo/2021/10/19/06/56/mountains-6722694_1280.jpg",
 ];
 
 /**
@@ -334,15 +337,26 @@ async function main() {
     }
 
     if (types.includes("CONTAINER")) {
-      resources.push({
-        id: "container1",
-        name: "My folder",
-        type: "CONTAINER",
-        containerType: "folder",
-      });
+      const containers = await Promise.all(
+        Array.from(
+          { length: 10 },
+          async (_, i) =>
+            ({
+              id: await generateHash(i + ""),
+              containerType: "folder",
+              name: `My folder ${i}`,
+              type: "CONTAINER",
+            } satisfies Container)
+        )
+      );
+
+      resources = resources.concat(containers);
     }
 
-    res.send({ resources });
+    res.send({
+      resources,
+      continuation: +(findResourcesRequest.continuation || 0) + 1,
+    });
   });
 
   const server = createBaseServer(router);

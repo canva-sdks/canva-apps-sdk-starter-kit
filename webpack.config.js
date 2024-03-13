@@ -10,11 +10,11 @@ const chalk = require("chalk");
  * @param {string} [options.appEntry=./src/index.tsx]
  * @param {string} [options.backendHost]
  * @param {Object} [options.devConfig]
- * @param {number} options.devConfig.port
+ * @param {number} [options.devConfig.port]
  * @param {boolean} [options.devConfig.enableHmr]
  * @param {boolean} [options.devConfig.enableHttps]
  * @param {string} [options.devConfig.appOrigin]
- * @param {string} [options.devConfig.appId]
+ * @param {string} [options.devConfig.appId] - Deprecated in favour of appOrigin
  * @param {string} [options.devConfig.certFile]
  * @param {string} [options.devConfig.keyFile]
  * @returns {Object}
@@ -171,7 +171,7 @@ function buildConfig({
 /**
  *
  * @param {Object} [options]
- * @param {string} options.port
+ * @param {number} [options.port]
  * @param {boolean} [options.enableHmr]
  * @param {boolean} [options.enableHttps]
  * @param {string} [options.appOrigin]

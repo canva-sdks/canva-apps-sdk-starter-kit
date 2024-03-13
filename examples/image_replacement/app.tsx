@@ -13,9 +13,6 @@ export const App = () => {
     // Start uploading the image
     const queuedImage = await upload({
       type: "IMAGE",
-      // In this example, we will use random ids.
-      // In a real app, you must use stable unique ids instead of random ids.
-      id: Math.random().toString(16).substring(6),
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
       mimeType: "image/jpeg",
       thumbnailUrl:

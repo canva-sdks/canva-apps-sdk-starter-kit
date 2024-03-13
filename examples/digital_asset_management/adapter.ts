@@ -9,22 +9,36 @@ export async function findResources(
 ): Promise<FindResourcesResponse> {
   const userToken = await auth.getCanvaUserToken();
 
-  // TODO: This url must be changed to `${BACKEND_HOST}/api/resources/find` to
-  // ensure requests are authenticated in production
+  // TODO: Update the API path to match your backend
+  // If using the backend example, the URL should be updated to `${BACKEND_HOST}/api/resources/find` to ensure requests are authenticated in production
   const url = new URL(`${BACKEND_HOST}/resources/find`);
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${userToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(request),
-  });
-  const body = await response.json();
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+    const body = await response.json();
 
-  return {
-    resources: body.resources,
-    type: "SUCCESS",
-  };
+    if (body.resources) {
+      return {
+        type: "SUCCESS",
+        resources: body.resources,
+        continuation: body.continuation,
+      };
+    }
+    return {
+      type: "ERROR",
+      errorCode: body.errorCode || "INTERNAL_ERROR",
+    };
+  } catch (e) {
+    return {
+      type: "ERROR",
+      errorCode: "INTERNAL_ERROR",
+    };
+  }
 }

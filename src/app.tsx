@@ -15,9 +15,8 @@ export const App = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
-          To make changes to this app, edit the{" "}
-          <code className={styles.code}>src/app.tsx</code> file, then close and
-          reopen the app in the editor to preview the changes.
+          To make changes to this app, edit the <code>src/app.tsx</code> file,
+          then close and reopen the app in the editor to preview the changes.
         </Text>
         <Button variant="primary" onClick={onClick} stretch>
           Do something cool
