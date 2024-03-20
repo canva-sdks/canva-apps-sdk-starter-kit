@@ -33,13 +33,13 @@ To start the boilerplate's development server, run the following command:
 npm start
 ```
 
-The server becomes available at http://localhost:8080.
+The server becomes available at <http://localhost:8080>.
 
 The app's source code is in the `src/app.tsx` file.
 
 ### Step 2: Preview the app
 
-The local development server only exposes a JavaScript bundle, so you can't preview an app by visiting http://localhost:8080. You can only preview an app via the Canva editor.
+The local development server only exposes a JavaScript bundle, so you can't preview an app by visiting <http://localhost:8080>. You can only preview an app via the Canva editor.
 
 To preview an app:
 
@@ -133,11 +133,11 @@ But replace `<example-name>` with the name of an example, like so:
 npm start native_image_elements
 ```
 
-Like the boilerplate, a development server becomes available at http://localhost:8080.
+Like the boilerplate, a development server becomes available at <http://localhost:8080>.
 
 ### Running an example's backend
 
-Some examples have a backend. This backend is defined in the example's `backend/server.ts` file, automatically starts when the `npm start` command is run, and becomes available at http://localhost:3001.
+Some examples have a backend. This backend is defined in the example's `backend/server.ts` file, automatically starts when the `npm start` command is run, and becomes available at <http://localhost:3001>.
 
 To run examples that have a backend:
 

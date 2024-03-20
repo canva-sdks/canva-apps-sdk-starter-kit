@@ -1,0 +1,12 @@
+{
+  "name": "masonry",
+  "description": "An example app demonstrating how apps can use the Masonry component from the App UI Kit.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "react-infinite-scroller": "^1.2.6"
+  },
+  "devDependencies": {
+    "@types/react-infinite-scroller": "^1.2.5"
+  }
+}

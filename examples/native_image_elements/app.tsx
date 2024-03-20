@@ -1,12 +1,18 @@
-import { Box, Button, FormField, Grid, Rows, Text } from "@canva/app-ui-kit";
+import {
+  Box,
+  Button,
+  FormField,
+  Grid,
+  ImageCard,
+  Rows,
+  Text,
+} from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
-import clsx from "clsx";
 import React from "react";
 import baseStyles from "styles/components.css";
-import styles from "./styles.css";
 
 const images = {
   dog: {
@@ -54,15 +60,14 @@ export const App = () => {
             <Box id={props.id} padding="1u">
               <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
-                  <img
-                    className={clsx(
-                      styles.thumbnail,
-                      item.active && styles.active
-                    )}
+                  <ImageCard
+                    ariaLabel={item.title}
                     key={item.key}
-                    src={item.imageSrc}
+                    thumbnailUrl={item.imageSrc}
                     onClick={item.onClick}
-                    alt={item.title}
+                    selectable={true}
+                    selected={item.active}
+                    borderRadius="standard"
                   />
                 ))}
               </Grid>

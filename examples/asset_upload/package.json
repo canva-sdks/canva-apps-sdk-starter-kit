@@ -1,0 +1,6 @@
+{
+  "name": "asset_upload",
+  "description": "An example app demonstrating how apps can upload assets into Canva.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}
