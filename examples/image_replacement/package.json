@@ -1,0 +1,6 @@
+{
+  "name": "image_replacement",
+  "description": "An example app demonstrating how apps can replace the selected image.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

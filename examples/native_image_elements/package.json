@@ -1,0 +1,9 @@
+{
+  "name": "native_image_elements",
+  "description": "An example app demonstrating how apps can add native image elements to a design.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "clsx": "^2.1.0"
+  }
+}

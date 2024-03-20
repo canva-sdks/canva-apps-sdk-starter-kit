@@ -1,5 +1,22 @@
 # Changelog
 
+## 2024-03-20
+
+### 🧰 Added
+- `@canva/preview`
+  - Added [design.overlay.registerOnCanOpen](http://canva.dev/docs/apps/api/design-overlay-register-on-can-open/) under `@canva/preview/design`, to register a callback that runs when an overlay canOpen status changed on a particular target. If canOpen, the app can open an overlay on top of the specified target.
+  - Added [appProcess](http://canva.dev/docs/apps/api/platform-app-process/) API under `@canva/preview/platform`, which allows app runtime lifecycle management.
+  - Added `use_overlay_hook` utils
+- `examples`
+  - Added [/examples/image_editing_overlay](/examples/image_editing_overlay) to demonstrate [appProcess](http://canva.dev/docs/apps/api/platform-app-process/) API and [design.overlay.registerOnCanOpen](http://canva.dev/docs/apps/api/design-overlay-register-on-can-open/)
+
+### 🔧 Changed
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.4.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+  - Updated examples to use the `ImageCard` component over local styles.
+- Minor markdown formatting changes in [README.md](./README.md)
+- Add npm workspaces so that individual examples can manage their own dependencies.
+
 ## 2024-03-13
 
 ### 🧰 Added

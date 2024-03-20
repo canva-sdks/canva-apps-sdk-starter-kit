@@ -3,6 +3,7 @@ import {
   Button,
   FormField,
   Grid,
+  ImageCard,
   NumberInput,
   Rows,
   Text,
@@ -11,10 +12,8 @@ import { initAppElement } from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
-import clsx from "clsx";
 import React from "react";
 import baseStyles from "styles/components.css";
-import styles from "./styles.css";
 
 // We can't store the image's data URL in the app element's data, since it
 // exceeds the 5kb limit. We can, however, store an ID that references the
@@ -107,15 +106,14 @@ export const App = () => {
             <Box id={props.id} padding="1u">
               <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
-                  <img
-                    className={clsx(
-                      styles.thumbnail,
-                      item.active && styles.active
-                    )}
+                  <ImageCard
+                    ariaLabel={item.title}
                     key={item.key}
-                    src={item.imageSrc}
+                    thumbnailUrl={item.imageSrc}
                     onClick={item.onClick}
-                    alt={item.title}
+                    selectable={true}
+                    selected={item.active}
+                    borderRadius="standard"
                   />
                 ))}
               </Grid>

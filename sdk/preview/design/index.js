@@ -7,6 +7,7 @@ export const getCurrentPageContext = di.getCurrentPageContext.bind(di);
 export const getDefaultPageDimensions = di.getDefaultPageDimensions.bind(di);
 export const initAppElement = di.initAppElement.bind(di);
 export const selection = di.selection;
+export const overlay = di.overlay;
 
 export const ui = (() => {
   const ui = window.canva.dragAndDrop;

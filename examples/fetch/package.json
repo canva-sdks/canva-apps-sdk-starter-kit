@@ -1,0 +1,14 @@
+{
+  "name": "fetch",
+  "description": "An example app demonstrating how apps can securely communicate with their servers via the browser's Fetch API.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
+  }
+}

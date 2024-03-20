@@ -100,6 +100,14 @@ export declare type AppElementRenderer<A extends AppElementData> = (
 export declare type AppElementRendererOutput = NativeSimpleElementWithBox[];
 
 /**
+ * @beta
+ * A unique identifier that references an app runtime process
+ */
+export declare type AppProcessId = string & {
+  __appProcessId: never;
+};
+
+/**
  * @public
  * Options for defining the drag-and-drop behavior of audio tracks.
  */
@@ -150,7 +158,7 @@ export declare type AudioTrack = {
  * @remarks
  * Units are relative to the parent container both in terms of position and size
  */
-declare type Box = Position & (WidthAndHeight | Width | Height);
+export declare type Box = Position & (WidthAndHeight | Width | Height);
 
 declare type CommonImageDragConfig = {
   /**
@@ -203,6 +211,22 @@ export declare type Coordinates = {
    * Represents a Y coordinate, in pixels.
    */
   y: number;
+};
+
+/**
+ * @beta
+ */
+export declare type DesignOverlay = {
+  /**
+   * Registers a callback that runs when an overlay canOpen status changed on a particular target.
+   *
+   * @remarks
+   * The callback fires immediately
+   */
+  registerOnCanOpen<Target extends OverlayTarget>(opts: {
+    target: Target;
+    onCanOpen(event: OverlayOpenableEvent<Target>): void;
+  }): () => void;
 };
 
 /**
@@ -923,6 +947,48 @@ export declare type NativeVideoElementWithBox = NativeVideoElement & Box;
  * The types of object primitive values that can be stored within an app element's data.
  */
 declare type ObjectPrimitive = Boolean | String;
+
+/**
+ * @beta
+ * An alias for the DesignOverlay interface, providing access to design overlay related functionality
+ */
+export declare const overlay: DesignOverlay;
+
+/**
+ * @beta
+ */
+export declare type OverlayOpenableEvent<Target extends OverlayTarget> = {
+  /**
+   * An event indicating whether the overlay can be opened or not when {@link OverlayTarget} is `"image_selection"`.
+   */
+  ["image_selection"]:
+    | OverlayUnopenableEvent
+    | {
+        canOpen: true;
+        /**
+         * Launch a new app process on an overlay on top of the current selected image fill
+         *
+         * @remarks
+         * `launchParameters` specifies the type of data that are provided to an app process at its launch
+         */
+        readonly open: (options: {
+          launchParameters?: any;
+        }) => Promise<AppProcessId>;
+      };
+}[Target];
+
+/**
+ * @beta
+ */
+export declare type OverlayTarget = "image_selection";
+
+/**
+ * @beta
+ */
+declare type OverlayUnopenableEvent = {
+  canOpen: false;
+  reason: string;
+};
 
 /**
  * @public

@@ -1,0 +1,9 @@
+{
+  "name": "positioning_elements",
+  "description": "An example app demonstrating how apps can get the dimensions of the current page and create elements at specific positions on that page.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "clsx": "^2.1.0"
+  }
+}
