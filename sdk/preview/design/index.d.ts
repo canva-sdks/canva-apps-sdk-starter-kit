@@ -253,6 +253,14 @@ export declare type DesignSelection = {
 };
 
 /**
+ * @beta
+ * JWT that contains the Design ID, User ID and App ID.
+ */
+export declare type DesignToken = {
+  token: string;
+};
+
+/**
  * @public
  * Represents a width and a height.
  */
@@ -557,6 +565,12 @@ export declare function getCurrentPageContext(): Promise<PageContext>;
 export declare function getDefaultPageDimensions(): Promise<
   Dimensions | undefined
 >;
+
+/**
+ * @beta
+ * Retrieves a signed JWT that contains the Design ID, App ID and User ID.
+ */
+export declare function getDesignToken(): Promise<DesignToken>;
 
 declare type Height = {
   width: "auto";

@@ -8,6 +8,7 @@ export const getDefaultPageDimensions = di.getDefaultPageDimensions.bind(di);
 export const initAppElement = di.initAppElement.bind(di);
 export const selection = di.selection;
 export const overlay = di.overlay;
+export const getDesignToken = di.getDesignToken.bind(di);
 
 export const ui = (() => {
   const ui = window.canva.dragAndDrop;
