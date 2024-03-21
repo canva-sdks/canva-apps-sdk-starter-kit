@@ -1,5 +1,16 @@
 # Changelog
 
+## 2024-03-21
+
+### 🧰 Added
+- `@canva/preview`
+  - Added [design.getDesignToken](https://www.canva.dev/docs/apps/using-design-ids) under `@canva/preview/design` to retrieve a signed JWT that contains the Design ID.
+- `examples`
+  - Added [/examples/design_token](/examples/design_token) to demonstrate usage of [Design Token](https://www.canva.dev/docs/apps/using-design-ids) API.
+
+### 🗑️ Removed
+- Removed the `.devcontainer` directory.
+
 ## 2024-03-20
 
 ### 🧰 Added
