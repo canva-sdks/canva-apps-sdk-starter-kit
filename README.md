@@ -43,11 +43,11 @@ The local development server only exposes a JavaScript bundle, so you can't prev
 
 To preview an app:
 
-1. Create an app via the [Developer Portal](https://www.canva.com/developers).
+1. Create an app via the [Developer Portal](https://www.canva.com/developers/apps).
 2. Select **App source > Development URL**.
 3. In the **Development URL** field, enter the URL of the development server.
 4. Click **Preview**. This opens the Canva editor (and the app) in a new tab.
-5. Click **Use**. (This screen only appears when when using an app for the first time.)
+5. Click **Open**. (This screen only appears when using an app for the first time.)
 
 The app will appear in the side panel.
 

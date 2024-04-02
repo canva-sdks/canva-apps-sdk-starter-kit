@@ -1,5 +1,17 @@
 # Changelog
 
+## 2024-04-02
+
+### 🧰 Added
+- `@canva/asset`
+  - Added support for TIFF in `upload`
+
+### 🔧 Changed
+- Minor fix in [README.md](./README.md) Step 2: Preview the app to reflect the latest instructions.
+- `examples`
+  - Updated the [/examples/design_token](/examples/design_token) example to include more checks against important JWT claims.
+  - Downgraded ExpressJS module used in [/examples/design_token](/examples/design_token) from v5 to v4 to be consistent with other examples.
+
 ## 2024-03-21
 
 ### 🧰 Added
