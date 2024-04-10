@@ -221,22 +221,15 @@ async function main() {
         return failureResponse();
       }
 
-      // Get the user's ID from the query parameters
-      const { user } = req.query;
-      if (typeof user !== "string") {
-        console.error(
-          `user field in query parameters: expected 'string' but found '${typeof user}'`
-        );
-        res.status(400).send({});
-        return;
-      }
+      // Get the userId from JWT middleware
+      const { userId } = req.canva;
 
       // Load the database
       const data = await db.read();
 
       // Add the user to the database
-      if (!data.users.includes(user)) {
-        data.users.push(user);
+      if (!data.users.includes(userId)) {
+        data.users.push(userId);
         await db.write(data);
       }
 
@@ -270,15 +263,15 @@ async function main() {
    * Developer Portal. Localhost addresses will not work to test this endpoint.
    */
   router.post("/configuration/delete", jwtMiddleware, async (req, res) => {
-    // Get the user's ID from the request body
-    const { user } = req.body;
+    // Get the userId from JWT middleware
+    const { userId } = req.canva;
 
     // Load the database
     const data = await db.read();
 
     // Remove the user from the database
     await db.write({
-      users: data.users.filter((userId) => userId !== user),
+      users: data.users.filter((user) => user !== userId),
     });
 
     // Confirm that the user was removed
