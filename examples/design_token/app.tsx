@@ -8,9 +8,8 @@ import {
 } from "@canva/app-ui-kit";
 import React, { useEffect, useState } from "react";
 import styles from "styles/components.css";
-import { getDesignToken } from "@canva/preview/design";
 import { auth } from "@canva/user";
-import { getDefaultPageDimensions } from "@canva/design";
+import { getDefaultPageDimensions, getDesignToken } from "@canva/design";
 
 type DesignData = {
   title: string;

@@ -1,5 +1,21 @@
 # Changelog
 
+## 2024-04-10
+
+### 🧰 Added
+- `@canva/design`
+  - Added [design.getDesignToken](https://www.canva.dev/docs/apps/using-design-ids) under `@canva/design` which was previously in beta. See the documentation.
+
+### Updated
+- `examples`
+  - Updated [/examples/design_token](/examples/design_token) to use `@canva/design` instead of `@canva/preview/design`
+- `@canva/design`
+  - NativeVideoElement is now supported in app elements. [See the documentation](https://www.canva.dev/docs/apps/creating-app-elements/)
+
+### 🔧 Fixed
+- `examples`
+  - Fixed some authentication examples using a deprecated parameter instead of the JWT middleware 
+
 ## 2024-04-02
 
 ### 🧰 Added
