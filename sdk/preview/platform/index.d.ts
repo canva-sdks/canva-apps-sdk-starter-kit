@@ -9,6 +9,8 @@ export declare interface AppProcess {
    * Request the termination of an app process.
    * @param target - The id of the app process to close.
    * @param params - A parameters object passed to all callback functions registered via registerOnBeforeClose API for the provided AppProcessId.
+   * In addition to the required 'reason' field, app can choose to pass any structured data via params.
+   * {@link https://html.spec.whatwg.org/multipage/structured-data.html#safe-passing-of-structured-data | safe passing of structured data}
    * @remarks
    * A successful invocation indicates the platform has begun shutdown following procedure for the target AppProcessId, which:
    * 1. Transitions process state to `CLOSING`, triggering all registered state change callbacks.
@@ -18,7 +20,10 @@ export declare interface AppProcess {
    * @remarks
    * Once initiated, the closing process is irreversible and the process will NOT receive any events or messages from other processes.
    */
-  requestClose(target: AppProcessId, params: CloseParams): Promise<void>;
+  requestClose<T extends CloseParams>(
+    target: AppProcessId,
+    params: T
+  ): Promise<void>;
   /**
    * @beta
    * Registers a callback to be executed when the state of the specified app process changes.
@@ -35,12 +40,18 @@ export declare interface AppProcess {
    * @param callback - Handler function to receive incoming messages.
    * @returns a disposer function to unsubscribe the handler.
    */
-  registerOnMessage<T>(
-    callback: (sender: AppProcessInfo<T>, message: any) => void
+  registerOnMessage(
+    callback: (
+      sender: {
+        appProcessId: AppProcessId;
+        surface: AppSurface;
+      },
+      message: any
+    ) => void
   ): () => Promise<void>;
   /**
    * Broadcasts a message to all other running app processes which share the caller's AppId.
-   * @param message - app-defined message to be broadcast.
+   * @param message - app-defined message to be broadcast. message needs to be structured data.
    */
   broadcastMessage(message: any): void;
 }
@@ -65,10 +76,6 @@ export declare type AppProcessId = string & {
  */
 export declare type AppProcessInfo<T> = {
   /**
-   * The surface on which the app is running.
-   */
-  surface: AppSurface;
-  /**
    * The unique identifier of the app process.
    */
   processId: AppProcessId;
@@ -76,7 +83,20 @@ export declare type AppProcessInfo<T> = {
    * The parameters provided to the app at the time of its process launch.
    */
   launchParams?: T;
-};
+} & (
+  | {
+      surface: "object_panel";
+    }
+  | {
+      surface: "selected_image_overlay";
+      /**
+       * An object to provide addtional data about the surface which this app process is launched on.
+       */
+      context: {
+        imageUrl: string;
+      };
+    }
+);
 
 /**
  * @beta
@@ -134,6 +154,7 @@ export declare type CurrentAppProcess = {
    * @beta
    * Requests the current app process be closed.
    * @param params - A parameters object passed to all callback functions registered via registerOnBeforeClose API for the current process.
+   * In addition to the required 'reason' field, app can choose to pass any structured data via params.
    * @remarks
    * A successful invocation indicates the platform has begun shutdown following procedure for the current process, which:
    * 1. Transitions process state to `CLOSING`, triggering all registered state change callbacks.
@@ -143,7 +164,7 @@ export declare type CurrentAppProcess = {
    * @remarks
    * Once initiated, the closing process is irreversible and the process will NOT receive any events or messages from other processes.
    */
-  requestClose(params: CloseParams): Promise<void>;
+  requestClose<T extends CloseParams>(params: T): Promise<void>;
   /**
    * @beta
    * Registers a callback to be executed when the current app process is about to close.
@@ -154,7 +175,9 @@ export declare type CurrentAppProcess = {
    * @returns a disposer function to unsubscribe the callback.
    * @remarks Complete execution of the callback is not guaranteed. Certain user actions (e.g. closing tabs, top level navigation) may terminate app processes prematurely. Consider these callbacks **best effort only.**
    */
-  setOnDispose(callback: OnDisposeCallback): () => Promise<void>;
+  setOnDispose<T extends CloseParams>(
+    callback: OnDisposeCallback<T>
+  ): () => Promise<void>;
 };
 
 /**
@@ -168,7 +191,9 @@ export declare function getPlatformInfo(): PlatformInfo;
  * The type of a callback that is invoked when an app process is being closed.
  * @returns a promise.
  */
-export declare type OnDisposeCallback = (opts: CloseParams) => Promise<void>;
+export declare type OnDisposeCallback<T extends CloseParams> = (
+  opts: T
+) => Promise<void>;
 
 /**
  * @public

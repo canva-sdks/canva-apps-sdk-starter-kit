@@ -6,6 +6,15 @@
 export declare function addAudioTrack(audioTrack: AudioTrack): Promise<void>;
 
 /**
+ * @beta
+ * Adds a native element to the user's design.
+ * @param element - The element to add to the user's design.
+ */
+export declare function addNativeElement(
+  element: NativeElement | NativeElementWithBox | NativeTableElement
+): Promise<void>;
+
+/**
  * @public
  * Adds a native element to the user's design.
  * @param element - The element to add to the user's design.
@@ -160,6 +169,31 @@ export declare type AudioTrack = {
  */
 export declare type Box = Position & (WidthAndHeight | Width | Height);
 
+/**
+ * @beta
+ * A cell for a NativeTableElement. Cells can have text content and a background color.
+ * A cell can also be sized by setting the colSpan and rowSpan values for how many columns
+ * and rows the cell occupies respectively.
+ */
+export declare type Cell = {
+  /**
+   * The text content of the table cell
+   */
+  text?: NativeTextElement;
+  /**
+   * The background of the table cell
+   */
+  fill?: Pick<Fill, "color">;
+  /**
+   * How many columns this cell occupies
+   */
+  colSpan?: number;
+  /**
+   * How many rows this cell occupies
+   */
+  rowSpan?: number;
+};
+
 declare type CommonImageDragConfig = {
   /**
    * The type of element.
@@ -253,8 +287,8 @@ export declare type DesignSelection = {
 };
 
 /**
- * @beta
- * JWT that contains the Design ID, User ID and App ID.
+ * @public
+ * JWT that contains the Design ID and App ID.
  */
 export declare type DesignToken = {
   token: string;
@@ -567,7 +601,7 @@ export declare function getDefaultPageDimensions(): Promise<
 >;
 
 /**
- * @beta
+ * @public
  * Retrieves a signed JWT that contains the Design ID, App ID and User ID.
  */
 export declare function getDesignToken(): Promise<DesignToken>;
@@ -861,6 +895,23 @@ export declare type NativeSimpleElementWithBox = Exclude<
   NativeElementWithBox,
   NativeGroupElementWithBox
 >;
+
+/**
+ * @beta
+ * An element that renders a table.
+ */
+export declare type NativeTableElement = {
+  /**
+   * The type of element.
+   */
+  type: "TABLE";
+  /**
+   * The rows of the table. Each row contains an array of cells, 1 cell per column in the row.
+   */
+  rows: {
+    cells: Cell[];
+  }[];
+};
 
 /**
  * @public

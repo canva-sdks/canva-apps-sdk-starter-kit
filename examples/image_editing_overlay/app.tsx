@@ -4,7 +4,6 @@ import { ObjectPanel } from "./object_panel";
 import { Overlay } from "./overlay";
 
 export type LaunchParams = {
-  selectedImageUrl: string;
   brushSize: number;
 };
 
@@ -19,5 +18,5 @@ export const App = () => {
     return <Overlay context={context} />;
   }
 
-  throw new Error(`Invalid surface: ${context.surface}`);
+  throw new Error(`Invalid surface`);
 };
