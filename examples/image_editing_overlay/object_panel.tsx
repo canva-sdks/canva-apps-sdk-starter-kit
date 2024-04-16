@@ -4,8 +4,8 @@ import styles from "styles/components.css";
 import { appProcess } from "@canva/preview/platform";
 import { useOverlay } from "utils/use_overlay_hook";
 import { useSelection } from "utils/use_selection_hook";
-import { getTemporaryUrl } from "@canva/asset";
 import { LaunchParams } from "./app";
+import type { CloseOpts } from "./overlay";
 
 type UIState = {
   brushSize: number;
@@ -20,24 +20,14 @@ export const ObjectPanel = () => {
     isOpen,
     open,
     close: closeOverlay,
-  } = useOverlay("image_selection");
+  } = useOverlay<"image_selection", CloseOpts>("image_selection");
   const selection = useSelection("image");
   const [state, setState] = React.useState<UIState>(initialState);
 
   const openOverlay = async () => {
-    const draft = await selection.read();
-    if (draft.contents.length !== 1) {
-      return;
-    }
-    const { url } = await getTemporaryUrl({
-      type: "IMAGE",
-      ref: draft.contents[0].ref,
-    });
-
     open({
       launchParameters: {
         brushSize: state.brushSize,
-        selectedImageUrl: url,
       } satisfies LaunchParams,
     });
   };

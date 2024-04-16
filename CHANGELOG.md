@@ -1,5 +1,22 @@
 # Changelog
 
+## 2024-04-16
+
+### 🧰 Added
+- `@canva/preview`
+  - Added `AppProcessInfo.context` for selected_image_overlay surface, allow apps to get additional context data about the surface where the overlay is opened on.
+  - Added `NativeTableElement` to addNativeElement, allows apps to insert a table to a design. [See the documentation](https://www.canva.dev/docs/apps/creating-tables/).
+  - Added `table_wrapper` utils, which helps to create a table element.
+- `examples`
+  - Added [/examples/native_table_elements](/examples/native_table_elements) to demonstrate usage of Table API.
+  - Added `OverlayLoadingIndicator` React component to [/examples/image_editing_overlay](/examples/image_editing_overlay) to align loading overlay loading experience with native experience.
+
+### 🔧 Changed
+- `@canva/preview`
+  - Update typings to [appProcess](http://canva.dev/docs/apps/api/platform-app-process/) API methods including `setOnDispose`, `registerOnMessage` and `requestClose`.
+
+- Updated `@canva/app-components` version in digital_asset_management example.
+
 ## 2024-04-10
 
 ### 🧰 Added

@@ -1,10 +1,15 @@
 import * as React from "react";
-import { AppProcessInfo } from "sdk/preview/platform";
+import { AppProcessInfo, CloseParams } from "sdk/preview/platform";
 import { LaunchParams } from "./app";
 import { upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
 import { appProcess } from "@canva/preview/platform";
-import styles from "styles/components.css";
+import { OverlayLoadingIndicator } from "./overlay_loading_indicator";
+
+// App can extend CloseParams type to send extra data when closing the overlay
+// For example:
+// type CloseOpts = CloseParams & { message: string }
+export type CloseOpts = CloseParams;
 
 type OverlayProps = {
   context: AppProcessInfo<LaunchParams>;
@@ -22,13 +27,18 @@ export const Overlay = (props: OverlayProps) => {
   const uiStateRef = React.useRef<UIState>({
     brushSize: 7,
   });
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    if (!appContext.launchParams) {
+    if (
+      !appContext.launchParams ||
+      appContext.surface !== "selected_image_overlay"
+    ) {
       return;
     }
 
-    const { selectedImageUrl, ...uiState } = appContext.launchParams;
+    const uiState = appContext.launchParams;
+    const selectedImageUrl = appContext.context.imageUrl;
 
     // set initial ui state
     uiStateRef.current = uiState;
@@ -45,13 +55,13 @@ export const Overlay = (props: OverlayProps) => {
       throw new Error("failed to create context 2d");
     }
 
-    // download selected image url
+    // load image
     let img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = selectedImageUrl;
     img.onload = () => {
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+    img.crossOrigin = "anonymous";
+    img.src = selectedImageUrl;
 
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
@@ -103,23 +113,32 @@ export const Overlay = (props: OverlayProps) => {
       return;
     }
 
-    return void appProcess.current.setOnDispose(async ({ reason }) => {
-      if (reason === "aborted") {
-        return;
+    return void appProcess.current.setOnDispose<CloseOpts>(
+      async ({ reason }) => {
+        if (reason === "aborted") {
+          return;
+        }
+        setIsLoading(true);
+        const draft = await selection.read();
+        const queueImage = await upload({
+          type: "IMAGE",
+          mimeType: "image/png",
+          url: canvas.toDataURL(),
+          thumbnailUrl: canvas.toDataURL(),
+          width: canvas.width,
+          height: canvas.height,
+        });
+        draft.contents[0].ref = queueImage.ref;
+        await draft.save();
+        setIsLoading(false);
       }
-      const draft = await selection.read();
-      const queueImage = await upload({
-        type: "IMAGE",
-        mimeType: "image/png",
-        url: canvas.toDataURL(),
-        thumbnailUrl: canvas.toDataURL(),
-        width: canvas.width,
-        height: canvas.height,
-      });
-      draft.contents[0].ref = queueImage.ref;
-      await draft.save();
-    });
+    );
   }, [selection]);
 
-  return <canvas ref={canvasRef} className={styles.canvas} />;
+  return (
+    <>
+      <canvas ref={canvasRef} />
+      {isLoading && <OverlayLoadingIndicator />}
+    </>
+  );
 };

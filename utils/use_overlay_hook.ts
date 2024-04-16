@@ -4,7 +4,7 @@ import {
   OverlayTarget,
   overlay as designOverlay,
 } from "@canva/preview/design";
-import { CloseReason, appProcess } from "@canva/preview/platform";
+import { CloseParams, appProcess } from "@canva/preview/platform";
 import React from "react";
 
 const initialOverlayEvent: OverlayOpenableEvent<OverlayTarget> = {
@@ -20,7 +20,10 @@ const initialOverlayEvent: OverlayOpenableEvent<OverlayTarget> = {
  *  4. close - a function close the currently opened overlay.
  * @param target The overlay target to register for whether we can open an overlay.
  */
-export function useOverlay<T extends OverlayTarget>(
+export function useOverlay<
+  T extends OverlayTarget,
+  C extends CloseParams = CloseParams
+>(
   target: T
 ): {
   canOpen: boolean;
@@ -28,7 +31,7 @@ export function useOverlay<T extends OverlayTarget>(
   open: (opts?: {
     launchParameters?: any;
   }) => Promise<AppProcessId | undefined>;
-  close: (opts: { reason: CloseReason }) => Promise<void>;
+  close: (opts: C) => Promise<void>;
 } {
   const [overlay, setOverlay] =
     React.useState<OverlayOpenableEvent<T>>(initialOverlayEvent);
@@ -60,9 +63,9 @@ export function useOverlay<T extends OverlayTarget>(
     }
   };
 
-  const close = async (opts: { reason: CloseReason }) => {
+  const close = async (opts: C) => {
     if (overlayId) {
-      appProcess.requestClose(overlayId, { reason: opts.reason });
+      appProcess.requestClose<C>(overlayId, opts);
     }
   };
 
