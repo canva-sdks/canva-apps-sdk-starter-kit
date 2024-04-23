@@ -3,7 +3,6 @@ import * as React from "react";
 import styles from "styles/components.css";
 import { appProcess } from "@canva/preview/platform";
 import { useOverlay } from "utils/use_overlay_hook";
-import { useSelection } from "utils/use_selection_hook";
 import { LaunchParams } from "./app";
 import type { CloseOpts } from "./overlay";
 
@@ -21,7 +20,6 @@ export const ObjectPanel = () => {
     open,
     close: closeOverlay,
   } = useOverlay<"image_selection", CloseOpts>("image_selection");
-  const selection = useSelection("image");
   const [state, setState] = React.useState<UIState>(initialState);
 
   const openOverlay = async () => {
