@@ -23,8 +23,8 @@ export class AppRunner {
 
     if (!ctx.hmrEnabled) {
       console.log(
-        `${warnChalk(
-          "Warning:"
+        `${infoChalk(
+          "Note:"
         )} HMR not enabled. To enable it, please refer to the instructions in the ${highlightChalk(
           "README.md"
         )}\n`

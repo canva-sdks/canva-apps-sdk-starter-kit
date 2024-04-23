@@ -1,10 +1,10 @@
 import * as React from "react";
 import { AppProcessInfo, CloseParams } from "sdk/preview/platform";
 import { LaunchParams } from "./app";
-import { upload } from "@canva/asset";
+import { getTemporaryUrl, upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
 import { appProcess } from "@canva/preview/platform";
-import { OverlayLoadingIndicator } from "./overlay_loading_indicator";
+import { SelectionEvent } from "@canva/design";
 
 // App can extend CloseParams type to send extra data when closing the overlay
 // For example:
@@ -21,53 +21,71 @@ type UIState = {
 
 export const Overlay = (props: OverlayProps) => {
   const { context: appContext } = props;
+  const selection = useSelection("image");
+
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const isDragginRef = React.useRef<boolean>();
-  const selection = useSelection("image");
   const uiStateRef = React.useRef<UIState>({
     brushSize: 7,
   });
-  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    if (!selection || selection.count !== 1) {
+      return;
+    }
+
     if (
       !appContext.launchParams ||
       appContext.surface !== "selected_image_overlay"
     ) {
-      return;
+      return void abort();
     }
 
-    const uiState = appContext.launchParams;
-    const selectedImageUrl = appContext.context.imageUrl;
-
     // set initial ui state
+    const uiState = appContext.launchParams;
     uiStateRef.current = uiState;
 
     // set up canvas
     const canvas = canvasRef.current;
     if (!canvas) {
-      throw new Error("no canvas");
+      return void abort();
     }
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error("failed to create context 2d");
+      return void abort();
     }
 
-    // load image
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // load and draw image to canvas
     let img = new Image();
-    img.onload = () => {
+    let cssScale = 1;
+    const drawImage = () => {
+      // Set the canvas dimensions to match the original image dimensions to maintain image quality,
+      // when saving the output image back to the design using canvas.toDataUrl()
+      cssScale = window.innerWidth / img.width;
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.style.transform = `scale(${cssScale})`;
+      canvas.style.transformOrigin = "0 0";
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+    img.onload = drawImage;
     img.crossOrigin = "anonymous";
-    img.src = selectedImageUrl;
+    (async () => {
+      const selectedImageUrl = await loadOriginalImage(selection);
+      if (!selectedImageUrl) {
+        return void abort();
+      }
+      img.src = selectedImageUrl;
+    })();
 
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       if (img.complete) {
-        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawImage();
       }
     });
 
@@ -77,12 +95,13 @@ export const Overlay = (props: OverlayProps) => {
 
     canvas.addEventListener("pointermove", (e) => {
       if (isDragginRef.current) {
+        const mousePos = getCanvasMousePosition(canvas, e);
         context.fillStyle = "white";
         context.beginPath();
         context.arc(
-          e.clientX,
-          e.clientY,
-          uiStateRef.current.brushSize,
+          mousePos.x,
+          mousePos.y,
+          uiStateRef.current.brushSize * (1 / cssScale),
           0,
           Math.PI * 2
         );
@@ -94,6 +113,29 @@ export const Overlay = (props: OverlayProps) => {
       isDragginRef.current = false;
     });
 
+    return void appProcess.current.setOnDispose<CloseOpts>(
+      async ({ reason }) => {
+        // abort if image has not loaded or receive `aborted` signal
+        if (reason === "aborted" || !img.complete) {
+          return;
+        }
+        const dataUrl = canvas.toDataURL();
+        const draft = await selection.read();
+        const queueImage = await upload({
+          type: "IMAGE",
+          mimeType: "image/png",
+          url: dataUrl,
+          thumbnailUrl: dataUrl,
+          width: canvas.width,
+          height: canvas.height,
+        });
+        draft.contents[0].ref = queueImage.ref;
+        await draft.save();
+      }
+    );
+  }, [selection]);
+
+  React.useEffect(() => {
     // set up message handler
     return void appProcess.registerOnMessage((_, message) => {
       if (!message) {
@@ -107,38 +149,33 @@ export const Overlay = (props: OverlayProps) => {
     });
   }, []);
 
-  React.useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !selection || selection.count !== 1) {
-      return;
-    }
+  return <canvas ref={canvasRef} />;
+};
 
-    return void appProcess.current.setOnDispose<CloseOpts>(
-      async ({ reason }) => {
-        if (reason === "aborted") {
-          return;
-        }
-        setIsLoading(true);
-        const draft = await selection.read();
-        const queueImage = await upload({
-          type: "IMAGE",
-          mimeType: "image/png",
-          url: canvas.toDataURL(),
-          thumbnailUrl: canvas.toDataURL(),
-          width: canvas.width,
-          height: canvas.height,
-        });
-        draft.contents[0].ref = queueImage.ref;
-        await draft.save();
-        setIsLoading(false);
-      }
-    );
-  }, [selection]);
+const abort = () => appProcess.current.requestClose({ reason: "aborted" });
 
-  return (
-    <>
-      <canvas ref={canvasRef} />
-      {isLoading && <OverlayLoadingIndicator />}
-    </>
-  );
+const loadOriginalImage = async (selection: SelectionEvent<"image">) => {
+  if (selection.count !== 1) {
+    return;
+  }
+  const draft = await selection.read();
+  const { url } = await getTemporaryUrl({
+    type: "IMAGE",
+    ref: draft.contents[0].ref,
+  });
+  return url;
+};
+
+// get the mouse position relative to the canvas
+const getCanvasMousePosition = (
+  canvas: HTMLCanvasElement,
+  event: PointerEvent
+) => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (event.clientX - rect.left) * scaleX,
+    y: (event.clientY - rect.top) * scaleY,
+  };
 };

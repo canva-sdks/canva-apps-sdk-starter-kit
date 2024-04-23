@@ -76,6 +76,10 @@ export declare type AppProcessId = string & {
  */
 export declare type AppProcessInfo<T> = {
   /**
+   * The surface on which the app is running.
+   */
+  surface: AppSurface;
+  /**
    * The unique identifier of the app process.
    */
   processId: AppProcessId;
@@ -83,20 +87,7 @@ export declare type AppProcessInfo<T> = {
    * The parameters provided to the app at the time of its process launch.
    */
   launchParams?: T;
-} & (
-  | {
-      surface: "object_panel";
-    }
-  | {
-      surface: "selected_image_overlay";
-      /**
-       * An object to provide addtional data about the surface which this app process is launched on.
-       */
-      context: {
-        imageUrl: string;
-      };
-    }
-);
+};
 
 /**
  * @beta

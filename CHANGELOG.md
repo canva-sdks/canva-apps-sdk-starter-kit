@@ -1,5 +1,23 @@
 # Changelog
 
+## 2024-04-23
+
+### 🧰 Added
+- `@canva/preview`
+  - Added [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors) under `@canva/preview/asset` to open a selector to pick Document, Brand, and custom colors.
+  - Added [/examples/color](/examples/color) to demonstrate usage of the Colors API.
+
+### 🔧 Changed
+- The HMR warning printed to the console on app run is now an info warning instead.
+- `examples`
+  - Update [/examples/image_editing_overlay](/examples/image_editing_overlay) to reflect current recommended practices when working with overlay api.
+
+### 🗑️ Removed
+- `@canva/preview`
+  - Removed `AppProcessInfo.context` for selected_image_overlay surface due to stale selection, which results in wrong imageUrl passing to the overlay surface. Image url should not be requested outside of overlay code since it can be stale as users can change selection during opening overlay.
+- `examples`
+  - Removed `OverlayLoadingIndicator` React component to [/examples/image_editing_overlay](/examples/image_editing_overlay) due to issue with cropped and flipped image.
+
 ## 2024-04-16
 
 ### 🧰 Added

@@ -1,6 +1,17 @@
 declare type AllOrNone<T> = T | Never<T>;
 
 /**
+ * @beta
+ * Defines the positioning of the color selector.
+ */
+export declare type Anchor = {
+  height: number;
+  width: number;
+  top: number;
+  left: number;
+};
+
+/**
  * @public
  * Options that the app must supply to initiate an asset upload.
  */
@@ -44,11 +55,12 @@ export declare type AudioUploadOptions = {
    */
   readonly type: "AUDIO";
   /**
+   * @deprecated
    * An id is a unique identifier specified by the developer,
    * It must be an alphanumeric string of up to 100 characters.
    * Each resource id uniquely identifies an external audio.
    */
-  readonly id: string;
+  readonly id?: string;
   /**
    * A URL of the audio to upload. Must be an HTTPS URL of up to 4096 characters.
    */
@@ -75,6 +87,54 @@ export declare type AudioUploadOptions = {
    */
   readonly durationMs: number;
 };
+
+/**
+ * @beta
+ * Callback function to close the currently open color selector
+ */
+export declare type CloseColorSelectorFn = () => void;
+
+/**
+ * @beta
+ * A color.
+ */
+export declare type Color = SolidColor;
+
+/**
+ * @beta The color selection.
+ */
+export declare type ColorSelection = {
+  ["solid"]: SolidColor;
+};
+
+/**
+ * @beta
+ * Information about the user's color selection based on the specified scope.
+ */
+export declare type ColorSelectionEvent<Scope extends ColorSelectionScope> = {
+  selection: ColorSelection[Scope];
+};
+
+/**
+ * @beta
+ * Specifies the scope of color selection.
+ */
+export declare type ColorSelectionScope = "solid";
+
+/**
+ * @beta
+ * Options to be passed to the `openColorSelector` api.
+ */
+export declare interface ColorSelectorOpts<Scope extends ColorSelectionScope> {
+  /**
+   * The types of color selection scopes that the color selector should support.
+   */
+  scopes: Scope[];
+  /**
+   * Callback that runs when the user makes a color selection.
+   */
+  onColorSelect(event: ColorSelectionEvent<Scope>): void;
+}
 
 /**
  * @public
@@ -255,7 +315,8 @@ export declare type ImageMimeType =
   | "image/heic"
   | "image/png"
   | "image/svg+xml"
-  | "image/webp";
+  | "image/webp"
+  | "image/tiff";
 
 /**
  * @public
@@ -275,11 +336,12 @@ export declare type ImageUploadOptions = {
    */
   readonly type: "IMAGE";
   /**
+   * @deprecated
    * An id is a unique identifier specified by the developer,
    * It must be an alphanumeric string of up to 100 characters.
    * Each resource id uniquely identifies an external image.
    */
-  readonly id: string;
+  readonly id?: string;
   /**
    * A reference to the image that this image was derived from.
    */
@@ -307,6 +369,16 @@ export declare type ImageUploadOptions = {
 declare type Never<T> = {
   [key in keyof T]?: never;
 };
+
+/**
+ * @beta
+ * Prompts the user to choose a color that can be used within Canva.
+ *
+ */
+export declare function openColorSelector<Scope extends ColorSelectionScope>(
+  anchor: Anchor,
+  options: ColorSelectorOpts<Scope>
+): Promise<CloseColorSelectorFn>;
 
 /**
  * @public
@@ -372,6 +444,15 @@ export declare type Ref = ImageRef | VideoRef | AudioRef;
 export declare function requestFontSelection(
   request?: FontSelectionRequest
 ): Promise<FontSelectionResponse>;
+
+/**
+ * @beta
+ * A solid color.
+ */
+export declare type SolidColor = {
+  type: "solid";
+  hexString: string;
+};
 
 /**
  * @public
@@ -472,11 +553,12 @@ export declare type VideoUploadOptions = {
    */
   readonly type: "VIDEO";
   /**
+   * @deprecated
    * An id is a unique identifier specified by the developer.
    * It must be an alphanumeric string of up to 100 characters.
    * Each resource id uniquely identifies an external video.
    */
-  readonly id: string;
+  readonly id?: string;
   /**
    * A reference to the video that this video was derived from.
    */
