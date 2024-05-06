@@ -25,9 +25,9 @@
   "dependencies": {
     "@canva/app-ui-kit": "^3.4.0",
     "@canva/asset": "^1.5.0",
-    "@canva/design": "^1.7.0",
+    "@canva/design": "^1.8.0",
     "@canva/error": "^1.1.0",
-    "@canva/platform": "^1.0.1",
+    "@canva/platform": "^1.1.0",
     "@canva/preview": "./sdk/preview",
     "@canva/user": "^1.0.0",
     "react": "^18.1.0",

@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { DecodeOptions, Jwt, Secret, VerifyOptions } from "jsonwebtoken";
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+import type { NextFunction, Request, Response } from "express";
+import type { DecodeOptions, Jwt, Secret, VerifyOptions } from "jsonwebtoken";
 import type { JwksClient, SigningKey } from "jwks-rsa";
 import type {
   createJwtMiddleware,
-  getTokenFromRequest,
+  GetTokenFromRequest,
 } from "../jwt_middleware";
 
 type Middleware = (req: Request, res: Response, next: NextFunction) => void;
@@ -18,7 +19,7 @@ describe("createJwtMiddleware", () => {
   class FakeJsonWebTokenError extends Error {}
   class FakeTokenExpiredError extends Error {}
 
-  let fakeGetTokenFromRequest: jest.MockedFn<getTokenFromRequest>;
+  let fakeGetTokenFromRequest: jest.MockedFn<GetTokenFromRequest>;
   let verify: jest.MockedFn<
     (
       token: string,
@@ -102,7 +103,7 @@ describe("createJwtMiddleware", () => {
   describe("When called", () => {
     beforeEach(() => {
       req = {
-        header: (name: string) => undefined,
+        header: (_name: string) => undefined,
       } as Request;
 
       res = {

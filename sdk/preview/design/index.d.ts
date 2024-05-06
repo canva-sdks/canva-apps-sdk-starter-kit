@@ -109,7 +109,7 @@ export declare type AppElementRenderer<A extends AppElementData> = (
 export declare type AppElementRendererOutput = NativeSimpleElementWithBox[];
 
 /**
- * @beta
+ * @public
  * A unique identifier that references an app runtime process
  */
 export declare type AppProcessId = string & {
@@ -248,7 +248,8 @@ export declare type Coordinates = {
 };
 
 /**
- * @beta
+ * @public
+ * Provides methods for interacting with design overlay
  */
 export declare type DesignOverlay = {
   /**
@@ -1014,17 +1015,18 @@ export declare type NativeVideoElementWithBox = NativeVideoElement & Box;
 declare type ObjectPrimitive = Boolean | String;
 
 /**
- * @beta
+ * @public
  * An alias for the DesignOverlay interface, providing access to design overlay related functionality
  */
 export declare const overlay: DesignOverlay;
 
 /**
- * @beta
+ * @public
+ * Information about whether the overlay can be opened or not on a particular {@link OverlayTarget}
  */
 export declare type OverlayOpenableEvent<Target extends OverlayTarget> = {
   /**
-   * An event indicating whether the overlay can be opened or not when {@link OverlayTarget} is `"image_selection"`.
+   * An event indicating whether the overlay can be opened or not when {@link OverlayTarget} is `"image_selection"`
    */
   ["image_selection"]:
     | OverlayUnopenableEvent
@@ -1043,12 +1045,14 @@ export declare type OverlayOpenableEvent<Target extends OverlayTarget> = {
 }[Target];
 
 /**
- * @beta
+ * @public
+ * The target to check if an overlay can be opened for
  */
 export declare type OverlayTarget = "image_selection";
 
 /**
- * @beta
+ * @public
+ * Information about the overlay when it can not be opened on a particular {@link OverlayTarget}
  */
 declare type OverlayUnopenableEvent = {
   canOpen: false;

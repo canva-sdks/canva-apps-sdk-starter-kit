@@ -3,8 +3,8 @@ import {
   OverlayOpenableEvent,
   OverlayTarget,
   overlay as designOverlay,
-} from "@canva/preview/design";
-import { CloseParams, appProcess } from "@canva/preview/platform";
+} from "@canva/design";
+import { CloseParams, appProcess } from "@canva/platform";
 import React from "react";
 
 const initialOverlayEvent: OverlayOpenableEvent<OverlayTarget> = {

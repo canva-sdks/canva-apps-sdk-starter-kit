@@ -14,6 +14,7 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import React from "react";
 import baseStyles from "styles/components.css";
+import { upload } from "@canva/asset";
 
 // We can't store the image's data URL in the app element's data, since it
 // exceeds the 5kb limit. We can, however, store an ID that references the
@@ -31,14 +32,17 @@ const images = {
   dog: {
     title: "Dog",
     imageSrc: dog,
+    imageRef: undefined,
   },
   cat: {
     title: "Cat",
     imageSrc: cat,
+    imageRef: undefined,
   },
   rabbit: {
     title: "Rabbit",
     imageSrc: rabbit,
+    imageRef: undefined,
   },
 };
 
@@ -56,7 +60,7 @@ const appElementClient = initAppElement<AppElementData>({
         type: "IMAGE",
         top: 0,
         left: 0,
-        dataUrl: images[data.imageId].imageSrc,
+        ref: images[data.imageId].imageRef,
         ...data,
       },
     ];
@@ -64,9 +68,10 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
+  const [loading, setLoading] = React.useState(false);
   const [state, setState] = React.useState<UIState>(initialState);
   const { imageId, width, height, rotation } = state;
-  const disabled = !imageId || imageId.trim().length < 1;
+  const disabled = loading || !imageId || imageId.trim().length < 1;
 
   const items = Object.entries(images).map(([key, value]) => {
     const { title, imageSrc } = value;
@@ -85,6 +90,30 @@ export const App = () => {
       },
     };
   });
+
+  const addOrUpdateImage = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      if (!images[state.imageId].imageRef) {
+        // Upload local image
+        const imageSrc = images[state.imageId].imageSrc;
+        const { ref } = await upload({
+          type: "IMAGE",
+          mimeType: "image/jpeg",
+          url: imageSrc,
+          thumbnailUrl: imageSrc,
+          width: 400,
+          height: 400,
+        });
+        images[state.imageId].imageRef = ref;
+      }
+
+      // Add or update app element
+      await appElementClient.addOrUpdateElement(state);
+    } finally {
+      setLoading(false);
+    }
+  }, [state]);
 
   React.useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
@@ -177,9 +206,7 @@ export const App = () => {
         />
         <Button
           variant="primary"
-          onClick={() => {
-            appElementClient.addOrUpdateElement(state);
-          }}
+          onClick={addOrUpdateImage}
           disabled={disabled}
           stretch
         >

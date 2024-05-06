@@ -6,9 +6,6 @@ import styles from "styles/components.css";
 
 const uploadVideo = () => {
   return upload({
-    // An alphanumeric string that is unique for each asset. If given the same
-    // id, the existing asset for that id will be used instead.
-    id: "uniqueBeachVideoIdentifier",
     mimeType: "video/mp4",
     thumbnailImageUrl:
       "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",

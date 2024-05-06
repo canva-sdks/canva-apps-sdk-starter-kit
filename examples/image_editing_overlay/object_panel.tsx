@@ -1,7 +1,7 @@
 import { Rows, FormField, Button, Slider } from "@canva/app-ui-kit";
 import * as React from "react";
 import styles from "styles/components.css";
-import { appProcess } from "@canva/preview/platform";
+import { appProcess } from "@canva/platform";
 import { useOverlay } from "utils/use_overlay_hook";
 import { LaunchParams } from "./app";
 import type { CloseOpts } from "./overlay";

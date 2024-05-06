@@ -19,6 +19,7 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import React from "react";
 import baseStyles from "styles/components.css";
+import { upload } from "@canva/asset";
 
 // Below values are only for demonstration purposes.0
 // You can position your elements anywhere on the page by providing arbitrary
@@ -39,7 +40,6 @@ type AppElementData = {
 };
 
 type UIState = AppElementData & {
-  dataUrl: string;
   placement?: ElementPlacement;
   isEditingAppElement: boolean;
 };
@@ -48,20 +48,22 @@ const images = {
   dog: {
     title: "Dog",
     imageSrc: dog,
+    imageRef: undefined,
   },
   cat: {
     title: "Cat",
     imageSrc: cat,
+    imageRef: undefined,
   },
   rabbit: {
     title: "Rabbit",
     imageSrc: rabbit,
+    imageRef: undefined,
   },
 };
 
 const initialState: UIState = {
   imageId: "dog",
-  dataUrl: images.dog.imageSrc,
   placement: ElementPlacement.DEFAULT,
   isEditingAppElement: false,
 };
@@ -71,7 +73,7 @@ const appElementClient = initAppElement<AppElementData>({
     return [
       {
         type: "IMAGE",
-        dataUrl: images[data.imageId].imageSrc,
+        ref: images[data.imageId].imageRef,
         top: 0,
         left: 0,
         width: 400,
@@ -148,12 +150,52 @@ export const App = () => {
           return {
             ...prevState,
             imageId: key,
-            dataUrl: imageSrc,
           };
         });
       },
     };
   });
+
+  const addOrUpdateAppImage = React.useCallback(async () => {
+    if (!images[state.imageId].imageRef) {
+      // Upload local image
+      const { ref } = await upload({
+        type: "IMAGE",
+        mimeType: "image/jpeg",
+        url: images[state.imageId].imageSrc,
+        thumbnailUrl: images[state.imageId].imageSrc,
+        width: 400,
+        height: 400,
+      });
+      images[state.imageId].imageRef = ref;
+    }
+    const placement = await getPlacement(state.placement);
+    await appElementClient.addOrUpdateElement(
+      { imageId: state.imageId },
+      placement
+    );
+  }, [state]);
+
+  const addNativeImage = React.useCallback(async () => {
+    if (!images[state.imageId].imageRef) {
+      // Upload local image
+      const { ref } = await upload({
+        type: "IMAGE",
+        mimeType: "image/jpeg",
+        url: images[state.imageId].imageSrc,
+        thumbnailUrl: images[state.imageId].imageSrc,
+        width: 400,
+        height: 400,
+      });
+      images[state.imageId].imageRef = ref;
+    }
+    const placement = await getPlacement(state.placement);
+    await addNativeElement({
+      type: "IMAGE",
+      ref: images[state.imageId].imageRef,
+      ...placement,
+    });
+  }, [state]);
 
   React.useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
@@ -223,27 +265,14 @@ export const App = () => {
         />
         <Button
           variant="secondary"
-          onClick={async () => {
-            const placement = await getPlacement(state.placement);
-            appElementClient.addOrUpdateElement(
-              { imageId: state.imageId },
-              placement
-            );
-          }}
+          onClick={addOrUpdateAppImage}
           disabled={disabled}
         >
           {state.isEditingAppElement ? "Update app element" : "Add app element"}
         </Button>
         <Button
           variant="secondary"
-          onClick={async () => {
-            const placement = await getPlacement(state.placement);
-            addNativeElement({
-              type: "IMAGE",
-              dataUrl: state.dataUrl,
-              ...placement,
-            });
-          }}
+          onClick={addNativeImage}
           disabled={disabled}
         >
           Add native element
