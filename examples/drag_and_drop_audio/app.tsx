@@ -8,9 +8,6 @@ const AUDIO_DURATION_MS = 86_047;
 
 const uploadAudio = () => {
   return upload({
-    // An alphanumeric string that is unique for each asset. If given the same
-    // id, the existing asset for that id will be used instead.
-    id: "uniqueAudioIdentifier",
     title: "MP3 Audio Track",
     durationMs: AUDIO_DURATION_MS,
     mimeType: "audio/mp3",

@@ -1,7 +1,11 @@
+/* eslint-disable no-console */
+import * as chalk from "chalk";
 import * as debug from "debug";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Express from "express-serve-static-core";
 
 /**
  * Prefix your start command with `DEBUG=express:middleware:jwt` to enable debug logging
@@ -58,7 +62,7 @@ const createJwksUrl = (appId: string) =>
  */
 export function createJwtMiddleware(
   appId: string,
-  getTokenFromRequest: getTokenFromRequest = getTokenFromHttpHeader
+  getTokenFromRequest: GetTokenFromRequest = getTokenFromHttpHeader
 ): (req: Request, res: Response, next: NextFunction) => void {
   const jwksClient = new JwksClient({
     cache: true,
@@ -119,7 +123,12 @@ export function createJwtMiddleware(
       }
 
       if (e instanceof SigningKeyNotFoundError) {
-        return sendUnauthorizedResponse(res, "Public key not found");
+        return sendUnauthorizedResponse(
+          res,
+          `Public key not found. ${chalk.bgRedBright(
+            "Ensure you have the correct App_ID set"
+          )}.`
+        );
       }
 
       if (e instanceof jwt.JsonWebTokenError) {
@@ -135,9 +144,9 @@ export function createJwtMiddleware(
   };
 }
 
-export type getTokenFromRequest = (req: Request) => Promise<string> | string;
+export type GetTokenFromRequest = (req: Request) => Promise<string> | string;
 
-export const getTokenFromQueryString: getTokenFromRequest = (
+export const getTokenFromQueryString: GetTokenFromRequest = (
   req: Request
 ): string => {
   // The name of a query string parameter bearing the JWT
@@ -165,7 +174,7 @@ export const getTokenFromQueryString: getTokenFromRequest = (
   return queryParam;
 };
 
-export const getTokenFromHttpHeader: getTokenFromRequest = (
+export const getTokenFromHttpHeader: GetTokenFromRequest = (
   req: Request
 ): string => {
   // The names of a HTTP header bearing the JWT, and a scheme

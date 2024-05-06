@@ -1,5 +1,5 @@
 import * as React from "react";
-import { appProcess } from "@canva/preview/platform";
+import { appProcess } from "@canva/platform";
 import { ObjectPanel } from "./object_panel";
 import { Overlay } from "./overlay";
 

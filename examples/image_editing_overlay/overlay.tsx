@@ -1,9 +1,8 @@
 import * as React from "react";
-import { AppProcessInfo, CloseParams } from "sdk/preview/platform";
 import { LaunchParams } from "./app";
 import { getTemporaryUrl, upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
-import { appProcess } from "@canva/preview/platform";
+import { appProcess, AppProcessInfo, CloseParams } from "@canva/platform";
 import { SelectionEvent } from "@canva/design";
 
 // App can extend CloseParams type to send extra data when closing the overlay
@@ -116,7 +115,7 @@ export const Overlay = (props: OverlayProps) => {
     return void appProcess.current.setOnDispose<CloseOpts>(
       async ({ reason }) => {
         // abort if image has not loaded or receive `aborted` signal
-        if (reason === "aborted" || !img.complete) {
+        if (reason === "aborted" || !img.src || !img.complete) {
           return;
         }
         const dataUrl = canvas.toDataURL();

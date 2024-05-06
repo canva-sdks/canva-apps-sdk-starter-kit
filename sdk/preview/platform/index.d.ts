@@ -1,11 +1,11 @@
 /**
- * @beta
+ * @public
  * An API for interacting with the App Process.
  */
 export declare interface AppProcess {
   readonly current: CurrentAppProcess;
   /**
-   * @beta
+   * @public
    * Request the termination of an app process.
    * @param target - The id of the app process to close.
    * @param params - A parameters object passed to all callback functions registered via registerOnBeforeClose API for the provided AppProcessId.
@@ -25,7 +25,7 @@ export declare interface AppProcess {
     params: T
   ): Promise<void>;
   /**
-   * @beta
+   * @public
    * Registers a callback to be executed when the state of the specified app process changes.
    * @param target - The id of the app process for which to register the callback.
    * @param callback - Callback function triggered on state change
@@ -58,12 +58,12 @@ export declare interface AppProcess {
 
 /**
  * An alias for the AppProcess interface for interacting with the App Process.
- * @beta
+ * @public
  */
 export declare const appProcess: AppProcess;
 
 /**
- * @beta
+ * @public
  * The unique identifier for an app process.
  */
 export declare type AppProcessId = string & {
@@ -71,7 +71,7 @@ export declare type AppProcessId = string & {
 };
 
 /**
- * @beta
+ * @public
  * Information about an app process.
  */
 export declare type AppProcessInfo<T> = {
@@ -90,7 +90,7 @@ export declare type AppProcessInfo<T> = {
 };
 
 /**
- * @beta
+ * @public
  * The types of surfaces that can run an app process.
  */
 export declare type AppSurface =
@@ -104,7 +104,7 @@ export declare type AppSurface =
   | "selected_image_overlay";
 
 /**
- * @beta
+ * @public
  * The parameters specified when closing an app process.
  * @remarks
  * CloseParams are passed on to the callback function registered for handling the termination of an app process,
@@ -116,7 +116,7 @@ export declare type CloseParams = {
 };
 
 /**
- * @beta
+ * @public
  * The reasons why an app process is closed.
  */
 export declare type CloseReason =
@@ -132,17 +132,17 @@ export declare type CloseReason =
   | "aborted";
 
 /**
- * @beta
+ * @public
  * Represents and exposes functionality specific to the currently running app process.
  */
 export declare type CurrentAppProcess = {
   /**
-   * @beta
+   * @public
    * Retrieves information about the current app process.
    */
   getInfo<T extends any>(): AppProcessInfo<T>;
   /**
-   * @beta
+   * @public
    * Requests the current app process be closed.
    * @param params - A parameters object passed to all callback functions registered via registerOnBeforeClose API for the current process.
    * In addition to the required 'reason' field, app can choose to pass any structured data via params.
@@ -157,7 +157,7 @@ export declare type CurrentAppProcess = {
    */
   requestClose<T extends CloseParams>(params: T): Promise<void>;
   /**
-   * @beta
+   * @public
    * Registers a callback to be executed when the current app process is about to close.
    * @remarks Only allow registering one callback.
    * Subsequential invokes of the API will override the existing callback.
@@ -178,7 +178,7 @@ export declare type CurrentAppProcess = {
 export declare function getPlatformInfo(): PlatformInfo;
 
 /**
- * @beta
+ * @public
  * The type of a callback that is invoked when an app process is being closed.
  * @returns a promise.
  */
@@ -255,7 +255,7 @@ export declare type PlatformInfo = {
 };
 
 /**
- * @beta
+ * @public
  * The states are an app process.
  */
 export declare type ProcessState =

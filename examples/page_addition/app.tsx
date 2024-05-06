@@ -9,6 +9,7 @@ import { CanvaError } from "@canva/error";
 import weather from "assets/images/weather.png";
 import React from "react";
 import styles from "styles/components.css";
+import { upload } from "@canva/asset";
 
 const IMAGE_ELEMENT_WIDTH = 50;
 const IMAGE_ELEMENT_HEIGHT = 50;
@@ -16,25 +17,35 @@ const TEXT_ELEMENT_WIDTH = 130;
 const HEADER_ELEMENT_SCALE_FACTOR = 0.2;
 const EMBED_ELEMENT_SCALE_FACTOR = 0.4;
 
-const headerElement: NativeGroupElement = {
-  type: "GROUP",
-  children: [
-    {
-      type: "IMAGE",
-      dataUrl: weather,
-      top: 0,
-      left: 0,
-      width: IMAGE_ELEMENT_WIDTH,
-      height: IMAGE_ELEMENT_HEIGHT,
-    },
-    {
-      type: "TEXT",
-      children: ["Weather Forecast"],
-      top: IMAGE_ELEMENT_HEIGHT,
-      left: IMAGE_ELEMENT_WIDTH / 2 - TEXT_ELEMENT_WIDTH / 2,
-      width: TEXT_ELEMENT_WIDTH,
-    },
-  ],
+const createHeaderElement = async (): Promise<NativeGroupElement> => {
+  const { ref } = await upload({
+    mimeType: "image/png",
+    thumbnailUrl: weather,
+    type: "IMAGE",
+    url: weather,
+    width: 100,
+    height: 100,
+  });
+  return {
+    type: "GROUP",
+    children: [
+      {
+        type: "IMAGE",
+        ref,
+        top: 0,
+        left: 0,
+        width: IMAGE_ELEMENT_WIDTH,
+        height: IMAGE_ELEMENT_HEIGHT,
+      },
+      {
+        type: "TEXT",
+        children: ["Weather Forecast"],
+        top: IMAGE_ELEMENT_HEIGHT,
+        left: IMAGE_ELEMENT_WIDTH / 2 - TEXT_ELEMENT_WIDTH / 2,
+        width: TEXT_ELEMENT_WIDTH,
+      },
+    ],
+  };
 };
 
 const embedElement: NativeEmbedElement = {
@@ -73,6 +84,7 @@ export const App = () => {
         defaultPageDimensions.width * HEADER_ELEMENT_SCALE_FACTOR;
       const embedElementWidth =
         defaultPageDimensions.width * EMBED_ELEMENT_SCALE_FACTOR;
+      const headerElement = await createHeaderElement();
       await addPage({
         title: "Weather forecast",
         elements: [

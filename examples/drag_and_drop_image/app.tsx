@@ -7,9 +7,6 @@ import styles from "styles/components.css";
 
 const uploadExternalImage = () => {
   return upload({
-    // An alphanumeric string that is unique for each asset. If given the same
-    // id, the existing asset for that id will be used instead.
-    id: "uniqueExternalImageIdentifier",
     mimeType: "image/jpeg",
     thumbnailUrl:
       "https://www.canva.dev/example-assets/image-import/grass-image-thumbnail.jpg",
@@ -22,9 +19,6 @@ const uploadExternalImage = () => {
 
 const uploadLocalImage = () => {
   return upload({
-    // An alphanumeric string that is unique for each asset. If given the same
-    // id, the existing asset for that id will be used instead.
-    id: "uniqueLocalImageIdentifier",
     mimeType: "image/jpeg",
     thumbnailUrl: dog,
     type: "IMAGE",
@@ -34,13 +28,14 @@ const uploadLocalImage = () => {
   });
 };
 
-const insertLocalImage = () => {
-  addNativeElement({ type: "IMAGE", dataUrl: dog });
+const insertLocalImage = async () => {
+  const { ref } = await uploadLocalImage();
+  await addNativeElement({ type: "IMAGE", ref });
 };
 
 const insertExternalImage = async () => {
   const { ref } = await uploadExternalImage();
-  addNativeElement({ type: "IMAGE", ref });
+  await addNativeElement({ type: "IMAGE", ref });
 };
 
 export const App = () => {

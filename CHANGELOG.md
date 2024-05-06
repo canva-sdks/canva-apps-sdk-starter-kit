@@ -1,5 +1,24 @@
 # Changelog
 
+## 2024-05-06
+
+### 🧰 Added
+- `@canva/design`
+  - Added [design.overlay.registerOnCanOpen](http://canva.dev/docs/apps/api/design-overlay-register-on-can-open/) which was previously in beta.
+- `@canva/platform`
+  - Added [appProcess](https://www.canva.dev/docs/apps/api/platform-app-process/) under `@canva/platform` which was previously in beta.
+
+### 🔧 Changed
+- `examples`
+  - Remove `dataUrl` usages in all examples. We recommend [Upload API](https://www.canva.dev/docs/apps/api/asset-upload/#uploading-images) before adding images to the design.
+  - Updated [/examples/image_editing_overlay](/examples/image_editing_overlay) to use `@canva/design` and `@canva/platform` instead of `@canva/preview`.
+- `utils/backend`
+  - Fixed a number of minor linting and typing related warnings.
+- `examples/digital_asset_management`
+  - Updated `@canva/app-components` to version `1.0.0-beta.17` in `digital_asset_management` example.
+- `README.md`
+  - Minor ordering changes of content in the repository [README.md](/README.md).
+
 ## 2024-04-23
 
 ### 🧰 Added
