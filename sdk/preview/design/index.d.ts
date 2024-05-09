@@ -161,6 +161,24 @@ export declare type AudioTrack = {
 };
 
 /**
+ * @beta
+ * The boundaries of a rich text region.
+ */
+export declare type Bounds = {
+  /**
+   * The index of the character from which the region starts.
+   *
+   * @remarks
+   * A value of `0` means the region starts from the first character.
+   */
+  index: number;
+  /**
+   * The length of the text region.
+   */
+  length: number;
+};
+
+/**
  * @public
  * The dimensions, position, and rotation of an element.
  *
@@ -265,7 +283,7 @@ export declare type DesignOverlay = {
 };
 
 /**
- * @public
+ * @beta
  * Provides methods for interacting with the user's selected content, such as images or text.
  */
 export declare type DesignSelection = {
@@ -1160,13 +1178,146 @@ export declare function requestExport(
 ): Promise<ExportResponse>;
 
 /**
- * @public
+ * @beta
+ *
+ * Formatting values for richtext
+ */
+export declare type RichtextFormatting = {
+  /**
+   * @public
+   * A reference to the font to use for this text element.
+   */
+  fontRef?: FontRef;
+  /**
+   * The size of the text, in pixels.
+   *
+   * @remarks
+   * This must be an integer between 1 and 1000.
+   * In the UI of the Canva editor, this number is shown as points (pts), not pixels.
+   */
+  fontSize?: number;
+  /**
+   * The alignment of the text.
+   * @defaultValue 'start'
+   */
+  textAlign?: "start" | "center" | "end" | "justify";
+  /**
+   * The color of the text as a hex code.
+   *
+   * @remarks
+   * The hex code must include all six characters and be prefixed with a # symbol
+   * (e.g. #ff0099). The default value is #000000.
+   */
+  color?: string;
+  /**
+   * The weight (thickness) of the font.
+   *
+   * @remark
+   * The available font weights depend on the font.
+   *
+   * @defaultValue 'normal'
+   */
+  fontWeight?: FontWeight;
+  /**
+   * The style of the font.
+   * @defaultValue 'normal'
+   */
+  fontStyle?: "normal" | "italic";
+  /**
+   * The decoration of the text.
+   * @defaultValue 'none'
+   */
+  decoration?: "none" | "underline";
+  /**
+   * The strikethrough of the text.
+   * @defaultValue 'none'
+   */
+  strikethrough?: "none" | "strikethrough";
+  /**
+   * A url that the underlying text will link to
+   */
+  link?: string;
+  /**
+   * The list indentation level of the current paragraph.
+   */
+  listLevel?: number;
+  /**
+   * The appearance of the marker for list items.
+   *
+   * @remarks
+   * This property only has an effect if `listLevel` is a number greater than 0.
+   *
+   * @defaultValue 'none'
+   */
+  listMarker?:
+    | "none"
+    | "disc"
+    | "circle"
+    | "square"
+    | "decimal"
+    | "lower-alpha"
+    | "lower-roman"
+    | "checked"
+    | "unchecked";
+};
+
+/**
+ * @beta
+ *
+ * An object containing rich text which exposes methods to manipulate the text.
+ * This is generated from a selection, with a range created for each instance of text in the selection.
+ * For example, if a table is currently selected, a range will be created for each cell.
+ * If only part of the text of an element is selected, then only that part will be represented in the range.
+ */
+export declare type RichtextRange = {
+  /**
+   * Formats a region of the selected rich text.
+   * @param bounds - The region of text to apply the formatting.
+   * @param formatting - The formatting to apply to the region of text.
+   */
+  formatText(bounds: Bounds, formatting: RichtextFormatting): void;
+  /**
+   * Appends characters to the selected rich text.
+   * @param characters - The characters to append to the selected rich text.
+   * @param formatting - The formatting to apply to the appended text.
+   */
+  appendText(characters: string, formatting?: RichtextFormatting): void;
+  /**
+   * Replaces a region of the selected rich text with the specified characters.
+   * @param bounds - The region of text to be replaced.
+   * @param characters - The replacement characters.
+   * @param formatting - The formatting to apply to the replaced text.
+   */
+  replaceText(
+    bounds: Bounds,
+    characters: string,
+    formatting?: RichtextFormatting
+  ): void;
+  /**
+   * Returns the current draft of the selected rich text as plain text.
+   *
+   * @remarks
+   * This includes any changes to the text that have not been committed.
+   */
+  readPlaintext(): Promise<string>;
+  /**
+   * Returns the current draft of the selected rich text as an array of text regions.
+   * Each region is an object that contains the text itself and its formatting.
+   *
+   * @remarks
+   * This array includes any changes to the text that have not been committed.
+   */
+  readTextRegions(): Promise<TextRegion[]>;
+};
+
+/**
+ * @beta
  * An alias for the DesignSelection interface, providing access to design selection related functionality
  */
 export declare const selection: DesignSelection;
 
 /**
- * @public
+ * @beta
  * Information about the user's selection. To access the selected content, call the `read` method.
  */
 export declare interface SelectionEvent<Scope extends SelectionScope> {
@@ -1201,13 +1352,17 @@ export declare interface SelectionEvent<Scope extends SelectionScope> {
 }
 
 /**
- * @public
+ * @beta
  * The type of content that apps can detect selection changes on.
  */
-export declare type SelectionScope = "plaintext" | "image";
+export declare type SelectionScope =
+  | "plaintext"
+  | "image"
+  | "video"
+  | "richtext";
 
 /**
- * @public
+ * @beta
  * The selected content.
  *
  * @remarks
@@ -1232,6 +1387,19 @@ export declare type SelectionValue<Scope extends SelectionScope> = {
      */
     ref: ImageRef;
   };
+  /**
+   * The selected content when {@link SelectionScope} is `"video"`.
+   */
+  ["video"]: {
+    /**
+     * A unique identifier that points to an video asset in Canva's backend.
+     */
+    ref: VideoRef;
+  };
+  /**
+   * The selected content when {@link SelectionScope} is `"richtext"`.
+   */
+  ["richtext"]: RichtextRange;
 }[Scope];
 
 /**
@@ -1317,7 +1485,7 @@ export declare type TextAttributes = {
    * The alignment of the text.
    * @defaultValue 'start'
    */
-  textAlign?: "start" | "center" | "end";
+  textAlign?: "start" | "center" | "end" | "justify";
   /**
    * The color of the text as a hex code.
    *
@@ -1365,7 +1533,7 @@ export declare type TextDragConfig = {
    * The alignment of the text.
    * @defaultValue 'start'
    */
-  textAlign?: "start" | "center" | "end";
+  textAlign?: "start" | "center" | "end" | "justify";
   /**
    * The weight of the font.
    * @defaultValue 'normal'
@@ -1386,6 +1554,21 @@ export declare type TextDragConfig = {
    * A unique identifier that references a font asset in Canva's backend.
    */
   fontRef?: FontRef;
+};
+
+/**
+ * @beta
+ * A region of rich text.
+ */
+export declare type TextRegion = {
+  /**
+   * The plain text content of the region.
+   */
+  text: string;
+  /**
+   * The formatting of the region.
+   */
+  formatting?: Partial<RichtextFormatting>;
 };
 
 /**

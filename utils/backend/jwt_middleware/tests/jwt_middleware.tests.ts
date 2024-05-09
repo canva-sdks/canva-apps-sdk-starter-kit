@@ -589,7 +589,7 @@ describe("getTokenFromQueryString", () => {
 
   describe("When the 'canva_user_token' query parameter is not a string", () => {
     beforeEach(() => {
-      req.query.canva_user_token = 10 as any;
+      req.query.canva_user_token = 10 as unknown as string;
     });
 
     it(`Throws a JWTAuthorizationError with message = 'Missing "canva_user_token" query parameter'`, async () => {

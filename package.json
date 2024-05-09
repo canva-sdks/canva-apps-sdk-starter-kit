@@ -23,7 +23,7 @@
     "examples/*"
   ],
   "dependencies": {
-    "@canva/app-ui-kit": "^3.4.0",
+    "@canva/app-ui-kit": "^3.5.1",
     "@canva/asset": "^1.5.0",
     "@canva/design": "^1.8.0",
     "@canva/error": "^1.1.0",
