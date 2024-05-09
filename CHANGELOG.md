@@ -1,5 +1,17 @@
 # Changelog
 
+## 2024-05-09
+
+### 🧰 Added
+- `@canva/design`
+  - Added the ability to edit richtext via the Selection API.
+- `examples`
+  - Added an example to demonstrate the new [Richtext Selection API](https://www.canva.dev/docs/apps/api/design-selection-register-on-change/) in `examples/richtext_replacement`.
+
+### 🔧 Changed
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.5.1`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+
 ## 2024-05-06
 
 ### 🧰 Added
