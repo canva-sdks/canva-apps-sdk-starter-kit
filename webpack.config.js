@@ -226,7 +226,7 @@ function buildDevConfig(options) {
     // after a few months.
 
     console.warn(
-      "Enabling HMR with an App ID is deprecated, please see the README.md on how to update."
+      "Enabling Hot Module Replacement (HMR) with an App ID is deprecated, please see the README.md on how to update."
     );
 
     const appDomain = `app-${appId.toLowerCase().trim()}.canva-apps.com`;
@@ -242,7 +242,7 @@ function buildDevConfig(options) {
   } else {
     if (enableHmr && !appOrigin) {
       console.warn(
-        "Attempted to enable HMR without configuring App Origin... Disabling HMR."
+        "Attempted to enable Hot Module Replacement (HMR) without configuring App Origin... Disabling HMR."
       );
     }
     devServer.webSocketServer = false;

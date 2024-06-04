@@ -25,7 +25,7 @@ export class AppRunner {
       console.log(
         `${infoChalk(
           "Note:"
-        )} HMR not enabled. To enable it, please refer to the instructions in the ${highlightChalk(
+        )} Hot Module Replacement (HMR) not enabled. To enable it, please refer to the instructions in the ${highlightChalk(
           "README.md"
         )}\n`
       );

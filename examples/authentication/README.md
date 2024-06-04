@@ -5,7 +5,7 @@
 1. Get the ID of an app.
    1. Log in to the [Developer Portal](https://www.canva.com/developers/).
    2. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
-   3. Copy the ID of an app from the **App ID** column.
+   3. Copy the ID of an app from the **App ID** column in the Apps table.
 2. Open the starter kit's `.env` file.
 3. Set the `APP_ID` environment variable to the ID of the app.
 
@@ -17,16 +17,18 @@ You server needs to be exposed via a publicly available URL, so that Canva can s
 
 To use ngrok, you'll need to do the following:
 
-1. Sign up for a ngrok account at https://ngrok.com/.
-2. Locate your ngrok [authtoken](https://dashboard.ngrok.com/get-started/your-authtoken). 
+1. Sign up for a ngrok account at <https://ngrok.com/>.
+2. Locate your ngrok [authtoken](https://dashboard.ngrok.com/get-started/your-authtoken).
 3. Set an environment variable for your authtoken, using the command line. Replace `<YOUR_AUTH_TOKEN>` with your actual ngrok authtoken:
 
    For macOS and Linux:
+
    ```bash
    export NGROK_AUTHTOKEN=<YOUR_AUTH_TOKEN>
    ```
-   
+
    For Windows PowerShell:
+
    ```shell
    $Env:NGROK_AUTHTOKEN = "<YOUR_AUTH_TOKEN>"
    ```

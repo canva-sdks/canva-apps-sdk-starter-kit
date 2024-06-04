@@ -102,8 +102,6 @@ export const App = () => {
           mimeType: "image/jpeg",
           url: imageSrc,
           thumbnailUrl: imageSrc,
-          width: 400,
-          height: 400,
         });
         images[state.imageId].imageRef = ref;
       }

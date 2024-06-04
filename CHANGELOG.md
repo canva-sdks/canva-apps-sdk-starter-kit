@@ -1,5 +1,25 @@
 # Changelog
 
+## 2024-06-04
+
+### 🧰 Added
+- `examples`
+  - Added an example to demonstrate the new [Video Selection API](https://www.canva.dev/docs/apps/api/design-selection-register-on-change/) in `examples/video_replacement`.
+- `@canva/preview/asset`
+  - Added the ability to filter by fontRefs in `findFonts` API.
+
+### 🐞 Fixed
+- `examples`
+    - Continue removing `dataUrl` usages in `examples/native_image_elements`.
+- Fixed a number of instances of stale info in our `README.md` files.
+
+### 🔧 Changed
+- Update Hot Module Replacement warnings to a avoid using the HMR acronym.
+- Pinned `nodemon` version to `3.0.1`.
+- `@canva/design`
+  - Upgraded to version `1.9.0` which has the following changes:
+    - Added the ability to read/write video via the selection API.
+
 ## 2024-05-09
 
 ### 🧰 Added

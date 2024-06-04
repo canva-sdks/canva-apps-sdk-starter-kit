@@ -117,7 +117,7 @@ Some examples have a backend. This backend is defined in the example's `backend/
 To run examples that have a backend:
 
 1. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
-2. Copy the ID of an app from the **App ID** column.
+2. Copy the ID of an app from the **App ID** column in the apps table.
 3. In the starter kit's `.env` file, set `CANVA_APP_ID` to the ID of the app.
 
    For example:
