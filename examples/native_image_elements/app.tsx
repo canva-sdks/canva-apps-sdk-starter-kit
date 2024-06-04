@@ -13,6 +13,7 @@ import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import React from "react";
 import baseStyles from "styles/components.css";
+import { upload } from "@canva/asset";
 
 const images = {
   dog: {
@@ -47,6 +48,25 @@ export const App = () => {
     };
   });
 
+  const addImage = React.useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { ref } = await upload({
+        type: "IMAGE",
+        mimeType: "image/jpeg",
+        url: dataUrl,
+        thumbnailUrl: dataUrl,
+      });
+
+      await addNativeElement({
+        type: "IMAGE",
+        ref,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dataUrl]);
+
   return (
     <div className={baseStyles.scrollContainer}>
       <Rows spacing="2u">
@@ -78,17 +98,7 @@ export const App = () => {
           variant="primary"
           disabled={disabled}
           loading={isLoading}
-          onClick={async () => {
-            try {
-              setIsLoading(true);
-              await addNativeElement({
-                type: "IMAGE",
-                dataUrl,
-              });
-            } finally {
-              setIsLoading(false);
-            }
-          }}
+          onClick={addImage}
           stretch
         >
           Add element

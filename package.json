@@ -25,7 +25,7 @@
   "dependencies": {
     "@canva/app-ui-kit": "^3.5.1",
     "@canva/asset": "^1.5.0",
-    "@canva/design": "^1.8.0",
+    "@canva/design": "^1.9.0",
     "@canva/error": "^1.1.0",
     "@canva/platform": "^1.1.0",
     "@canva/preview": "./sdk/preview",
@@ -63,7 +63,7 @@
     "mini-css-extract-plugin": "^2.6.1",
     "node-fetch": "^2.6.7",
     "node-forge": "^1.3.1",
-    "nodemon": "^3.0.1",
+    "nodemon": "3.0.1",
     "postcss-loader": "^7.3.3",
     "prettier": "^2.7.1",
     "prompts": "^2.4.2",
