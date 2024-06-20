@@ -1,5 +1,12 @@
 # Changelog
 
+## 2024-06-20
+
+### 🔧 Changed
+- `@canva/asset`
+  - Upgraded to version `1.6.0` which has the following changes:
+    - Added the ability to filter by fontRefs in [findFonts API](https://www.canva.dev/docs/apps/api/asset-find-fonts/#filtering).
+
 ## 2024-06-04
 
 ### 🧰 Added
