@@ -1,3 +1,5 @@
+Developers: Austin David, Brenda Dang, Diya Ramesh
+
 # Canva Apps SDK starter kit
 
 Welcome to the **Apps SDK starter kit** for Canva's app development platform. 🎉
