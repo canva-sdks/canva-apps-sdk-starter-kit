@@ -1,4 +1,4 @@
-Developers: Austin David, Brenda Dang, Diya Ramesh
+Developers: Austin David Pallithara, Brenda Dang, Diya Ramesh
 
 # Canva Apps SDK starter kit
 
