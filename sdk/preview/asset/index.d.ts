@@ -152,9 +152,10 @@ export declare type Dimensions = {
 };
 
 /**
- * @beta
+ * @public
  * Lists a curated selection of fonts available for use within Canva when no `options` is provided,
  * otherwise performs filtering based on the criteria specified in the `options`.
+ *
  * @remarks
  * To list all available fonts, please use the `requestFontSelection` method.
  */
@@ -163,7 +164,7 @@ export declare function findFonts(
 ): Promise<FindFontsResponse>;
 
 /**
- * @beta
+ * @public
  * Arguments to the findFonts method.
  */
 export declare type FindFontsOptions = {
