@@ -1,0 +1,16 @@
+{
+  "name": "digital_asset_management",
+  "description": "An example app leveraging @canva/app-components to develop a digital asset management (DAM) app.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/app-components": "^1.0.0-beta.17",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
+  }
+}
