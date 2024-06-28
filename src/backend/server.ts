@@ -1,18 +1,18 @@
+import {createJwtMiddleware, getTokenFromQueryString} from "../../utils/backend/jwt_middleware/jwt_middleware";
+
 require("dotenv").config();
 import * as cookieParser from "cookie-parser";
 import * as crypto from "crypto";
 import * as express from "express";
 import * as cors from "cors";
 import * as basicAuth from "express-basic-auth";
-import { getTokenFromQueryString } from "../../../utils/backend/jwt_middleware/jwt_middleware";
-import { createBaseServer } from "../../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../../utils/backend/jwt_middleware";
 import { JSONFileDatabase } from "./database";
 import {
   Container,
   FindResourcesRequest,
   Resource,
 } from "@canva/app-components";
+import {createBaseServer} from "../../utils/backend/base_backend/create";
 
 /**
  * Generates a unique hash for a url.
@@ -101,7 +101,7 @@ async function main() {
    * [here](https://www.npmjs.com/package/cors#configuring-cors-w-dynamic-origin).
    */
   router.use(cors({
-    origin: "https://app-aagjvvdd3qa.canva-apps.com",
+    origin: process.env.CANVA_APP_ORIGIN,
     optionsSuccessStatus: 200
   }));
 

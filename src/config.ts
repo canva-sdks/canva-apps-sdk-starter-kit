@@ -1,7 +1,19 @@
 import { Config } from "@canva/app-components";
 
 type ContainerTypes = "folder";
-export const config: Config<ContainerTypes> = {
+
+export const DASH_CONFIG: Config<ContainerTypes> = {
+  serviceName: "Dash App",
+  search: {
+    enabled: true,
+    placeholder: "Search for images.",
+  },
+  layouts: ["MASONRY"],
+  resourceTypes: ["IMAGE"],
+  moreInfoMessage: "At the moment, we only support images. Corrupted and unsupported files will not appear."
+};
+
+export const EXAMPLE_CONFIG: Config<ContainerTypes> = {
   serviceName: "Example App",
   search: {
     enabled: true,

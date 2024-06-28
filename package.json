@@ -8,6 +8,7 @@
   "scripts": {
     "start": "ts-node ./scripts/start/start.ts",
     "build": "webpack --config webpack.config.js --mode production",
+    "build-dev": "webpack --config webpack.config.js --mode development",
     "lint:types": "tsc",
     "format": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx}' --no-config --write",
     "format:check": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx}' --no-config --check --ignore-path",

@@ -2,7 +2,7 @@ import React from "react";
 import { SearchableListView } from "@canva/app-components";
 import { Alert, Box, Button, LoadingIndicator, Rows } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
-import { config } from "./config";
+import { DASH_CONFIG } from "./config";
 import { findResources } from "./adapter";
 import styles from "./index.css";
 import { Authentication, auth } from "@canva/user";
@@ -119,7 +119,7 @@ export function App() {
 
   return authState === "authenticated" ? (
     <Box className={styles.rootWrapper}>
-      <SearchableListView config={config} findResources={findResources} />
+      <SearchableListView config={DASH_CONFIG} findResources={findResources} />
     </Box>
   ) : (
     <Box
