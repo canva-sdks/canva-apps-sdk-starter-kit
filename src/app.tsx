@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SearchableListView } from "@canva/app-components";
 import { Alert, Box, Button, LoadingIndicator, Rows } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
@@ -7,29 +7,23 @@ import { findResources } from "./adapter";
 import styles from "./index.css";
 import { Authentication, auth } from "@canva/user";
 
-type AuthenticationState =
-  | "authenticated"
-  | "not_authenticated"
-  | "checking"
-  | "cancelled"
-  | "error";
+enum AuthenticationState {
+  Authenticated,
+  Unauthenticated,
+  Checking,
+  Cancelled,
+  Error
+}
 
 /**
- * This endpoint is defined in the ./backend/server.ts file. You need to
- * register the endpoint in the Developer Portal before sending requests.
- *
- * BACKEND_HOST is configured in the root .env file, for more information,
+ * BACKEND_HOST is configured in the root .env file. For more information,
  * refer to the README.md.
  */
 const AUTHENTICATION_CHECK_URL = `${BACKEND_HOST}/api/authentication/status`;
 
-const checkAuthenticationStatus = async (
-  auth: Authentication
-): Promise<AuthenticationState> => {
+const checkAuthenticationStatus = async (auth: Authentication): Promise<AuthenticationState> => {
   /**
-   * Send a request to an endpoint that checks if the user is authenticated.
-   * This is example code, intended to convey the basic idea. When implementing this in your app, you might want more advanced checks.
-   *
+   * When implementing this in your app, you might want more advanced checks.
    * Note: You must register the provided endpoint via the Developer Portal.
    */
   try {
@@ -43,66 +37,66 @@ const checkAuthenticationStatus = async (
     const body = await res.json();
 
     if (body?.isAuthenticated) {
-      return "authenticated";
+      return AuthenticationState.Authenticated;
     } else {
-      return "not_authenticated";
+      return AuthenticationState.Unauthenticated;
     }
   } catch (error) {
     console.error(error);
-    return "error";
+    return AuthenticationState.Error;
+  }
+};
+
+const startAuthenticationFlow = async (): Promise<AuthenticationState> => {
+  try {
+    const response = await auth.requestAuthentication();
+    switch (response.status) {
+      case "COMPLETED":
+        return AuthenticationState.Authenticated;
+      case "ABORTED":
+        console.warn("Authentication aborted by user.");
+        return AuthenticationState.Cancelled;
+      case "DENIED":
+        console.warn("Authentication denied by user", response.details);
+        return AuthenticationState.Cancelled;
+    }
+  } catch (e) {
+    console.error(e);
+    return AuthenticationState.Error;
   }
 };
 
 export function App() {
-  // Keep track of the user's authentication status.
-  const [authState, setAuthState] =
-    React.useState<AuthenticationState>("checking");
 
-  React.useEffect(() => {
-    setAuthState("checking");
-    checkAuthenticationStatus(auth).then((status) => {
-      setAuthState(status);
-    });
+  const [authState, setAuthState] = useState<AuthenticationState>(AuthenticationState.Checking);
+
+  useEffect(() => {
+    setAuthState(AuthenticationState.Checking);
+    checkAuthenticationStatus(auth)
+        .then(status => {
+          setAuthState(status);
+        });
   }, []);
 
-  React.useEffect(() => {
-    if (authState === "not_authenticated") {
-      startAuthenticationFlow();
+  useEffect(() => {
+    if (authState === AuthenticationState.Unauthenticated) {
+      startAuthenticationFlow()
+          .then(status => {
+            setAuthState(status);
+          });
     }
   }, [authState]);
 
-  const startAuthenticationFlow = async () => {
-    try {
-      const response = await auth.requestAuthentication();
-      switch (response.status) {
-        case "COMPLETED":
-          setAuthState("authenticated");
-          break;
-        case "ABORTED":
-          console.warn("Authentication aborted by user.");
-          setAuthState("cancelled");
-          break;
-        case "DENIED":
-          console.warn("Authentication denied by user", response.details);
-          setAuthState("cancelled");
-          break;
-      }
-    } catch (e) {
-      console.error(e);
-      setAuthState("error");
-    }
-  };
-
-  if (authState === "error") {
+  if (authState === AuthenticationState.Error) {
     console.warn(
       "Warning: authentication not enabled on this app. Please enable auth with the instructions in README"
     );
-    // Comment this next line out for production apps
-    setAuthState("authenticated");
+    // TODO: Comment this next line out for production app
+    setAuthState(AuthenticationState.Authenticated);
   }
 
   // If user has denied or aborted auth flow
-  if (authState === "cancelled") {
+  if (authState === AuthenticationState.Cancelled) {
     return (
       <Box paddingEnd="2u" height="full" className={styles.centerInPage}>
         <Rows spacing="2u" align="center">
@@ -117,7 +111,7 @@ export function App() {
     );
   }
 
-  return authState === "authenticated" ? (
+  return authState === AuthenticationState.Authenticated ? (
     <Box className={styles.rootWrapper}>
       <SearchableListView config={DASH_CONFIG} findResources={findResources} />
     </Box>
