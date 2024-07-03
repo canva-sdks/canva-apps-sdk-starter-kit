@@ -1,7 +1,6 @@
 import { Rows, Text, Title, VideoCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { VideoDragConfig, addNativeElement, ui } from "@canva/design";
-import React from "react";
 import styles from "styles/components.css";
 
 const uploadVideo = () => {

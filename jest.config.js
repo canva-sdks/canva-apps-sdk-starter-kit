@@ -2,6 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testRegex: '(/tests/.*|(\\.|/)(tests))\\.ts?$',
-  modulePathIgnorePatterns: ['./internal/', './node_modules/'],
+  testRegex: '(/tests/.*|(\\.|/)(tests))\\.tsx?$',
+  modulePathIgnorePatterns: ['./internal/'],
+  testPathIgnorePatterns: [ '/node_modules/', '/dist/']
 };

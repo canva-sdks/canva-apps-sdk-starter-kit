@@ -5,7 +5,7 @@ import {
   overlay as designOverlay,
 } from "@canva/design";
 import { CloseParams, appProcess } from "@canva/platform";
-import React from "react";
+import { useEffect, useState } from "react";
 
 const initialOverlayEvent: OverlayOpenableEvent<OverlayTarget> = {
   canOpen: false,
@@ -34,18 +34,18 @@ export function useOverlay<
   close: (opts: C) => Promise<void>;
 } {
   const [overlay, setOverlay] =
-    React.useState<OverlayOpenableEvent<T>>(initialOverlayEvent);
-  const [overlayId, setOverlayId] = React.useState<AppProcessId>();
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    useState<OverlayOpenableEvent<T>>(initialOverlayEvent);
+  const [overlayId, setOverlayId] = useState<AppProcessId>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return designOverlay.registerOnCanOpen({
       target,
       onCanOpen: setOverlay,
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (overlayId) {
       appProcess.registerOnStateChange(overlayId, ({ state }) =>
         setIsOpen(state === "open")

@@ -20,18 +20,18 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "workspaces": [
-    "examples/*"
+    "./examples/*"
   ],
   "dependencies": {
-    "@canva/app-ui-kit": "^3.5.1",
+    "@canva/app-ui-kit": "^3.6.0",
     "@canva/asset": "^1.6.0",
     "@canva/design": "^1.9.0",
     "@canva/error": "^1.1.0",
     "@canva/platform": "^1.1.0",
     "@canva/preview": "./sdk/preview",
     "@canva/user": "^1.0.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@ngrok/ngrok": "^1.1.0",
@@ -45,7 +45,8 @@
     "@types/node-forge": "^1.3.1",
     "@types/nodemon": "^1.19.2",
     "@types/prompts": "^2.4.2",
-    "@types/react-dom": "^18.1.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/webpack-env": "^1.18.0",
     "chalk": "^4.1.2",
     "cli-table3": "^0.6.2",

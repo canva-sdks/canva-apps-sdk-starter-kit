@@ -18,7 +18,7 @@ import {
   requestFontSelection,
 } from "@canva/asset";
 import { addNativeElement } from "@canva/design";
-import React, { useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "styles/components.css";
 
 type TextConfig = {
@@ -45,15 +45,11 @@ const fontStyleOptions: {
 ];
 
 export const App = () => {
-  const [textConfig, setTextConfig] = React.useState<TextConfig>(initialConfig);
-  const [selectedFont, setSelectedFont] = React.useState<Font | undefined>(
-    undefined
-  );
-  const [availableFonts, setAvailableFonts] = React.useState<readonly Font[]>(
-    []
-  );
+  const [textConfig, setTextConfig] = useState<TextConfig>(initialConfig);
+  const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
+  const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
 
-  const fetchFonts = React.useCallback(async () => {
+  const fetchFonts = useCallback(async () => {
     const response = await findFonts();
     setAvailableFonts(response.fonts);
   }, [setAvailableFonts]);

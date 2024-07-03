@@ -5,11 +5,11 @@ import {
   ColorSelectionScope,
   openColorSelector,
 } from "@canva/preview/asset";
-import React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 export const App = () => {
-  const [color, setColor] = React.useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string | undefined>(undefined);
   const onColorSelect = async <T extends ColorSelectionScope>(
     e: ColorSelectionEvent<T>
   ) => {

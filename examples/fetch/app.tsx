@@ -7,7 +7,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { auth } from "@canva/user";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 const BACKEND_URL = `${BACKEND_HOST}/custom-route`;

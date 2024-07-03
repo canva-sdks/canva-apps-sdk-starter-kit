@@ -1,4 +1,3 @@
-import React from "react";
 import { Rows, Text, EmbedCard } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 import { addNativeElement, ui } from "@canva/design";

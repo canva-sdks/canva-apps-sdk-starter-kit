@@ -1,6 +1,6 @@
 import { selection as designSelection } from "@canva/design";
 import { SelectionEvent, SelectionScope } from "@canva/design";
-import React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Returns a selection event, representing a user selection of the specified content type. The
@@ -12,7 +12,7 @@ import React from "react";
 export function useSelection<S extends SelectionScope>(
   scope: S
 ): SelectionEvent<S> {
-  const [selection, setSelection] = React.useState<SelectionEvent<S>>({
+  const [selection, setSelection] = useState<SelectionEvent<S>>({
     scope,
     count: 0,
     read() {
@@ -25,7 +25,7 @@ export function useSelection<S extends SelectionScope>(
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const disposer = designSelection.registerOnChange({
       scope,
       onChange: setSelection,

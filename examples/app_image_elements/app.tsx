@@ -12,7 +12,7 @@ import { initAppElement } from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
-import React from "react";
+import { useEffect, useState, useCallback } from "react";
 import baseStyles from "styles/components.css";
 import { upload } from "@canva/asset";
 
@@ -68,8 +68,8 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [loading, setLoading] = React.useState(false);
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState<UIState>(initialState);
   const { imageId, width, height, rotation } = state;
   const disabled = loading || !imageId || imageId.trim().length < 1;
 
@@ -91,7 +91,7 @@ export const App = () => {
     };
   });
 
-  const addOrUpdateImage = React.useCallback(async () => {
+  const addOrUpdateImage = useCallback(async () => {
     setLoading(true);
     try {
       if (!images[state.imageId].imageRef) {
@@ -113,7 +113,7 @@ export const App = () => {
     }
   }, [state]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });

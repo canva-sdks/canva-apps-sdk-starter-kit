@@ -1,7 +1,6 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addAudioTrack, addNativeElement } from "@canva/design";
-import React from "react";
 import styles from "styles/components.css";
 
 export const App = () => {

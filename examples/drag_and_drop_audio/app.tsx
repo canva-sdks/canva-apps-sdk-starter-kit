@@ -1,4 +1,3 @@
-import React from "react";
 import { Rows, Text, AudioCard, AudioContextProvider } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addAudioTrack, ui } from "@canva/design";

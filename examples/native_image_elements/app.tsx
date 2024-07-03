@@ -11,7 +11,7 @@ import { addNativeElement } from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
-import React from "react";
+import { useState, useCallback } from "react";
 import baseStyles from "styles/components.css";
 import { upload } from "@canva/asset";
 
@@ -31,8 +31,8 @@ const images = {
 };
 
 export const App = () => {
-  const [dataUrl, setDataUrl] = React.useState(dog);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [dataUrl, setDataUrl] = useState(dog);
+  const [isLoading, setIsLoading] = useState(false);
   const disabled = !dataUrl || dataUrl.trim().length < 1;
 
   const items = Object.entries(images).map(([key, value]) => {
@@ -48,7 +48,7 @@ export const App = () => {
     };
   });
 
-  const addImage = React.useCallback(async () => {
+  const addImage = useCallback(async () => {
     setIsLoading(true);
     try {
       const { ref } = await upload({

@@ -1,4 +1,3 @@
-import React from "react";
 import { initAppElement } from "@canva/design";
 import {
   Button,
@@ -9,6 +8,7 @@ import {
   TextInput,
 } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
+import { useEffect, useState } from "react";
 
 type AppElementData = {
   url: string;
@@ -31,11 +31,11 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
   const { url, width, height } = state;
   const disabled = url?.trim().length < 1 || !width || !height;
 
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });

@@ -12,7 +12,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { initAppElement } from "@canva/design";
-import React from "react";
+import { useEffect, useState } from "react";
 import styles from "styles/components.css";
 
 type AppElementData = {
@@ -64,11 +64,11 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
   const { paths, viewBox, width, height, rotation } = state;
   const disabled = paths.length < 1;
 
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });

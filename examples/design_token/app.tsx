@@ -6,7 +6,7 @@ import {
   Text,
   TextInput,
 } from "@canva/app-ui-kit";
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "styles/components.css";
 import { auth } from "@canva/user";
 import { getDefaultPageDimensions, getDesignToken } from "@canva/design";
@@ -22,8 +22,8 @@ type DesignData = {
 export const App = () => {
   const [title, setTitle] = useState("");
   const [state, setState] = useState<"loading" | "idle">("idle");
-  const [error, setError] = useState<string | undefined>();
   const [designData, setDesignData] = useState<DesignData | undefined>();
+  const [error, setError] = useState<string | undefined>();
 
   const getDesignData = async () => {
     setState("loading");
