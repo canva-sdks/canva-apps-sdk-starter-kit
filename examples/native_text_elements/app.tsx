@@ -9,7 +9,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { addNativeElement, FontWeight, TextAttributes } from "@canva/design";
-import React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 type UIState = {
@@ -31,7 +31,7 @@ const initialState: UIState = {
 };
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const { text, color, fontWeight, fontStyle, decoration, textAlign } = state;
   const disabled = text.trim().length < 1 || color.trim().length < 1;

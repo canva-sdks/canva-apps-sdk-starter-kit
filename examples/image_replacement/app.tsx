@@ -1,11 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { upload } from "@canva/asset";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useSelection } from "utils/use_selection_hook";
 import styles from "styles/components.css";
 
 export const App = () => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const selection = useSelection("image");
 
   const updateImage = async () => {

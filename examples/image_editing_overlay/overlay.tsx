@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useRef } from "react";
 import { LaunchParams } from "./app";
 import { getTemporaryUrl, upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
@@ -22,13 +22,13 @@ export const Overlay = (props: OverlayProps) => {
   const { context: appContext } = props;
   const selection = useSelection("image");
 
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const isDragginRef = React.useRef<boolean>();
-  const uiStateRef = React.useRef<UIState>({
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDraggingRef = useRef<boolean>();
+  const uiStateRef = useRef<UIState>({
     brushSize: 7,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!selection || selection.count !== 1) {
       return;
     }
@@ -89,11 +89,11 @@ export const Overlay = (props: OverlayProps) => {
     });
 
     canvas.addEventListener("pointerdown", (e) => {
-      isDragginRef.current = true;
+      isDraggingRef.current = true;
     });
 
     canvas.addEventListener("pointermove", (e) => {
-      if (isDragginRef.current) {
+      if (isDraggingRef.current) {
         const mousePos = getCanvasMousePosition(canvas, e);
         context.fillStyle = "white";
         context.beginPath();
@@ -109,7 +109,7 @@ export const Overlay = (props: OverlayProps) => {
     });
 
     canvas.addEventListener("pointerup", () => {
-      isDragginRef.current = false;
+      isDraggingRef.current = false;
     });
 
     return void appProcess.current.setOnDispose<CloseOpts>(
@@ -134,7 +134,7 @@ export const Overlay = (props: OverlayProps) => {
     );
   }, [selection]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // set up message handler
     return void appProcess.registerOnMessage((_, message) => {
       if (!message) {

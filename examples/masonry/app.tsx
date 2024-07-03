@@ -6,7 +6,7 @@ import {
   Text,
   Placeholder,
 } from "@canva/app-ui-kit";
-import React from "react";
+import { useState, useRef } from "react";
 import styles from "styles/components.css";
 import { QueuedImage, upload } from "@canva/asset";
 import { addNativeElement, ui } from "@canva/design";
@@ -58,11 +58,11 @@ export const Placeholders = generatePlaceholders({
 ));
 
 export const App = () => {
-  const [images, setImages] = React.useState<Image[]>([]);
-  const [isFetching, setIsFetching] = React.useState(false);
-  const [page, setPage] = React.useState<number | undefined>(1);
+  const [images, setImages] = useState<Image[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [page, setPage] = useState<number | undefined>(1);
 
-  const scrollContainerRef = React.useRef(null);
+  const scrollContainerRef = useRef(null);
 
   const fetchImages = async () => {
     if (isFetching || !page) {

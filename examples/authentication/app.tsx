@@ -1,7 +1,7 @@
 import type { Authentication } from "@canva/user";
 import { auth } from "@canva/user";
 import { Box, Button, Rows, Text, Title } from "@canva/app-ui-kit";
-import React from "react";
+import { useState, useEffect } from "react";
 import styles from "styles/components.css";
 
 type State = "authenticated" | "not_authenticated" | "checking" | "error";
@@ -47,9 +47,9 @@ const checkAuthenticationStatus = async (
 
 export const App = () => {
   // Keep track of the user's authentication status.
-  const [state, setState] = React.useState<State>("checking");
+  const [state, setState] = useState<State>("checking");
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkAuthenticationStatus(auth).then((status) => {
       setState(status);
     });

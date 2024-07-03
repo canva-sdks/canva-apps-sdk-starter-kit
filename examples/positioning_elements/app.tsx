@@ -17,7 +17,7 @@ import {
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import baseStyles from "styles/components.css";
 import { upload } from "@canva/asset";
 
@@ -84,7 +84,7 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
   const { imageId } = state;
   const disabled = !imageId || imageId.trim().length < 1;
 
@@ -156,7 +156,7 @@ export const App = () => {
     };
   });
 
-  const addOrUpdateAppImage = React.useCallback(async () => {
+  const addOrUpdateAppImage = useCallback(async () => {
     if (!images[state.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
@@ -176,7 +176,7 @@ export const App = () => {
     );
   }, [state]);
 
-  const addNativeImage = React.useCallback(async () => {
+  const addNativeImage = useCallback(async () => {
     if (!images[state.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
@@ -197,7 +197,7 @@ export const App = () => {
     });
   }, [state]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState((prevState) => {
         return appElement

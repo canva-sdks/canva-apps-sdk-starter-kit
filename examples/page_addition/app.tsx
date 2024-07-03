@@ -7,7 +7,7 @@ import type {
 import { addPage, getDefaultPageDimensions } from "@canva/design";
 import { CanvaError } from "@canva/error";
 import weather from "assets/images/weather.png";
-import React from "react";
+import { useState, useEffect } from "react";
 import styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
@@ -54,13 +54,13 @@ const embedElement: NativeEmbedElement = {
 };
 
 export const App = () => {
-  const [error, setError] = React.useState<string | undefined>();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [defaultPageDimensions, setDefaultPageDimensions] = React.useState<
+  const [error, setError] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [defaultPageDimensions, setDefaultPageDimensions] = useState<
     Dimensions | undefined
   >();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getDefaultPageDimensions().then((dimensions) => {
       // Dimensions are undefined if the user is in an unbounded design (e.g. Whiteboard).
       if (!dimensions) {

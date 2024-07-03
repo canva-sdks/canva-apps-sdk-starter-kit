@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
+import { useEffect, useState } from "react";
 import { selection, SelectionEvent } from "@canva/preview/design";
 import styles from "styles/components.css";
 

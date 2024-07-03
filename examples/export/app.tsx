@@ -7,7 +7,7 @@ import {
 } from "@canva/app-ui-kit";
 import type { ExportResponse } from "@canva/design";
 import { requestExport } from "@canva/design";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 export const App = () => {

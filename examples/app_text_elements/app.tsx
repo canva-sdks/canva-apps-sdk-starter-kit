@@ -11,7 +11,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { initAppElement, FontWeight, TextAttributes } from "@canva/design";
-import React from "react";
+import { useEffect, useState } from "react";
 import styles from "styles/components.css";
 
 type AppElementData = {
@@ -56,7 +56,7 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const {
     text,
@@ -72,7 +72,7 @@ export const App = () => {
 
   const disabled = text.trim().length < 1 || color.trim().length < 1;
 
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });

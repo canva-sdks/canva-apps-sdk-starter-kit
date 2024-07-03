@@ -1,6 +1,6 @@
-import React from "react";
 import { TableWrapper } from "utils/table_wrapper";
 import { NativeTableElement } from "@canva/preview/design";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * The current state of a cell within a table.
@@ -70,21 +70,17 @@ export const useTable = (
    */
   toElement(): NativeTableElement;
 } => {
-  const [rowCount, setRowCount] = React.useState(initialState.rowCount);
-  const [columnCount, setColumnCount] = React.useState(
-    initialState.columnCount
-  );
-  const [cells, setCells] = React.useState<CellState[]>(
-    initialState.cells || []
-  );
-  const [error, setError] = React.useState<string | undefined>();
-  const [wrapper, setWrapper] = React.useState<TableWrapper>(
+  const [rowCount, setRowCount] = useState(initialState.rowCount);
+  const [columnCount, setColumnCount] = useState(initialState.columnCount);
+  const [cells, setCells] = useState<CellState[]>(initialState.cells || []);
+  const [error, setError] = useState<string | undefined>();
+  const [wrapper, setWrapper] = useState<TableWrapper>(
     TableWrapper.create(rowCount || 1, columnCount || 1)
   );
 
-  const toElement = React.useCallback(() => wrapper.toElement(), [wrapper]);
+  const toElement = useCallback(() => wrapper.toElement(), [wrapper]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setError(undefined);
     if (typeof rowCount !== "number" || typeof columnCount !== "number") {
       return;
@@ -100,7 +96,7 @@ export const useTable = (
     }
   }, [rowCount, columnCount]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setError(undefined);
     try {
       for (const cell of cells) {

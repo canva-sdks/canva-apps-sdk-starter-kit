@@ -18,6 +18,8 @@ jobs:
           node-version-file: '.nvmrc'
       - name: NPM ci
         run: npm ci
+      - name: npm run test
+        run: npm run test
       - name: Run prettier
         run: npm run format:check
       - name: Lint types

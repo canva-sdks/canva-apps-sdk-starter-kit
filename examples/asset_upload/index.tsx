@@ -1,4 +1,3 @@
-import * as React from "react";
 import { AppUiProvider } from "@canva/app-ui-kit";
 import { createRoot } from "react-dom/client";
 import "@canva/app-ui-kit/styles.css";

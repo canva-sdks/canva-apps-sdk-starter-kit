@@ -1,5 +1,20 @@
 # Changelog
 
+## 2024-07-03
+
+### 🧰 Added
+- An `npm run test` step in `ci.yml`.
+
+### 🐞 Fixed
+- Fix of date test in `utils/backend/jwt_middleware`.
+- Updated some dependencies by running `npm audit fix`.
+
+### 🔧 Changed
+- `@canva/app-ui-kit` 
+  - Upgraded `app-ui-kit` to version `3.6.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Upgraded `react`, `react-dom` and their type packages to version `18.3.1`.
+- Removed unnecessary react imports by switching to `jsx-react`
+
 ## 2024-06-20
 
 ### 🔧 Changed

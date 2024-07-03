@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useSelection } from "utils/use_selection_hook";
 import styles from "styles/components.css";

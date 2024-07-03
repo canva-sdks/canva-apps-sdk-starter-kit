@@ -1,6 +1,5 @@
 import { Button, Link, Rows, Text, Title } from "@canva/app-ui-kit";
 import { requestOpenExternalUrl } from "@canva/platform";
-import React from "react";
 import styles from "styles/components.css";
 
 const DOCS_URL =

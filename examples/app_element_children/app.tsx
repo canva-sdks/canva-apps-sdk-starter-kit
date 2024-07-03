@@ -11,7 +11,7 @@ import type {
   NativeShapeElementWithBox,
 } from "@canva/design";
 import { initAppElement } from "@canva/design";
-import React from "react";
+import { useEffect, useState } from "react";
 import styles from "styles/components.css";
 
 // The data that will be attached to the app element
@@ -66,14 +66,14 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
   const { width, height, rows, columns, spacing, rotation } = state;
   const disabled = width < 1 || height < 1 || rows < 1 || columns < 1;
 
   // This callback runs when the app element's data is modified or when the
   // user selects an app element. In both situations, we can use this callback
   // to update the state of the UI to reflect the latest data.
-  React.useEffect(() => {
+  useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });

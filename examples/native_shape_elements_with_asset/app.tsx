@@ -1,7 +1,6 @@
 import { addNativeElement } from "@canva/design";
 import { upload } from "@canva/asset";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
-import React from "react";
 import styles from "styles/components.css";
 
 const HEART_PATH =

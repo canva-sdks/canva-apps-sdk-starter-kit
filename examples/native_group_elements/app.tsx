@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import styles from "styles/components.css";

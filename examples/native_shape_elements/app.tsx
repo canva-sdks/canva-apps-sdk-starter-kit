@@ -12,7 +12,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
-import React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 type UIState = {
@@ -50,7 +50,7 @@ const initialState: UIState = {
 };
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const { paths, viewBox } = state;
   const disabled = paths.length < 1;

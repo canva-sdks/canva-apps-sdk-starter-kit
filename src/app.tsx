@@ -1,6 +1,5 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
-import * as React from "react";
 import styles from "styles/components.css";
 
 export const App = () => {
