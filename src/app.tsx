@@ -30,7 +30,7 @@ export const App = () => {
 
         <Columns spacing="1.5u" alignY="center">
           <Column>
-              <Text size="small">
+              <Text size="xsmall">
                 Foreground
               </Text>
           </Column>
@@ -39,7 +39,7 @@ export const App = () => {
             </ColorSelector>
           </Column>
           <Column>
-            <Text size="small" alignment="inherit">
+            <Text size="xsmall" alignment="inherit">
               Background
             </Text>
           </Column>
