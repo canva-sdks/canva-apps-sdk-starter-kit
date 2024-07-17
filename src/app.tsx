@@ -24,7 +24,7 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="1.5u">
-        <Title size="small">
+        <Title size="medium">
             Choose colours
         </Title>
 
