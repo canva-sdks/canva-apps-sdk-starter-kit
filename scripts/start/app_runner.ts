@@ -1,4 +1,4 @@
-import { Context } from "./context";
+import type { Context } from "./context";
 import * as chalk from "chalk";
 import { buildConfig } from "../../webpack.config";
 import * as ngrok from "@ngrok/ngrok";
@@ -6,7 +6,8 @@ import * as nodemon from "nodemon";
 import * as Table from "cli-table3";
 import * as webpack from "webpack";
 import * as WebpackDevServer from "webpack-dev-server";
-import { createOrRetrieveCertificate, Certificate } from "../ssl/ssl";
+import type { Certificate } from "../ssl/ssl";
+import { createOrRetrieveCertificate } from "../ssl/ssl";
 
 export const infoChalk = chalk.blue.bold;
 export const warnChalk = chalk.bgYellow.bold;

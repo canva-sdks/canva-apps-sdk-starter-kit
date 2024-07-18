@@ -1,5 +1,25 @@
 # Changelog
 
+## 2024-07-18
+
+### 🔨 Breaking changes
+- `@canva/preview`
+  - `RichtextRange`
+    - `formatText`, `appendText` and `replaceText` only accept attributes defined as `InlineFormatting`.
+    - `formatParagraph` has been introduced to explicitly apply formatting attributes to entire paragraphs. `formatParagraph` takes `RichtextFormatting`, which includes the entire set of formatting attributes
+    - See the documentation on [Richtext API](https://www.canva.dev/docs/apps/design-guidelines/rich-text) for more information.
+
+### 🧰 Added
+- `@canva/preview`
+  - Added the ability to add a new Richtext element via `design.addNativeElement`. See the [documentation](https://www.canva.dev/docs/apps/api/design-create-richtext-range).
+- `examples`
+  - Added an example to demonstrate the new Richtext element in [`/examples/native_richtext_elements`](/examples/native_richtext_elements).
+- ESLint to the repo, by adding required dependencies and a config in [eslintrc.json](./.eslintrc.json).
+- Added an `npm run lint` step in `ci.yml`.
+
+### 🐞 Fixed
+- A number of changes to various files to fix or suppress various eslint errors and warnings.
+
 ## 2024-07-03
 
 ### 🧰 Added

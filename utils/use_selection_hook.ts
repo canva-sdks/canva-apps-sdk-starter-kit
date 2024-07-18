@@ -1,5 +1,5 @@
 import { selection as designSelection } from "@canva/design";
-import { SelectionEvent, SelectionScope } from "@canva/design";
+import type { SelectionEvent, SelectionScope } from "@canva/design";
 import { useEffect, useState } from "react";
 
 /**

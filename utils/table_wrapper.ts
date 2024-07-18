@@ -1,4 +1,4 @@
-import { Cell, NativeTableElement } from "@canva/preview/design";
+import type { Cell, NativeTableElement } from "@canva/preview/design";
 
 const MAX_CELL_COUNT = 225;
 
@@ -229,10 +229,7 @@ export class TableWrapper {
     }
   }
 
-  private validateRowColumn(
-    toBeAddedRow: number = 0,
-    toBeAddedColumn: number = 0
-  ) {
+  private validateRowColumn(toBeAddedRow = 0, toBeAddedColumn = 0) {
     const rowCount = this.rows.length + toBeAddedRow;
     const columnCount = this.rows[0].cells.length + toBeAddedColumn;
     if (rowCount === 0) {
@@ -424,8 +421,8 @@ export class TableWrapper {
   private validateCellBoundaries(
     rowPos: number,
     columnPos: number,
-    rowSpan: number = 1,
-    columnSpan: number = 1
+    rowSpan = 1,
+    columnSpan = 1
   ) {
     if (rowPos < 1 || rowPos > this.rows.length) {
       throw new TableValidationError(

@@ -10,13 +10,8 @@ import {
   Title,
   SegmentedControl,
 } from "@canva/app-ui-kit";
-import {
-  findFonts,
-  Font,
-  FontStyle,
-  FontWeightName,
-  requestFontSelection,
-} from "@canva/asset";
+import type { Font, FontStyle, FontWeightName } from "@canva/asset";
+import { findFonts, requestFontSelection } from "@canva/asset";
 import { addNativeElement } from "@canva/design";
 import { useState, useEffect, useCallback } from "react";
 import styles from "styles/components.css";
@@ -155,7 +150,8 @@ export const App = () => {
         {selectedFont?.previewUrl && (
           <Box background="neutralLow" padding="2u" width="full">
             <Rows spacing="0" align="center">
-              <img src={selectedFont.previewUrl} style={{ maxWidth: "100%" }} />
+              {/* eslint-disable-next-line react/forbid-elements */}
+              <img src={selectedFont.previewUrl} alt={selectedFont.name} />
             </Rows>
           </Box>
         )}
@@ -171,7 +167,7 @@ export const App = () => {
                 setTextConfig((prevState) => {
                   return {
                     ...prevState,
-                    fontWeight: fontWeight,
+                    fontWeight,
                   };
                 });
               }}

@@ -129,8 +129,8 @@ export const App = () => {
         </Text>
         <FormField
           label="Select an image"
-          control={(props) => (
-            <Box id={props.id} padding="1u">
+          control={({ id }) => (
+            <Box id={id} padding="1u">
               <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <ImageCard

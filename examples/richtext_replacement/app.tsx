@@ -1,6 +1,7 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useEffect, useState } from "react";
-import { selection, SelectionEvent } from "@canva/preview/design";
+import type { SelectionEvent } from "@canva/preview/design";
+import { selection } from "@canva/preview/design";
 import styles from "styles/components.css";
 
 export const App = () => {
@@ -28,7 +29,11 @@ export const App = () => {
   }, []);
 
   const updateFormatting = async () => {
-    const draft = await selectionState!.read();
+    if (!selectionState) {
+      return;
+    }
+
+    const draft = await selectionState.read();
     for (const richtext of draft.contents) {
       const regions = await richtext.readTextRegions();
       let index = 0;
@@ -47,13 +52,21 @@ export const App = () => {
   };
 
   const appendText = async () => {
-    const draft = await selectionState!.read();
+    if (!selectionState) {
+      return;
+    }
+
+    const draft = await selectionState.read();
     draft.contents.forEach((richtext) => richtext.appendText("!"));
     await draft.save();
   };
 
   const replaceText = async () => {
-    const draft = await selectionState!.read();
+    if (!selectionState) {
+      return;
+    }
+
+    const draft = await selectionState.read();
     for (const richtext of draft.contents) {
       const plaintext = await richtext.readPlaintext();
       richtext.replaceText(

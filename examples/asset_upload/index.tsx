@@ -4,7 +4,7 @@ import "@canva/app-ui-kit/styles.css";
 
 import { App } from "./app";
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById("root") as Element);
 function render() {
   root.render(
     <AppUiProvider>

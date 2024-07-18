@@ -1,4 +1,4 @@
-require("dotenv").config();
+import "dotenv/config";
 import * as cookieParser from "cookie-parser";
 import * as crypto from "crypto";
 import * as express from "express";
@@ -8,7 +8,7 @@ import { getTokenFromQueryString } from "../../../utils/backend/jwt_middleware/j
 import { createBaseServer } from "../../../utils/backend/base_backend/create";
 import { createJwtMiddleware } from "../../../utils/backend/jwt_middleware";
 import { JSONFileDatabase } from "./database";
-import {
+import type {
   Container,
   FindResourcesRequest,
   Resource,
@@ -189,8 +189,8 @@ async function main() {
       // After reading the cookie, clear it. This forces abandoned auth flows to be restarted.
       res.clearCookie("nonce");
 
-      let cookieNonce: string = "";
-      let expiry: number = 0;
+      let cookieNonce = "";
+      let expiry = 0;
 
       try {
         [cookieNonce, expiry] = JSON.parse(cookieNonceAndExpiry);
@@ -365,5 +365,5 @@ main();
  * @returns true if the string is nullish or empty, false otherwise
  */
 function isEmpty(str?: string): boolean {
-  return str == null || str.length == 0;
+  return str == null || str.length === 0;
 }

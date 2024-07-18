@@ -1,4 +1,4 @@
-import { Config } from "@canva/app-components";
+import type { Config } from "@canva/app-components";
 
 type ContainerTypes = "folder";
 export const config: Config<ContainerTypes> = {
