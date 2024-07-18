@@ -5,7 +5,8 @@ import "@canva/app-ui-kit/styles.css";
 import { config } from "./config";
 import { findResources } from "./adapter";
 import styles from "./index.css";
-import { Authentication, auth } from "@canva/user";
+import type { Authentication } from "@canva/user";
+import { auth } from "@canva/user";
 
 type AuthenticationState =
   | "authenticated"
@@ -73,7 +74,8 @@ export function App() {
   const startAuthenticationFlow = async () => {
     try {
       const response = await auth.requestAuthentication();
-      switch (response.status) {
+      const status = response.status;
+      switch (status) {
         case "COMPLETED":
           setAuthState("authenticated");
           break;
@@ -85,6 +87,8 @@ export function App() {
           console.warn("Authentication denied by user", response.details);
           setAuthState("cancelled");
           break;
+        default:
+          console.error("Unknown authentication response: ", status);
       }
     } catch (e) {
       console.error(e);

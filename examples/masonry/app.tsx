@@ -8,9 +8,11 @@ import {
 } from "@canva/app-ui-kit";
 import { useState, useRef } from "react";
 import styles from "styles/components.css";
-import { QueuedImage, upload } from "@canva/asset";
+import type { QueuedImage } from "@canva/asset";
+import { upload } from "@canva/asset";
 import { addNativeElement, ui } from "@canva/design";
-import { Image, getImages } from "./fake_api";
+import type { Image } from "./fake_api";
+import { getImages } from "./fake_api";
 import InfiniteScroll from "react-infinite-scroller";
 import { generatePlaceholders } from "./utils";
 

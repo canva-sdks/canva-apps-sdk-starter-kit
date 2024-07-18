@@ -10,7 +10,8 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import { initAppElement, FontWeight, TextAttributes } from "@canva/design";
+import type { FontWeight, TextAttributes } from "@canva/design";
+import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
 import styles from "styles/components.css";
 

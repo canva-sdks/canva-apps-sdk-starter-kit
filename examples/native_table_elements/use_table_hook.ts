@@ -1,5 +1,5 @@
 import { TableWrapper } from "utils/table_wrapper";
-import { NativeTableElement } from "@canva/preview/design";
+import type { NativeTableElement } from "@canva/preview/design";
 import { useCallback, useEffect, useState } from "react";
 
 /**

@@ -15,7 +15,8 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import { CellState, TableState, useTable } from "./use_table_hook";
+import type { CellState, TableState } from "./use_table_hook";
+import { useTable } from "./use_table_hook";
 
 const initialState: TableState = {
   rowCount: 4,

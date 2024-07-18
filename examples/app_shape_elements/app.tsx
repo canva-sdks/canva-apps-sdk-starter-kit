@@ -89,7 +89,10 @@ export const App = () => {
             </Column>
             <Column width="content">
               {paths.length < 7 && (
-                <button
+                <Button
+                  variant="tertiary"
+                  icon={PlusIcon}
+                  ariaLabel="Add a new path"
                   onClick={() => {
                     setState((prevState) => {
                       return {
@@ -107,15 +110,7 @@ export const App = () => {
                       };
                     });
                   }}
-                  style={{
-                    appearance: "none",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                  }}
-                >
-                  <PlusIcon />
-                </button>
+                />
               )}
             </Column>
           </Columns>

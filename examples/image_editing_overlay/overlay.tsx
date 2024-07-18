@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { LaunchParams } from "./app";
+import type { LaunchParams } from "./app";
 import { getTemporaryUrl, upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
-import { appProcess, AppProcessInfo, CloseParams } from "@canva/platform";
-import { SelectionEvent } from "@canva/design";
+import type { AppProcessInfo, CloseParams } from "@canva/platform";
+import { appProcess } from "@canva/platform";
+import type { SelectionEvent } from "@canva/design";
 
 // App can extend CloseParams type to send extra data when closing the overlay
 // For example:
@@ -58,7 +59,7 @@ export const Overlay = (props: OverlayProps) => {
     canvas.height = window.innerHeight;
 
     // load and draw image to canvas
-    let img = new Image();
+    const img = new Image();
     let cssScale = 1;
     const drawImage = () => {
       // Set the canvas dimensions to match the original image dimensions to maintain image quality,
@@ -143,7 +144,7 @@ export const Overlay = (props: OverlayProps) => {
       const { brushSize } = message as UIState;
       uiStateRef.current = {
         ...uiStateRef.current,
-        brushSize: brushSize,
+        brushSize,
       };
     });
   }, []);

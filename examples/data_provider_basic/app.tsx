@@ -126,7 +126,8 @@ function formatColumnName(name: string) {
 }
 
 function formatColumn(column: DataTableColumn) {
-  switch (column.type) {
+  const columnType = column.type;
+  switch (columnType) {
     case "boolean":
       return column.values.map((v) => (v ? "Y" : "N"));
     case "date":
@@ -135,5 +136,8 @@ function formatColumn(column: DataTableColumn) {
       return column.values.map((v) => (v ? v.toString() : ""));
     case "string":
       return column.values.map((v) => (v ? v : ""));
+    default:
+      console.error("Unknown column type", columnType);
+      return "";
   }
 }

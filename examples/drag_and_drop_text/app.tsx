@@ -5,12 +5,8 @@ import {
   Text,
   TypographyCard,
 } from "@canva/app-ui-kit";
-import {
-  addNativeElement,
-  ui,
-  FontWeight,
-  TextAttributes,
-} from "@canva/design";
+import type { FontWeight, TextAttributes } from "@canva/design";
+import { addNativeElement, ui } from "@canva/design";
 import { useState } from "react";
 import styles from "styles/components.css";
 

@@ -1,0 +1,7 @@
+{
+  "extends": "../.eslintrc.json",
+  "rules": {
+    // example apps often have console logs for demonstration purposes
+    "no-console": "off"
+  }
+}
