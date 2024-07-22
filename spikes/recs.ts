@@ -17,10 +17,17 @@ type Result = {
     LargeAAA: boolean
 }
 
-function withinRange(colorLinear: RGB, adjust: number) {
-    return (colorLinear.r * adjust <= 1 && colorLinear.g * adjust <= 1 && colorLinear.b * adjust <= 1 
-        && colorLinear.r * adjust >= 0 && colorLinear.g * adjust >= 0 && colorLinear.b * adjust >= 0)
-}
+// function withinRange(colorLinear: RGB, adjust: number) {
+//     return (colorLinear.r * adjust <= 1 && colorLinear.g * adjust <= 1 && colorLinear.b * adjust <= 1 
+//         && colorLinear.r * adjust >= 0 && colorLinear.g * adjust >= 0 && colorLinear.b * adjust >= 0)
+// }
+
+/**
+ * Converts color in RGB to linear RGB.
+ * 
+ * @param color Color in RGB.
+ * @returns Color in Linear RGB.
+ */
 
 function convertRGBToLinearRGB(color: RGB): RGB {
     const redsRGB: number = color.r/255
@@ -34,6 +41,13 @@ function convertRGBToLinearRGB(color: RGB): RGB {
     return { r: redLinear, g: greenLinear, b: blueLinear }
 }
 
+/**
+ * Converts color in linear RGB to RGB.
+ * 
+ * @param color Color in Linear RGB.
+ * @returns Color in RGB.
+ */
+
 function convertLinearRGBToRGB(colorLinear: RGB): RGB {
     const redsRGB: number = ((colorLinear.r <= 491 / 161500) ? colorLinear.r * 12.92 : ((colorLinear.r ** (1/2.4)) * 1.055) - 0.055)
     const greensRGB: number = ((colorLinear.g <= 491 / 161500) ? colorLinear.g * 12.92 : ((colorLinear.g ** (1/2.4)) * 1.055) - 0.055)
@@ -45,6 +59,13 @@ function convertLinearRGBToRGB(colorLinear: RGB): RGB {
 
     return { r: Math.round(red), g: Math.round(green), b: Math.round(blue) }
 }
+
+/**
+ * Converts color in RGB to HSL.
+ * 
+ * @param color Color in RGB.
+ * @returns Color in HSL.
+ */
 
 function convertRGBtoHSL(color: RGB): HSL {
     const r = color.r / 255
@@ -81,6 +102,13 @@ function convertRGBtoHSL(color: RGB): HSL {
     return { h: h, s: s, l: l }
 }
 
+/**
+ * Converts color in HSL to RGB.
+ * 
+ * @param color Color in HSL.
+ * @returns Color in RGB.
+ */
+
 function convertHSLtoRGB(colorHSL: HSL): RGB {
     const c: number = (1 - Math.abs((2 * colorHSL.l) - 1)) * colorHSL.s
     const h_: number = colorHSL.h / 60
@@ -111,6 +139,13 @@ function convertHSLtoRGB(colorHSL: HSL): RGB {
     return { r: Math.round((R1G1B1.r + m) * 255), g: Math.round((R1G1B1.g + m) * 255), b: Math.round((R1G1B1.b + m) * 255) }
 }
 
+/**
+ * Calculates relatie luminance of color.
+ * 
+ * @param color Color in RGB.
+ * @returns Relative luminance.
+ */
+
 function findRelativeLuminance(color: RGB) {
     const colorLinear: RGB = convertRGBToLinearRGB(color)
 
@@ -119,17 +154,34 @@ function findRelativeLuminance(color: RGB) {
     return lum
 }
 
+/**
+ * Calculates contrast ratio of the two colors.
+ * 
+ * @param fg Foreground color in RGB.
+ * @param bg Background color in RGB.
+ * @returns Contrast ratio.
+ */
+
 function findContrastRatio(fg: RGB, bg: RGB) {
     const lum1: number = findRelativeLuminance(fg)
     const lum2: number = findRelativeLuminance(bg)
 
     let ratio: number = (lum1 + 0.05) / (lum2 + 0.05)
+    //Contrast ratio must always be >= 1
     if (ratio < 1) {
         ratio = 1/ratio
     }
 
     return ratio
 }
+
+/**
+ * Runs contrast tests on the two colors.
+ * 
+ * @param fg Foreground color in RGB.
+ * @param bg Background color in RGB.
+ * @returns Test values as a object.
+ */
 
 function runContrastTests(fg: RGB, bg: RGB) {
     const ratio: number = findContrastRatio(fg, bg)
@@ -184,15 +236,29 @@ function runContrastTests(fg: RGB, bg: RGB) {
 //     }
 // }
 
+/**
+ * Takes two colors and adjusts the lightness of one of them until the adjusted color and other color have a contrast ratio
+ * greater than 7.
+ *
+ * @param original Color in RGB that will be adjusted so that the contrast ratio between the adjusted color and the context color
+ * is greater than 7.
+ * @param context Color in RGB against which the contrast ratio of the adjusted color is calculated.
+ * @returns Adjusted color in RGB.
+ */
+
 function findBetterColor(original: RGB, context: RGB): RGB {
+    // Color does not need to be adjusted since contrast ratio is already >= 7
     if (findContrastRatio(original, context) >= 7) {
         return original
     }
     else {
-        let adjusted = original
+        let adjusted = original // Intializes adjusted color variable
         const originalHSL: HSL = convertRGBtoHSL(original)
+        // Checks if a valid color can be found by increasing lightness by finding the contrast ratio of the original color
+        // with max. lightness and context color
         if(findContrastRatio(convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: 1 }), context) >= 7) {
             console.log("Case 1")
+            // Finds a valid color by continually incrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= 1 - originalHSL.l; i += 0.01) {
                 adjusted = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l + i })
                 if (findContrastRatio(adjusted, context) >= 7) {
@@ -202,8 +268,11 @@ function findBetterColor(original: RGB, context: RGB): RGB {
 
             return adjusted
         }
+        // Checks if a valid color can be found by decreasing lightness by finding the contrast ratio of the original color
+        // with min. lightness and context color
         else if(findContrastRatio(convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: 0 }), context) >= 7) {
             console.log("Case 2")
+            // Finds a valid color by continually decrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= originalHSL.l; i += 0.01) {
                 adjusted = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l - i })
                 if (findContrastRatio(adjusted, context) >= 7) {
@@ -215,7 +284,7 @@ function findBetterColor(original: RGB, context: RGB): RGB {
         }
         else {
             console.log("Failed")
-            return original
+            return adjusted
         }
     }
 }
