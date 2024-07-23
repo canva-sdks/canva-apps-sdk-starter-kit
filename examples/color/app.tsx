@@ -3,8 +3,8 @@ import type {
   Anchor,
   ColorSelectionEvent,
   ColorSelectionScope,
-} from "@canva/preview/asset";
-import { openColorSelector } from "@canva/preview/asset";
+} from "@canva/asset";
+import { openColorSelector } from "@canva/asset";
 import { useState } from "react";
 import styles from "styles/components.css";
 
