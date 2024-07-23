@@ -1,7 +1,7 @@
 declare type AllOrNone<T> = T | Never<T>;
 
 /**
- * @beta
+ * @public
  * Defines the positioning of the color selector.
  */
 export declare type Anchor = {
@@ -89,26 +89,27 @@ export declare type AudioUploadOptions = {
 };
 
 /**
- * @beta
+ * @public
  * Callback function to close the currently open color selector
  */
 export declare type CloseColorSelectorFn = () => void;
 
 /**
- * @beta
+ * @public
  * A color.
  */
 export declare type Color = SolidColor;
 
 /**
- * @beta The color selection.
+ * @public
+ * The color selection.
  */
 export declare type ColorSelection = {
   ["solid"]: SolidColor;
 };
 
 /**
- * @beta
+ * @public
  * Information about the user's color selection based on the specified scope.
  */
 export declare type ColorSelectionEvent<Scope extends ColorSelectionScope> = {
@@ -116,13 +117,13 @@ export declare type ColorSelectionEvent<Scope extends ColorSelectionScope> = {
 };
 
 /**
- * @beta
+ * @public
  * Specifies the scope of color selection.
  */
 export declare type ColorSelectionScope = "solid";
 
 /**
- * @beta
+ * @public
  * Options to be passed to the `openColorSelector` api.
  */
 export declare interface ColorSelectorOpts<Scope extends ColorSelectionScope> {
@@ -130,6 +131,15 @@ export declare interface ColorSelectorOpts<Scope extends ColorSelectionScope> {
    * The types of color selection scopes that the color selector should support.
    */
   scopes: Scope[];
+  /**
+   * This will display the passed color as selected in the color selector.
+   * You only need to do this if you ask the user to pick multiple colors.
+   * If not passed, we will attempt to display the user's last choice.
+   *
+   * Due to limitations in the color panel, this will only display selections for Document and
+   * Default colors.
+   */
+  selectedColor?: ColorSelection[Scope];
   /**
    * Callback that runs when the user makes a color selection.
    */
@@ -382,7 +392,7 @@ declare type Never<T> = {
 };
 
 /**
- * @beta
+ * @public
  * Prompts the user to choose a color that can be used within Canva.
  *
  */
@@ -457,7 +467,7 @@ export declare function requestFontSelection(
 ): Promise<FontSelectionResponse>;
 
 /**
- * @beta
+ * @public
  * A solid color.
  */
 export declare type SolidColor = {

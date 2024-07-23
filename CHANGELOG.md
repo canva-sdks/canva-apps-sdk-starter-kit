@@ -1,5 +1,22 @@
 # Changelog
 
+## 2024-07-23
+
+### 🧰 Added
+
+- `@canva/asset`
+  - Upgraded to version `1.7.0` which has the following changes:
+    - Added [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors) which was previously in beta.
+    - Added selectedColor prop to [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors)
+
+- `@canva/preview/asset`
+  - Added selectedColor prop to [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors)
+
+### 🔧 Changed
+
+- `@canva/preview/asset`
+  - Updated [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors) and some related types to be public.
+
 ## 2024-07-18
 
 ### 🔨 Breaking changes
