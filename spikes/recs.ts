@@ -237,22 +237,22 @@ function runContrastTests(fg: RGB, bg: RGB) {
 // }
 
 /**
- * Takes two colors and adjusts the lightness of one of them until the adjusted color and context color
+ * Takes two colors and adjusts the lightness of one of them until each of the adjusted colors and context color
  * have a contrast ratio greater than 7.
  *
  * @param original Color in RGB that will be adjusted so that the contrast ratio between the adjusted color
  * and the context color is greater than 7.
  * @param context Color in RGB against which the contrast ratio of the adjusted color is calculated.
- * @returns Adjusted color in RGB.
+ * @returns Lightness-adjusted colors in RGB.
  */
 
-function findBetterColor(original: RGB, context: RGB): RGB {
+function ligAdjustColor(original: RGB, context: RGB): RGB[] {
     // Color does not need to be adjusted since contrast ratio is already >= 7
     if (findContrastRatio(original, context) >= 7) {
-        return original
+        return [original]
     }
     else {
-        let satAdjusted: RGB =  { r: -1, g: -1, b: -1 }// Intializes adjusted color variable
+        let ligAdjustedColors: RGB[] =  [{ r: -1, g: -1, b: -1 }, { r: -1, g: -1, b: -1 }]// Intializes adjusted color variable
         const originalHSL: HSL = convertRGBtoHSL(original)
         // Checks if a valid color can be found by increasing lightness by finding the contrast ratio of
         // the original color with max. lightness and context color
@@ -260,13 +260,25 @@ function findBetterColor(original: RGB, context: RGB): RGB {
             console.log("Case 1")
             // Finds a valid color by continually incrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= 1 - originalHSL.l; i += 0.01) {
-                satAdjusted = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l + i })
-                if (findContrastRatio(satAdjusted, context) >= 7) {
+                ligAdjustedColors[0] = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l + i })
+                if (findContrastRatio(ligAdjustedColors[0], context) >= 7) {
                     break
                 }
             }
 
-            return satAdjusted
+            const ligAdjustedHSL = convertRGBtoHSL(ligAdjustedColors[0])
+            if (1 - ligAdjustedHSL.l >= 0.1) {
+                ligAdjustedColors[1] = convertHSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: ligAdjustedHSL.l + 0.1})
+            }
+            else {
+                ligAdjustedColors[1] = convertHSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: 1})
+            }
+
+            if (ligAdjustedColors[0] == ligAdjustedColors[1]) {
+                ligAdjustedColors.pop()
+            }
+
+            return ligAdjustedColors
         }
         // Checks if a valid color can be found by decreasing lightness by finding the contrast ratio of
         // the original color with min. lightness and context color
@@ -274,50 +286,60 @@ function findBetterColor(original: RGB, context: RGB): RGB {
             console.log("Case 2")
             // Finds a valid color by continually decrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= originalHSL.l; i += 0.01) {
-                satAdjusted = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l - i })
-                if (findContrastRatio(satAdjusted, context) >= 7) {
+                ligAdjustedColors[0] = convertHSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l - i })
+                if (findContrastRatio(ligAdjustedColors[0], context) >= 7) {
                     break
                 }
             }
 
-            return satAdjusted
+            const ligAdjustedHSL = convertRGBtoHSL(ligAdjustedColors[0])
+            if (ligAdjustedHSL.l >= 0.1) {
+                ligAdjustedColors[1] = convertHSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: ligAdjustedHSL.l - 0.1})
+            }
+            else {
+                ligAdjustedColors[1] = convertHSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: 0})
+            }
+
+            if (ligAdjustedColors[0] == ligAdjustedColors[1]) {
+                ligAdjustedColors.pop()
+            }
+
+            return ligAdjustedColors
         }
         else {
             console.log("Failed")
-            return satAdjusted
+            return ligAdjustedColors
         }
     }
 }
 
 /**
- *Takes two colors and gives colors that pass the contrast tests with the context color.
+ *Takes two colors and adjusts the hue of one of them until each of the adjusted colors and context color
+ * have a contrast ratio greater than 7.
  *
  * @param original Color in RGB that will be adjusted so that the contrast ratio between each of the adjusted
  * colors and the context color is greater than 7.
  * @param context Color in RGB against which the contrast ratio of the adjusted colors is calculated.
- * @param n Number of colors that pass the contrast tests with the context color.
- * @returns Adjusted colors in RGB. 
+ * @returns Hue-adjusted colors in RGB. 
  */
 
-function findBetterColors(original: RGB, context: RGB, n: number) {
-    const adjustedColors: RGB[] = []
-    adjustedColors.push(findBetterColor(original, context))
+function hueAdjustColor(original: RGB, context: RGB): RGB[] {
+    const hueAdjustedColors: RGB[] = []
 
     const originalHSL = convertRGBtoHSL(original)
-    let hueAdjusted: RGB
-
     // If lightness of color is 0, then it is black and it cannot be hue-adjusted
     if (originalHSL.l == 0) {
-        return adjustedColors
+        return hueAdjustedColors
     }
 
-    for(let i = 1; i < n; i++) {
+    let hueAdjusted: RGB
+    for(let i = 1; i < 4; i++) {
         // Hue-adjustment is done by increasing hue by (360 / n) mod 360 to get max. hue difference
-        hueAdjusted = findBetterColor(convertHSLtoRGB({ h: (((originalHSL.h + ((360 / n) * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l}), context)
-        adjustedColors.push(hueAdjusted)
+        hueAdjusted = ligAdjustColor(convertHSLtoRGB({ h: (((originalHSL.h + (90 * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l}), context)[0]
+        hueAdjustedColors.push(hueAdjusted)
     } 
 
-    return adjustedColors
+    return hueAdjustedColors
 }
 
 const fg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random() * 255), b: Math.round(Math.random() * 255) }
@@ -325,8 +347,10 @@ const bg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random(
 // const fg: RGB = { r: 193, g: 16, b: 43 }
 // const bg: RGB = { r: 111, g: 173, b: 86 }
 
-const fgLinear: RGB = convertRGBToLinearRGB(fg)
-const fgHSL: HSL = convertRGBtoHSL(fg)
+// const fgLinear: RGB = convertRGBToLinearRGB(fg)
+// const fgHSL: HSL = convertRGBtoHSL(fg)
+
+const betterFGs = ligAdjustColor(fg, bg).concat(hueAdjustColor(fg, bg))
 
 console.log("Original Colors:", fg, bg)
 console.log("Contrast Ratio:", findContrastRatio(fg, bg))
@@ -339,9 +363,7 @@ console.log("Contrast Ratio:", findContrastRatio(fg, bg))
 // console.log(convertHSLtoRGB(fgHSL))
 
 // console.log("Adjusted Colors:", findBetterColor(fg, bg), bg)
-
-const betterFGs = findBetterColors(fg, bg, 4)
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < betterFGs.length; i++) {
     console.log("Adjusted Colors:", betterFGs[i], bg)
     console.log("Contrast Ratio:", findContrastRatio(betterFGs[i], bg))
 }
