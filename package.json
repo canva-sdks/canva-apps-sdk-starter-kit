@@ -25,7 +25,7 @@
     "./examples/*"
   ],
   "dependencies": {
-    "@canva/app-ui-kit": "^3.6.0",
+    "@canva/app-ui-kit": "^3.7.0",
     "@canva/asset": "^1.7.0",
     "@canva/design": "^1.9.0",
     "@canva/error": "^1.1.0",
@@ -39,6 +39,8 @@
     "@eslint/js": "^9.6.0",
     "@ngrok/ngrok": "^1.1.0",
     "@svgr/webpack": "^8.0.1",
+    "@testing-library/dom": "^10.2.0",
+    "@testing-library/react": "^16.0.0",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
     "@types/jest": "^29.4.0",
@@ -67,7 +69,9 @@
     "exponential-backoff": "^3.1.0",
     "express": "^4.18.1",
     "express-basic-auth": "^1.2.1",
-    "jest": "^29.4.2",
+    "jest": "^29.7.0",
+    "jest-css-modules-transform": "^4.4.2",
+    "jest-environment-jsdom": "^29.7.0",
     "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^3.0.1",
     "mini-css-extract-plugin": "^2.6.1",
