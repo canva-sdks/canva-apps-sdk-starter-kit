@@ -1,5 +1,17 @@
 # Changelog
 
+## 2024-07-24
+
+### 🧰 Added
+- `examples`
+  - Added a new example [/examples/ui_test](/examples/ui_test) to demonstrate how to test your app's UI.
+
+### 🔧 Changed
+- `@canva/app-ui-kit`
+  - Upgraded `app-ui-kit` to version `3.7.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- `examples/fonts`
+  - Updated font preview img to be a non-interactive ImageCard.
+
 ## 2024-07-23
 
 ### 🧰 Added
@@ -48,7 +60,7 @@
 - Updated some dependencies by running `npm audit fix`.
 
 ### 🔧 Changed
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.6.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
 - Upgraded `react`, `react-dom` and their type packages to version `18.3.1`.
 - Removed unnecessary react imports by switching to `jsx-react`
@@ -89,7 +101,7 @@
   - Added an example to demonstrate the new [Richtext Selection API](https://www.canva.dev/docs/apps/api/design-selection-register-on-change/) in `examples/richtext_replacement`.
 
 ### 🔧 Changed
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.5.1`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
 
 ## 2024-05-06
@@ -160,7 +172,7 @@
 
 ### 🔧 Fixed
 - `examples`
-  - Fixed some authentication examples using a deprecated parameter instead of the JWT middleware 
+  - Fixed some authentication examples using a deprecated parameter instead of the JWT middleware
 
 ## 2024-04-02
 
@@ -196,7 +208,7 @@
   - Added [/examples/image_editing_overlay](/examples/image_editing_overlay) to demonstrate [appProcess](http://canva.dev/docs/apps/api/platform-app-process/) API and [design.overlay.registerOnCanOpen](http://canva.dev/docs/apps/api/design-overlay-register-on-can-open/)
 
 ### 🔧 Changed
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.4.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
   - Updated examples to use the `ImageCard` component over local styles.
 - Minor markdown formatting changes in [README.md](./README.md)
@@ -215,7 +227,7 @@
 
 ### 🔧 Changed
 - Moved styles from `styles/components.css` that were only used in examples, into the example folders.
-- `@canva/asset` 
+- `@canva/asset`
   - Upgraded `asset` to version `1.4.0`. Which transitions the `id` field to optional from required.
   - Updated example apps to remove usages of the `id` field.
 - Updated `@canva/app-components` to version `1.0.0-beta.10` in `digital_asset_management` example.
@@ -240,7 +252,7 @@
   - Updated `fontRef` of `TextAttributes` to `public`.
 - `@canva/preview/asset`
   - Updated `requestFontSelection` and `findFonts` to `public`.
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.3.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/).
 
 - Swapped out the community maintained `ngrok` package with the official `@ngrok/ngrok` SDK.
@@ -267,7 +279,7 @@
   - `tsconfig.json`
   - `webpack.config.js`
   - `package.json`
-  
+
   > If you've added new components in `/components`, you'll have to re-add the config changes mentioned above.
 
 ## 2024-02-19
@@ -289,7 +301,7 @@
   - At times, when using certain libraries, multiple chunks will be outputted, but given our apps platform doesn't support lazy loading, we must always output at most 1 chunk.
 
 ### 🔧 Changed
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.2.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of new components added.
 - `@canva/design`
   - Upgraded to version `1.5.0` which has the following changes:
@@ -348,7 +360,7 @@
 ## 2023-12-13
 
 ### 🧰 Added
-- `@canva/app-ui-kit` 
+- `@canva/app-ui-kit`
   - Upgraded `app-ui-kit` to version `3.1.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of new components added.
 - `@canva/platform`
   - Added an example in [/examples/open_external_link](/examples/open_external_link)
@@ -428,7 +440,7 @@
   - Removed custom webpack loader for these icons
 - Removed `.thumbnailGrid` class from `styles/components.css`. Please use the `<Grid />` component from `app-ui-kit` instead
 
-## 2023-10-18 
+## 2023-10-18
 
 ### 🔨 Breaking changes
 
@@ -440,7 +452,7 @@
 ### 🐞 Fixed
 - Corrected CORS documentation in the authentication example as it incorrectly stated that the policy should be set to your backends domain rather than the domain of your app in Canva.
 
-## 2023-09-18 
+## 2023-09-18
 
 ### 🧰 Added
 - Added an `open-in-new-tab` icon
@@ -459,7 +471,7 @@
   - Added support for Lottie in `upload`
   - Added support for WebP in `upload`
 
-## 2023-08-17 
+## 2023-08-17
 
 ### 🧰 Added
 - `@canva/design`
@@ -477,7 +489,7 @@
 ### 🔧 Changed
 - Updated draggable example apps to include click to insert functionality by default.
 
-## 2023-07-27 
+## 2023-07-27
 
 ### 💥 Breaking changes
 - `@canva/preview`

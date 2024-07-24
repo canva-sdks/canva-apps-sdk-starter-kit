@@ -9,6 +9,7 @@ import {
   TextInput,
   Title,
   SegmentedControl,
+  ImageCard,
 } from "@canva/app-ui-kit";
 import type { Font, FontStyle, FontWeightName } from "@canva/asset";
 import { findFonts, requestFontSelection } from "@canva/asset";
@@ -150,8 +151,12 @@ export const App = () => {
         {selectedFont?.previewUrl && (
           <Box background="neutralLow" padding="2u" width="full">
             <Rows spacing="0" align="center">
-              {/* eslint-disable-next-line react/forbid-elements */}
-              <img src={selectedFont.previewUrl} alt={selectedFont.name} />
+              <Box>
+                <ImageCard
+                  thumbnailUrl={selectedFont.previewUrl}
+                  alt={selectedFont.name}
+                />
+              </Box>
             </Rows>
           </Box>
         )}

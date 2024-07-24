@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app Renders 🎉 1`] = `
+<div>
+  <div
+    class="scrollContainer"
+  >
+    <div
+      class="x6XCCg"
+      style="--69qs7g: 16px;"
+    >
+      <p
+        class="fFOiLQ _5Ob_nQ fM_HdA"
+      >
+        This example demonstrates how to test your App's UI.
+      </p>
+      <p
+        class="fFOiLQ _5Ob_nQ fM_HdA"
+      >
+        Checkout 
+        <code>
+          examples/ui_test/tests/app.tests.tsx
+        </code>
+         to learn how to start testing.
+      </p>
+      <button
+        class="_1QoxDw Qkd66A tYI0Vw o4TrkA zKTE_w Qkd66A tYI0Vw lsXp_w cwOZMg zQlusQ uRvRjQ"
+        type="button"
+      >
+        <span
+          class="_38oWvQ"
+        >
+          Do something cool
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

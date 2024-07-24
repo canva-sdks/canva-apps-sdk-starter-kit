@@ -1,0 +1,10 @@
+{
+  "name": "ui_test",
+  "description": "An example app demonstrating how to test your app's UI.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "scripts": {
+    "test": "jest --no-cache --config='../../jest.config.js'",
+    "test:watch": "jest --no-cache --watch --config='../../jest.config.js'"
+  }
+}
