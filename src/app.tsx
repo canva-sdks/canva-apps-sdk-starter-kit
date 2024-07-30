@@ -2,7 +2,7 @@ import { Box, Button, Columns, HelpCircleIcon, Placeholder, PlusIcon, RotateIcon
 import { addNativeElement } from "@canva/design";
 import React, { useState } from "react";
 import styles from "styles/components.css";
-import { ChooseColours } from "./chooseColours";
+import { ChooseColours } from "./ChooseColours";
 import { ScoreComponent } from "./ScoreComponent";
 
 export const App = () => {
@@ -22,7 +22,7 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="1.5u">
-        <ChooseColours label="Foreground" fgColour ="#FFFFFF" bgColour ="#000000" onClick={onClick} />
+        <ChooseColours fgColour ="#FFFFFF" bgColour ="#000000" onClick={onClick} />
         <Button variant="primary" stretch={true} onClick={toggleScore}>
           Calculate contrast score
         </Button>
