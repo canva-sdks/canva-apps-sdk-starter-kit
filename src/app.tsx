@@ -21,14 +21,15 @@ export const App = () => {
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="1.5u">
+      <Rows spacing="2u">
         <ChooseColours fgColour ="#FFFFFF" bgColour ="#000000" onClick={onClick} />
         <Button variant="primary" stretch={true} onClick={toggleScore}>
           Calculate contrast score
         </Button>
+        {showComponents && <ScoreComponent/>}
       </Rows>
 
-      {showComponents && <ScoreComponent />}
+      
     </div>
   );
 };

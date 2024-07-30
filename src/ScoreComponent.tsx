@@ -1,76 +1,59 @@
 import { Box, Columns, Column, Rows, Text, Placeholder, HelpCircleIcon, Button } from "@canva/app-ui-kit";
 import React from "react";
 import styles from "styles/components.css";
+import { ShowcaseComponent } from "./ShowcaseComponent";
+import { Pill } from "./Pill";
 
 export const ScoreComponent = () => (
-  <div className={styles.scrollContainer}>
+  <div>
     <Rows spacing="2u">
-      <Columns spacing="0.5u" alignY="center">
-        <Column width="1/2">
-          <Placeholder shape="square"></Placeholder>
+      <Columns spacing="2u" alignY="center">
+        <Column width="content">
+          {/* <Placeholder shape="square"></Placeholder> */}
+          <ShowcaseComponent></ShowcaseComponent>
         </Column>
         <Column>
-          <Box>
             <Text variant="bold">000.00</Text>
-          </Box>
         </Column>
         <Column>
           <HelpCircleIcon></HelpCircleIcon>
         </Column>
       </Columns>
 
-      <Columns spacing="0">
-        <Column>
-          <Text>Large</Text>
+      <Columns spacing="2u" alignY="center">
+        <Column width="1/4">
+          <Text variant="bold">Large</Text>
         </Column>
-        <Column>
-          <Columns spacing="0">
-            <Column>
-              <Text>AA</Text>
-            </Column>
-            <Column>
-              <Button variant="tertiary" stretch={false} iconPosition="start">
-                Pass
-              </Button>
-            </Column>
-          </Columns>
+        <Column width="content">
+          <Text>AA</Text>
         </Column>
-        <Column>
-          <Columns spacing="0">
-            <Column>
-              <Text>AAA</Text>
-            </Column>
-            <Column>
-              <Placeholder shape="circle"></Placeholder>
-            </Column>
-          </Columns>
+        <Column width="content">
+          <Pill variant="Pass">Pass</Pill>
+        </Column>
+        <Column width="content">
+          <Text>AAA</Text>
+        </Column>
+        <Column width="content">
+          <Pill variant="Fail">Pass</Pill>
         </Column>
       </Columns>
 
-      <Columns spacing="0">
-        <Column>
-          <Text>Normal</Text>
+      <Columns spacing="2u" alignY="center">
+        <Column width="1/4">
+          <Text variant="bold">Normal</Text>
         </Column>
-        <Column>
-          <Columns spacing="0">
-            <Column>
+        <Column width="content">
               <Text>AA</Text>
             </Column>
-            <Column>
-              <Placeholder shape="circle"></Placeholder>
+            <Column width="content">
+              <Pill variant="Fail">Pass</Pill>
             </Column>
-          </Columns>
-        </Column>
-        <Column>
-          <Columns spacing="0">
-            <Column>
+            <Column width="content">
               <Text>AAA</Text>
             </Column>
-            <Column>
-              <Placeholder shape="circle"></Placeholder>
+            <Column width="content">
+              <Pill variant="Fail">Pass</Pill>
             </Column>
-          </Columns>
-        </Column>
       </Columns>
     </Rows>
   </div>
