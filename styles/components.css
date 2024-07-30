@@ -36,3 +36,39 @@
 .scrollContainer:focus-within::-webkit-scrollbar-thumb {
   visibility: visible;
 }
+
+.bgContainer {
+  background-color: aliceblue;
+  width: 150px;
+  height: 120px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fgText {
+  color: darkblue;
+  font-size: 72px;
+}
+
+.pill {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+}
+
+.Pass {
+  background-color: green;
+  color: white;
+}
+
+.Fail {
+  background-color: red;
+  color: white;
+}
