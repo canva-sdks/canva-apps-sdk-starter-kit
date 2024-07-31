@@ -7,6 +7,8 @@ import { ScoreComponent } from "./ScoreComponent";
 
 export const App = () => {
   const [showComponents, setShowComponents] = useState(false);
+  const [fgColour, setFgColour] = useState("#FFFFFF");
+  const [bgColour, setBgColour] = useState("#000000");
 
   const onClick = () => {
     addNativeElement({
@@ -22,14 +24,18 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
-        <ChooseColours fgColour ="#FFFFFF" bgColour ="#000000" onClick={onClick} />
+        <ChooseColours 
+          fgColour={fgColour} 
+          bgColour={bgColour} 
+          onChangeFgColour={setFgColour} 
+          onChangeBgColour={setBgColour} 
+          onClick={onClick} 
+        />
         <Button variant="primary" stretch={true} onClick={toggleScore}>
           Calculate contrast score
         </Button>
-        {showComponents && <ScoreComponent/>}
+        {showComponents && <ScoreComponent fgColour={fgColour} bgColour={bgColour} />}
       </Rows>
-
-      
     </div>
   );
 };
