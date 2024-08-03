@@ -1,17 +1,15 @@
-import { Box, Columns, Column, Rows, Text, Placeholder, HelpCircleIcon, Button } from "@canva/app-ui-kit";
+import { Columns, Column, Rows, Text, HelpCircleIcon } from "@canva/app-ui-kit";
 import React from "react";
 import { ShowcaseComponent } from "./ShowcaseComponent";
 import { Pill } from "./Pill";
-import { calculateContrast } from "./utils";
 
 type ScoreComponentProps = {
   fgColour: string;
   bgColour: string;
+  contrastScore: number;
 };
 
-export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColour }) => {
-  const contrastScore = calculateContrast(fgColour, bgColour);
-
+export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColour, contrastScore }) => {
   return (
     <div>
       <Rows spacing="2u">

@@ -41,4 +41,7 @@ export const calculateContrast = (fgColour: string, bgColour: string): number =>
 
     return contrastRatio;
   };
-  
+
+export const scorePass = (contrastScore: number): boolean => {
+    return contrastScore >= 7;
+};

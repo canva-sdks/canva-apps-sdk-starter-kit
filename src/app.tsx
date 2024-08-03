@@ -1,14 +1,22 @@
-import { Box, Button, Columns, HelpCircleIcon, Placeholder, PlusIcon, RotateIcon, Rows, Text, Title } from "@canva/app-ui-kit";
+import { Button, Rows } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import React, { useState } from "react";
 import styles from "styles/components.css";
 import { ChooseColours } from "./ChooseColours";
 import { ScoreComponent } from "./ScoreComponent";
+import { RecommendationsComponent } from "./RecommendationsComponent";
+import { Color } from "@canva/preview/asset";
+import { calculateContrast, scorePass } from "./utils";
 
 export const App = () => {
-  const [showComponents, setShowComponents] = useState(false);
   const [fgColour, setFgColour] = useState("#FFFFFF");
   const [bgColour, setBgColour] = useState("#000000");
+  const fgRecoms: Color[] = [
+    { type: "solid", hexString: "#FFFFFF" }
+  ];
+  const bgRecoms: Color[] = [
+    { type: "solid", hexString: "#000000" }
+  ];
 
   const onClick = () => {
     addNativeElement({
@@ -17,13 +25,13 @@ export const App = () => {
     });
   };
 
-  const toggleScore = () => {
-    setShowComponents(true);
-  };
+  const contrastScore = calculateContrast(fgColour, bgColour);
+
+  const showRecommendations = !scorePass(contrastScore)
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="2u">
+      <Rows spacing="3u">
         <ChooseColours 
           fgColour={fgColour} 
           bgColour={bgColour} 
@@ -31,10 +39,8 @@ export const App = () => {
           onChangeBgColour={setBgColour} 
           onClick={onClick} 
         />
-        <Button variant="primary" stretch={true} onClick={toggleScore}>
-          Calculate contrast score
-        </Button>
-        {showComponents && <ScoreComponent fgColour={fgColour} bgColour={bgColour} />}
+        <ScoreComponent fgColour={fgColour} bgColour={bgColour} contrastScore={contrastScore} />
+        {showRecommendations && <RecommendationsComponent fgRecoms={fgRecoms} bgRecoms={bgRecoms} />}
       </Rows>
     </div>
   );
