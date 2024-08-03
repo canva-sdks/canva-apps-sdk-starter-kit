@@ -1,5 +1,5 @@
 import React from "react";
-import { Rows, Text, Swatch } from "@canva/app-ui-kit";
+import { Rows, Text, Swatch, Title } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 
 type RecommendationsProps = {
@@ -35,7 +35,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgRec
 
   return (
     <Rows spacing="1u">
-      <Text size="medium" variant="bold">Recommendations</Text>
+      <Title size="medium">Recommendations</Title>
       <Text size="small">Foreground</Text>
       {fgSwatches}
       <Text size="small">Background</Text>
