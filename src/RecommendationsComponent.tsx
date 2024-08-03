@@ -3,13 +3,18 @@ import { Rows, Text, Swatch, Title } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 
 type RecommendationsProps = {
-    fgRecoms: Color[];
-    bgRecoms: Color[];
+    fgColour: string;
+    bgColour: string;
   };
   
-export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgRecoms, bgRecoms }) => {
+export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgColour, bgColour }) => {
   const fgSwatches: JSX.Element[] = [];
   const bgSwatches: JSX.Element[] = [];
+
+  const fgRecoms: Color[] = [];
+  const bgRecoms: Color[] = [];
+
+  // TODO put code for finding recommendations here
 
   for (const fgColour of fgRecoms) {
     fgSwatches.push(

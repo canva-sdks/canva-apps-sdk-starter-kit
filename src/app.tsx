@@ -11,12 +11,6 @@ import { useState } from "react";
 export const App = () => {
   const [fgColour, setFgColour] = useState("#FFFFFF");
   const [bgColour, setBgColour] = useState("#000000");
-  const fgRecoms: Color[] = [
-    { type: "solid", hexString: "#FFFFFF" }
-  ];
-  const bgRecoms: Color[] = [
-    { type: "solid", hexString: "#000000" }
-  ];
 
   const onClick = () => {
     addNativeElement({
@@ -40,7 +34,7 @@ export const App = () => {
           onClick={onClick} 
         />
         <ScoreComponent fgColour={fgColour} bgColour={bgColour} contrastScore={contrastScore} />
-        {showRecommendations && <RecommendationsComponent fgRecoms={fgRecoms} bgRecoms={bgRecoms} />}
+        {showRecommendations && <RecommendationsComponent fgColour={fgColour} bgColour={bgColour} />}
       </Rows>
     </div>
   );
