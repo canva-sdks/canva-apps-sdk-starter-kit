@@ -14,7 +14,7 @@ type ChooseColoursProps = {
 export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour, onChangeFgColour, onChangeBgColour, onClick }) => {
   const [fgFill, setFgFill] = useState(fgColour);
   const [bgFill, setBgFill] = useState(bgColour);
-  
+
   const reverseColors = (): void => {
     const prevFgFill = fgFill;
     setFgFill(bgFill);
@@ -38,6 +38,7 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
                 onColorSelect: (event) => {
                   if (event.selection.type === "solid") {
                     setFgFill(event.selection.hexString);
+                    onChangeFgColour(event.selection.hexString);
                   }
                 },
               });
@@ -64,6 +65,7 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
                   onColorSelect: (event) => {
                     if (event.selection.type === "solid") {
                       setBgFill(event.selection.hexString);
+                      onChangeBgColour(event.selection.hexString);
                     }
                   },
                 });
