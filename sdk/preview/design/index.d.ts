@@ -11,7 +11,12 @@ export declare function addAudioTrack(audioTrack: AudioTrack): Promise<void>;
  * @param element - The element to add to the user's design.
  */
 export declare function addNativeElement(
-  element: NativeElement | NativeElementWithBox | NativeTableElement
+  element:
+    | NativeElement
+    | NativeElementWithBox
+    | NativeTableElement
+    | NativeRichtextElement
+    | NativeRichtextElementWithBox
 ): Promise<void>;
 
 /**
@@ -264,6 +269,12 @@ export declare type Coordinates = {
    */
   y: number;
 };
+
+/**
+ * @beta
+ * Creates a new RichtextRange object, which contains methods to manipulate text.
+ */
+export declare function createRichtextRange(): RichtextRange;
 
 /**
  * @public
@@ -699,6 +710,50 @@ export declare function initAppElement<A extends AppElementData>(
 ): AppElementClient<A>;
 
 /**
+ * @beta
+ *
+ * Inline formatting values for richtext
+ */
+export declare type InlineFormatting = {
+  /**
+   * The color of the text as a hex code.
+   *
+   * @remarks
+   * The hex code must include all six characters and be prefixed with a # symbol
+   * (e.g. #ff0099). The default value is #000000.
+   */
+  color?: string;
+  /**
+   * The weight (thickness) of the font.
+   *
+   * @remarks
+   * The available font weights depend on the font.
+   *
+   * @defaultValue 'normal'
+   */
+  fontWeight?: FontWeight;
+  /**
+   * The style of the font.
+   * @defaultValue 'normal'
+   */
+  fontStyle?: "normal" | "italic";
+  /**
+   * The decoration of the text.
+   * @defaultValue 'none'
+   */
+  decoration?: "none" | "underline";
+  /**
+   * The strikethrough of the text.
+   * @defaultValue 'none'
+   */
+  strikethrough?: "none" | "strikethrough";
+  /**
+   * A url that the underlying text will link to
+   */
+  link?: string;
+};
+
+/**
  * @public
  * A native element.
  */
@@ -851,6 +906,34 @@ export declare type NativeImageElement = {
  * The parent container may be an app element, or the current page.
  */
 export declare type NativeImageElementWithBox = NativeImageElement & Box;
+
+/**
+ * @beta
+ * An element that renders richtext.
+ */
+export declare type NativeRichtextElement = {
+  /**
+   * The type of element.
+   */
+  type: "RICHTEXT";
+  /**
+   * An object containing rich text which exposes methods to manipulate the text.
+   */
+  range: RichtextRange;
+};
+
+/**
+ * @beta
+ * An element that renders richtext.
+ *
+ * @remarks
+ * This type includes properties for controlling the position and dimensions of the
+ * element.
+ * It will be positioned and sized relative to its parent container.
+ * The parent container may be an app element, or the current page.
+ */
+export declare type NativeRichtextElementWithBox = NativeRichtextElement &
+  TextBox;
 
 /**
  * @public
@@ -1182,7 +1265,7 @@ export declare function requestExport(
  *
  * Formatting values for richtext
  */
-export declare type RichtextFormatting = {
+export declare type RichtextFormatting = InlineFormatting & {
   /**
    * @public
    * A reference to the font to use for this text element.
@@ -1201,42 +1284,6 @@ export declare type RichtextFormatting = {
    * @defaultValue 'start'
    */
   textAlign?: "start" | "center" | "end" | "justify";
-  /**
-   * The color of the text as a hex code.
-   *
-   * @remarks
-   * The hex code must include all six characters and be prefixed with a # symbol
-   * (e.g. #ff0099). The default value is #000000.
-   */
-  color?: string;
-  /**
-   * The weight (thickness) of the font.
-   *
-   * @remark
-   * The available font weights depend on the font.
-   *
-   * @defaultValue 'normal'
-   */
-  fontWeight?: FontWeight;
-  /**
-   * The style of the font.
-   * @defaultValue 'normal'
-   */
-  fontStyle?: "normal" | "italic";
-  /**
-   * The decoration of the text.
-   * @defaultValue 'none'
-   */
-  decoration?: "none" | "underline";
-  /**
-   * The strikethrough of the text.
-   * @defaultValue 'none'
-   */
-  strikethrough?: "none" | "strikethrough";
-  /**
-   * A url that the underlying text will link to
-   */
-  link?: string;
   /**
    * The list indentation level of the current paragraph.
    */
@@ -1271,43 +1318,60 @@ export declare type RichtextFormatting = {
  */
 export declare type RichtextRange = {
   /**
-   * Formats a region of the selected rich text.
+   * Formats all paragraphs that overlap the given bounds. The newline character separates text into
+   * distinct paragraphs. Newline separator is treated as the final character of each paragraph.
+   * All paragraphs that overlap the given bounds will be formatted in their entirety.
+   * @param bounds - The region of text overlapping the paragraphs to apply the formatting.
+   * @param formatting - The formatting to apply to the paragraph(s).
+   */
+  formatParagraph(bounds: Bounds, formatting: RichtextFormatting): void;
+  /**
+   * Formats a given region of rich text with inline formatting.
    * @param bounds - The region of text to apply the formatting.
-   * @param formatting - The formatting to apply to the region of text.
+   * @param formatting - The inline formatting to apply to the region of text.
    */
-  formatText(bounds: Bounds, formatting: RichtextFormatting): void;
+  formatText(bounds: Bounds, formatting: InlineFormatting): void;
   /**
-   * Appends characters to the selected rich text.
-   * @param characters - The characters to append to the selected rich text.
-   * @param formatting - The formatting to apply to the appended text.
+   * Appends characters to the rich text range.
+   * Appended characters can be formatted with inline formatting properties.
+   * @param characters - The characters to append to the rich text range.
+   * @param formatting - The inline formatting to apply to the appended text.
    */
-  appendText(characters: string, formatting?: RichtextFormatting): void;
+  appendText(
+    characters: string,
+    formatting?: InlineFormatting
+  ): {
+    bounds: Bounds;
+  };
   /**
-   * Replaces a region of the selected rich text with the specified characters.
+   * Replaces a region of the rich text range with the specified characters.
+   * Replaced characters can be formatted with inline formatting properties.
    * @param bounds - The region of text to be replaced.
    * @param characters - The replacement characters.
-   * @param formatting - The formatting to apply to the replaced text.
+   * @param formatting - The inline formatting to apply to the replaced text.
    */
   replaceText(
     bounds: Bounds,
     characters: string,
-    formatting?: RichtextFormatting
-  ): void;
+    formatting?: InlineFormatting
+  ): {
+    bounds: Bounds;
+  };
   /**
-   * Returns the current draft of the selected rich text as plain text.
+   * Returns the current state of the rich text range as plain text.
    *
    * @remarks
-   * This includes any changes to the text that have not been committed.
+   * If this range is a draft, this includes any changes to the text that have not been committed.
    */
-  readPlaintext(): Promise<string>;
+  readPlaintext(): string;
   /**
-   * Returns the current draft of the selected rich text as an array of text regions.
+   * Returns the current state of the rich text range as an array of text regions.
    * Each region is an object that contains the text itself and its formatting.
    *
    * @remarks
-   * This array includes any changes to the text that have not been committed.
+   * If this range is a draft, this array includes any changes to the text that have not been committed.
    */
-  readTextRegions(): Promise<TextRegion[]>;
+  readTextRegions(): TextRegion[];
 };
 
 /**
@@ -1514,6 +1578,36 @@ export declare type TextAttributes = {
    * @defaultValue 'none'
    */
   decoration?: "none" | "underline";
+};
+
+declare type TextBox = {
+  /**
+   * The width of the element. This must be an integer between 0 and 32767.
+   */
+  width?: number;
+  /**
+   * The distance from the top edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't have
+   * any effect if the app element only contains a single element.
+   */
+  top: number;
+  /**
+   * The distance from the left edge of the container.
+   *
+   * @remarks
+   * This must be an integer between -32768 and 32767. This property doesn't have
+   * any effect if the app element only contains a single element.
+   */
+  left: number;
+  /**
+   * The rotation of the element, in degrees.
+   *
+   * @remarks
+   * This must be an integer between -180 and 180.
+   */
+  rotation?: number;
 };
 
 /**

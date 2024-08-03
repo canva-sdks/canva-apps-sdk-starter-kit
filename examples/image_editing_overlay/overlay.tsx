@@ -1,9 +1,10 @@
-import * as React from "react";
-import { LaunchParams } from "./app";
+import { useEffect, useRef } from "react";
+import type { LaunchParams } from "./app";
 import { getTemporaryUrl, upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
-import { appProcess, AppProcessInfo, CloseParams } from "@canva/platform";
-import { SelectionEvent } from "@canva/design";
+import type { AppProcessInfo, CloseParams } from "@canva/platform";
+import { appProcess } from "@canva/platform";
+import type { SelectionEvent } from "@canva/design";
 
 // App can extend CloseParams type to send extra data when closing the overlay
 // For example:
@@ -22,13 +23,13 @@ export const Overlay = (props: OverlayProps) => {
   const { context: appContext } = props;
   const selection = useSelection("image");
 
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const isDragginRef = React.useRef<boolean>();
-  const uiStateRef = React.useRef<UIState>({
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDraggingRef = useRef<boolean>();
+  const uiStateRef = useRef<UIState>({
     brushSize: 7,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!selection || selection.count !== 1) {
       return;
     }
@@ -58,7 +59,7 @@ export const Overlay = (props: OverlayProps) => {
     canvas.height = window.innerHeight;
 
     // load and draw image to canvas
-    let img = new Image();
+    const img = new Image();
     let cssScale = 1;
     const drawImage = () => {
       // Set the canvas dimensions to match the original image dimensions to maintain image quality,
@@ -89,11 +90,11 @@ export const Overlay = (props: OverlayProps) => {
     });
 
     canvas.addEventListener("pointerdown", (e) => {
-      isDragginRef.current = true;
+      isDraggingRef.current = true;
     });
 
     canvas.addEventListener("pointermove", (e) => {
-      if (isDragginRef.current) {
+      if (isDraggingRef.current) {
         const mousePos = getCanvasMousePosition(canvas, e);
         context.fillStyle = "white";
         context.beginPath();
@@ -109,7 +110,7 @@ export const Overlay = (props: OverlayProps) => {
     });
 
     canvas.addEventListener("pointerup", () => {
-      isDragginRef.current = false;
+      isDraggingRef.current = false;
     });
 
     return void appProcess.current.setOnDispose<CloseOpts>(
@@ -134,7 +135,7 @@ export const Overlay = (props: OverlayProps) => {
     );
   }, [selection]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // set up message handler
     return void appProcess.registerOnMessage((_, message) => {
       if (!message) {
@@ -143,7 +144,7 @@ export const Overlay = (props: OverlayProps) => {
       const { brushSize } = message as UIState;
       uiStateRef.current = {
         ...uiStateRef.current,
-        brushSize: brushSize,
+        brushSize,
       };
     });
   }, []);

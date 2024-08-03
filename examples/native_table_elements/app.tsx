@@ -1,5 +1,5 @@
 import { addNativeElement } from "@canva/preview/design";
-import React from "react";
+import { useState, useCallback } from "react";
 import styles from "styles/components.css";
 import {
   Alert,
@@ -15,7 +15,8 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import { CellState, TableState, useTable } from "./use_table_hook";
+import type { CellState, TableState } from "./use_table_hook";
+import { useTable } from "./use_table_hook";
 
 const initialState: TableState = {
   rowCount: 4,
@@ -161,9 +162,9 @@ const CellElement = ({
 
 export const App = () => {
   const state = useTable(initialState);
-  const [submissionError, setSubmissionError] = React.useState("");
+  const [submissionError, setSubmissionError] = useState("");
 
-  const onClick = React.useCallback(async () => {
+  const onClick = useCallback(async () => {
     try {
       await addNativeElement(state.toElement());
     } catch (e) {
@@ -173,7 +174,7 @@ export const App = () => {
     }
   }, [state]);
 
-  const onAddCell = React.useCallback(() => {
+  const onAddCell = useCallback(() => {
     state.cells = [...(state.cells || []), {}];
   }, []);
 

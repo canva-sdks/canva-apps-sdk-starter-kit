@@ -1,7 +1,7 @@
 import { Rows, Text, Title, tokens } from "@canva/app-ui-kit";
 import type { DataTable, DataTableColumn } from "@canva/preview/data";
 import { onSelectDataTable } from "@canva/preview/data";
-import React from "react";
+import { useEffect } from "react";
 import styles from "styles/components.css";
 
 const breedsDataTable: DataTable = {
@@ -38,7 +38,7 @@ const numRows = breedsDataTable.columns.sort(
 
 // An app that uses the Data SDK to return a single data table to a consumer (e.g. Bulk Create)
 export const App = () => {
-  React.useEffect(() => {
+  useEffect(() => {
     // This callback runs when Bulk Create wants to receive data
     onSelectDataTable(async (opts) => {
       // This callback returns the single data table to Bulk Create
@@ -126,7 +126,8 @@ function formatColumnName(name: string) {
 }
 
 function formatColumn(column: DataTableColumn) {
-  switch (column.type) {
+  const columnType = column.type;
+  switch (columnType) {
     case "boolean":
       return column.values.map((v) => (v ? "Y" : "N"));
     case "date":
@@ -135,5 +136,8 @@ function formatColumn(column: DataTableColumn) {
       return column.values.map((v) => (v ? v.toString() : ""));
     case "string":
       return column.values.map((v) => (v ? v : ""));
+    default:
+      console.error("Unknown column type", columnType);
+      return "";
   }
 }

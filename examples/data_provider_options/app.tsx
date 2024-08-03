@@ -1,7 +1,7 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import type { DataTable } from "@canva/preview/data";
 import { onSelectDataTable } from "@canva/preview/data";
-import React from "react";
+import { useState, useEffect } from "react";
 import styles from "styles/components.css";
 
 const properties = {
@@ -62,9 +62,9 @@ type State = {
 // An app that exposes multiple data tables, allows users to select a data
 // table, and returns the selected data table to a consumer (e.g. Bulk Create)
 export const App = () => {
-  const [state, setState] = React.useState<State>({});
+  const [state, setState] = useState<State>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     // This callback runs when Bulk Create wants to receive data
     onSelectDataTable(async (opts) => {
       setState((prevState) => {

@@ -1,6 +1,5 @@
 import { Button, Rows } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
-import React, { useState } from "react";
 import styles from "styles/components.css";
 import { ChooseColours } from "./ChooseColours";
 import { ScoreComponent } from "./ScoreComponent";

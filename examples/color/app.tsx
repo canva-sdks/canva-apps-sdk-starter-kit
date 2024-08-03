@@ -1,15 +1,15 @@
 import { Rows, Swatch, Text } from "@canva/app-ui-kit";
-import {
+import type {
   Anchor,
   ColorSelectionEvent,
   ColorSelectionScope,
-  openColorSelector,
-} from "@canva/preview/asset";
-import React from "react";
+} from "@canva/asset";
+import { openColorSelector } from "@canva/asset";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 export const App = () => {
-  const [color, setColor] = React.useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string | undefined>(undefined);
   const onColorSelect = async <T extends ColorSelectionScope>(
     e: ColorSelectionEvent<T>
   ) => {
@@ -20,7 +20,7 @@ export const App = () => {
 
   const onRequestOpenColorSelector = (boundingRect: Anchor) => {
     openColorSelector(boundingRect, {
-      onColorSelect: onColorSelect,
+      onColorSelect,
       scopes: ["solid"],
     });
   };

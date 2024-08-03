@@ -1,7 +1,7 @@
 import type { Authentication } from "@canva/user";
 import { auth } from "@canva/user";
 import { Box, Button, Rows, Text, Title } from "@canva/app-ui-kit";
-import React from "react";
+import { useState, useEffect } from "react";
 import styles from "styles/components.css";
 
 type State = "authenticated" | "not_authenticated" | "checking" | "error";
@@ -47,9 +47,9 @@ const checkAuthenticationStatus = async (
 
 export const App = () => {
   // Keep track of the user's authentication status.
-  const [state, setState] = React.useState<State>("checking");
+  const [state, setState] = useState<State>("checking");
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkAuthenticationStatus(auth).then((status) => {
       setState(status);
     });
@@ -59,7 +59,8 @@ export const App = () => {
     // Start the authentication flow
     try {
       const response = await auth.requestAuthentication();
-      switch (response.status) {
+      const status = response.status;
+      switch (status) {
         case "COMPLETED":
           setState("authenticated");
           break;
@@ -71,6 +72,8 @@ export const App = () => {
           console.warn("Authentication denied by user", response.details);
           setState("not_authenticated");
           break;
+        default:
+          console.error("Unknown authentication response: ", status);
       }
     } catch (e) {
       console.error(e);
@@ -133,5 +136,7 @@ const createAuthenticationMessage = (state: State) => {
       return "You are authenticated!";
     case "not_authenticated":
       return "You are not authenticated.";
+    default:
+      console.error("Unknown authentication response: ", state);
   }
 };

@@ -5,13 +5,9 @@ import {
   Text,
   TypographyCard,
 } from "@canva/app-ui-kit";
-import {
-  addNativeElement,
-  ui,
-  FontWeight,
-  TextAttributes,
-} from "@canva/design";
-import React from "react";
+import type { FontWeight, TextAttributes } from "@canva/design";
+import { addNativeElement, ui } from "@canva/design";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 type DraggableTextProperties = {
@@ -24,13 +20,14 @@ type DraggableTextProperties = {
 const content = "Add a little bit of body text";
 
 export const App = () => {
-  const [{ fontStyle, fontWeight, decoration, textAlign }, setState] =
-    React.useState<Required<DraggableTextProperties>>({
-      decoration: "none",
-      fontStyle: "normal",
-      fontWeight: "normal",
-      textAlign: "start",
-    });
+  const [{ fontStyle, fontWeight, decoration, textAlign }, setState] = useState<
+    Required<DraggableTextProperties>
+  >({
+    decoration: "none",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    textAlign: "start",
+  });
 
   const onDragStart = (event: React.DragEvent<HTMLElement>) => {
     ui.startDrag(event, {

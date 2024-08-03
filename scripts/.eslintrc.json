@@ -1,0 +1,7 @@
+{
+  "extends": "../.eslintrc.json",
+  "rules": {
+    // scripts often use the console to report various errors, warnings, and info
+    "no-console": "off"
+  }
+}

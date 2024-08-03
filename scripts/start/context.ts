@@ -1,4 +1,4 @@
-require("dotenv").config();
+import "dotenv/config";
 
 import * as fs from "fs";
 import * as path from "path";
@@ -174,8 +174,8 @@ export class Context {
     }
 
     const envVars: EnvVars = {
-      frontendPort: parseInt(CANVA_FRONTEND_PORT),
-      backendPort: parseInt(CANVA_BACKEND_PORT),
+      frontendPort: parseInt(CANVA_FRONTEND_PORT, 10),
+      backendPort: parseInt(CANVA_BACKEND_PORT, 10),
       hmrEnabled: CANVA_HMR_ENABLED?.toLowerCase().trim() === "true",
       appId: CANVA_APP_ID,
       appOrigin: CANVA_APP_ORIGIN,

@@ -12,7 +12,7 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
-import React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 type UIState = {
@@ -50,7 +50,7 @@ const initialState: UIState = {
 };
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const { paths, viewBox } = state;
   const disabled = paths.length < 1;
@@ -70,7 +70,10 @@ export const App = () => {
               </Column>
               <Column width="content">
                 {paths.length < 7 && (
-                  <button
+                  <Button
+                    variant="tertiary"
+                    icon={PlusIcon}
+                    ariaLabel="Add a new path"
                     onClick={() => {
                       setState((prevState) => {
                         return {
@@ -88,15 +91,7 @@ export const App = () => {
                         };
                       });
                     }}
-                    style={{
-                      appearance: "none",
-                      border: "none",
-                      backgroundColor: "transparent",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <PlusIcon />
-                  </button>
+                  />
                 )}
               </Column>
             </Columns>

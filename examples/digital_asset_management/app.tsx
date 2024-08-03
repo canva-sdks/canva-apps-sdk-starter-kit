@@ -1,11 +1,12 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { SearchableListView } from "@canva/app-components";
 import { Alert, Box, Button, LoadingIndicator, Rows } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
 import { config } from "./config";
 import { findResources } from "./adapter";
 import styles from "./index.css";
-import { Authentication, auth } from "@canva/user";
+import type { Authentication } from "@canva/user";
+import { auth } from "@canva/user";
 
 type AuthenticationState =
   | "authenticated"
@@ -55,17 +56,16 @@ const checkAuthenticationStatus = async (
 
 export function App() {
   // Keep track of the user's authentication status.
-  const [authState, setAuthState] =
-    React.useState<AuthenticationState>("checking");
+  const [authState, setAuthState] = useState<AuthenticationState>("checking");
 
-  React.useEffect(() => {
+  useEffect(() => {
     setAuthState("checking");
     checkAuthenticationStatus(auth).then((status) => {
       setAuthState(status);
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (authState === "not_authenticated") {
       startAuthenticationFlow();
     }
@@ -74,7 +74,8 @@ export function App() {
   const startAuthenticationFlow = async () => {
     try {
       const response = await auth.requestAuthentication();
-      switch (response.status) {
+      const status = response.status;
+      switch (status) {
         case "COMPLETED":
           setAuthState("authenticated");
           break;
@@ -86,6 +87,8 @@ export function App() {
           console.warn("Authentication denied by user", response.details);
           setAuthState("cancelled");
           break;
+        default:
+          console.error("Unknown authentication response: ", status);
       }
     } catch (e) {
       console.error(e);

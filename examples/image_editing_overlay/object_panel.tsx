@@ -1,9 +1,9 @@
 import { Rows, FormField, Button, Slider } from "@canva/app-ui-kit";
-import * as React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 import { appProcess } from "@canva/platform";
 import { useOverlay } from "utils/use_overlay_hook";
-import { LaunchParams } from "./app";
+import type { LaunchParams } from "./app";
 import type { CloseOpts } from "./overlay";
 
 type UIState = {
@@ -20,7 +20,7 @@ export const ObjectPanel = () => {
     open,
     close: closeOverlay,
   } = useOverlay<"image_selection", CloseOpts>("image_selection");
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const openOverlay = async () => {
     open({

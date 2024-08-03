@@ -1,12 +1,10 @@
 import { addNativeElement } from "@canva/design";
-import React from "react";
+import { useState } from "react";
 import styles from "styles/components.css";
 import { Button, FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 
 export const App = () => {
-  const [url, setUrl] = React.useState(
-    "https://www.youtube.com/watch?v=o-YBDTqX_ZU"
-  );
+  const [url, setUrl] = useState("https://www.youtube.com/watch?v=o-YBDTqX_ZU");
   const disabled = url.trim().length < 1;
 
   return (

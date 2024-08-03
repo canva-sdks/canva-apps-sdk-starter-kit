@@ -9,16 +9,12 @@ import {
   TextInput,
   Title,
   SegmentedControl,
+  ImageCard,
 } from "@canva/app-ui-kit";
-import {
-  findFonts,
-  Font,
-  FontStyle,
-  FontWeightName,
-  requestFontSelection,
-} from "@canva/asset";
+import type { Font, FontStyle, FontWeightName } from "@canva/asset";
+import { findFonts, requestFontSelection } from "@canva/asset";
 import { addNativeElement } from "@canva/design";
-import React, { useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "styles/components.css";
 
 type TextConfig = {
@@ -45,15 +41,11 @@ const fontStyleOptions: {
 ];
 
 export const App = () => {
-  const [textConfig, setTextConfig] = React.useState<TextConfig>(initialConfig);
-  const [selectedFont, setSelectedFont] = React.useState<Font | undefined>(
-    undefined
-  );
-  const [availableFonts, setAvailableFonts] = React.useState<readonly Font[]>(
-    []
-  );
+  const [textConfig, setTextConfig] = useState<TextConfig>(initialConfig);
+  const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
+  const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
 
-  const fetchFonts = React.useCallback(async () => {
+  const fetchFonts = useCallback(async () => {
     const response = await findFonts();
     setAvailableFonts(response.fonts);
   }, [setAvailableFonts]);
@@ -159,7 +151,12 @@ export const App = () => {
         {selectedFont?.previewUrl && (
           <Box background="neutralLow" padding="2u" width="full">
             <Rows spacing="0" align="center">
-              <img src={selectedFont.previewUrl} style={{ maxWidth: "100%" }} />
+              <Box>
+                <ImageCard
+                  thumbnailUrl={selectedFont.previewUrl}
+                  alt={selectedFont.name}
+                />
+              </Box>
             </Rows>
           </Box>
         )}
@@ -175,7 +172,7 @@ export const App = () => {
                 setTextConfig((prevState) => {
                   return {
                     ...prevState,
-                    fontWeight: fontWeight,
+                    fontWeight,
                   };
                 });
               }}

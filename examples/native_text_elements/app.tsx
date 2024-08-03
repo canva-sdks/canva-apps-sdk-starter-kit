@@ -8,8 +8,9 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import { addNativeElement, FontWeight, TextAttributes } from "@canva/design";
-import React from "react";
+import type { FontWeight, TextAttributes } from "@canva/design";
+import { addNativeElement } from "@canva/design";
+import { useState } from "react";
 import styles from "styles/components.css";
 
 type UIState = {
@@ -31,7 +32,7 @@ const initialState: UIState = {
 };
 
 export const App = () => {
-  const [state, setState] = React.useState<UIState>(initialState);
+  const [state, setState] = useState<UIState>(initialState);
 
   const { text, color, fontWeight, fontStyle, decoration, textAlign } = state;
   const disabled = text.trim().length < 1 || color.trim().length < 1;
@@ -110,7 +111,7 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    fontWeight: fontWeight,
+                    fontWeight,
                   };
                 });
               }}
@@ -138,7 +139,7 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    decoration: decoration,
+                    decoration,
                   };
                 });
               }}
@@ -160,7 +161,7 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    textAlign: textAlign,
+                    textAlign,
                   };
                 });
               }}

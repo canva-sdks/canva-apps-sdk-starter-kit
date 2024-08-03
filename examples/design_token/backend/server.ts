@@ -1,6 +1,6 @@
 import * as cors from "cors";
 
-require("dotenv").config();
+import "dotenv/config";
 import * as express from "express";
 import { createBaseServer } from "../../../utils/backend/base_backend/create";
 import { createJwtMiddleware } from "../../../utils/backend/jwt_middleware";
