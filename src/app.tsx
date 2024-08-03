@@ -5,7 +5,7 @@ import { ChooseColours } from "./ChooseColours";
 import { ScoreComponent } from "./ScoreComponent";
 import { RecommendationsComponent } from "./RecommendationsComponent";
 import { Color } from "@canva/preview/asset";
-import { calculateContrast, scorePass } from "./utils";
+import { calculateContrastHex, scorePass } from "./utils";
 import { useState } from "react";
 
 export const App = () => {
@@ -25,7 +25,7 @@ export const App = () => {
     });
   };
 
-  const contrastScore = calculateContrast(fgColour, bgColour);
+  const contrastScore = calculateContrastHex(fgColour, bgColour);
 
   const showRecommendations = !scorePass(contrastScore)
 
