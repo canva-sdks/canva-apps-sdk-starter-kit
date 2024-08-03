@@ -6,6 +6,7 @@ import { ScoreComponent } from "./ScoreComponent";
 import { RecommendationsComponent } from "./RecommendationsComponent";
 import { Color } from "@canva/preview/asset";
 import { calculateContrast, scorePass } from "./utils";
+import { useState } from "react";
 
 export const App = () => {
   const [fgColour, setFgColour] = useState("#FFFFFF");

@@ -29,7 +29,20 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
             <Text size="medium">Foreground</Text>
           </Column>
           <Column width="content">
-            <ColorSelector color={fgFill} onChange={onChangeFgColour}></ColorSelector>
+          <Swatch
+            fill={[fgFill]}
+            onClick={async (event) => {
+              const anchor = event.currentTarget.getBoundingClientRect();
+              await openColorSelector(anchor, {
+                scopes: ["solid"],
+                onColorSelect: (event) => {
+                  if (event.selection.type === "solid") {
+                    setFgFill(event.selection.hexString);
+                  }
+                },
+              });
+            }}
+          />
           </Column>
         </Columns>
         <Columns spacing="0.5u" align="end">
@@ -42,7 +55,20 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
             <Text size="medium">Background</Text>
           </Column>
           <Column width="content">
-            <ColorSelector color={bgFill} onChange={onChangeBgColour}></ColorSelector>
+            <Swatch
+              fill={[bgFill]}
+              onClick={async (event) => {
+                const anchor = event.currentTarget.getBoundingClientRect();
+                await openColorSelector(anchor, {
+                  scopes: ["solid"],
+                  onColorSelect: (event) => {
+                    if (event.selection.type === "solid") {
+                      setBgFill(event.selection.hexString);
+                    }
+                  },
+                });
+              }}
+            />
           </Column>
         </Columns>
       </Rows>
