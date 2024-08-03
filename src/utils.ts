@@ -23,10 +23,18 @@ const hexToRGB = (hex: string): RGB => {
     return { r: red, g: green, b: blue };
 };
 
+function addPadding(hexComponent: string): string {
+    if (hexComponent.length < 2) {
+        hexComponent = "0" + hexComponent
+    }
+
+    return hexComponent
+}
+
 function RGBToHex(color: RGB): string {
-    const redHex = color.r.toString(16)
-    const greenHex = color.g.toString(16)
-    const blueHex = color.b.toString(16)
+    const redHex = addPadding(color.r.toString(16))
+    const greenHex = addPadding(color.g.toString(16))
+    const blueHex = addPadding(color.b.toString(16))
 
     return "#" + redHex + greenHex + blueHex
 }
