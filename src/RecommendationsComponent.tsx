@@ -1,5 +1,5 @@
 import React from "react";
-import { Rows, Text, Swatch, Title } from "@canva/app-ui-kit";
+import { Rows, Text, Swatch, Title, Columns, Column, Box } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 import { findRecoms } from "./utils";
 
@@ -15,37 +15,53 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
   const fgRecoms: Color[] = findRecoms(fgColour, bgColour);
   const bgRecoms: Color[] = findRecoms(bgColour, fgColour);
 
-  // TODO put code for finding recommendations here
+  function isArrayEmpty(array: any[]): boolean {
+    return array.length !== 0;
+  }
 
   for (const fgColour of fgRecoms) {
     fgSwatches.push(
-      <Swatch
-        fill={[fgColour.hexString]}
-        onClick={() => {}}
-        size="small"
-        variant="solid"
-      />
+      <Box padding="0.5u">
+        <Swatch
+          fill={[fgColour.hexString]}
+          onClick={() => {}}
+          size="small"
+          variant="solid"
+        />
+      </Box>
     );
   };
 
   for (const bgColour of bgRecoms) {
     bgSwatches.push(
-      <Swatch 
-        fill={[bgColour.hexString]}
-        onClick={() => {}}
-        size="small"
-        variant="solid"
-      />
+      <Box padding="0.5u">
+        <Swatch 
+          fill={[bgColour.hexString]}
+          onClick={() => {}}
+          size="small"
+          variant="solid"
+        />
+      </Box>
     )
   };
 
   return (
-    <Rows spacing="1u">
+    <Rows spacing="2u">
       <Title size="medium">Recommendations</Title>
-      <Text size="small">Foreground</Text>
-      {fgSwatches}
-      <Text size="small">Background</Text>
-      {bgSwatches}
+      {isArrayEmpty(fgRecoms) && 
+        <div>
+          <Text size="small">Foreground</Text>
+          <Box display="flex" flexDirection="row" padding="0">
+            {fgSwatches}
+          </Box>
+        </div>}
+      {isArrayEmpty(bgRecoms) && 
+        <div>
+          <Text size="small">Background</Text> 
+          <Box display="flex" flexDirection="row" padding="0">
+            {bgSwatches}
+          </Box>
+        </div>}
     </Rows>
   )
 };
