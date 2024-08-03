@@ -243,7 +243,7 @@ function ligAdjustColor(original: RGB, context: RGB): RGB[] {
                 ligAdjustedColors[1] = HSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: 0})
             }
 
-            if (ligAdjustedColors[0] == ligAdjustedColors[1]) {
+            if (ligAdjustedColors[0].r == ligAdjustedColors[1].r && ligAdjustedColors[0].g == ligAdjustedColors[1].g && ligAdjustedColors[0].b == ligAdjustedColors[1].b) {
                 ligAdjustedColors.pop()
             }
 
@@ -272,6 +272,10 @@ function hueAdjustColor(original: RGB, context: RGB): RGB[] {
     // If lightness of color is 0, then it is black and it cannot be hue-adjusted
     if (originalHSL.l == 0) {
         return hueAdjustedColors
+    }
+
+    if (originalHSL.s == 0) {
+        originalHSL.s = 0.25
     }
 
     let hueAdjusted: RGB
