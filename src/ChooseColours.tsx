@@ -19,6 +19,8 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
     const prevFgFill = fgFill;
     setFgFill(bgFill);
     setBgFill(prevFgFill);
+    onChangeFgColour(bgFill);
+    onChangeBgColour(fgFill);
   };
 
   return (
