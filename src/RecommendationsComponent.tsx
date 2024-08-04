@@ -65,7 +65,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     <Rows spacing="1u">
       <Rows spacing="0">
         <Title size="medium">Recommendations</Title>
-        <Text size="small">Click on a swatch to copy the colour code</Text>
+        <Text size="small">Click on a swatch to copy the color code</Text>
       </Rows>
       {alert.visible && (
         <Alert tone="positive">
@@ -91,8 +91,9 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
           </Box>
         </div>}
         <Button variant="primary" onClick={() => renderOnCanvas()}>
-          Add to canvas
+          Add all to canvas
         </Button>
+        <Text size="small">Doing this adds it to your Document Colors</Text>
     </Rows>
   )
 };
