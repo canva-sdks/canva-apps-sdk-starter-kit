@@ -53,7 +53,7 @@
 }
 
 .pill {
-  display: inline-flex;
+  display: flex;
   padding: 2px 8px;
   border-radius: 100px;
   font-size: 14px;
@@ -61,6 +61,7 @@
   justify-content: center;
   align-items: center;
   width: 48px;
+  
 }
 
 .Pass {
