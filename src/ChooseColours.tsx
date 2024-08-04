@@ -25,7 +25,7 @@ export const ChooseColours: React.FC<ChooseColoursProps> = ({ fgColour, bgColour
 
   return (
       <Rows spacing="0">
-        <Title size="medium">Choose colours</Title>
+        <Title size="medium">Choose colors</Title>
         <Columns spacing="0.5u" alignY="center">
           <Column width="fluid">
             <Text size="medium">Foreground</Text>
