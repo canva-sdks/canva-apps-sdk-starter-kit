@@ -58,8 +58,11 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
   };
 
   return (
-    <Rows spacing="2u">
-      <Title size="medium">Recommendations</Title>
+    <Rows spacing="1u">
+      <Rows spacing="0">
+        <Title size="medium">Recommendations</Title>
+        <Text size="small">Click on a swatch to copy the colour code</Text>
+      </Rows>
       {alert.visible && (
         <Alert tone="positive">
           {alert.message}
@@ -67,14 +70,14 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
       )}
       {isArrayEmpty(fgRecoms) && 
         <div>
-          <Text size="small">Foreground</Text>
+          <Text size="medium">Foreground</Text>
           <Box display="flex" flexDirection="row" padding="0">
             {fgSwatches}
           </Box>
         </div>}
       {isArrayEmpty(bgRecoms) && 
         <div>
-          <Text size="small">Background</Text> 
+          <Text size="medium">Background</Text> 
           <Box display="flex" flexDirection="row" padding="0">
             {bgSwatches}
           </Box>
