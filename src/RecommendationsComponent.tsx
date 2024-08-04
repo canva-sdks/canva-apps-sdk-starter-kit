@@ -19,12 +19,12 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     return array.length !== 0;
   }
 
-  for (const fgColour of fgRecoms) {
+  for (const fgCol of fgRecoms) {
     fgSwatches.push(
       <Box padding="0.5u">
         <Swatch
-          fill={[fgColour.hexString]}
-          onClick={() => {}}
+          fill={[fgCol.hexString]}
+          onClick={() => {navigator.clipboard.writeText(fgCol.hexString)}}
           size="small"
           variant="solid"
         />
@@ -32,12 +32,12 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     );
   };
 
-  for (const bgColour of bgRecoms) {
+  for (const bgCol of bgRecoms) {
     bgSwatches.push(
       <Box padding="0.5u">
         <Swatch 
-          fill={[bgColour.hexString]}
-          onClick={() => {}}
+          fill={[bgCol.hexString]}
+          onClick={() => {navigator.clipboard.writeText(bgCol.hexString)}}
           size="small"
           variant="solid"
         />
