@@ -70,14 +70,18 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
       )}
       {isArrayEmpty(fgRecoms) && 
         <div>
-          <Text size="medium">Foreground</Text>
+          <Box paddingBottom="1u">
+            <Text size="medium">Foreground</Text>
+          </Box>
           <Box display="flex" flexDirection="row" padding="0">
             {fgSwatches}
           </Box>
         </div>}
       {isArrayEmpty(bgRecoms) && 
         <div>
-          <Text size="medium">Background</Text> 
+          <Box paddingBottom="1u">
+            <Text size="medium">Background</Text>
+          </Box>
           <Box display="flex" flexDirection="row" padding="0">
             {bgSwatches}
           </Box>
