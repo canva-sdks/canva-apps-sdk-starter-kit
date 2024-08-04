@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { Rows, Text, Swatch, Title, Alert, Box } from "@canva/app-ui-kit";
+import { Rows, Text, Swatch, Title, Alert, Box, Button } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 import { findRecoms } from "./utils";
 
@@ -19,6 +19,10 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
 
   function isArrayEmpty(array: any[]): boolean {
     return array.length !== 0;
+  }
+
+  function renderOnCanvas() {
+
   }
 
   const handleSwatchClick = (colour: string) => {
@@ -86,6 +90,9 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
             {bgSwatches}
           </Box>
         </div>}
+        <Button variant="primary" onClick={() => renderOnCanvas()}>
+          Add to canvas
+        </Button>
     </Rows>
   )
 };
