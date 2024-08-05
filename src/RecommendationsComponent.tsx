@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { Rows, Text, Swatch, Title, Alert, Box, Button } from "@canva/app-ui-kit";
+import { Rows, Text, Swatch, Title, Alert, Box, Button, Link } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 import { findRecoms } from "./utils";
 import { addNativeElement } from "@canva/design";
@@ -123,7 +123,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
   };
 
   return (
-    <Rows spacing="1u">
+    <Rows spacing="2u">
       <Rows spacing="0">
         <Title size="medium">Recommendations</Title>
         <Text size="small">Click on a swatch to copy the color code</Text>
@@ -151,10 +151,12 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
             {bgSwatches}
           </Box>
         </div>}
-        <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
-          Add all to canvas
-        </Button>
-        <Text size="small">Doing this adds it to your Document Colors</Text>
+        <Rows spacing="1u">
+          <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
+            Add all to canvas
+          </Button>
+          <Text size="small">This adds all the recommendations to your Document Colors so you can easily apply them on your designs</Text>
+          </Rows>
     </Rows>
   )
 };

@@ -1,4 +1,4 @@
-import { Button, Rows } from "@canva/app-ui-kit";
+import { Button, Rows, Link, Text } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import styles from "styles/components.css";
 import { ChooseColours } from "./ChooseColours";
@@ -35,6 +35,16 @@ export const App = () => {
         />
         <ScoreComponent fgColour={fgColour} bgColour={bgColour} contrastScore={contrastScore} />
         {showRecommendations && <RecommendationsComponent fgColour={fgColour} bgColour={bgColour} />}
+        <Text size="medium">
+            <Link
+              href="https://contrast-mate-docs.super.site/"
+              id="id"
+              requestOpenExternalUrl={() => {}}
+              title="Check out how Contrast Mate works"
+            >
+              Check out how Contrast Mate works
+            </Link>
+          </Text>
       </Rows>
     </div>
   );
