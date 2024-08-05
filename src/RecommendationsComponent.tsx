@@ -125,7 +125,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
   return (
     <Rows spacing="2u">
       <Rows spacing="0">
-        <Title size="medium">Recommendations</Title>
+        <Title size="medium">Recommended Colors</Title>
         {(!isArrayEmpty(bgRecoms) || !isArrayEmpty(fgRecoms)) && <Text size="small">Click on a swatch to copy the color code</Text>}
       </Rows>
       {alert.visible && (
@@ -158,7 +158,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
       {(!isArrayEmpty(bgRecoms) || !isArrayEmpty(fgRecoms)) && 
         <Rows spacing="1u">
           <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
-            Add all to canvas
+            Add recommended colors to canvas
           </Button>
           <Text size="small">This adds all the recommendations to your Document Colors so you can easily apply them on your designs</Text>
         </Rows>
