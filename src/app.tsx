@@ -1,10 +1,9 @@
-import { Button, Rows, Link, Text } from "@canva/app-ui-kit";
+import { Rows, Link, Text } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import styles from "styles/components.css";
 import { ChooseColours } from "./ChooseColours";
 import { ScoreComponent } from "./ScoreComponent";
 import { RecommendationsComponent } from "./RecommendationsComponent";
-import { Color } from "@canva/preview/asset";
 import { calculateContrastHex, scorePass } from "./utils";
 import { useState } from "react";
 

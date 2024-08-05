@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { Rows, Text, Swatch, Title, Alert, Box, Button, Link } from "@canva/app-ui-kit";
+import { Rows, Text, Swatch, Title, Alert, Box, Button } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 import { findRecoms } from "./utils";
 import { addNativeElement } from "@canva/design";

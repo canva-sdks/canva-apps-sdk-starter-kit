@@ -1,4 +1,4 @@
-import { Rows, Columns, Column, ColorSelector, Text, Title, Button, RotateIcon, Swatch } from "@canva/app-ui-kit";
+import { Rows, Columns, Column, Text, Title, Button, RotateIcon, Swatch } from "@canva/app-ui-kit";
 import React from "react";
 import { useState } from "react";
 import { openColorSelector } from "@canva/asset";

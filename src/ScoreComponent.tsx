@@ -1,4 +1,4 @@
-import { Columns, Column, Rows, Text, HelpCircleIcon, Box } from "@canva/app-ui-kit";
+import { Columns, Column, Rows, Text } from "@canva/app-ui-kit";
 import React from "react";
 import { ShowcaseComponent } from "./ShowcaseComponent";
 import { Pill } from "./Pill";
@@ -20,7 +20,6 @@ export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColo
           <Column>
               <Text size="large" variant="bold">{contrastScore.toFixed(2)}</Text>
           </Column>
-
         </Columns>
 
         <Columns spacing="2u" alignY="center">
