@@ -96,11 +96,13 @@ function calculateContrastRGB(fg: RGB, bg: RGB) {
         ratio = 1/ratio
     }
 
+    ratio = Math.trunc(ratio * 100) / 100
+
     return ratio
 }
 
 export const scorePass = (contrastScore: number): boolean => {
-    return contrastScore >= 7;
+    return contrastScore > 7;
 };
 
 /**
