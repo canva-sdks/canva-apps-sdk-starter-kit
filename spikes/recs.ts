@@ -332,20 +332,26 @@ function hueAdjustColor(original: RGB, context: RGB): RGB[] {
         return hueAdjustedColors
     }
 
+    if (originalHSL.s == 0) {
+        originalHSL.s = 0.25
+    }
+
     let hueAdjusted: RGB
     for(let i = 1; i < 4; i++) {
         // Hue-adjustment is done by increasing hue by (360 / n) mod 360 to get max. hue difference
         hueAdjusted = ligAdjustColor(convertHSLtoRGB({ h: (((originalHSL.h + (90 * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l}), context)[0]
+        console.log(convertHSLtoRGB({ h: (((originalHSL.h + (90 * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l}))
+        console.log({ h: (((originalHSL.h + (90 * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l})
         hueAdjustedColors.push(hueAdjusted)
     } 
 
     return hueAdjustedColors
 }
 
-const fg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random() * 255), b: Math.round(Math.random() * 255) }
-const bg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random() * 255), b: Math.round(Math.random() * 255) }
-// const fg: RGB = { r: 193, g: 16, b: 43 }
-// const bg: RGB = { r: 111, g: 173, b: 86 }
+// const fg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random() * 255), b: Math.round(Math.random() * 255) }
+// const bg: RGB = { r: Math.round(Math.random() * 255), g: Math.round(Math.random() * 255), b: Math.round(Math.random() * 255) }
+const fg: RGB = { r: 255, g: 255, b: 255 }
+const bg: RGB = { r: 111, g: 173, b: 86 }
 
 // const fgLinear: RGB = convertRGBToLinearRGB(fg)
 // const fgHSL: HSL = convertRGBtoHSL(fg)

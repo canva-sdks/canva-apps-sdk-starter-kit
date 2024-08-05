@@ -200,7 +200,6 @@ function ligAdjustColor(original: RGB, context: RGB): RGB[] {
         // Checks if a valid color can be found by increasing lightness by finding the contrast ratio of
         // the original color with max. lightness and context color
         if(calculateContrastRGB(HSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: 1 }), context) >= 7) {
-            console.log("Case 1")
             // Finds a valid color by continually incrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= 1 - originalHSL.l; i += 0.01) {
                 ligAdjustedColors[0] = HSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l + i })
@@ -217,7 +216,7 @@ function ligAdjustColor(original: RGB, context: RGB): RGB[] {
                 ligAdjustedColors[1] = HSLtoRGB({ h: ligAdjustedHSL.h, s: ligAdjustedHSL.s, l: 1})
             }
 
-            if (ligAdjustedColors[0] == ligAdjustedColors[1]) {
+            if (ligAdjustedColors[0].r == ligAdjustedColors[1].r && ligAdjustedColors[0].g == ligAdjustedColors[1].g && ligAdjustedColors[0].b == ligAdjustedColors[1].b) {
                 ligAdjustedColors.pop()
             }
 
@@ -226,7 +225,6 @@ function ligAdjustColor(original: RGB, context: RGB): RGB[] {
         // Checks if a valid color can be found by decreasing lightness by finding the contrast ratio of
         // the original color with min. lightness and context color
         else if(calculateContrastRGB(HSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: 0 }), context) >= 7) {
-            console.log("Case 2")
             // Finds a valid color by continually decrementing lightness of the original color by 0.01
             for(let i: number = 0.01; i <= originalHSL.l; i += 0.01) {
                 ligAdjustedColors[0] = HSLtoRGB({ h: originalHSL.h, s: originalHSL.s, l: originalHSL.l - i })
@@ -250,7 +248,6 @@ function ligAdjustColor(original: RGB, context: RGB): RGB[] {
             return ligAdjustedColors
         }
         else {
-            console.log("Failed")
             return ligAdjustedColors
         }
     }
@@ -271,7 +268,11 @@ function hueAdjustColor(original: RGB, context: RGB): RGB[] {
     const originalHSL = RGBtoHSL(original)
     // If lightness of color is 0, then it is black and it cannot be hue-adjusted
     if (originalHSL.l == 0) {
-        return hueAdjustedColors
+        originalHSL.l = 0.01
+    }
+
+    if (originalHSL.l == 1) {
+        originalHSL.l = 0.09
     }
 
     if (originalHSL.s == 0) {
