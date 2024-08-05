@@ -4,17 +4,17 @@ import styles from 'styles/components.css';
 
 type PillProps = {
   variant: 'Pass' | 'Fail';
-  children: React.ReactNode;
 };
 
-export const Pill: React.FC<PillProps> = ({ variant, children }) => {
+export const Pill: React.FC<PillProps> = ({ variant }) => {
   const className = `${styles.pill} ${styles[variant]}`;
   const Icon = variant === 'Pass' ? CheckIcon : XIcon;
+  const label = variant === 'Pass' ? "Pass" : "Fail"
 
   return (
     <div className={className}>
       <Icon></Icon>
-      <span>{variant}</span>
+      <span>{label}</span>
     </div>
   )
 };

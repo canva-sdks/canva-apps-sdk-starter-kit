@@ -31,13 +31,13 @@ export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColo
             <Text>AA</Text>
           </Column>
           <Column width="content">
-            <Pill variant={contrastScore >= 3 ? "Pass" : "Fail"}>{contrastScore >= 3 ? "Pass" : "Fail"}</Pill>
+            <Pill variant={parseFloat(contrastScore.toFixed(2)) >= 3 ? "Pass" : "Fail"}></Pill>
           </Column>
           <Column width="content">
             <Text>AAA</Text>
           </Column>
           <Column width="content">
-            <Pill variant={contrastScore >= 4.5 ? "Pass" : "Fail"}>{contrastScore >= 3 ? "Pass" : "Fail"}</Pill>
+            <Pill variant={parseFloat(contrastScore.toFixed(2)) >= 4.5 ? "Pass" : "Fail"}></Pill>
           </Column>
         </Columns>
 
@@ -49,13 +49,13 @@ export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColo
             <Text>AA</Text>
           </Column>
           <Column width="content">
-            <Pill variant={contrastScore >= 4.5 ? "Pass" : "Fail"}>{contrastScore >= 4.5 ? "Pass" : "Fail"}</Pill>
+            <Pill variant={parseFloat(contrastScore.toFixed(2)) >= 4.5 ? "Pass" : "Fail"}></Pill>
           </Column>
           <Column width="content">
             <Text>AAA</Text>
           </Column>
           <Column width="content">
-            <Pill variant={contrastScore >= 7 ? "Pass" : "Fail"}>{contrastScore >= 7 ? "Pass" : "Fail"}</Pill>
+            <Pill variant={parseFloat(contrastScore.toFixed(2)) >= 7 ? "Pass" : "Fail"}></Pill>
           </Column>
         </Columns>
       </Rows>
