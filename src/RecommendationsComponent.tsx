@@ -2,6 +2,8 @@ import React, { useState} from "react";
 import { Rows, Text, Swatch, Title, Alert, Box, Button } from "@canva/app-ui-kit";
 import { Color } from "@canva/preview/asset";
 import { findRecoms } from "./utils";
+import { addNativeElement } from "@canva/design";
+import { NativeSimpleElementWithBox } from "@canva/preview/design";
 
 type RecommendationsProps = {
     fgColour: string;
@@ -21,9 +23,68 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     return array.length !== 0;
   }
 
-  function renderOnCanvas() {
+  async function renderOnCanvas(fgRecoms: Color[], bgRecoms: Color[]) {
 
+    const swatches: NativeSimpleElementWithBox[] = []
+
+    for(let i: number = 0; i < fgRecoms.length; i++) {
+      swatches.push(
+        {
+          type: "SHAPE",
+          paths: [
+            {
+              d: "M 20 10 A 10 10 0 1 0 0 10 A 10 10 0 1 0 20 10",
+              fill: {
+                color: fgRecoms[i].hexString,
+              },
+            },
+          ],
+          viewBox: {
+            height: 20,
+            width: 20,
+            left: 0,
+            top: 0,
+          },
+          width: 20,
+          height: 20,
+          top: 0,
+          left: (30 * i),
+        }
+      )
+    }
+
+    for(let i: number = 0; i < bgRecoms.length; i++) {
+      swatches.push(
+        {
+          type: "SHAPE",
+          paths: [
+            {
+              d: "M 20 10 A 10 10 0 1 0 0 10 A 10 10 0 1 0 20 10",
+              fill: {
+                color: bgRecoms[i].hexString,
+              },
+            },
+          ],
+          viewBox: {
+            height: 20,
+            width: 20,
+            left: 0,
+            top: 0,
+          },
+          width: 20,
+          height: 20,
+          top: 30,
+          left: (30 * i),
+        }
+      )
+    }
+
+    await addNativeElement({
+      type: "GROUP",
+      children: swatches,
+    });
   }
+
 
   const handleSwatchClick = (colour: string) => {
     navigator.clipboard.writeText(colour)
@@ -90,7 +151,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
             {bgSwatches}
           </Box>
         </div>}
-        <Button variant="primary" onClick={() => renderOnCanvas()}>
+        <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
           Add all to canvas
         </Button>
         <Text size="small">Doing this adds it to your Document Colors</Text>
