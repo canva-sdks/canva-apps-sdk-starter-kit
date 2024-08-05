@@ -11,7 +11,8 @@ type RecommendationsProps = {
   };
   
 export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgColour, bgColour }) => {
-  const [alert, setAlert] = useState<{ visible: boolean; message: string }>({ visible: false, message: "Copied to Clipboard!" });
+  const [swatchAlert, setSwatchAlert] = useState<{ visible: boolean; message: string }>({ visible: false, message: "Copied to Clipboard!" });
+  const [renderAlert, setRenderAlert] = useState<{ visible: boolean; message: string }>({ visible: false, message: "Added colors to design canvas!" });
 
   const fgSwatches: JSX.Element[] = [];
   const bgSwatches: JSX.Element[] = [];
@@ -82,15 +83,21 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     await addNativeElement({
       type: "GROUP",
       children: swatches,
-    });
+    })
+
+    .then(() => {
+      setRenderAlert({ visible: true, message: "Added colors to design canvas!" });
+      setTimeout(() => setRenderAlert({ visible: false, message: "" }), 7000);
+    })
+    .catch(err => console.error('Failed to copy: ', err));
   }
 
 
   const handleSwatchClick = (colour: string) => {
     navigator.clipboard.writeText(colour)
       .then(() => {
-        setAlert({ visible: true, message: `Color code ${colour} copied to clipboard!` });
-        setTimeout(() => setAlert({ visible: false, message: "" }), 7000);
+        setSwatchAlert({ visible: true, message: `Color code ${colour} copied to clipboard!` });
+        setTimeout(() => setSwatchAlert({ visible: false, message: "" }), 7000);
       })
       .catch(err => console.error('Failed to copy: ', err));
   };
@@ -128,9 +135,9 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
         <Title size="medium">Recommended Colors</Title>
         {(!isArrayEmpty(bgRecoms) || !isArrayEmpty(fgRecoms)) && <Text size="small">Click on a swatch to copy the color code</Text>}
       </Rows>
-      {alert.visible && (
+      {swatchAlert.visible && (
         <Alert tone="positive">
-          {alert.message}
+          {swatchAlert.message}
         </Alert>
       )}
       {isArrayEmpty(fgRecoms) && isArrayEmpty(bgRecoms) &&
@@ -160,6 +167,10 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
           <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
             Add recommended colors to canvas
           </Button>
+          {renderAlert.visible && (
+          <Alert tone="positive">
+            {renderAlert.message}
+          </Alert>)}
           <Text size="small">This adds all the recommendations to your Document Colors so you can easily apply them on your designs</Text>
         </Rows>
       }   
