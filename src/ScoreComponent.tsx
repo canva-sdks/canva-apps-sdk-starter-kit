@@ -18,7 +18,7 @@ export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColo
             <ShowcaseComponent fgColour={fgColour} bgColour={bgColour} />
           </Column>
           <Column>
-              <Text size="large" variant="bold">{contrastScore}</Text>
+              <Text size="large" variant="bold">{contrastScore.toFixed(2)}</Text>
           </Column>
 
         </Columns>
