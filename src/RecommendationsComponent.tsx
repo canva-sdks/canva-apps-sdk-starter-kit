@@ -48,7 +48,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
           width: 20,
           height: 20,
           top: 0,
-          left: (30 * i),
+          left: (25 * i),
         }
       )
     }
@@ -73,8 +73,8 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
           },
           width: 20,
           height: 20,
-          top: 30,
-          left: (30 * i),
+          top: 25,
+          left: (25 * i),
         }
       )
     }
