@@ -286,7 +286,7 @@ function hueAdjustColor(original: RGB, context: RGB): RGB[] {
         // Hue-adjustment is done by increasing hue by (360 / n) mod 360 to get max. hue difference
         hueAdjusted = ligAdjustColor(HSLtoRGB({ h: (((originalHSL.h + (90 * i)) % 360) + 360) % 360, s: originalHSL.s, l: originalHSL.l}), context)[0]
         hueAdjustedColors.push(hueAdjusted)
-    } 
+    }
 
     return hueAdjustedColors
 }
@@ -298,10 +298,19 @@ export function findRecoms(originalHex: string, contextHex: string): Color[] {
     const ligAdjustedColors = ligAdjustColor(original, context)
     const hueAdjustedColors = hueAdjustColor(original, context)
     const recomsRGB = ligAdjustedColors.concat(hueAdjustedColors)
+
+    for(let i = 0; i < recomsRGB.length; i++) {
+        for(let j = i + 1; j < recomsRGB.length; j++) {
+            if (recomsRGB[i].r == recomsRGB[j].r && recomsRGB[i].g == recomsRGB[j].g && recomsRGB[i].b == recomsRGB[j].b) {
+                recomsRGB.splice(j, j)
+            }
+        }
+    }
+
     const recoms: Color[] = []
 
     for(const recomRGB of recomsRGB) {
-        if(recomRGB.r != -1 && recomRGB.g != -1 && recomRGB.b != -1) {
+        if (recomRGB.r != -1 && recomRGB.g != -1 && recomRGB.b != -1) {
             recoms.push({ type: "solid", hexString: RGBToHex(recomRGB) })
         }
     }
