@@ -20,7 +20,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
   const bgRecoms: Color[] = findRecoms(bgColour, fgColour);
 
   function isArrayEmpty(array: any[]): boolean {
-    return array.length !== 0;
+    return array.length === 0;
   }
 
   async function renderOnCanvas(fgRecoms: Color[], bgRecoms: Color[]) {
@@ -126,14 +126,18 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
     <Rows spacing="2u">
       <Rows spacing="0">
         <Title size="medium">Recommendations</Title>
-        <Text size="small">Click on a swatch to copy the color code</Text>
+        {(!isArrayEmpty(bgRecoms) || !isArrayEmpty(fgRecoms)) && <Text size="small">Click on a swatch to copy the color code</Text>}
       </Rows>
       {alert.visible && (
         <Alert tone="positive">
           {alert.message}
         </Alert>
       )}
-      {isArrayEmpty(fgRecoms) && 
+      {isArrayEmpty(fgRecoms) && isArrayEmpty(bgRecoms) &&
+        <Alert tone="info">There are no recommendations for this color combo</Alert>
+      }
+
+      {!isArrayEmpty(fgRecoms) && 
         <div>
           <Box paddingBottom="1u">
             <Text size="medium">Foreground</Text>
@@ -142,7 +146,7 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
             {fgSwatches}
           </Box>
         </div>}
-      {isArrayEmpty(bgRecoms) && 
+      {!isArrayEmpty(bgRecoms) && 
         <div>
           <Box paddingBottom="1u">
             <Text size="medium">Background</Text>
@@ -151,12 +155,14 @@ export const RecommendationsComponent: React.FC<RecommendationsProps> = ({ fgCol
             {bgSwatches}
           </Box>
         </div>}
+      {(!isArrayEmpty(bgRecoms) || !isArrayEmpty(fgRecoms)) && 
         <Rows spacing="1u">
           <Button variant="primary" onClick={() => renderOnCanvas(fgRecoms, bgRecoms)}>
             Add all to canvas
           </Button>
           <Text size="small">This adds all the recommendations to your Document Colors so you can easily apply them on your designs</Text>
-          </Rows>
+        </Rows>
+      }   
     </Rows>
   )
 };
