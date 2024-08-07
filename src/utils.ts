@@ -102,7 +102,7 @@ function calculateContrastRGB(fg: RGB, bg: RGB) {
 }
 
 export const scorePass = (contrastScore: number): boolean => {
-    return contrastScore > 7;
+    return contrastScore >= 7;
 };
 
 /**
