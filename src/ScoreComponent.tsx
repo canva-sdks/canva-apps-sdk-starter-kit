@@ -1,4 +1,4 @@
-import { Columns, Column, Rows, Text } from "@canva/app-ui-kit";
+import { Columns, Column, Rows, Text, Title } from "@canva/app-ui-kit";
 import React from "react";
 import { ShowcaseComponent } from "./ShowcaseComponent";
 import { Pill } from "./Pill";
@@ -13,6 +13,7 @@ export const ScoreComponent: React.FC<ScoreComponentProps> = ({ fgColour, bgColo
   return (
     <div>
       <Rows spacing="2u">
+      <Title size="medium">Results</Title>
         <Columns spacing="2u" alignY="center">
           <Column width="content">
             <ShowcaseComponent fgColour={fgColour} bgColour={bgColour} />
