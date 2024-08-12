@@ -1,12 +1,13 @@
-Developers: Austin David Pallithara, Brenda Dang, Diya Ramesh
+# Contrast Mate
 
-# Canva Apps SDK starter kit
+Contrast Mate helps ensure your designs are always accessible. If your design's colors fail the contrast checks, Contrast Mate gives you recommendations which you can apply to your design with ease. This project was submitted to the Canva AI & Integrations Hackathon 2024. 
 
-Welcome to the **Apps SDK starter kit** for Canva's app development platform. 🎉
+### Developers
+* [Austin David Pallithara](https://www.linkedin.com/in/wxlfgxng628/)
+* [Brenda Dang](https://www.linkedin.com/in/brenda-dang-49b209261/)
+* [Diya Ramesh](https://www.linkedin.com/in/diya-ramesh/)
 
-This repo contains everything you need to get an app up and running in a matter of minutes, including a boilerplate project and lots of examples. The complete documentation for the platform is at [canva.dev/docs/apps](https://www.canva.dev/docs/apps/).
-
-**Note:** The starter kit and documentation assumes some experience with TypeScript and React.
+# Running the App
 
 ## Requirements
 
