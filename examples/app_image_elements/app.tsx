@@ -13,7 +13,7 @@ import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import { useEffect, useState, useCallback } from "react";
-import baseStyles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
 // We can't store the image's data URL in the app element's data, since it
@@ -120,7 +120,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className={baseStyles.scrollContainer}>
+    <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can create image elements inside

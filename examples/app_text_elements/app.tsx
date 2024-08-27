@@ -13,7 +13,7 @@ import {
 import type { FontWeight, TextAttributes } from "@canva/design";
 import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 type AppElementData = {
   text: string;

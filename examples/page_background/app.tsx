@@ -1,7 +1,7 @@
 import { upload } from "@canva/asset";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { setCurrentPageBackground } from "@canva/design";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { useState } from "react";
 
 export const App = () => {

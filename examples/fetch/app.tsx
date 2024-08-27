@@ -8,7 +8,7 @@ import {
 } from "@canva/app-ui-kit";
 import { auth } from "@canva/user";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const BACKEND_URL = `${BACKEND_HOST}/custom-route`;
 
@@ -17,7 +17,7 @@ type State = "idle" | "loading" | "success" | "error";
 export const App = () => {
   const [state, setState] = useState<State>("idle");
   const [responseBody, setResponseBody] = useState<unknown | undefined>(
-    undefined
+    undefined,
   );
 
   const sendGetRequest = async () => {
@@ -35,6 +35,7 @@ export const App = () => {
       setState("success");
     } catch (error) {
       setState("error");
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };

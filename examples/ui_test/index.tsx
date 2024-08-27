@@ -17,7 +17,7 @@ function render() {
           })
         }
       />
-    </AppUiProvider>
+    </AppUiProvider>,
   );
 }
 

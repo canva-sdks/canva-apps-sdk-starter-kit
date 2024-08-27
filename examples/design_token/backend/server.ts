@@ -15,7 +15,7 @@ import * as jwt from "jsonwebtoken";
 const APP_ID = process.env.CANVA_APP_ID;
 if (!APP_ID) {
   throw new Error(
-    `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`
+    `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`,
   );
 }
 

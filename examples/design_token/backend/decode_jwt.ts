@@ -34,7 +34,7 @@ type DesignToken = Omit<jwt.Jwt, "payload"> & {
  */
 export const decodeAndVerifyDesignToken = async (
   appId: string,
-  designToken: string
+  designToken: string,
 ) => {
   const unverifiedDecodedToken = jwt.decode(designToken, {
     complete: true,
@@ -42,7 +42,7 @@ export const decodeAndVerifyDesignToken = async (
 
   if (unverifiedDecodedToken?.header?.kid == null) {
     throw new SigningKeyNotFoundError(
-      "Error verifying DesignToken: expected token to contain 'kid' claim header in order to produce a signing key."
+      "Error verifying DesignToken: expected token to contain 'kid' claim header in order to produce a signing key.",
     );
   }
 
@@ -78,21 +78,21 @@ export const decodeAndVerifyDesignToken = async (
   if (payload.exp < now) {
     throw new jwt.TokenExpiredError(
       "The provided DesignToken has expired.",
-      new Date(convertSecondsToMilliseconds(payload.exp))
+      new Date(convertSecondsToMilliseconds(payload.exp)),
     );
   }
 
   if (payload.iat > now) {
     throw new jwt.NotBeforeError(
       "Invalid issue date for DesignToken",
-      new Date(convertSecondsToMilliseconds(payload.iat))
+      new Date(convertSecondsToMilliseconds(payload.iat)),
     );
   }
 
   if (payload.nbf > now) {
     throw new jwt.NotBeforeError(
       "Cannot verify DesignToken prior to the NotBefore date",
-      new Date(convertSecondsToMilliseconds(payload.nbf))
+      new Date(convertSecondsToMilliseconds(payload.nbf)),
     );
   }
 

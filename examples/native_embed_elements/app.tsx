@@ -1,6 +1,6 @@
 import { addNativeElement } from "@canva/design";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { Button, FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 
 export const App = () => {

@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addAudioTrack, addNativeElement } from "@canva/design";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 export const App = () => {
   const importAndAddImage = async () => {

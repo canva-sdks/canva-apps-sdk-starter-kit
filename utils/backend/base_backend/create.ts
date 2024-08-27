@@ -73,7 +73,7 @@ export function createBaseServer(router: express.Router): BaseServer {
   if (SHOULD_ENABLE_HTTPS) {
     if (!HTTPS_CERT_FILE || !HTTPS_KEY_FILE) {
       throw new Error(
-        "Looks like you're running the example with --use-https flag, but SSL certificates haven't been generated. Please remove the .ssl/ folder and re-run the command again."
+        "Looks like you're running the example with --use-https flag, but SSL certificates haven't been generated. Please remove the .ssl/ folder and re-run the command again.",
       );
     }
 
@@ -82,7 +82,7 @@ export function createBaseServer(router: express.Router): BaseServer {
         key: fs.readFileSync(HTTPS_KEY_FILE),
         cert: fs.readFileSync(HTTPS_CERT_FILE),
       },
-      app
+      app,
     );
   } else {
     server = http.createServer(app);

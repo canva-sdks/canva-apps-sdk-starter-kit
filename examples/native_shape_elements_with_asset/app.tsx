@@ -1,7 +1,7 @@
 import { addNativeElement } from "@canva/design";
 import { upload } from "@canva/asset";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const HEART_PATH =
   "M 20 10 C 20.97 5 22.911 0 29.702 0 C 36.494 0 41.83 5 39.405 15 C 36.979 25 25.821 30 20 40 C 14.179 30 3.021 25 0.595 15 C -1.8304 5 3.5059 0 10.298 0 C 17.089 0 19.03 5 20 10 Z";
@@ -47,6 +47,7 @@ export const App = () => {
     await image.whenUploaded();
 
     // upload is completed
+    // eslint-disable-next-line no-console
     console.log("Upload complete!");
   };
 
@@ -92,6 +93,7 @@ export const App = () => {
     await video.whenUploaded();
 
     // upload is completed
+    // eslint-disable-next-line no-console
     console.log("Upload complete!");
   };
 

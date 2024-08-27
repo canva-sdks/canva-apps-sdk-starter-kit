@@ -5,7 +5,7 @@ import type {
 import { auth } from "@canva/user";
 
 export async function findResources(
-  request: FindResourcesRequest<"folder">
+  request: FindResourcesRequest<"folder">,
 ): Promise<FindResourcesResponse> {
   const userToken = await auth.getCanvaUserToken();
 
@@ -35,7 +35,7 @@ export async function findResources(
       type: "ERROR",
       errorCode: body.errorCode || "INTERNAL_ERROR",
     };
-  } catch (e) {
+  } catch {
     return {
       type: "ERROR",
       errorCode: "INTERNAL_ERROR",

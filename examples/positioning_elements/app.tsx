@@ -18,7 +18,7 @@ import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import { useCallback, useEffect, useState } from "react";
-import baseStyles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
 // Below values are only for demonstration purposes.0
@@ -89,7 +89,7 @@ export const App = () => {
   const disabled = !imageId || imageId.trim().length < 1;
 
   const getPlacement = async (
-    placement?: ElementPlacement
+    placement?: ElementPlacement,
   ): Promise<Placement | undefined> => {
     const pageContext = await getCurrentPageContext();
     const pageDimensions = pageContext.dimensions;
@@ -172,7 +172,7 @@ export const App = () => {
     const placement = await getPlacement(state.placement);
     await appElementClient.addOrUpdateElement(
       { imageId: state.imageId },
-      placement
+      placement,
     );
   }, [state]);
 
@@ -212,7 +212,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className={baseStyles.scrollContainer}>
+    <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can get the dimensions of the

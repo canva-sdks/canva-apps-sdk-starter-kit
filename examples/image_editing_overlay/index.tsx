@@ -8,7 +8,7 @@ function render() {
   root.render(
     <AppUiProvider>
       <App />
-    </AppUiProvider>
+    </AppUiProvider>,
   );
 }
 

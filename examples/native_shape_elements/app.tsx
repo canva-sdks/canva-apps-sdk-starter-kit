@@ -13,7 +13,7 @@ import {
 } from "@canva/app-ui-kit";
 import { addNativeElement } from "@canva/design";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 type UIState = {
   paths: {

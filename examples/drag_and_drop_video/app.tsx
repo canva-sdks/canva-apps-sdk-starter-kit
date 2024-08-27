@@ -2,7 +2,7 @@ import { Rows, Text, Title, VideoCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import type { VideoDragConfig } from "@canva/design";
 import { addNativeElement, ui } from "@canva/design";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const uploadVideo = () => {
   return upload({

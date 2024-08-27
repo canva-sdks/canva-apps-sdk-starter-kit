@@ -23,9 +23,9 @@ const initialOverlayEvent: OverlayOpenableEvent<OverlayTarget> = {
  */
 export function useOverlay<
   T extends OverlayTarget,
-  C extends CloseParams = CloseParams
+  C extends CloseParams = CloseParams,
 >(
-  target: T
+  target: T,
 ): {
   canOpen: boolean;
   isOpen: boolean;
@@ -49,13 +49,13 @@ export function useOverlay<
   useEffect(() => {
     if (overlayId) {
       appProcess.registerOnStateChange(overlayId, ({ state }) =>
-        setIsOpen(state === "open")
+        setIsOpen(state === "open"),
       );
     }
   }, [overlayId]);
 
   const open = async (
-    opts: { launchParameters?: unknown } = {}
+    opts: { launchParameters?: unknown } = {},
   ): Promise<AppProcessId | undefined> => {
     if (overlay && overlay.canOpen) {
       const overlayId = await overlay.open(opts);

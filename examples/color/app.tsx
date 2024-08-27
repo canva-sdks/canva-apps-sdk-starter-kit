@@ -6,12 +6,12 @@ import type {
 } from "@canva/asset";
 import { openColorSelector } from "@canva/asset";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 export const App = () => {
   const [color, setColor] = useState<string | undefined>(undefined);
   const onColorSelect = async <T extends ColorSelectionScope>(
-    e: ColorSelectionEvent<T>
+    e: ColorSelectionEvent<T>,
   ) => {
     if (e.selection.type === "solid") {
       setColor(e.selection.hexString);

@@ -1,5 +1,5 @@
 import { Rows, Text, EmbedCard } from "@canva/app-ui-kit";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { addNativeElement, ui } from "@canva/design";
 
 export const App = () => {

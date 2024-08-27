@@ -13,7 +13,7 @@ import {
 } from "@canva/app-ui-kit";
 import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 type AppElementData = {
   paths: {

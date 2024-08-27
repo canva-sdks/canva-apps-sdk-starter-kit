@@ -14,7 +14,7 @@ describe("app", () => {
       // In a test environment, you should wrap your apps in `TestAppUiProvider`, rather than `AppUiProvider`
       <TestAppUiProvider theme="dark">
         <App onClick={addNativeElement} />
-      </TestAppUiProvider>
+      </TestAppUiProvider>,
     );
 
     // get a reference to the button element
@@ -37,7 +37,7 @@ describe("app", () => {
       // In a test environment, you should wrap your apps in `TestAppUiProvider`, rather than `AppUiProvider`
       <TestAppUiProvider theme="dark">
         <App onClick={addNativeElement} />
-      </TestAppUiProvider>
+      </TestAppUiProvider>,
     );
 
     expect(result.container).toMatchSnapshot();

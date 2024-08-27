@@ -8,7 +8,7 @@ import {
 import type { ExportResponse } from "@canva/design";
 import { requestExport } from "@canva/design";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 export const App = () => {
   const [state, setState] = useState<"exporting" | "idle">("idle");
@@ -37,6 +37,7 @@ export const App = () => {
       setExportResponse(response);
     } catch (error) {
       // TODO: Add error handling
+      // eslint-disable-next-line no-console
       console.log(error);
     } finally {
       setState("idle");

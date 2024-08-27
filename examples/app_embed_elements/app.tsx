@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
 } from "@canva/app-ui-kit";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
 
 type AppElementData = {
