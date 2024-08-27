@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
  * @param scope The type of content to listen for selection changes on
  */
 export function useSelection<S extends SelectionScope>(
-  scope: S
+  scope: S,
 ): SelectionEvent<S> {
   const [selection, setSelection] = useState<SelectionEvent<S>>({
     scope,

@@ -1,6 +1,6 @@
 import { Rows, FormField, Button, Slider } from "@canva/app-ui-kit";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { appProcess } from "@canva/platform";
 import { useOverlay } from "utils/use_overlay_hook";
 import type { LaunchParams } from "./app";

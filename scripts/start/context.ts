@@ -23,7 +23,7 @@ export class Context {
 
   constructor(
     private env: NodeJS.ProcessEnv = process.env,
-    private readonly args: CliArgs
+    private readonly args: CliArgs,
   ) {
     this.envVars = this.parseAndValidateEnvironmentVariables();
   }
@@ -75,7 +75,7 @@ export class Context {
 
     if (!fs.existsSync(frontendEntryPath)) {
       throw new Error(
-        `Entry point for frontend does not exist: ${frontendEntryPath}`
+        `Entry point for frontend does not exist: ${frontendEntryPath}`,
       );
     }
 
@@ -94,7 +94,7 @@ export class Context {
     const developerBackendEntryPath = path.join(
       this.entryDir,
       "backend",
-      "server.ts"
+      "server.ts",
     );
 
     if (!fs.existsSync(developerBackendEntryPath)) {
@@ -140,6 +140,7 @@ export class Context {
 
       return dirs;
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Error reading directory:", err);
       return [];
     }
@@ -165,7 +166,7 @@ export class Context {
 
     if (!CANVA_FRONTEND_PORT) {
       throw new Error(
-        "CANVA_FRONTEND_PORT environment variable is not defined"
+        "CANVA_FRONTEND_PORT environment variable is not defined",
       );
     }
 
@@ -184,7 +185,7 @@ export class Context {
 
     if (envVars.hmrEnabled && envVars.appOrigin == null) {
       throw new Error(
-        "CANVA_HMR_ENABLED environment variable is TRUE, but CANVA_APP_ORIGIN is not set. Refer to the instructions in the README.md on configuring HMR."
+        "CANVA_HMR_ENABLED environment variable is TRUE, but CANVA_APP_ORIGIN is not set. Refer to the instructions in the README.md on configuring HMR.",
       );
     }
 

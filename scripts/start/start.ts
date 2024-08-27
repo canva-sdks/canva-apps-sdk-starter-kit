@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 import * as yargs from "yargs";
 import { AppRunner, errorChalk } from "./app_runner";
 import { hideBin } from "yargs/helpers";
@@ -37,7 +38,7 @@ yargs(hideBin(process.argv))
     (args) => {
       const ctx = new Context(process.env, args);
       appRunner.run(ctx);
-    }
+    },
   )
   .command(
     "examples",
@@ -55,7 +56,7 @@ yargs(hideBin(process.argv))
           })),
           suggest: async (input, choices) =>
             choices.filter((choice) =>
-              choice.title.toLowerCase().includes(input.toLowerCase())
+              choice.title.toLowerCase().includes(input.toLowerCase()),
             ),
         },
         {
@@ -63,7 +64,7 @@ yargs(hideBin(process.argv))
             console.log(errorChalk("Aborted by the user."));
             process.exit(0);
           },
-        }
+        },
       );
 
       if (example == null) {
@@ -73,6 +74,6 @@ yargs(hideBin(process.argv))
 
       const ctx = new Context(process.env, { ...args, example });
       appRunner.run(ctx);
-    }
+    },
   )
   .parse();

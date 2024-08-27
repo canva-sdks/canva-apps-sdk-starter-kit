@@ -1,8 +1,8 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useEffect, useState } from "react";
-import type { SelectionEvent } from "@canva/preview/design";
-import { selection } from "@canva/preview/design";
-import styles from "styles/components.css";
+import type { SelectionEvent } from "@canva/design";
+import { selection } from "@canva/design";
+import * as styles from "styles/components.css";
 
 export const App = () => {
   const [selectionState, setSelectionState] = useState<
@@ -43,7 +43,7 @@ export const App = () => {
           {
             fontWeight:
               region.formatting?.fontWeight === "bold" ? "normal" : "bold",
-          }
+          },
         );
         index = index + region.text.length;
       });
@@ -72,7 +72,7 @@ export const App = () => {
       richtext.replaceText(
         { index: 0, length: plaintext.length },
         "Hello World",
-        { decoration: "underline" }
+        { decoration: "underline" },
       );
     }
     await draft.save();

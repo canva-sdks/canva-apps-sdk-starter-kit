@@ -4,12 +4,12 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "devDependencies": {
-    "@types/cors": "^2.8.17"
+    "@types/cors": "2.8.17"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "jwks-rsa": "^3.1.0"
+    "cors": "2.8.5",
+    "express": "4.19.2",
+    "jsonwebtoken": "9.0.2",
+    "jwks-rsa": "3.1.0"
   }
 }

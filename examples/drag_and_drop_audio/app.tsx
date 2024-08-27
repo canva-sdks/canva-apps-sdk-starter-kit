@@ -1,7 +1,7 @@
 import { Rows, Text, AudioCard, AudioContextProvider } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addAudioTrack, ui } from "@canva/design";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const AUDIO_DURATION_MS = 86_047;
 

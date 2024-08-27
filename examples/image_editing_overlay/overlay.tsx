@@ -103,7 +103,7 @@ export const Overlay = (props: OverlayProps) => {
           mousePos.y,
           uiStateRef.current.brushSize * (1 / cssScale),
           0,
-          Math.PI * 2
+          Math.PI * 2,
         );
         context.fill();
       }
@@ -131,7 +131,7 @@ export const Overlay = (props: OverlayProps) => {
         });
         draft.contents[0].ref = queueImage.ref;
         await draft.save();
-      }
+      },
     );
   }, [selection]);
 
@@ -169,7 +169,7 @@ const loadOriginalImage = async (selection: SelectionEvent<"image">) => {
 // get the mouse position relative to the canvas
 const getCanvasMousePosition = (
   canvas: HTMLCanvasElement,
-  event: PointerEvent
+  event: PointerEvent,
 ) => {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;

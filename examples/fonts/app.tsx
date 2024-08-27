@@ -15,7 +15,7 @@ import type { Font, FontStyle, FontWeightName } from "@canva/asset";
 import { findFonts, requestFontSelection } from "@canva/asset";
 import { addNativeElement } from "@canva/design";
 import { useState, useEffect, useCallback } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 type TextConfig = {
   text: string;
@@ -60,7 +60,7 @@ export const App = () => {
 
   const availableFontStyles = getFontStyles(fontWeight, selectedFont);
   const availableStyleValues = new Set(
-    availableFontStyles.map((style) => style.value)
+    availableFontStyles.map((style) => style.value),
   ); // Create a Set for lookup
   const availableFontStyleOptions = fontStyleOptions.map((styleOption) => {
     // Check if the current style option is NOT present in the available styles.
@@ -221,7 +221,7 @@ export const App = () => {
 };
 
 const getFontWeights = (
-  font?: Font
+  font?: Font,
 ): {
   value: FontWeightName;
   label: FontWeightName;
@@ -236,14 +236,14 @@ const getFontWeights = (
 
 const getFontStyles = (
   fontWeight: FontWeightName,
-  font?: Font
+  font?: Font,
 ): {
   value: FontStyle;
   label: FontStyle;
 }[] => {
   return font
-    ? font.weights
+    ? (font.weights
         .find((w) => w.weight === fontWeight)
-        ?.styles.map((s) => ({ value: s, label: s })) ?? []
+        ?.styles.map((s) => ({ value: s, label: s })) ?? [])
     : [];
 };

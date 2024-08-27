@@ -7,7 +7,7 @@ import {
   Placeholder,
 } from "@canva/app-ui-kit";
 import { useState, useRef } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import type { QueuedImage } from "@canva/asset";
 import { upload } from "@canva/asset";
 import { addNativeElement, ui } from "@canva/design";

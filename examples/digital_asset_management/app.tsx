@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 import { useState, useEffect } from "react";
 import { SearchableListView } from "@canva/app-components";
 import { Alert, Box, Button, LoadingIndicator, Rows } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
 import { config } from "./config";
 import { findResources } from "./adapter";
-import styles from "./index.css";
+import * as styles from "./index.css";
 import type { Authentication } from "@canva/user";
 import { auth } from "@canva/user";
 
@@ -25,7 +26,7 @@ type AuthenticationState =
 const AUTHENTICATION_CHECK_URL = `${BACKEND_HOST}/api/authentication/status`;
 
 const checkAuthenticationStatus = async (
-  auth: Authentication
+  auth: Authentication,
 ): Promise<AuthenticationState> => {
   /**
    * Send a request to an endpoint that checks if the user is authenticated.
@@ -98,7 +99,7 @@ export function App() {
 
   if (authState === "error") {
     console.warn(
-      "Warning: authentication not enabled on this app. Please enable auth with the instructions in README"
+      "Warning: authentication not enabled on this app. Please enable auth with the instructions in README",
     );
     // Comment this next line out for production apps
     setAuthState("authenticated");

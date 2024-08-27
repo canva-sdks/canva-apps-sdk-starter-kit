@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import type { Authentication } from "@canva/user";
 import { auth } from "@canva/user";
 import { Box, Button, Rows, Text, Title } from "@canva/app-ui-kit";
 import { useState, useEffect } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 type State = "authenticated" | "not_authenticated" | "checking" | "error";
 
@@ -16,7 +17,7 @@ type State = "authenticated" | "not_authenticated" | "checking" | "error";
 const AUTHENTICATION_CHECK_URL = `${BACKEND_HOST}/api/authentication/status`;
 
 const checkAuthenticationStatus = async (
-  auth: Authentication
+  auth: Authentication,
 ): Promise<State> => {
   /**
    * Send a request to an endpoint that checks if the user is authenticated.

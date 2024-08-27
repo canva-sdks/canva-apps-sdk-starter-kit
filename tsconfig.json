@@ -12,9 +12,9 @@
       "es2020.string"
     ],
     "types": ["node", "jest"],
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
     "experimentalDecorators": true,
     "importHelpers": true,
     "noImplicitOverride": true,
@@ -34,8 +34,7 @@
     "baseUrl": "./",
     "paths": {
       "assets": ["./assets"],
-      "styles": ["./styles"],
-      "@canva/preview/*": ["./sdk/preview/*"]
+      "styles": ["./styles"]
     }
   },
   "include": [

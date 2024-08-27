@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { NextFunction, Request, Response } from "express";
 import type { DecodeOptions, Jwt, Secret, VerifyOptions } from "jsonwebtoken";
 import type { JwksClient, SigningKey } from "jwks-rsa";
@@ -24,7 +24,7 @@ describe("createJwtMiddleware", () => {
     (
       token: string,
       secretOrPublicKey: Secret,
-      options: VerifyOptions & { complete: true }
+      options: VerifyOptions & { complete: true },
     ) => Jwt
   >;
   let decode: jest.MockedFn<
@@ -86,7 +86,7 @@ describe("createJwtMiddleware", () => {
       expect(client).not.toHaveBeenCalled();
       jwtMiddleware = createJwtMiddlewareFn(
         FAKE_APP_ID,
-        fakeGetTokenFromRequest
+        fakeGetTokenFromRequest,
       );
 
       expect(client).toHaveBeenCalledTimes(1);
@@ -116,14 +116,14 @@ describe("createJwtMiddleware", () => {
 
       jwtMiddleware = createJwtMiddlewareFn(
         FAKE_APP_ID,
-        fakeGetTokenFromRequest
+        fakeGetTokenFromRequest,
       );
     });
 
     describe("When `getTokenFromRequest` throws an exception ('Fake error')", () => {
       beforeEach(() => {
         fakeGetTokenFromRequest.mockRejectedValue(
-          new JWTAuthorizationError("Fake error")
+          new JWTAuthorizationError("Fake error"),
         );
       });
 
@@ -207,7 +207,7 @@ describe("createJwtMiddleware", () => {
         expect(res.json).toHaveBeenLastCalledWith(
           expect.objectContaining({
             error: "unauthorized",
-          })
+          }),
         );
 
         expect(next).not.toHaveBeenCalled();
@@ -483,7 +483,7 @@ describe("getTokenFromHttpHeader", () => {
       expect.assertions(3);
 
       expect(() => getTokenFromHttpHeader(req)).toThrow(
-        new JWTAuthorizationError('Missing the "Authorization" header')
+        new JWTAuthorizationError('Missing the "Authorization" header'),
       );
       expect(getHeader).toHaveBeenCalledTimes(1);
       expect(getHeader).toHaveBeenLastCalledWith("Authorization");
@@ -500,8 +500,8 @@ describe("getTokenFromHttpHeader", () => {
 
       expect(() => getTokenFromHttpHeader(req)).toThrow(
         new JWTAuthorizationError(
-          'Missing a "Bearer" token in the "Authorization" header'
-        )
+          'Missing a "Bearer" token in the "Authorization" header',
+        ),
       );
       expect(getHeader).toHaveBeenCalledTimes(1);
       expect(getHeader).toHaveBeenLastCalledWith("Authorization");
@@ -518,8 +518,8 @@ describe("getTokenFromHttpHeader", () => {
 
       expect(() => getTokenFromHttpHeader(req)).toThrow(
         new JWTAuthorizationError(
-          'Missing a "Bearer" token in the "Authorization" header'
-        )
+          'Missing a "Bearer" token in the "Authorization" header',
+        ),
       );
       expect(getHeader).toHaveBeenCalledTimes(1);
       expect(getHeader).toHaveBeenLastCalledWith("Authorization");
@@ -536,8 +536,8 @@ describe("getTokenFromHttpHeader", () => {
 
       expect(() => getTokenFromHttpHeader(req)).toThrow(
         new JWTAuthorizationError(
-          'Invalid "Bearer" token in the "Authorization" header'
-        )
+          'Invalid "Bearer" token in the "Authorization" header',
+        ),
       );
       expect(getHeader).toHaveBeenCalledTimes(1);
       expect(getHeader).toHaveBeenLastCalledWith("Authorization");
@@ -583,7 +583,7 @@ describe("getTokenFromQueryString", () => {
       expect.assertions(1);
 
       expect(() => getTokenFromQueryString(req)).toThrow(
-        new JWTAuthorizationError('Missing "canva_user_token" query parameter')
+        new JWTAuthorizationError('Missing "canva_user_token" query parameter'),
       );
     });
   });
@@ -597,7 +597,7 @@ describe("getTokenFromQueryString", () => {
       expect.assertions(1);
 
       expect(() => getTokenFromQueryString(req)).toThrow(
-        new JWTAuthorizationError('Missing "canva_user_token" query parameter')
+        new JWTAuthorizationError('Missing "canva_user_token" query parameter'),
       );
     });
   });
@@ -611,7 +611,7 @@ describe("getTokenFromQueryString", () => {
       expect.assertions(1);
 
       expect(() => getTokenFromQueryString(req)).toThrow(
-        new JWTAuthorizationError('Invalid "canva_user_token" query parameter')
+        new JWTAuthorizationError('Invalid "canva_user_token" query parameter'),
       );
     });
   });

@@ -1,6 +1,6 @@
 import { Button, Link, Rows, Text, Title } from "@canva/app-ui-kit";
 import { requestOpenExternalUrl } from "@canva/platform";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const DOCS_URL =
   "https://www.canva.dev/docs/apps/api/platform-request-open-external-url/";

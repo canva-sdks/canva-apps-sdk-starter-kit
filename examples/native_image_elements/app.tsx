@@ -12,7 +12,7 @@ import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
 import { useState, useCallback } from "react";
-import baseStyles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
 const images = {
@@ -68,7 +68,7 @@ export const App = () => {
   }, [dataUrl]);
 
   return (
-    <div className={baseStyles.scrollContainer}>
+    <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can add native image elements to a

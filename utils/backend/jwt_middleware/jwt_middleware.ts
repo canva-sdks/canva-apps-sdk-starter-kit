@@ -62,7 +62,7 @@ const createJwksUrl = (appId: string) =>
  */
 export function createJwtMiddleware(
   appId: string,
-  getTokenFromRequest: GetTokenFromRequest = getTokenFromHttpHeader
+  getTokenFromRequest: GetTokenFromRequest = getTokenFromHttpHeader,
 ): (req: Request, res: Response, next: NextFunction) => void {
   const jwksClient = new JwksClient({
     cache: true,
@@ -83,13 +83,13 @@ export function createJwtMiddleware(
 
       if (unverifiedDecodedToken?.header?.kid == null) {
         console.trace(
-          `jwtMiddleware: expected token to contain 'kid' claim header`
+          `jwtMiddleware: expected token to contain 'kid' claim header`,
         );
         return sendUnauthorizedResponse(res);
       }
 
       const key = await jwksClient.getSigningKey(
-        unverifiedDecodedToken.header.kid
+        unverifiedDecodedToken.header.kid,
       );
       const publicKey = key.getPublicKey();
       const verifiedToken = jwt.verify(token, publicKey, {
@@ -105,7 +105,7 @@ export function createJwtMiddleware(
         payload.aud == null
       ) {
         console.trace(
-          "jwtMiddleware: failed to decode jwt missing fields from payload"
+          "jwtMiddleware: failed to decode jwt missing fields from payload",
         );
         return sendUnauthorizedResponse(res);
       }
@@ -126,8 +126,8 @@ export function createJwtMiddleware(
         return sendUnauthorizedResponse(
           res,
           `Public key not found. ${chalk.bgRedBright(
-            "Ensure you have the correct App_ID set"
-          )}.`
+            "Ensure you have the correct App_ID set",
+          )}.`,
         );
       }
 
@@ -147,7 +147,7 @@ export function createJwtMiddleware(
 export type GetTokenFromRequest = (req: Request) => Promise<string> | string;
 
 export const getTokenFromQueryString: GetTokenFromRequest = (
-  req: Request
+  req: Request,
 ): string => {
   // The name of a query string parameter bearing the JWT
   const tokenQueryStringParamName = "canva_user_token";
@@ -155,19 +155,19 @@ export const getTokenFromQueryString: GetTokenFromRequest = (
   const queryParam = req.query[tokenQueryStringParamName];
   if (!queryParam || typeof queryParam !== "string") {
     console.trace(
-      `jwtMiddleware: missing "${tokenQueryStringParamName}" query parameter`
+      `jwtMiddleware: missing "${tokenQueryStringParamName}" query parameter`,
     );
     throw new JWTAuthorizationError(
-      `Missing "${tokenQueryStringParamName}" query parameter`
+      `Missing "${tokenQueryStringParamName}" query parameter`,
     );
   }
 
   if (!looksLikeJWT(queryParam)) {
     console.trace(
-      `jwtMiddleware: invalid "${tokenQueryStringParamName}" query parameter`
+      `jwtMiddleware: invalid "${tokenQueryStringParamName}" query parameter`,
     );
     throw new JWTAuthorizationError(
-      `Invalid "${tokenQueryStringParamName}" query parameter`
+      `Invalid "${tokenQueryStringParamName}" query parameter`,
     );
   }
 
@@ -175,7 +175,7 @@ export const getTokenFromQueryString: GetTokenFromRequest = (
 };
 
 export const getTokenFromHttpHeader: GetTokenFromRequest = (
-  req: Request
+  req: Request,
 ): string => {
   // The names of a HTTP header bearing the JWT, and a scheme
   const headerName = "Authorization";
@@ -188,17 +188,17 @@ export const getTokenFromHttpHeader: GetTokenFromRequest = (
 
   if (!header.match(new RegExp(`^${schemeName}\\s+[^\\s]+$`, "i"))) {
     console.trace(
-      `jwtMiddleware: failed to match token in "${headerName}" header`
+      `jwtMiddleware: failed to match token in "${headerName}" header`,
     );
     throw new JWTAuthorizationError(
-      `Missing a "${schemeName}" token in the "${headerName}" header`
+      `Missing a "${schemeName}" token in the "${headerName}" header`,
     );
   }
 
   const token = header.replace(new RegExp(`^${schemeName}\\s+`, "i"), "");
   if (!token || !looksLikeJWT(token)) {
     throw new JWTAuthorizationError(
-      `Invalid "${schemeName}" token in the "${headerName}" header`
+      `Invalid "${schemeName}" token in the "${headerName}" header`,
     );
   }
 
@@ -220,7 +220,7 @@ export class JWTAuthorizationError extends Error {
 }
 
 const looksLikeJWT = (
-  token: string
+  token: string,
 ): boolean => // Base64 alphabet includes
   //   - letters (a-z and A-Z)
   //   - digits (0-9)

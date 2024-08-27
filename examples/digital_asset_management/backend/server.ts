@@ -60,7 +60,7 @@ async function main() {
   const APP_ID = process.env.CANVA_APP_ID;
   if (!APP_ID) {
     throw new Error(
-      `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`
+      `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`,
     );
   }
 
@@ -194,7 +194,7 @@ async function main() {
 
       try {
         [cookieNonce, expiry] = JSON.parse(cookieNonceAndExpiry);
-      } catch (e) {
+      } catch {
         // If the nonce can't be parsed, assume something has been compromised and exit.
         return failureResponse();
       }
@@ -241,7 +241,7 @@ async function main() {
 
       // Redirect the user back to Canva
       res.redirect(302, `${CANVA_BASE_URL}/apps/configured?${params}`);
-    }
+    },
   );
 
   /**
@@ -325,7 +325,7 @@ async function main() {
             url: imageUrls[i % imageUrls.length],
           },
           url: imageUrls[i % imageUrls.length],
-        }))
+        })),
       );
     }
 
@@ -339,8 +339,8 @@ async function main() {
               containerType: "folder",
               name: `My folder ${i}`,
               type: "CONTAINER",
-            } satisfies Container)
-        )
+            }) satisfies Container,
+        ),
       );
 
       resources = resources.concat(containers);

@@ -2,7 +2,7 @@ import { Rows, Text, Title, ImageCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import { addNativeElement, ui } from "@canva/design";
 import dog from "assets/images/dog.jpg";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 
 const uploadExternalImage = () => {
   return upload({

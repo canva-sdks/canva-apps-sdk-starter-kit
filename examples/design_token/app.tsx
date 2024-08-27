@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "@canva/app-ui-kit";
 import { useState, useEffect } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { auth } from "@canva/user";
 import { getDefaultPageDimensions, getDesignToken } from "@canva/design";
 
@@ -39,7 +39,7 @@ export const App = () => {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        }
+        },
       );
 
       return response.json();
@@ -75,7 +75,7 @@ export const App = () => {
       });
 
       await refreshDesignData();
-    } catch (e) {
+    } catch {
       setError("Failed to save design data to server.");
     } finally {
       setState("idle");

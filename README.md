@@ -106,8 +106,11 @@ To enable HMR:
     1. Click **Show details**.
     2. Click **Visit website**.
   4. In the Developer Portal, set the app's **Development URL** to <https://localhost:8080>.
+  5. Click preview (or refresh your app if it's already open).
 
   You need to bypass the invalid security certificate warning every time you start the local server. A similar warning will appear in other browsers (and will need to be bypassed) whenever HTTPS is enabled.
+
+  **Note**: If you are running your server on HTTPS (such as for testing on Safari) be sure to change the `CANVA_BACKEND_HOST` environment variable to `https://localhost:3001`.
 </details>
 
 ## Running an example's backend
@@ -138,6 +141,8 @@ To run examples that have a backend:
    ```
 
 The ID of the app must be explicitly defined because it's required to [send and verify HTTP requests](https://www.canva.dev/docs/apps/verifying-http-requests/). If you don't set up the ID in the `.env` file, an error will be thrown when attempting to run the example.
+
+**Note**: If you are running your server on HTTPS (such as for testing on Safari) be sure to change the `CANVA_BACKEND_HOST` environment variable to `https://localhost:3001`.
 
 ## Customizing the backend host
 

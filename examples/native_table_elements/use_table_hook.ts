@@ -1,5 +1,5 @@
-import { TableWrapper } from "utils/table_wrapper";
-import type { NativeTableElement } from "@canva/preview/design";
+import { TableWrapper } from "./utils/table_wrapper";
+import type { NativeTableElement } from "@canva/design";
 import { useCallback, useEffect, useState } from "react";
 
 /**
@@ -62,7 +62,7 @@ export type TableState = {
  * @returns The current state of the table and methods for interacting with the table.
  */
 export const useTable = (
-  initialState: TableState
+  initialState: TableState,
 ): TableState & {
   /**
    * Converts the table state into a {@link NativeTableElement}. The result can then
@@ -75,7 +75,7 @@ export const useTable = (
   const [cells, setCells] = useState<CellState[]>(initialState.cells || []);
   const [error, setError] = useState<string | undefined>();
   const [wrapper, setWrapper] = useState<TableWrapper>(
-    TableWrapper.create(rowCount || 1, columnCount || 1)
+    TableWrapper.create(rowCount || 1, columnCount || 1),
   );
 
   const toElement = useCallback(() => wrapper.toElement(), [wrapper]);

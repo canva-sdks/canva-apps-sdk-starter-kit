@@ -1,6 +1,6 @@
-import { addNativeElement } from "@canva/preview/design";
+import { addNativeElement } from "@canva/design";
 import { useState, useCallback } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import {
   Alert,
   Button,

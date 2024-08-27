@@ -28,7 +28,7 @@ const generateImages = ({
 }) => {
   return Array.from({ length: numImages }, (_, i) => {
     const randomWidthPx = Math.floor(
-      Math.random() * (maxWidthPx - minWidthPx + 1) + minWidthPx
+      Math.random() * (maxWidthPx - minWidthPx + 1) + minWidthPx,
     );
 
     return {

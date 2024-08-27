@@ -1,7 +1,7 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
-import { addNativeElement, createRichtextRange } from "@canva/preview/design";
-import type { TextRegion } from "@canva/preview/design";
-import styles from "styles/components.css";
+import { addNativeElement, createRichtextRange } from "@canva/design";
+import type { TextRegion } from "@canva/design";
+import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
 
 let richtext = createRichtextRange();
@@ -15,7 +15,7 @@ export const App = () => {
   const reset = () => {
     richtext = createRichtextRange();
     richtext.appendText(
-      "This is an example richtext.\nUsing the RichtextRange API, individual parts of the text can be formatted."
+      "This is an example richtext.\nUsing the RichtextRange API, individual parts of the text can be formatted.",
     );
     setRegions(richtext.readTextRegions());
   };
@@ -26,7 +26,7 @@ export const App = () => {
       {
         color: "#ff0000",
         fontStyle: "italic",
-      }
+      },
     );
     setRegions(richtext.readTextRegions());
   };
@@ -40,7 +40,7 @@ export const App = () => {
       {
         fontSize: 40,
         textAlign: "end",
-      }
+      },
     );
     setRegions(richtext.readTextRegions());
   };
@@ -51,7 +51,7 @@ export const App = () => {
         index: 0,
         length: 4,
       },
-      richtext.readPlaintext().startsWith("This") ? "Here" : "This"
+      richtext.readPlaintext().startsWith("This") ? "Here" : "This",
     );
     setRegions(richtext.readTextRegions());
   };

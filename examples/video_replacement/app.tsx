@@ -1,6 +1,6 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useState } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useSelection } from "utils/use_selection_hook";
 

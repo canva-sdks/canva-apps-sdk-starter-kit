@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { Context } from "./context";
 import * as chalk from "chalk";
 import { buildConfig } from "../../webpack.config";
@@ -19,16 +20,16 @@ export class AppRunner {
   async run(ctx: Context) {
     console.log(
       infoChalk("Info:"),
-      `Starting development server for ${highlightChalk(ctx.entryDir)}\n`
+      `Starting development server for ${highlightChalk(ctx.entryDir)}\n`,
     );
 
     if (!ctx.hmrEnabled) {
       console.log(
         `${infoChalk(
-          "Note:"
+          "Note:",
         )} Hot Module Replacement (HMR) not enabled. To enable it, please refer to the instructions in the ${highlightChalk(
-          "README.md"
-        )}\n`
+          "README.md",
+        )}\n`,
       );
     }
 
@@ -39,7 +40,7 @@ export class AppRunner {
       } catch (err) {
         console.log(
           errorChalk("Error:"),
-          "Unable to generate SSL certificate."
+          "Unable to generate SSL certificate.",
         );
         throw err;
       }
@@ -55,10 +56,10 @@ export class AppRunner {
 
     console.log(
       `${infoChalk(
-        "Note:"
+        "Note:",
       )} For instructions on how to set up the app via the Developer Portal, see the ${highlightChalk(
-        "README.md"
-      )}.\n`
+        "README.md",
+      )}.\n`,
     );
   }
 
@@ -66,7 +67,7 @@ export class AppRunner {
     ctx: Context,
     table: Table.Table,
     cert: Certificate | undefined,
-    webpackDevServer: WebpackDevServer
+    webpackDevServer: WebpackDevServer,
   ) => {
     if (!ctx.developerBackendEntryPath) {
       return;
@@ -77,8 +78,8 @@ export class AppRunner {
       console.log(
         errorChalk("Error:"),
         `'CANVA_APP_ID' environment variable is undefined. Refer to the instructions in the ${highlightChalk(
-          "README.md"
-        )} on starting a backend example.`
+          "README.md",
+        )} on starting a backend example.`,
       );
       throw new Error("'CANVA_APP_ID' env variable not set.");
     }
@@ -107,7 +108,7 @@ export class AppRunner {
     if (ctx.ngrokEnabled) {
       console.log(
         warnChalk("Warning:"),
-        `ngrok exposes a local port via a public URL. Be mindful of what's exposed and shut down the server when it's not in use.\n`
+        `ngrok exposes a local port via a public URL. Be mindful of what's exposed and shut down the server when it's not in use.\n`,
       );
     }
 
@@ -123,7 +124,7 @@ export class AppRunner {
       } catch (err) {
         console.log(
           errorChalk("Error:"),
-          `Unable to start ngrok server: ${err}`
+          `Unable to start ngrok server: ${err}`,
         );
       }
     }
@@ -134,7 +135,7 @@ export class AppRunner {
   private readonly runWebpackDevServer = async (
     ctx: Context,
     table: Table.Table,
-    cert: Certificate | undefined
+    cert: Certificate | undefined,
   ): Promise<WebpackDevServer> => {
     const runtimeWebpackConfig = buildConfig({
       appEntry: ctx.frontendEntryPath,
@@ -152,7 +153,7 @@ export class AppRunner {
     const compiler = webpack(runtimeWebpackConfig);
     const server = new WebpackDevServer(
       runtimeWebpackConfig.devServer,
-      compiler
+      compiler,
     );
     await server.start();
 

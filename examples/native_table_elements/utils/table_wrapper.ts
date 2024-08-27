@@ -1,4 +1,4 @@
-import type { Cell, NativeTableElement } from "@canva/preview/design";
+import type { Cell, NativeTableElement } from "@canva/design";
 
 const MAX_CELL_COUNT = 225;
 
@@ -16,11 +16,11 @@ export class TableWrapper {
   private constructor(
     private readonly rows: {
       cells: Cell[];
-    }[]
+    }[],
   ) {
     this.validateRowColumn();
     this.metaCells = Array.from({ length: this.rows.length }, () =>
-      Array.from({ length: this.rows[0].cells.length }, () => ({}))
+      Array.from({ length: this.rows[0].cells.length }, () => ({})),
     );
     this.syncMergedCellsFromRows();
   }
@@ -32,7 +32,7 @@ export class TableWrapper {
    */
   static create(rowCount: number, columnCount: number) {
     const rows = Array.from({ length: rowCount }, () => ({
-      cells: Array.from({ length: columnCount }, () => ({} as Cell)),
+      cells: Array.from({ length: columnCount }, () => ({}) as Cell),
     }));
     return new TableWrapper(rows);
   }
@@ -45,12 +45,12 @@ export class TableWrapper {
   static fromElement(element: NativeTableElement) {
     if (element.type !== "TABLE") {
       throw new TableValidationError(
-        `Cannot convert element of type ${element.type} to a table wrapper.`
+        `Cannot convert element of type ${element.type} to a table wrapper.`,
       );
     }
     if (!Array.isArray(element.rows)) {
       throw new TableValidationError(
-        `Invalid table element: expected an array of rows, got ${element.rows}`
+        `Invalid table element: expected an array of rows, got ${element.rows}`,
       );
     }
     const rows = element.rows.map((row) => ({
@@ -86,7 +86,7 @@ export class TableWrapper {
   addRow(afterRowPos: number) {
     if (afterRowPos < 0 || afterRowPos > this.rows.length) {
       throw new TableValidationError(
-        `New row position must be between 0 and ${this.rows.length}.`
+        `New row position must be between 0 and ${this.rows.length}.`,
       );
     }
 
@@ -95,14 +95,14 @@ export class TableWrapper {
     const newRow = {
       cells: Array.from(
         { length: this.rows[0].cells.length },
-        () => ({} as Cell)
+        () => ({}) as Cell,
       ),
     };
     this.rows.splice(afterRowPos, 0, newRow);
 
     const newMergeCells: MetaCell[] = Array.from(
       { length: this.rows[0].cells.length },
-      () => ({})
+      () => ({}),
     );
     this.metaCells.splice(afterRowPos, 0, newMergeCells);
 
@@ -134,7 +134,7 @@ export class TableWrapper {
   addColumn(afterColumnPos: number) {
     if (afterColumnPos < 0 || afterColumnPos > this.rows[0].cells.length) {
       throw new TableValidationError(
-        `New column position must be between 0 and ${this.rows[0].cells.length}.`
+        `New column position must be between 0 and ${this.rows[0].cells.length}.`,
       );
     }
 
@@ -145,7 +145,7 @@ export class TableWrapper {
 
     const newMergeCell: MetaCell = {};
     this.metaCells.forEach((row) =>
-      row.splice(afterColumnPos, 0, newMergeCell)
+      row.splice(afterColumnPos, 0, newMergeCell),
     );
 
     if (0 < afterColumnPos && afterColumnPos < this.rows[0].cells.length) {
@@ -195,7 +195,7 @@ export class TableWrapper {
   getCellDetails(rowPos: number, columnPos: number) {
     if (this.isGhostCell(rowPos, columnPos)) {
       throw new TableValidationError(
-        `The cell at ${rowPos},${columnPos} is squashed into another cell`
+        `The cell at ${rowPos},${columnPos} is squashed into another cell`,
       );
     }
     return this.rows[rowPos - 1].cells[columnPos - 1];
@@ -214,7 +214,7 @@ export class TableWrapper {
     this.validateCellBoundaries(rowPos, columnPos, rowSpan, colSpan);
     if (this.isGhostCell(rowPos, columnPos)) {
       throw new TableValidationError(
-        `The cell at ${rowPos},${columnPos} is squashed into another cell`
+        `The cell at ${rowPos},${columnPos} is squashed into another cell`,
       );
     }
 
@@ -241,14 +241,14 @@ export class TableWrapper {
     for (const row of this.rows) {
       if (row.cells.length + toBeAddedColumn !== columnCount) {
         throw new TableValidationError(
-          "All rows must have the same number of columns."
+          "All rows must have the same number of columns.",
         );
       }
     }
     const cellCount = rowCount * columnCount;
     if (cellCount > MAX_CELL_COUNT) {
       throw new TableValidationError(
-        `Table cannot have more than ${MAX_CELL_COUNT} cells. Actual: ${rowCount}x${columnCount} = ${cellCount}`
+        `Table cannot have more than ${MAX_CELL_COUNT} cells. Actual: ${rowCount}x${columnCount} = ${cellCount}`,
       );
     }
   }
@@ -260,7 +260,7 @@ export class TableWrapper {
   private syncMergedCellsFromRows(): void {
     // First, reset metaCells to unmerged state
     this.metaCells.forEach((cells) =>
-      cells.forEach((c) => (c.mergedInto = undefined))
+      cells.forEach((c) => (c.mergedInto = undefined)),
     );
 
     // Then loop through this.rows to find any merged cells
@@ -275,13 +275,13 @@ export class TableWrapper {
             rowIndex + 1,
             columnIndex + 1,
             rowSpan,
-            colSpan
+            colSpan,
           );
           this.setMergedCellsByBoundary(
             rowIndex,
             columnIndex,
             rowIndex + rowSpan - 1,
-            columnIndex + colSpan - 1
+            columnIndex + colSpan - 1,
           );
         }
       }
@@ -299,7 +299,7 @@ export class TableWrapper {
     fromRow: number,
     fromColumn: number,
     toRow: number,
-    toColumn: number
+    toColumn: number,
   ) {
     for (let row = fromRow; row <= toRow; row++) {
       for (let column = fromColumn; column <= toColumn; column++) {
@@ -314,7 +314,7 @@ export class TableWrapper {
             // this mean the current meta cell is merged into 2 different origin cells,
             // which is forbidden.
             throw new TableValidationError(
-              `Expanding the cell at ${fromRow},${fromColumn} collides with another merged cell from ${originalRow},${originalColumn}`
+              `Expanding the cell at ${fromRow},${fromColumn} collides with another merged cell from ${originalRow},${originalColumn}`,
             );
           }
         }
@@ -403,7 +403,7 @@ export class TableWrapper {
             maxColumn: Math.max(prev.maxColumn, column),
           };
         },
-        { minRow: Infinity, maxRow: -1, minColumn: Infinity, maxColumn: -1 }
+        { minRow: Infinity, maxRow: -1, minColumn: Infinity, maxColumn: -1 },
       );
       if (
         !isFinite(minRow) ||
@@ -422,16 +422,16 @@ export class TableWrapper {
     rowPos: number,
     columnPos: number,
     rowSpan = 1,
-    columnSpan = 1
+    columnSpan = 1,
   ) {
     if (rowPos < 1 || rowPos > this.rows.length) {
       throw new TableValidationError(
-        `Row position must be between 1 and ${this.rows.length} (number of rows).`
+        `Row position must be between 1 and ${this.rows.length} (number of rows).`,
       );
     }
     if (columnPos < 1 || columnPos > this.rows[0].cells.length) {
       throw new TableValidationError(
-        `Column position must be between 1 and ${this.rows[0].cells.length} (number of columns).`
+        `Column position must be between 1 and ${this.rows[0].cells.length} (number of columns).`,
       );
     }
     if (rowSpan < 1) {
@@ -442,12 +442,12 @@ export class TableWrapper {
     }
     if (rowPos + rowSpan - 1 > this.rows.length) {
       throw new TableValidationError(
-        `Cannot expand ${rowSpan} rows from the cell at ${rowPos},${columnPos}. Table has ${this.rows.length} rows.`
+        `Cannot expand ${rowSpan} rows from the cell at ${rowPos},${columnPos}. Table has ${this.rows.length} rows.`,
       );
     }
     if (columnPos + columnSpan - 1 > this.rows[0].cells.length) {
       throw new TableValidationError(
-        `Cannot expand ${columnSpan} columns from the cell at ${rowPos},${columnPos}. Table has ${this.rows[0].cells.length} columns.`
+        `Cannot expand ${columnSpan} columns from the cell at ${rowPos},${columnPos}. Table has ${this.rows[0].cells.length} columns.`,
       );
     }
   }

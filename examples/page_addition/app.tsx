@@ -8,7 +8,7 @@ import { addPage, getDefaultPageDimensions } from "@canva/design";
 import { CanvaError } from "@canva/error";
 import weather from "assets/images/weather.png";
 import { useState, useEffect } from "react";
-import styles from "styles/components.css";
+import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
 const IMAGE_ELEMENT_WIDTH = 50;
@@ -65,7 +65,7 @@ export const App = () => {
       // Dimensions are undefined if the user is in an unbounded design (e.g. Whiteboard).
       if (!dimensions) {
         setError(
-          "Adding pages in unbounded documents, such as Whiteboards, is not supported."
+          "Adding pages in unbounded documents, such as Whiteboards, is not supported.",
         );
       }
       setDefaultPageDimensions(dimensions);
@@ -114,12 +114,12 @@ export const App = () => {
         switch (e.code) {
           case "QUOTA_EXCEEDED":
             setError(
-              "Sorry, you cannot add any more pages. Please remove an existing page and try again."
+              "Sorry, you cannot add any more pages. Please remove an existing page and try again.",
             );
             break;
           case "RATE_LIMITED":
             setError(
-              "Sorry, you can only add up to 3 pages per second. Please try again."
+              "Sorry, you can only add up to 3 pages per second. Please try again.",
             );
             break;
           default:

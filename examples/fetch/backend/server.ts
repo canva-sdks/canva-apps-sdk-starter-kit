@@ -10,7 +10,7 @@ async function main() {
 
   if (!APP_ID) {
     throw new Error(
-      `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`
+      `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`,
     );
   }
 
@@ -53,6 +53,7 @@ async function main() {
    * TODO: Define your backend routes after initializing the jwt middleware.
    */
   router.get("/custom-route", async (req, res) => {
+    // eslint-disable-next-line no-console
     console.log("request", req.canva);
     res.status(200).send({
       appId: req.canva.appId,

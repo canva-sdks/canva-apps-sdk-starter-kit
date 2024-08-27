@@ -63,7 +63,7 @@ const generateRsaKeys = async (): Promise<{
         } else {
           resolve({ publicKey, privateKey });
         }
-      }
+      },
     );
   });
 
@@ -112,7 +112,7 @@ const cerfFilesExist = async (): Promise<boolean> => {
       fs.access(KEY_FILE, fs.constants.R_OK | fs.constants.W_OK),
     ]);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
