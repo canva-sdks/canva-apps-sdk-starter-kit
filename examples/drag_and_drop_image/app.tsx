@@ -1,18 +1,23 @@
+import React from "react";
 import { Rows, Text, Title, ImageCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
-import { addNativeElement, ui } from "@canva/design";
+import type { ImageDragConfig } from "@canva/design";
+import { ui } from "@canva/design";
 import dog from "assets/images/dog.jpg";
 import * as styles from "styles/components.css";
+import { useFeatureSupport } from "utils/use_feature_support";
+import { useAddElement } from "utils/use_add_element";
 
 const uploadExternalImage = () => {
   return upload({
     mimeType: "image/jpeg",
     thumbnailUrl:
       "https://www.canva.dev/example-assets/image-import/grass-image-thumbnail.jpg",
-    type: "IMAGE",
+    type: "image",
     url: "https://www.canva.dev/example-assets/image-import/grass-image.jpg",
     width: 320,
     height: 212,
+    aiDisclosure: "none",
   });
 };
 
@@ -20,27 +25,36 @@ const uploadLocalImage = () => {
   return upload({
     mimeType: "image/jpeg",
     thumbnailUrl: dog,
-    type: "IMAGE",
+    type: "image",
     url: dog,
     width: 100,
     height: 100,
+    aiDisclosure: "none",
   });
 };
 
-const insertLocalImage = async () => {
-  const { ref } = await uploadLocalImage();
-  await addNativeElement({ type: "IMAGE", ref });
-};
-
-const insertExternalImage = async () => {
-  const { ref } = await uploadExternalImage();
-  await addNativeElement({ type: "IMAGE", ref });
+const altText = {
+  text: "grass image",
+  decorative: true,
 };
 
 export const App = () => {
+  const isSupported = useFeatureSupport();
+  const addElement = useAddElement();
+
+  const insertLocalImage = async () => {
+    const { ref } = await uploadLocalImage();
+    await addElement({ type: "image", ref, altText });
+  };
+
+  const insertExternalImage = async () => {
+    const { ref } = await uploadExternalImage();
+    addElement({ type: "image", ref, altText });
+  };
+
   const onDragStartForLocalImage = (event: React.DragEvent<HTMLElement>) => {
-    ui.startDrag(event, {
-      type: "IMAGE",
+    const dragData: ImageDragConfig = {
+      type: "image",
       resolveImageRef: uploadLocalImage,
       previewUrl: dog,
       previewSize: {
@@ -51,12 +65,17 @@ export const App = () => {
         width: 100,
         height: 100,
       },
-    });
+    };
+    if (isSupported(ui.startDragToPoint)) {
+      ui.startDragToPoint(event, dragData);
+    } else if (isSupported(ui.startDragToCursor)) {
+      ui.startDragToCursor(event, dragData);
+    }
   };
 
   const onDragStartForExternalImage = (event: React.DragEvent<HTMLElement>) => {
-    ui.startDrag(event, {
-      type: "IMAGE",
+    const dragData: ImageDragConfig = {
+      type: "image",
       resolveImageRef: uploadExternalImage,
       previewUrl:
         "https://www.canva.dev/example-assets/image-import/grass-image-thumbnail.jpg",
@@ -68,7 +87,13 @@ export const App = () => {
         width: 320,
         height: 212,
       },
-    });
+    };
+
+    if (isSupported(ui.startDragToPoint)) {
+      ui.startDragToPoint(event, dragData);
+    } else if (isSupported(ui.startDragToCursor)) {
+      ui.startDragToCursor(event, dragData);
+    }
   };
 
   return (

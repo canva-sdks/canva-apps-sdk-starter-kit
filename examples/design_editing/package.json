@@ -1,0 +1,9 @@
+{
+  "name": "design_editing",
+  "description": "An example app that demonstrates how to edit the design.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/design": "^2.2.0-beta.1"
+  }
+}

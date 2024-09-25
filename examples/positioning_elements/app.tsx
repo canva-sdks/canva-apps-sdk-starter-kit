@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   FormField,
@@ -10,7 +11,7 @@ import {
 } from "@canva/app-ui-kit";
 import type { Placement } from "@canva/design";
 import {
-  addNativeElement,
+  addElementAtPoint,
   getCurrentPageContext,
   initAppElement,
 } from "@canva/design";
@@ -20,6 +21,7 @@ import rabbit from "assets/images/rabbit.jpg";
 import { useCallback, useEffect, useState } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
+import { useFeatureSupport } from "utils/use_feature_support";
 
 // Below values are only for demonstration purposes.0
 // You can position your elements anywhere on the page by providing arbitrary
@@ -72,18 +74,28 @@ const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
       {
-        type: "IMAGE",
+        type: "image",
         ref: images[data.imageId].imageRef,
         top: 0,
         left: 0,
         width: 400,
         height: 400,
+        altText: {
+          text: `photo of a ${images[data.imageId].title}`,
+          decorative: undefined,
+        },
       },
     ];
   },
 });
 
 export const App = () => {
+  const isSupported = useFeatureSupport();
+  const isRequiredFeatureSupported = isSupported(
+    addElementAtPoint,
+    getCurrentPageContext,
+  );
+
   const [state, setState] = useState<UIState>(initialState);
   const { imageId } = state;
   const disabled = !imageId || imageId.trim().length < 1;
@@ -160,12 +172,13 @@ export const App = () => {
     if (!images[state.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
-        type: "IMAGE",
+        type: "image",
         mimeType: "image/jpeg",
         url: images[state.imageId].imageSrc,
         thumbnailUrl: images[state.imageId].imageSrc,
         width: 400,
         height: 400,
+        aiDisclosure: "none",
       });
       images[state.imageId].imageRef = ref;
     }
@@ -176,23 +189,28 @@ export const App = () => {
     );
   }, [state]);
 
-  const addNativeImage = useCallback(async () => {
+  const addImage = useCallback(async () => {
     if (!images[state.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
-        type: "IMAGE",
+        type: "image",
         mimeType: "image/jpeg",
         url: images[state.imageId].imageSrc,
         thumbnailUrl: images[state.imageId].imageSrc,
         width: 400,
         height: 400,
+        aiDisclosure: "none",
       });
       images[state.imageId].imageRef = ref;
     }
     const placement = await getPlacement(state.placement);
-    await addNativeElement({
-      type: "IMAGE",
+    await addElementAtPoint({
+      type: "image",
       ref: images[state.imageId].imageRef,
+      altText: {
+        text: `photo of a ${images[state.imageId].title}`,
+        decorative: undefined,
+      },
       ...placement,
     });
   }, [state]);
@@ -225,7 +243,8 @@ export const App = () => {
               <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <ImageCard
-                    ariaLabel={item.title}
+                    ariaLabel="Add image to design"
+                    alt={item.title}
                     key={item.key}
                     thumbnailUrl={item.imageSrc}
                     onClick={item.onClick}
@@ -266,18 +285,27 @@ export const App = () => {
         <Button
           variant="secondary"
           onClick={addOrUpdateAppImage}
-          disabled={disabled}
+          // Positioning appElement absolutely is not supported in certain design types such as docs.
+          disabled={disabled || !isRequiredFeatureSupported}
         >
           {state.isEditingAppElement ? "Update app element" : "Add app element"}
         </Button>
         <Button
           variant="secondary"
-          onClick={addNativeImage}
-          disabled={disabled}
+          onClick={addImage}
+          // Positioning elements absolutely is not supported in certain design types such as docs.
+          disabled={disabled || !isRequiredFeatureSupported}
         >
-          Add native element
+          Add element
         </Button>
+        {!isRequiredFeatureSupported && <UnsupportedAlert />}
       </Rows>
     </div>
   );
 };
+
+const UnsupportedAlert = () => (
+  <Alert tone="warn">
+    Sorry, the required features are not supported in the current design.
+  </Alert>
+);

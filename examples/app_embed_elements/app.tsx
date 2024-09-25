@@ -26,7 +26,7 @@ const initialState: UIState = {
 
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
-    return [{ type: "EMBED", ...data, top: 0, left: 0 }];
+    return [{ type: "embed", ...data, top: 0, left: 0 }];
   },
 });
 

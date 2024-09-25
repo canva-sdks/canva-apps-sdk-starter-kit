@@ -1,8 +1,8 @@
 .idea
-.vscode
 .ssl
 node_modules
 .DS_Store
+.pr-train.yml
 yarn-error.log
 dist
 secrets.json

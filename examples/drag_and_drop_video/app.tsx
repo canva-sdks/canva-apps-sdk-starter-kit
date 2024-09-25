@@ -1,8 +1,11 @@
+import React from "react";
 import { Rows, Text, Title, VideoCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import type { VideoDragConfig } from "@canva/design";
-import { addNativeElement, ui } from "@canva/design";
+import { ui } from "@canva/design";
 import * as styles from "styles/components.css";
+import { useFeatureSupport } from "utils/use_feature_support";
+import { useAddElement } from "utils/use_add_element";
 
 const uploadVideo = () => {
   return upload({
@@ -11,21 +14,25 @@ const uploadVideo = () => {
       "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",
     thumbnailVideoUrl:
       "https://www.canva.dev/example-assets/video-import/beach-thumbnail-video.mp4",
-    type: "VIDEO",
+    type: "video",
     url: "https://www.canva.dev/example-assets/video-import/beach-video.mp4",
     width: 320,
     height: 180,
+    aiDisclosure: "none",
   });
 };
 
-const insertVideo = async () => {
-  const { ref } = await uploadVideo();
-  return addNativeElement({ type: "VIDEO", ref });
+const altText = {
+  text: "beach video",
+  decorative: true,
 };
 
-const onDragStart = (event: React.DragEvent<HTMLElement>) => {
+export const App = () => {
+  const isSupported = useFeatureSupport();
+  const addElement = useAddElement();
+
   const dragData: VideoDragConfig = {
-    type: "VIDEO",
+    type: "video",
     resolveVideoRef: uploadVideo,
     previewSize: {
       width: 320,
@@ -34,10 +41,20 @@ const onDragStart = (event: React.DragEvent<HTMLElement>) => {
     previewUrl:
       "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",
   };
-  ui.startDrag(event, dragData);
-};
 
-export const App = () => {
+  const onDragStart = (event: React.DragEvent<HTMLElement>) => {
+    if (isSupported(ui.startDragToPoint)) {
+      ui.startDragToPoint(event, dragData);
+    } else if (isSupported(ui.startDragToCursor)) {
+      ui.startDragToCursor(event, dragData);
+    }
+  };
+
+  const insertVideo = async () => {
+    const { ref } = await uploadVideo();
+    addElement({ type: "video", ref, altText });
+  };
+
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">

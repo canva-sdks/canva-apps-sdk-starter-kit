@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./app";
 import "@canva/app-ui-kit/styles.css";
 import { AppUiProvider } from "@canva/app-ui-kit";
-import { addNativeElement } from "@canva/design";
+import { addElementAtPoint } from "@canva/design";
 
 const root = createRoot(document.getElementById("root") as Element);
 function render() {
@@ -11,8 +11,8 @@ function render() {
       {/* Any Apps SDK method needs to be injected to the component, to avoid the need to mock it in tests */}
       <App
         onClick={() =>
-          addNativeElement({
-            type: "TEXT",
+          addElementAtPoint({
+            type: "text",
             children: ["Hello world!"],
           })
         }

@@ -6,7 +6,7 @@
   "dependencies": {
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
-    "express": "4.19.2",
+    "express": "4.21.0",
     "express-basic-auth": "1.2.1"
   },
   "devDependencies": {

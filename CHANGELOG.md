@@ -1,5 +1,48 @@
 # Changelog
 
+## 2024-09-25
+
+### 🔨 Breaking changes
+
+- Upgraded Apps SDK dependencies to v2.0.0 (design 2.1.0)
+
+### 🧰 Added
+
+- Updated the starter kit with internationalization tooling including `react-intl` and `formatjs`.
+  See the docs on the [Canva app localization process](https://www.canva.dev/docs/apps/localization/) to learn more.
+- Added [/examples/i18n](/examples/i18n) to demonstrate how to internationalize your app using `react-intl`
+- Added [/examples/i18n/tests](/examples/i18n/tests) to demonstrate how to unit test an app using localization
+- Added `.vscode` recommended extensions, helps to enforce eslint rules more uniformly by default.
+- Added `.pr-train.yml` to `.gitignore`
+- Added `use_feature_support` utils.
+- Added [/examples/feature_support](/examples/feature_support) to demonstrate usage of the Feature Support API.
+- Added `use_add_element` hook utils
+- `@canva/design@beta`
+  - Added `openDesign` method, which allows apps to read the current page of the user's design. To learn more, see [Design Editing](https://canva.dev/docs/apps/traversal).
+- Added a new example [/examples/design_editing](/examples/design_editing) to demonstrate how to use the Design Editing API.
+
+### 🔧 Changed
+
+- Added `alt` attributes where they were missing from `ImageCard` usage in examples.
+- `examples`
+  - Update `dnd` example apps to use feature supports to ensure they work correctly in different design types.
+  - Change TableWrapper and `native_table_element` example to work with new Table API.
+  - Updated @canva/asset examples to be compatible with 2.0.
+  - Update relevant example apps to:
+    - use new lowercase element type as part of upgraded `@canva/design` to version `2.0.0`.
+    - use `altText`
+    - use `use_add_element` hook to ensure they work correctly in different design types.
+  - Drop all `native_*` prefix from example apps' name.
+- `@canva/app-ui-kit`
+  - Upgraded `app-ui-kit` to version `4.0.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Upgraded `express` to `4.21.0`.
+- Update manual authentication example to use OAuth
+- Temporarily downgraded `eslint` to version `8.57.0` while formatjs lint rules are updated to be made compatible with v9.
+
+### 🗑️ Removed
+
+- Removed authentication from `examples/digital_asset_management` pending migration to `auth.requestAuthorization`.
+
 ## 2024-08-27
 
 ### 🔨 Breaking changes
@@ -31,6 +74,7 @@
   - Upgraded `app-ui-kit` to version `3.8.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
 - Updated the `typescript` package to version `5.5.4` and adjusted tsconfig to suit. [See the release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5/).
 - Dependencies audit, upgrading all modules where possible and locking versions to ensure future stability:
+
   ```text
     @eslint/js                          ^9.6.0  →  9.9.0
     @ngrok/ngrok                        ^1.1.0  →  1.4.1
@@ -77,6 +121,7 @@
     webpack-dev-server                 ^4.10.0  →  5.0.4
     yargs                              ^17.5.1  →  17.7.2
   ```
+
 - Migrating eslint config to the new `9.9.0` flat config format, after doing so additional lint rule disabling was needed in a few places.
 - Moved `utils/table_wrapper.ts` closer to example referencing it, given it's still in preview.
 - Dependencies audit to all workspaces/examples, upgrading all modules where possible and locking versions to ensure future stability:
@@ -106,11 +151,15 @@
 ### 🗑️ Removed
 
 - `@canva/preview`:
+
   - Removed `/sdk/preview`, as all of our preview SDKs are now published to NPM with an `@beta` tag. e.g. to install the preview `@canva/design` SDK, run the following command
+
     ```
     npm install @canva/design@beta
     ```
+
   - Note that not every SDK is guaranteed to have a preview version released.
+
 - `@canva/preview/data`:
   - The Preview Data APIs have been removed, and are no longer available as a preview SDK.
   - The `data_provider_basic` and `data_provider_options` examples have also been removed.
@@ -508,7 +557,9 @@
     - [@canva/user](https://www.npmjs.com/package/@canva/user)
   - Dependencies in [package.json](./package.json) were changed to use the NPM registry accordingly.
 - Updated node version in [.nvmrc](.nvmrc) to LTS version of [v20.10.0](https://nodejs.org/en/blog/release/v20.10.0)
+
   - Run the below command at the repo root to upgrade via [nvm](https://github.com/nvm-sh/nvm#intro)
+
     ```
     nvm install
     ```

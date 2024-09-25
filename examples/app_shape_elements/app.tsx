@@ -59,7 +59,7 @@ const initialState: UIState = {
 
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
-    return [{ type: "SHAPE", top: 0, left: 0, ...data }];
+    return [{ type: "shape", top: 0, left: 0, ...data }];
   },
 });
 

@@ -1,11 +1,14 @@
 import { upload } from "@canva/asset";
-import { Button, Rows, Text } from "@canva/app-ui-kit";
+import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
 import { setCurrentPageBackground } from "@canva/design";
 import * as styles from "styles/components.css";
 import { useState } from "react";
+import { useFeatureSupport } from "utils/use_feature_support";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
+  const isSupported = useFeatureSupport();
+  const isRequiredFeatureSupported = isSupported(setCurrentPageBackground);
 
   const setBackgroundToSolidColor = async () => {
     setLoading(true);
@@ -18,16 +21,17 @@ export const App = () => {
   const setBackgroundImage = async () => {
     setLoading(true);
     const { ref } = await upload({
-      type: "IMAGE",
+      type: "image",
       mimeType: "image/jpeg",
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
       thumbnailUrl:
         "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
       width: 540,
       height: 720,
+      aiDisclosure: "none",
     });
     await setCurrentPageBackground({
-      asset: { type: "IMAGE", ref },
+      asset: { type: "image", ref },
     });
     setLoading(false);
   };
@@ -35,7 +39,7 @@ export const App = () => {
   const setBackgroundVideo = async () => {
     setLoading(true);
     const { ref } = await upload({
-      type: "VIDEO",
+      type: "video",
       mimeType: "video/mp4",
       url: "https://www.canva.dev/example-assets/video-import/video.mp4",
       thumbnailImageUrl:
@@ -44,9 +48,10 @@ export const App = () => {
         "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
       width: 405,
       height: 720,
+      aiDisclosure: "none",
     });
     await setCurrentPageBackground({
-      asset: { type: "VIDEO", ref },
+      asset: { type: "video", ref },
     });
     setLoading(false);
   };
@@ -61,7 +66,8 @@ export const App = () => {
         <Button
           stretch
           loading={loading}
-          disabled={loading}
+          // Set page background is not supported in certain design type such as docs.
+          disabled={loading || !isRequiredFeatureSupported}
           variant="secondary"
           onClick={setBackgroundToSolidColor}
         >
@@ -71,7 +77,8 @@ export const App = () => {
           stretch
           variant="secondary"
           loading={loading}
-          disabled={loading}
+          // Set page background is not supported in certain design type such as docs.
+          disabled={loading || !isRequiredFeatureSupported}
           onClick={setBackgroundImage}
         >
           Set Background to an Image
@@ -80,12 +87,20 @@ export const App = () => {
           stretch
           variant="secondary"
           loading={loading}
-          disabled={loading}
+          // Set page background is not supported in certain design type such as docs.
+          disabled={loading || !isRequiredFeatureSupported}
           onClick={setBackgroundVideo}
         >
           Set Background to a Video
         </Button>
+        {!isRequiredFeatureSupported && <UnsupportedAlert />}
       </Rows>
     </div>
   );
 };
+
+const UnsupportedAlert = () => (
+  <Alert tone="warn">
+    Sorry, the required features are not supported in the current design.
+  </Alert>
+);

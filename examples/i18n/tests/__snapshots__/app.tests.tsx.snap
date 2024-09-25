@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app Renders token counts consistently 🎉 1`] = `
+<div>
+  <p
+    class="fFOiLQ _5Ob_nQ fM_HdA"
+  >
+    You've used 0 tokens out of 25.
+  </p>
+</div>
+`;
+
+exports[`app Renders token counts consistently 🎉 2`] = `
+<div>
+  <p
+    class="fFOiLQ _5Ob_nQ fM_HdA"
+  >
+    You've used 1 token out of 25.
+  </p>
+</div>
+`;
+
+exports[`app Renders token counts consistently 🎉 3`] = `
+<div>
+  <p
+    class="fFOiLQ _5Ob_nQ fM_HdA"
+  >
+    You've used 10 tokens out of 25.
+  </p>
+</div>
+`;

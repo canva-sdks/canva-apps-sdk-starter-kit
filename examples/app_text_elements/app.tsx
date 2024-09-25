@@ -45,7 +45,7 @@ const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
       {
-        type: "TEXT",
+        type: "text",
         top: 0,
         left: 0,
         ...data,
