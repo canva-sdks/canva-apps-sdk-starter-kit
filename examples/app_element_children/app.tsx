@@ -8,7 +8,7 @@ import {
 } from "@canva/app-ui-kit";
 import type {
   AppElementRendererOutput,
-  NativeShapeElementWithBox,
+  ShapeElementAtPoint,
 } from "@canva/design";
 import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
@@ -227,9 +227,9 @@ const createSquareShapeElement = ({
   top: number;
   left: number;
   rotation: number;
-}): NativeShapeElementWithBox => {
+}): ShapeElementAtPoint => {
   return {
-    type: "SHAPE",
+    type: "shape",
     paths: [
       {
         d: `M 0 0 H ${width} V ${height} H 0 L 0 0`,

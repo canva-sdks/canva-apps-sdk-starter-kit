@@ -10,11 +10,14 @@ import { useState, useRef } from "react";
 import * as styles from "styles/components.css";
 import type { QueuedImage } from "@canva/asset";
 import { upload } from "@canva/asset";
-import { addNativeElement, ui } from "@canva/design";
+import type { ImageDragConfig } from "@canva/design";
+import { ui } from "@canva/design";
 import type { Image } from "./fake_api";
 import { getImages } from "./fake_api";
 import InfiniteScroll from "react-infinite-scroller";
 import { generatePlaceholders } from "./utils";
+import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "utils/use_feature_support";
 
 const TARGET_ROW_HEIGHT_PX = 100;
 const NUM_PLACEHOLDERS = 10;
@@ -26,24 +29,16 @@ const uploadImage = async (image: Image): Promise<QueuedImage> => {
   const { url } = await fetch(image.url);
 
   const queuedImage = await upload({
-    type: "IMAGE",
+    type: "image",
     mimeType: "image/jpeg",
     url,
     thumbnailUrl: url,
     width: image.width,
     height: image.height,
+    aiDisclosure: "none",
   });
 
   return queuedImage;
-};
-
-const addImageToDesign = async (image: Image) => {
-  const queuedImage = await uploadImage(image);
-
-  await addNativeElement({
-    type: "IMAGE",
-    ref: queuedImage.ref,
-  });
 };
 
 export const Placeholders = generatePlaceholders({
@@ -63,6 +58,8 @@ export const App = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState<number | undefined>(1);
+  const isSupported = useFeatureSupport();
+  const addElement = useAddElement();
 
   const scrollContainerRef = useRef(null);
 
@@ -83,6 +80,45 @@ export const App = () => {
     }
   };
 
+  const addImageToDesign = async (image: Image) => {
+    const queuedImage = await uploadImage(image);
+
+    await addElement({
+      type: "image",
+      ref: queuedImage.ref,
+      altText: {
+        text: "a Picsum image",
+        decorative: undefined,
+      },
+    });
+  };
+
+  const onDragStart = async (
+    event: React.DragEvent<HTMLElement>,
+    image: Image,
+  ) => {
+    const dragData: ImageDragConfig = {
+      type: "image",
+      resolveImageRef: () => uploadImage(image),
+      // Our mock API doesn't return a thumbnail/preview image, but for a production app
+      // you should use real lower resolution thumbnail/preview images
+      previewUrl: image.url,
+      previewSize: {
+        width: image.width,
+        height: image.height,
+      },
+      fullSize: {
+        width: image.width,
+        height: image.height,
+      },
+    };
+    if (isSupported(ui.startDragToPoint)) {
+      ui.startDragToPoint(event, dragData);
+    } else if (isSupported(ui.startDragToCursor)) {
+      ui.startDragToCursor(event, dragData);
+    }
+  };
+
   const Images = images.map((image, index) => (
     <MasonryItem
       targetWidthPx={image.width}
@@ -95,21 +131,7 @@ export const App = () => {
         thumbnailUrl={image.url}
         alt={image.title}
         onDragStart={(event: React.DragEvent<HTMLElement>) =>
-          ui.startDrag(event, {
-            type: "IMAGE",
-            resolveImageRef: () => uploadImage(image),
-            // Our mock API doesn't return a thumbnail/preview image, but for a production app
-            // you should use real lower resolution thumbnail/preview images
-            previewUrl: image.url,
-            previewSize: {
-              width: image.width,
-              height: image.height,
-            },
-            fullSize: {
-              width: image.width,
-              height: image.height,
-            },
-          })
+          onDragStart(event, image)
         }
       />
     </MasonryItem>

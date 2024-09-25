@@ -1,0 +1,6 @@
+{
+  // For developers using vscode we recommend the following extensions. Following
+  // and listening to the formatting and linting guidelines can help with
+  // implementation quality and in some instances reduce app review timelines.
+  "recommendations": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
+}

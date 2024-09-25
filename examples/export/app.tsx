@@ -23,13 +23,13 @@ export const App = () => {
 
       const response = await requestExport({
         acceptedFileTypes: [
-          "PNG",
-          "PDF_STANDARD",
-          "JPG",
-          "GIF",
-          "SVG",
-          "VIDEO",
-          "PPTX",
+          "png",
+          "pdf_standard",
+          "jpg",
+          "gif",
+          "svg",
+          "video",
+          "pptx",
         ],
       });
 

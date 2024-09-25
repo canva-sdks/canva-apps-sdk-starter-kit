@@ -13,9 +13,9 @@ import {
 } from "@canva/app-ui-kit";
 import type { Font, FontStyle, FontWeightName } from "@canva/asset";
 import { findFonts, requestFontSelection } from "@canva/asset";
-import { addNativeElement } from "@canva/design";
 import { useState, useEffect, useCallback } from "react";
 import * as styles from "styles/components.css";
+import { useAddElement } from "utils/use_add_element";
 
 type TextConfig = {
   text: string;
@@ -41,6 +41,7 @@ const fontStyleOptions: {
 ];
 
 export const App = () => {
+  const addElement = useAddElement();
   const [textConfig, setTextConfig] = useState<TextConfig>(initialConfig);
   const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
   const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
@@ -139,7 +140,7 @@ export const App = () => {
             const response = await requestFontSelection({
               selectedFontRef: selectedFont?.ref,
             });
-            if (response.type === "COMPLETED") {
+            if (response.type === "completed") {
               setSelectedFont(response.font);
               resetSelectedFontStyleAndWeight(response.font);
             }
@@ -203,8 +204,8 @@ export const App = () => {
         <Button
           variant="primary"
           onClick={() => {
-            addNativeElement({
-              type: "TEXT",
+            addElement({
+              type: "text",
               ...textConfig,
               fontRef: selectedFont?.ref,
               children: [textConfig.text],

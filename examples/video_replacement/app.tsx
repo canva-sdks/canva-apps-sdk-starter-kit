@@ -11,7 +11,7 @@ export const App = () => {
   const updateVideo = async () => {
     setLoading(true);
     const queuedVideo = await upload({
-      type: "VIDEO",
+      type: "video",
       mimeType: "video/mp4",
       thumbnailImageUrl:
         "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",
@@ -20,6 +20,7 @@ export const App = () => {
       url: "https://www.canva.dev/example-assets/video-import/beach-video.mp4",
       width: 320,
       height: 180,
+      aiDisclosure: "none",
     });
     const draft = await selection.read();
     draft.contents.forEach((s) => (s.ref = queuedVideo.ref));

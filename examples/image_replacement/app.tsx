@@ -12,11 +12,12 @@ export const App = () => {
     setLoading(true);
     // Start uploading the image
     const queuedImage = await upload({
-      type: "IMAGE",
+      type: "image",
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
       mimeType: "image/jpeg",
       thumbnailUrl:
         "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
+      aiDisclosure: "none",
     });
 
     const draft = await selection.read();

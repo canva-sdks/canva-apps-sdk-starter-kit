@@ -1,0 +1,6 @@
+{
+  "name": "feature_support",
+  "description": "An example app demonstrating how apps can toggle features based on feature support.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

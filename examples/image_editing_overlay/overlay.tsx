@@ -122,12 +122,13 @@ export const Overlay = (props: OverlayProps) => {
         const dataUrl = canvas.toDataURL();
         const draft = await selection.read();
         const queueImage = await upload({
-          type: "IMAGE",
+          type: "image",
           mimeType: "image/png",
           url: dataUrl,
           thumbnailUrl: dataUrl,
           width: canvas.width,
           height: canvas.height,
+          aiDisclosure: "none",
         });
         draft.contents[0].ref = queueImage.ref;
         await draft.save();
@@ -137,7 +138,7 @@ export const Overlay = (props: OverlayProps) => {
 
   useEffect(() => {
     // set up message handler
-    return void appProcess.registerOnMessage((_, message) => {
+    return void appProcess.registerOnMessage(async (_, message) => {
       if (!message) {
         return;
       }
@@ -160,7 +161,7 @@ const loadOriginalImage = async (selection: SelectionEvent<"image">) => {
   }
   const draft = await selection.read();
   const { url } = await getTemporaryUrl({
-    type: "IMAGE",
+    type: "image",
     ref: draft.contents[0].ref,
   });
   return url;

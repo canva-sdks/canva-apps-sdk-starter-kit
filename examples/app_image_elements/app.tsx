@@ -57,10 +57,14 @@ const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
       {
-        type: "IMAGE",
+        type: "image",
         top: 0,
         left: 0,
         ref: images[data.imageId].imageRef,
+        altText: {
+          text: `photo of a ${images[data.imageId].title}`,
+          decorative: undefined,
+        },
         ...data,
       },
     ];
@@ -98,10 +102,11 @@ export const App = () => {
         // Upload local image
         const imageSrc = images[state.imageId].imageSrc;
         const { ref } = await upload({
-          type: "IMAGE",
+          type: "image",
           mimeType: "image/jpeg",
           url: imageSrc,
           thumbnailUrl: imageSrc,
+          aiDisclosure: "none",
         });
         images[state.imageId].imageRef = ref;
       }
@@ -134,7 +139,8 @@ export const App = () => {
               <Grid columns={3} spacing="1.5u">
                 {items.map((item) => (
                   <ImageCard
-                    ariaLabel={item.title}
+                    ariaLabel="Add image to design"
+                    alt={item.title}
                     key={item.key}
                     thumbnailUrl={item.imageSrc}
                     onClick={item.onClick}

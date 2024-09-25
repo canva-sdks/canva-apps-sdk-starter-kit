@@ -15,7 +15,7 @@ export const App = () => {
       url,
     });
 
-    if (response.status === "ABORTED") {
+    if (response.status === "aborted") {
       // user decided not to navigate to the link
     }
   };

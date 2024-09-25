@@ -2,8 +2,5 @@
   "name": "richtext_replacement",
   "description": "An example app demonstrating how apps can replace the selected text.",
   "author": "Canva Pty Ltd.",
-  "license": "Please refer to the LICENSE.md file in the root directory",
-  "dependencies": {
-    "@canva/design": "^1.11.0-beta.1"
-  }
+  "license": "Please refer to the LICENSE.md file in the root directory"
 }

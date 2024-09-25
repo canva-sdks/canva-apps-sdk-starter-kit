@@ -1,4 +1,5 @@
 import {
+  Alert,
   FormField,
   Rows,
   Select,
@@ -6,9 +7,11 @@ import {
   TypographyCard,
 } from "@canva/app-ui-kit";
 import type { FontWeight, TextAttributes } from "@canva/design";
-import { addNativeElement, ui } from "@canva/design";
+import { ui } from "@canva/design";
 import { useState } from "react";
 import * as styles from "styles/components.css";
+import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "utils/use_feature_support";
 
 type DraggableTextProperties = {
   textAlign: TextAttributes["textAlign"];
@@ -28,10 +31,13 @@ export const App = () => {
     fontWeight: "normal",
     textAlign: "start",
   });
+  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const isRequiredFeatureSupported = isSupported(ui.startDragToPoint);
 
   const onDragStart = (event: React.DragEvent<HTMLElement>) => {
-    ui.startDrag(event, {
-      type: "TEXT",
+    ui.startDragToPoint(event, {
+      type: "text",
       textAlign,
       decoration,
       fontStyle,
@@ -39,6 +45,7 @@ export const App = () => {
       children: [content],
     });
   };
+
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="4u">
@@ -144,8 +151,8 @@ export const App = () => {
           <TypographyCard
             ariaLabel="Add text to design"
             onClick={() =>
-              addNativeElement({
-                type: "TEXT",
+              addElement({
+                type: "text",
                 textAlign,
                 decoration,
                 fontStyle,
@@ -153,7 +160,7 @@ export const App = () => {
                 children: [content],
               })
             }
-            onDragStart={onDragStart}
+            onDragStart={isRequiredFeatureSupported ? onDragStart : undefined}
           >
             <Text
               variant={
@@ -165,8 +172,15 @@ export const App = () => {
               {content}
             </Text>
           </TypographyCard>
+          {!isRequiredFeatureSupported && <UnsupportedAlert />}
         </Rows>
       </Rows>
     </div>
   );
 };
+
+const UnsupportedAlert = () => (
+  <Alert tone="warn">
+    Sorry, the required feature is not supported in the current design.
+  </Alert>
+);

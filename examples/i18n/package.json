@@ -1,0 +1,12 @@
+{
+  "name": "i18n",
+  "description": "An example app demonstrating how to achieve internationalization using react-intl and showcasing ICU syntax usage",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "scripts": {
+    "extract": "formatjs extract '**/*.{ts,tsx}' --out-file dist/messages_en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
+    "test": "jest --no-cache --config='../../jest.config.js'",
+    "test:watch": "jest --no-cache --watch --config='../../jest.config.js'",
+    "test:update": "npm run test -- -u"
+  }
+}

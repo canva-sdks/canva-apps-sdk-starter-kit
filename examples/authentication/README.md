@@ -1,61 +1,17 @@
 # README
 
-## Step 1: Set the `APP_ID` environment variable
+If your app requires access to resources on a third-party platform (e.g. Google Drive), you can use OAuth to simplify the authorization process for your users. This method allows users to securely grant your app the necessary permissions with a third party service without exposing user credentials.
 
-1. Get the ID of an app.
-   1. Log in to the [Developer Portal](https://www.canva.com/developers/).
-   2. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
-   3. Copy the ID of an app from the **App ID** column in the Apps table.
-2. Open the starter kit's `.env` file.
-3. Set the `APP_ID` environment variable to the ID of the app.
+Canva enhances this process by handling the OAuth flow and the management of access and refresh tokens. This means that Canva does the heavy lifting in ensuring that your app maintains continuous and security-hardened access to the third-party resources it needs, streamlining the user experience and reducing the development burden on your team. Canva currently supports the authorization code flow, with and without Proof-of Key Code Exchange (PKCE).
 
-## Step 2: Configure ngrok
+The authentication API makes it easier to adopt the industry-standard OAuth 2, because Canva's servers are responsible for interacting with your chosen Identity Provider (IdP).
 
-You server needs to be exposed via a publicly available URL, so that Canva can send requests to it. This step explains how to do this with [ngrok](https://ngrok.com/).
+## Getting started
 
-**Note:** ngrok is a useful tool, but it has inherent security risks, such as someone figuring out the URL of your server and accessing proprietary information. Be mindful of the risks, and if you're working as part of an organization, talk to your IT department.
+Before using this example, you'll need to [configure you provider details](https://www.canva.dev/docs/apps/authenticating-users/oauth/#prerequisite-configure-developer-portal) in the developer portal.
 
-To use ngrok, you'll need to do the following:
+Once this is done, simply run the example from the root of `canva-api-starter-kit` with:
 
-1. Sign up for a ngrok account at <https://ngrok.com/>.
-2. Locate your ngrok [authtoken](https://dashboard.ngrok.com/get-started/your-authtoken).
-3. Set an environment variable for your authtoken, using the command line. Replace `<YOUR_AUTH_TOKEN>` with your actual ngrok authtoken:
-
-   For macOS and Linux:
-
-   ```bash
-   export NGROK_AUTHTOKEN=<YOUR_AUTH_TOKEN>
-   ```
-
-   For Windows PowerShell:
-
-   ```shell
-   $Env:NGROK_AUTHTOKEN = "<YOUR_AUTH_TOKEN>"
-   ```
-
-This environment variable is available for the current terminal session, so the command must be re-run for each new session. Alternatively, you can add the variable to your terminal's default parameters.
-
-## Step 3: Run the development servers
-
-These steps demonstrate how to start the local development servers:
-
-1. Navigate into the starter kit:
-
-   ```
-   cd canva-apps-sdk-starter-kit
-   ```
-
-2. Run the following command to launch the backend and frontend development servers. The `--ngrok` parameter exposes the backend server via a publicly accessible URL.
-
-   ```
-   npm start authentication --ngrok
-   ```
-
-## Step 4: Configure the app
-
-1. Navigate to the app via the Developer Portal.
-2. In the **App source > Development URL** field, enter `http://localhost:8080`.
-3. In the sidebar, select **Add authentication**.
-4. Enable **This app requires authentication**.
-5. In the **Redirect URL** field, enter the publicly accessible URL of the backend server, with `/redirect-url` appended.
-6. In the **Authentication base URL** field, enter the publicly accessible URL of the backend server.
+```sh
+npm start authentication
+```
