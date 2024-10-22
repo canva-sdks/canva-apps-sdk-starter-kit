@@ -3,8 +3,6 @@ run-name: ${{ github.actor }} pushed a commit 🚀
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - 'internal/**'
 
 jobs:
   ci:
@@ -15,7 +13,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: NPM ci
         run: npm ci
       - name: npm run test

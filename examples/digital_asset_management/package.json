@@ -4,10 +4,10 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
-    "@canva/app-components": "^1.0.0-beta.28",
-    "cookie-parser": "1.4.6",
+    "@canva/app-components": "^1.0.0-beta.29",
+    "cookie-parser": "1.4.7",
     "cors": "2.8.5",
-    "express": "4.21.0"
+    "express": "4.21.1"
   },
   "devDependencies": {
     "@types/cors": "2.8.17"

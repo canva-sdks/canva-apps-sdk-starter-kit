@@ -25,9 +25,9 @@
 
    This will launch one development server for the frontend and backend
 
-2. Navigate to your app at `https://www.canva.com/developers/apps`, and click **Preview** to preview the app.
+1. Navigate to your app at `https://www.canva.com/developers/apps`, and click **Preview** to preview the app.
 
-3. If your app requires authentication with a third party service, continue to Step 3.
+1. If your app requires authentication with a third party service, continue to Step 3.
    Otherwise, you can make requests to your service via [./backend/server.ts](./backend/server.ts) inside `"/resources/find"`.
 
 ## Step 3: (optional) Configure ngrok
@@ -72,6 +72,7 @@ From the `canva-apps-sdk-starter-kit` directory
 
 2. After ngrok is running, copy your ngrok url
    (e.g. <https://0000-0000.ngrok-free.app>) to the clipboard.
+
    1. Go to your app in the [Developer Portal](https://www.canva.com/developers/apps).
    2. Navigate to the "Add authentication" section of your app.
    3. Check "This app requires authentication"
@@ -83,11 +84,12 @@ From the `canva-apps-sdk-starter-kit` directory
       date to ensure your example authentication step will run.
 
 3. Make sure the app is authenticating users by making the following changes:
+
    1. Replace
 
       `router.post("/resources/find", async (req, res) => {`
 
-      with  
+      with
 
       `router.post("/api/resources/find", async (req, res) => {`
 
@@ -96,11 +98,11 @@ From the `canva-apps-sdk-starter-kit` directory
 
    2. Replace
 
-      ```const url = new URL(`${BACKEND_HOST}/resources/find`);```
+      ``const url = new URL(`${BACKEND_HOST}/resources/find`);``
 
       with
 
-      ```const url = new URL(`${BACKEND_HOST}/api/resources/find`);```
+      ``const url = new URL(`${BACKEND_HOST}/api/resources/find`);``
 
       in [./adapter.ts](./adapter.ts)
 
@@ -112,6 +114,7 @@ From the `canva-apps-sdk-starter-kit` directory
       ```
 
 4. Navigate to your app at `https://www.canva.com/developers/apps`, and click **Preview** to preview the app.
+
    1. A new screen will appear asking if you want to authenticate.
       Press **Connect** to start the authentication flow.
    2. A ngrok screen may appear. If it does, select **Visit Site**

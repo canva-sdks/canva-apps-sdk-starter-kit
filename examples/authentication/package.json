@@ -4,9 +4,9 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
-    "cookie-parser": "1.4.6",
+    "cookie-parser": "1.4.7",
     "cors": "2.8.5",
-    "express": "4.21.0",
+    "express": "4.21.1",
     "express-basic-auth": "1.2.1"
   },
   "devDependencies": {

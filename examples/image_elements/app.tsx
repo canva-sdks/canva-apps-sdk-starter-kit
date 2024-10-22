@@ -1,3 +1,9 @@
+/**
+ * Static images are used here for demonstration purposes only.
+ * In a real app, you should use a CDN/hosting service to host your images,
+ * then upload them to Canva using the `upload` function from the `@canva/asset` package.
+ */
+/* eslint-disable no-restricted-imports */
 import {
   Box,
   Button,
