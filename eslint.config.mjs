@@ -20,8 +20,6 @@ export default [
       "**/dist",
       "**/*.d.ts",
       "**/*.d.tsx",
-      "**/sdk",
-      "**/internal",
       "**/*.config.*",
     ],
   },
@@ -32,12 +30,17 @@ export default [
     "plugin:@typescript-eslint/strict",
     "plugin:@typescript-eslint/stylistic",
     "plugin:react/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
   ),
   ...general,
-  ...i18n.map(config => ({
+  ...i18n.map((config) => ({
     ...config,
-    files: ["src/**/*", "examples/i18n/**/*", "cli/common/templates/gen_ai/**/*", "cli/common/templates/hello_world/**/*"],
+    files: [
+      "src/**/*",
+      // Currently only the 'i18n' example is localized and following the
+      // formatjs guidelines. If more examples are localized, this list
+      // should be updated:
+      "examples/i18n/**/*",
+    ],
   })),
-
 ];

@@ -30,15 +30,15 @@ function buildConfig({
   if (!backendHost) {
     console.error(
       chalk.redBright.bold("BACKEND_HOST is undefined."),
-      `Refer to "Customizing the backend host" in the README.md for more information.`
+      `Refer to "Customizing the backend host" in the README.md for more information.`,
     );
     process.exit(-1);
   } else if (backendHost.includes("localhost") && mode === "production") {
     console.error(
       chalk.redBright.bold(
-        "BACKEND_HOST should not be set to localhost for production builds!"
+        "BACKEND_HOST should not be set to localhost for production builds!",
       ),
-      `Refer to "Customizing the backend host" in the README.md for more information.`
+      `Refer to "Customizing the backend host" in the README.md for more information.`,
     );
   }
 
@@ -237,7 +237,7 @@ function buildDevConfig(options) {
     // after a few months.
 
     console.warn(
-      "Enabling Hot Module Replacement (HMR) with an App ID is deprecated, please see the README.md on how to update."
+      "Enabling Hot Module Replacement (HMR) with an App ID is deprecated, please see the README.md on how to update.",
     );
 
     const appDomain = `app-${appId.toLowerCase().trim()}.canva-apps.com`;
@@ -253,7 +253,7 @@ function buildDevConfig(options) {
   } else {
     if (enableHmr && !appOrigin) {
       console.warn(
-        "Attempted to enable Hot Module Replacement (HMR) without configuring App Origin... Disabling HMR."
+        "Attempted to enable Hot Module Replacement (HMR) without configuring App Origin... Disabling HMR.",
       );
     }
     devServer.webSocketServer = false;

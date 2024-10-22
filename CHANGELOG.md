@@ -1,5 +1,70 @@
 # Changelog
 
+## 2024-10-22
+
+### 🧰 Added
+
+- `examples`
+  - Added an example to demonstrate [adding videos](https://www.canva.dev/docs/apps/creating-videos/) in `examples/video_elements`.
+  - Added an example to demonstrate [adding an app-controlled videos](https://www.canva.dev/docs/apps/creating-app-elements/) in `examples/app_video_elements`.
+- Added a `.prettierrc` config file to introduce some consistency across the Starter Kit repo, for developers who have forked this repo for their own projects are welcome to adjust to their own liking and preferences.
+- `eslint`
+
+  - Added arguments to the `formatjs/no-literal-string-in-jsx` rule to include App UI Kit props that should be localized (e.g. ariaLabel now is highlighted if developers are not using the recommend `react-intl` messaging pattern).
+
+    ```jsx
+    // ❌ Not recommended, messages will not be localized.
+    <Button ariaLabel="Click me">..</Button>
+    //      ~~~~~~~~~~~~~~~~~~~~
+    // error: Cannot have untranslated text in JSX eslintformatjs/no-literal-string-in-jsx
+
+
+    // ✅ Recommended, messages will be localized.
+    const intl = useIntl();
+    <Button .. ariaLabel={intl.formatMessage({..})} >..</Button>
+    ```
+
+  - Added a new rule to lint against inlining large assets, such as videos, images or audio in apps, which leads to larger and slower apps.
+
+### 🐞 Fixed
+
+- Fixed an issue where running `npm start` on an Ubuntu system would result in `Error: Cannot find module '@ngrok/ngrok-linux-x64-gnu`.
+- Fixed an issue where running `npm run extract` on Windows systems would generate an empty `messages_en.json` ([Github issue](https://github.com/formatjs/formatjs/issues/3854)).
+
+### 🔧 Changed
+
+- `@canva/app-i18n-kit`
+  - Upgraded `app-i18n-kit` to version `1.0.0`.
+- `@canva/app-ui-kit`
+  - Upgraded `app-ui-kit` to version `4.1.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Added instructions to the [README](README.md) for running an example.
+- Dependencies audit, upgrading all modules where possible:
+
+  ```text
+  @eslint/js                                9.9.0   →   9.12.0
+  @testing-library/react                   16.0.0   →   16.0.1
+  @types/jest                             29.5.12   →  29.5.13
+  @types/jsonwebtoken                       9.0.6   →    9.0.7
+  @types/react                             18.3.4   →  18.3.11
+  @types/react-dom                         18.0.11  →   18.3.1
+  @typescript-eslint/eslint-plugin          8.2.0   →    8.9.0
+  @typescript-eslint/parser                 8.2.0   →    8.9.0
+  cssnano                                   7.0.5   →    7.0.6
+  debug                                     4.3.6   →    4.3.7
+  eslint                                   8.57.1   →   9.12.0
+  eslint-plugin-formatjs                   4.13.3   →    5.0.0
+  eslint-plugin-jest                       28.8.0   →   28.8.3
+  eslint-plugin-react                      7.35.0   →   7.37.1
+  express                                  4.21.0   →   4.21.1
+  globals                                  15.9.0   →  15.11.0
+  ts-jest                                  29.2.4   →   29.2.5
+  webpack                                  5.94.0   →   5.95.0
+  webpack-dev-server                        5.0.4   →    5.1.0
+  ```
+
+- Moved `.env` to a `.env.template` and added to the `.gitignore`, a postinstall script now copies this locally.
+- Other minor improvements, cleanup and fixes of stale config.
+
 ## 2024-09-25
 
 ### 🔨 Breaking changes
@@ -154,7 +219,7 @@
 
   - Removed `/sdk/preview`, as all of our preview SDKs are now published to NPM with an `@beta` tag. e.g. to install the preview `@canva/design` SDK, run the following command
 
-    ```
+    ```bash
     npm install @canva/design@beta
     ```
 
@@ -560,7 +625,7 @@
 
   - Run the below command at the repo root to upgrade via [nvm](https://github.com/nvm-sh/nvm#intro)
 
-    ```
+    ```bash
     nvm install
     ```
 

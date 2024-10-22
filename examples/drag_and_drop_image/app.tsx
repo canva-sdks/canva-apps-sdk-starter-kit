@@ -3,6 +3,12 @@ import { Rows, Text, Title, ImageCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import type { ImageDragConfig } from "@canva/design";
 import { ui } from "@canva/design";
+/**
+ * Static images are used here for demonstration purposes only.
+ * In a real app, you should use a CDN/hosting service to host your images,
+ * then upload them to Canva using the `upload` function from the `@canva/asset` package.
+ */
+/* eslint-disable-next-line no-restricted-imports */
 import dog from "assets/images/dog.jpg";
 import * as styles from "styles/components.css";
 import { useFeatureSupport } from "utils/use_feature_support";

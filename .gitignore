@@ -1,9 +1,8 @@
+.DS_Store
+.env
 .idea
 .ssl
-node_modules
-.DS_Store
-.pr-train.yml
-yarn-error.log
-dist
-secrets.json
+*.log*
 **/*/db.json
+dist
+node_modules

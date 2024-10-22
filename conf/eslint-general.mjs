@@ -179,6 +179,32 @@ export default [
             "Apps are currently not allowed to open popups, or new tabs via browser APIs. Please use `requestOpenExternalUrl` from `@canva/platform` to link to external URLs. To learn more, see https://www.canva.dev/docs/apps/api/platform-request-open-external-url/",
         },
       ],
+      "no-restricted-imports": [
+        "warn",
+        {
+          // Warn when importing static assets that increase bundle size
+          patterns: [
+            // Images
+            {
+              group: ["*.png", "*.jpg", "*.jpeg", "*.gif"],
+              message:
+                "Inline images increase app bundle size and degrade app performance. Wherever possible, please use a CDN or external hosting service to dynamically load assets.",
+            },
+            // Videos
+            {
+              group: ["*.mp4", "*.webm", "*.ogg"],
+              message:
+                "Inline videos increase app bundle size and degrade app performance. Wherever possible, please use a CDN or external hosting service to dynamically load assets.",
+            },
+            // Audio
+            {
+              group: ["*.mp3", "*.wav", "*.ogg"],
+              message:
+                "Inline audio files increase app bundle size and degrade app performance. Wherever possible, please use a CDN or external hosting service to dynamically load assets.",
+            },
+          ],
+        },
+      ],
       "no-return-await": "error",
       "no-throw-literal": "error",
       "no-undef-init": "error",

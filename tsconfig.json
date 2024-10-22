@@ -37,16 +37,7 @@
       "styles": ["./styles"]
     }
   },
-  "include": [
-    "./src/**/*",
-    "./scripts/**/*",
-    "./examples/**/*",
-    "./declarations/declarations.d.ts",
-    "./utils/**/*",
-    "./styles/**/*",
-    "./node_modules/@types/**/*",
-    "./sdk/**/*"
-  ],
+  "include": ["**/*", "./node_modules/@types/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

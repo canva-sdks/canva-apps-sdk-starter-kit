@@ -1,32 +1,21 @@
-/**
- * Static images are used here for demonstration purposes only.
- * In a real app, you should use a CDN/hosting service to host your images,
- * then upload them to Canva using the `upload` function from the `@canva/asset` package.
- */
-/* eslint-disable no-restricted-imports */
 import {
   Box,
   Button,
   FormField,
   Grid,
-  ImageCard,
+  VideoCard,
   NumberInput,
   Rows,
   Text,
 } from "@canva/app-ui-kit";
 import { initAppElement } from "@canva/design";
-import cat from "assets/images/cat.jpg";
-import dog from "assets/images/dog.jpg";
-import rabbit from "assets/images/rabbit.jpg";
-import { useEffect, useState, useCallback } from "react";
+import React from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
-// We can't store the image's data URL in the app element's data, since it
-// exceeds the 5kb limit. We can, however, store an ID that references the
-// image.
 type AppElementData = {
-  imageId: string;
+  title: string;
+  videoId: string;
   width: number;
   height: number;
   rotation: number;
@@ -34,28 +23,36 @@ type AppElementData = {
 
 type UIState = AppElementData;
 
-const images = {
-  dog: {
-    title: "Dog",
-    imageSrc: dog,
-    imageRef: undefined,
+const videos = {
+  building: {
+    title: "Pinwheel on building",
+    url: "https://www.canva.dev/example-assets/video-import/video.mp4",
+    thumbnailImageUrl:
+      "https://www.canva.dev/example-assets/video-import/thumbnail-image.jpg",
+    thumbnailVideoUrl:
+      "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
+    width: 405,
+    height: 720,
+    videoRef: undefined,
   },
-  cat: {
-    title: "Cat",
-    imageSrc: cat,
-    imageRef: undefined,
-  },
-  rabbit: {
-    title: "Rabbit",
-    imageSrc: rabbit,
-    imageRef: undefined,
+  beach: {
+    title: "A beautiful beach scene",
+    url: "https://www.canva.dev/example-assets/video-import/beach-video.mp4",
+    thumbnailImageUrl:
+      "https://www.canva.dev/example-assets/video-import/beach-thumbnail-image.jpg",
+    thumbnailVideoUrl:
+      "https://www.canva.dev/example-assets/video-import/beach-thumbnail-video.mp4",
+    width: 320,
+    height: 180,
+    videoRef: undefined,
   },
 };
 
 const initialState: UIState = {
-  imageId: "dog",
-  width: 400,
-  height: 400,
+  title: "Pinwheel on building",
+  videoId: "building",
+  width: 405,
+  height: 720,
   rotation: 0,
 };
 
@@ -63,14 +60,14 @@ const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
       {
-        type: "image",
+        type: "video",
         top: 0,
         left: 0,
-        ref: images[data.imageId].imageRef,
         altText: {
-          text: `photo of a ${images[data.imageId].title}`,
+          text: `a video of ${data.title}`,
           decorative: undefined,
         },
+        ref: videos[data.videoId].videoRef,
         ...data,
       },
     ];
@@ -78,43 +75,47 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [loading, setLoading] = useState(false);
-  const [state, setState] = useState<UIState>(initialState);
-  const { imageId, width, height, rotation } = state;
-  const disabled = loading || !imageId || imageId.trim().length < 1;
+  const [loading, setLoading] = React.useState(false);
+  const [state, setState] = React.useState<UIState>(initialState);
+  const { videoId, width, height, rotation } = state;
+  const disabled = loading || !videoId || videoId.trim().length < 1;
 
-  const items = Object.entries(images).map(([key, value]) => {
-    const { title, imageSrc } = value;
+  const items = Object.entries(videos).map(([key, value]) => {
+    const { title, thumbnailImageUrl, thumbnailVideoUrl, width, height } =
+      value;
     return {
       key,
       title,
-      imageSrc,
-      active: imageId === key,
+      thumbnailImageUrl,
+      thumbnailVideoUrl,
+      active: videoId === key,
       onClick: () => {
         setState((prevState) => {
           return {
             ...prevState,
-            imageId: key,
+            videoId: key,
+            width,
+            height,
           };
         });
       },
     };
   });
 
-  const addOrUpdateImage = useCallback(async () => {
+  const addOrUpdateVideo = React.useCallback(async () => {
     setLoading(true);
     try {
-      if (!images[state.imageId].imageRef) {
-        // Upload local image
-        const imageSrc = images[state.imageId].imageSrc;
+      if (!videos[state.videoId].videoRef) {
+        const item = videos[state.videoId];
         const { ref } = await upload({
-          type: "image",
-          mimeType: "image/jpeg",
-          url: imageSrc,
-          thumbnailUrl: imageSrc,
+          type: "video",
+          mimeType: "video/mp4",
+          url: item.url,
+          thumbnailImageUrl: item.thumbnailImageUrl,
+          thumbnailVideoUrl: item.thumbnailVideoUrl,
           aiDisclosure: "none",
         });
-        images[state.imageId].imageRef = ref;
+        videos[state.videoId].videoRef = ref;
       }
 
       // Add or update app element
@@ -124,7 +125,7 @@ export const App = () => {
     }
   }, [state]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(appElement ? appElement.data : initialState);
     });
@@ -134,25 +135,27 @@ export const App = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
-          This example demonstrates how apps can create image elements inside
+          This example demonstrates how apps can create video elements inside
           app elements. This makes the element re-editable and lets apps control
           additional properties, such as the width and height.
         </Text>
         <FormField
-          label="Select an image"
-          control={({ id }) => (
-            <Box id={id} padding="1u">
-              <Grid columns={3} spacing="1.5u">
+          label="Select a video"
+          control={(props) => (
+            <Box {...props} padding="1u">
+              <Grid columns={2} spacing="1.5u">
                 {items.map((item) => (
-                  <ImageCard
-                    ariaLabel="Add image to design"
-                    alt={item.title}
+                  <VideoCard
+                    ariaLabel={item.title}
+                    mimeType="video/mp4"
                     key={item.key}
-                    thumbnailUrl={item.imageSrc}
+                    thumbnailUrl={item.thumbnailImageUrl}
+                    videoPreviewUrl={item.thumbnailVideoUrl}
                     onClick={item.onClick}
                     selectable={true}
                     selected={item.active}
                     borderRadius="standard"
+                    thumbnailHeight={150}
                   />
                 ))}
               </Grid>
@@ -216,11 +219,11 @@ export const App = () => {
         />
         <Button
           variant="primary"
-          onClick={addOrUpdateImage}
+          onClick={addOrUpdateVideo}
           disabled={disabled}
           stretch
         >
-          Add or update image
+          Add or update video
         </Button>
       </Rows>
     </div>

@@ -2,6 +2,12 @@ import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
 import type { Dimensions, EmbedElement, GroupElement } from "@canva/design";
 import { addPage, getDefaultPageDimensions } from "@canva/design";
 import { CanvaError } from "@canva/error";
+/**
+ * Static images are used here for demonstration purposes only.
+ * In a real app, you should use a CDN/hosting service to host your images,
+ * then upload them to Canva using the `upload` function from the `@canva/asset` package.
+ */
+/* eslint-disable-next-line no-restricted-imports */
 import weather from "assets/images/weather.png";
 import { useState, useEffect } from "react";
 import * as styles from "styles/components.css";
