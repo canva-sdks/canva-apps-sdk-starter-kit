@@ -1,5 +1,12 @@
 # Changelog
 
+## 2024-10-30
+
+### 🔧 Changed
+
+- `@canva/app-ui-kit`
+  - Upgraded `app-ui-kit` to version `4.2.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+
 ## 2024-10-22
 
 ### 🧰 Added
