@@ -1,5 +1,61 @@
 # Changelog
 
+## 2024-11-13
+
+### 🧰 Added
+
+- Added tests for the `TableWrapper` sdk, `utils/tests/table_wrapper.tests.ts`.
+- `eslint`
+
+  - Added arguments to formatjs eslint rules to require string literals for defaultMessage and description.
+    Having variables for defaultMessage and description should not be used because it means formatjs can't generate message ids, and can't extract messages.
+
+    ```jsx
+    // ❌ Not recommended, messages cannot be extracted, and cannot have ids auto-generated.
+    <FormattedMessage defaultMessage={myMessage} .../>
+    //                               ~~~~~~~~~~~
+    // error: "defaultMessage" must be:
+    // - a string literal or
+    // - template literal without variable  eslintformatjs/enforce-default-message
+
+    // ✅ Recommended, messages can be extracted, and have ids auto-generated.
+    <FormattedMessage defaultMessage="My static message" description="My static description"/>
+    ```
+
+    NOTE: If your `FormattedMessage` text should change based on the value of some data,
+    see [this docs section for an example](https://www.canva.dev/docs/apps/localization/#preferred-frontend-localization).
+
+### 🐞 Fixed
+
+- Update `package.json` extract script to use a better file path pattern (`\"src/**/*.{ts,tsx}\"`). The previous path pattern (`src/**/*.{ts,tsx}`) would miss some files.
+
+### 🔧 Changed
+
+- Dependencies audit bringing modules up to date:
+
+```text
+  @canva/design                             2.1.0   →    2.2.1
+  @eslint/js                               9.12.0   →   9.14.0
+  @formatjs/cli                            6.2.12   →    6.3.8
+  @formatjs/ts-transformer                3.13.14   →  3.13.22
+  @types/jest                             29.5.13   →  29.5.14
+  @types/react                            18.3.11   →  18.3.12
+  @typescript-eslint/eslint-plugin          8.9.0   →   8.13.0
+  @typescript-eslint/parser                 8.9.0   →   8.13.0
+  eslint                                   9.12.0   →   9.14.0
+  eslint-plugin-formatjs                    5.0.0   →    5.2.2
+  eslint-plugin-jest                       28.8.3   →   28.9.0
+  eslint-plugin-react                      7.37.1   →   7.37.2
+  globals                                 15.11.0   →  15.12.0
+  mini-css-extract-plugin                   2.9.1   →    2.9.2
+  ts-jest                                  29.2.4   →   29.2.5
+  webpack                                  5.95.0   →   5.96.1
+```
+
+- `@canva/app-ui-kit`
+  - Upgraded `app-ui-kit` to version `4.3.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+  - Updated snapshots in `examples/ui_test`.
+
 ## 2024-10-30
 
 ### 🔧 Changed
