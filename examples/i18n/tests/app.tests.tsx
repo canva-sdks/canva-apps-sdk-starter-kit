@@ -2,7 +2,7 @@ import type { RenderResult } from "@testing-library/react";
 import { fireEvent, render } from "@testing-library/react";
 import { TestAppUiProvider } from "@canva/app-ui-kit";
 import { TestAppI18nProvider } from "@canva/app-i18n-kit";
-import { App, TokenCount } from "../app";
+import { App, CreditUsage } from "../app";
 
 function renderInTestProvider(node: React.ReactNode): RenderResult {
   return render(
@@ -49,18 +49,18 @@ describe("app", () => {
 
   it("Renders token counts consistently 🎉", () => {
     const resultToken0 = renderInTestProvider(
-      <TokenCount used={0} total={25} />,
+      <CreditUsage creditsCost={5} remainingCredits={50} />,
     );
     // The snapshot test can be used to detect unexpected changes in the rendered output.
     expect(resultToken0.container).toMatchSnapshot();
 
     const resultToken1 = renderInTestProvider(
-      <TokenCount used={1} total={25} />,
+      <CreditUsage creditsCost={1} remainingCredits={1} />,
     );
     expect(resultToken1.container).toMatchSnapshot();
 
     const resultToken10 = renderInTestProvider(
-      <TokenCount used={10} total={25} />,
+      <CreditUsage creditsCost={1} remainingCredits={0} />,
     );
     expect(resultToken10.container).toMatchSnapshot();
   });

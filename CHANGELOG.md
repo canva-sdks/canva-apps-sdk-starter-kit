@@ -1,5 +1,13 @@
 # Changelog
 
+## 2024-11-28
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.4.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Upgraded `@canva/app-i18n-kit` to version `1.0.1`
+- Upgraded `react-intl` to version `6.8.7`
+
 ## 2024-11-13
 
 ### 🧰 Added
