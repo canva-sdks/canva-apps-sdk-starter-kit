@@ -27,8 +27,8 @@
     "./examples/*"
   ],
   "dependencies": {
-    "@canva/app-i18n-kit": "^1.0.0",
-    "@canva/app-ui-kit": "^4.3.0",
+    "@canva/app-i18n-kit": "^1.0.1",
+    "@canva/app-ui-kit": "^4.4.0",
     "@canva/asset": "^2.0.0",
     "@canva/design": "^2.2.1",
     "@canva/error": "^2.0.0",
@@ -36,7 +36,7 @@
     "@canva/user": "^2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-intl": "6.6.8"
+    "react-intl": "6.8.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",

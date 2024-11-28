@@ -90,9 +90,9 @@ export const App = ({
           />
         </Text>
         {/* ==================== Plurals ==================== */}
-        <TokenCount used={0} total={25} />
-        <TokenCount used={1} total={25} />
-        <TokenCount used={25} total={25} />
+        <CreditUsage creditsCost={5} remainingCredits={50} />
+        <CreditUsage creditsCost={1} remainingCredits={1} />
+        <CreditUsage creditsCost={1} remainingCredits={0} />
         {/* ==================== Rich Text ==================== */}
         <FormattedMessage
           defaultMessage="Discover stunning AI-generated example images in our <link>gallery</link> and <callToAction>start exploring now!</callToAction>"
@@ -153,23 +153,23 @@ export const App = ({
   );
 };
 
-export const TokenCount = ({
-  used,
-  total,
+export const CreditUsage = ({
+  creditsCost,
+  remainingCredits,
 }: {
-  used: number;
-  total: number;
+  creditsCost: number;
+  remainingCredits: number;
 }) => (
   <Text>
     <FormattedMessage
-      defaultMessage={`You've used {usedTokens, number} {usedTokens, plural,
-      one {token}
-      other {tokens}
-    } out of {totalTokens, number}.`}
-      description="Message that tells the user how many tokens they have used out of the total available"
+      defaultMessage={`Use {creditsCost, number} of {remainingCredits, plural,
+        one {# credit}
+        other {# credits}
+      }`}
+      description="Informs the user about the number of credits they will use for the image generation task. Appears below the image generation button."
       values={{
-        usedTokens: used,
-        totalTokens: total,
+        creditsCost,
+        remainingCredits,
       }}
     />
   </Text>
