@@ -1,16 +1,16 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
-import { readContent } from "@canva/design";
+import { editContent } from "@canva/design";
 import * as styles from "styles/components.css";
 
 export const App = () => {
   const updateFormatting = async () => {
-    readContent(
+    editContent(
       {
         contentType: "richtext",
-        context: "current_page",
+        target: "current_page",
       },
-      async (draft) => {
-        for (const richtext of draft.contents) {
+      async (session) => {
+        for (const richtext of session.contents) {
           const regions = richtext.readTextRegions();
           let index = 0;
           regions.forEach((region) => {
@@ -24,32 +24,32 @@ export const App = () => {
             index = index + region.text.length;
           });
         }
-        await draft.sync();
+        await session.sync();
       },
     );
   };
 
   const appendText = async () => {
-    readContent(
+    editContent(
       {
         contentType: "richtext",
-        context: "current_page",
+        target: "current_page",
       },
-      async (draft) => {
-        draft.contents.forEach((richtext) => richtext.appendText("!"));
-        await draft.sync();
+      async (session) => {
+        session.contents.forEach((richtext) => richtext.appendText("!"));
+        await session.sync();
       },
     );
   };
 
   const replaceText = async () => {
-    readContent(
+    editContent(
       {
         contentType: "richtext",
-        context: "current_page",
+        target: "current_page",
       },
-      async (draft) => {
-        for (const richtext of draft.contents) {
+      async (session) => {
+        for (const richtext of session.contents) {
           const plaintext = richtext.readPlaintext();
           richtext.replaceText(
             { index: 0, length: plaintext.length },
@@ -57,7 +57,7 @@ export const App = () => {
             { decoration: "underline" },
           );
         }
-        await draft.sync();
+        await session.sync();
       },
     );
   };

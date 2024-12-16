@@ -1,9 +1,11 @@
 import formatjs from "eslint-plugin-formatjs";
+import eslintLocalI18nRules from "./eslint-local-i18n-rules/index.mjs";
 
 export default [
   {
     plugins: {
       formatjs,
+      "local-i18n-rules": eslintLocalI18nRules,
     },
     rules: {
       "formatjs/no-invalid-icu": "error",
@@ -33,6 +35,7 @@ export default [
       "formatjs/no-offset": "error",
       "formatjs/blocklist-elements": [2, ["selectordinal"]],
       "formatjs/no-complex-selectors": "error",
+      "local-i18n-rules/enforce-object-property-translation": ["warn"],
     },
   },
 ];

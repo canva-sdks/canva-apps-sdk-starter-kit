@@ -1,0 +1,10 @@
+{
+  "name": "unit_testing",
+  "description": "An example app demonstrating how to mock and test canva packages",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "scripts": {
+    "test": "jest --no-cache --config='../../jest.config.js' unit_testing",
+    "test:watch": "npm run test -- --watch"
+  }
+}

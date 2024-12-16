@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Link,
+  MultilineInput,
   Rows,
   Slider,
   SortIcon,
@@ -148,6 +149,31 @@ export const App = ({
             }}
           />
         </Text>
+        {/* ==================== Multiline Example ==================== */}
+        <Text>
+          <FormattedMessage
+            defaultMessage="This is a multi-line {breakingLine}text example!"
+            description="An example text block that carries over multiple lines."
+            values={{
+              breakingLine: <br />,
+            }}
+          />
+        </Text>
+        <MultilineInput
+          minRows={2}
+          maxRows={2}
+          autoGrow={false}
+          placeholder={intl.formatMessage(
+            {
+              description:
+                "Placeholder text to a MultilineInput that carries over multiple lines.",
+              defaultMessage: `This is a multi {breakingLine}line input example!`,
+            },
+            {
+              breakingLine: "\n",
+            },
+          )}
+        />
       </Rows>
     </div>
   );

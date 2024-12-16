@@ -5,8 +5,8 @@
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
     "cors": "2.8.5",
-    "dotenv": "16.4.5",
-    "express": "4.21.1"
+    "dotenv": "16.4.7",
+    "express": "4.21.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.17"

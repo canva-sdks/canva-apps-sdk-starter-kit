@@ -1,5 +1,61 @@
 # Changelog
 
+## 2024-12-16
+
+### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
+
+- We’re excited to announce that unit testing with the Canva Apps SDK is now simple and straightforward! To learn more, see [Testing apps](https://www.canva.dev/docs/apps/testing/)
+- Added `examples/unit_testing` and updated jest config to demonstrate how to unit test Apps SDK functions with mocks
+
+### 🧰 Added
+
+- Added `.gitattributes` file to enforce consistent LF line endings for text files across all environments. This change ensures cross-platform compatibility and resolves issues with tools like Prettier failing on Windows due to line-ending mismatches.
+
+  The following file types are now normalized to LF line endings `*.css`, `*.ts`, `*.tsx`, `*.json`, `*.js`, and `*.mjs`
+
+- `examples`
+
+  - Added multiline examples to the `i18n` example to demonstrate how to handle multiline messages.
+  - Added a link to the Apps SDK docs for the hello world example
+
+- `conf`
+  - Added local ESLint rule to flag untranslated user-facing strings in object properties, e.g. `{label: "foo"}`.
+
+### 🔨 Breaking changes
+
+- `@canva/design@beta`
+  - Changed `readContent` method name to `editContent` and updated the options it can accept in order to make the API more intuitive. To learn more, see [Querying Content](https://www.canva.dev/docs/apps/querying).
+
+### 🔧 Changed
+
+- Upgraded `@canva/asset` to version `2.1.0`
+- Upgraded `@canva/design` to version `2.3.0`
+- Upgraded `@canva/error` to version `2.1.0`
+- Upgraded `@canva/platform` to version `2.1.0`
+- Upgraded `@canva/user` to version `2.1.0`
+- Renamed `webpack.config.js` to `webpack.config.cjs`
+- Upgraded `@canva/app-i18n-kit` to version `1.0.2`
+- Dependencies audit bringing modules up to date:
+
+```text
+  @eslint/eslintrc                           3.1.0   →    3.2.0
+  @eslint/js                                9.14.0   →   9.16.0
+  @formatjs/cli                              6.3.8   →   6.3.14
+  @formatjs/ts-transformer                 3.13.22   →  3.13.26
+  @testing-library/react                    16.0.1   →   16.1.0
+  @types/node-fetch                         2.6.11   →   2.6.12
+  @typescript-eslint/eslint-plugin          8.13.0   →   8.18.0
+  @typescript-eslint/parser                 8.13.0   →   8.18.0
+  debug                                      4.3.7   →    4.4.0
+  dotenv                                    16.4.5   →   16.4.7
+  eslint                                    9.14.0   →   9.16.0
+  eslint-plugin-formatjs                     5.2.2   →    5.2.8
+  express                                   4.21.1   →   4.21.2
+  globals                                  15.12.0   →  15.13.0
+  prettier                                   3.3.3   →    3.4.2
+  webpack                                   5.96.1   →   5.97.1
+```
+
 ## 2024-11-28
 
 ### 🔧 Changed

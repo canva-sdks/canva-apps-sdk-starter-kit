@@ -10,22 +10,24 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   transform: {
     ".+\\.(css)$": "<rootDir>/node_modules/jest-css-modules-transform",
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        astTransformers: {
+          before: [
+            {
+              path: "@formatjs/ts-transformer/ts-jest-integration",
+              options: {
+                overrideIdFn: "[sha512:contenthash:base64:6]",
+                ast: true,
+              },
+            },
+          ],
+        },
+      },
+    ],
   },
   transformIgnorePatterns: ["node_modules"],
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-  globals: {
-    "ts-jest": {
-      astTransformers: {
-        before: [
-          {
-            path: "@formatjs/ts-transformer/ts-jest-integration",
-            options: {
-              overrideIdFn: "[sha512:contenthash:base64:6]",
-              ast: true,
-            },
-          },
-        ],
-      },
-    },
-  },
+  setupFiles: ["<rootDir>/jest.setup.ts"],
 };

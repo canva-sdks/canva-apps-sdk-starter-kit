@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { Context } from "./context";
 import * as chalk from "chalk";
-import { buildConfig } from "../../webpack.config";
+import { buildConfig } from "../../webpack.config.cjs";
 import * as ngrok from "@ngrok/ngrok";
 import * as nodemon from "nodemon";
 import * as Table from "cli-table3";
