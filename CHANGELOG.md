@@ -1,5 +1,16 @@
 # Changelog
 
+## 2024-12-17
+
+### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
+
+- Previewing is now easier than ever with the `@canva/cli`! Running `npm start` will generate and open a Preview URL in your browser!
+
+### 🧰 Added
+
+- `scripts/start/app_runner.ts`
+  - Generate a Preview URL on app start to preview an app directly within the Canva Editor.
+
 ## 2024-12-16
 
 ### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)

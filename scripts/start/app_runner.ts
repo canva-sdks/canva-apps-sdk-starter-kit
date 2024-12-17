@@ -7,6 +7,8 @@ import * as nodemon from "nodemon";
 import * as Table from "cli-table3";
 import * as webpack from "webpack";
 import * as WebpackDevServer from "webpack-dev-server";
+import * as open from "open";
+import { generatePreviewUrl } from "@canva/cli";
 import type { Certificate } from "../ssl/ssl";
 import { createOrRetrieveCertificate } from "../ssl/ssl";
 
@@ -46,11 +48,17 @@ export class AppRunner {
       }
     }
 
-    const table = new Table();
+    const table = new Table({
+      colWidths: [30, 80],
+      wordWrap: true,
+      wrapOnWordBoundary: true,
+    });
 
     const server = await this.runWebpackDevServer(ctx, table, cert);
 
     await this.maybeRunBackendServer(ctx, table, cert, server);
+
+    await this.generateAndOpenPreviewUrl(table);
 
     console.log(table.toString(), "\n");
 
@@ -160,5 +168,29 @@ export class AppRunner {
     table.push(["Development URL (Frontend)", linkChalk(ctx.frontendUrl)]);
 
     return server;
+  };
+
+  /**
+   * Calls the Canva CLI to generate a preview URL for the app
+   */
+  private readonly generateAndOpenPreviewUrl = async (table: Table.Table) => {
+    const previewCellHeader = { content: "Preview your app in Canva" };
+
+    const generatePreviewResult = await generatePreviewUrl();
+
+    if (!generatePreviewResult.success) {
+      table.push([
+        previewCellHeader,
+        { content: warnChalk(generatePreviewResult.message) },
+      ]);
+      return;
+    }
+
+    table.push([
+      previewCellHeader,
+      { content: "Preview URL", href: generatePreviewResult.data },
+    ]);
+
+    open(generatePreviewResult.data);
   };
 }
