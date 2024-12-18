@@ -17,3 +17,4 @@ jest.mock("@canva/asset");
 jest.mock("@canva/design");
 jest.mock("@canva/platform");
 jest.mock("@canva/user");
+// n.b. @canva/error should not be mocked - use it to simulate API error responses from other mocks by throwing CanvaError

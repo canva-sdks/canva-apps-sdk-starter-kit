@@ -39,7 +39,7 @@
     "react-intl": "6.8.7"
   },
   "devDependencies": {
-    "@canva/cli": "^0.0.1-beta.11",
+    "@canva/cli": ">= 0.0.1-beta.13 < 0.0.2",
     "@eslint/eslintrc": "3.2.0",
     "@eslint/js": "9.16.0",
     "@formatjs/cli": "6.3.14",
