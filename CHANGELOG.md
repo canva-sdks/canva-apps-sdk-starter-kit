@@ -1,5 +1,15 @@
 # Changelog
 
+## 2024-12-18
+
+### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
+
+- Our latest release today is brimming with enhancements, featuring new props added to your favorite components. 🎨 These updates will bring even more sparkle to your Canva Apps!
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.5.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+
 ## 2024-12-17
 
 ### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
@@ -28,6 +38,7 @@
 
   - Added multiline examples to the `i18n` example to demonstrate how to handle multiline messages.
   - Added a link to the Apps SDK docs for the hello world example
+  - Added an example app that uses the [Content Query API](https://www.canva.dev/docs/apps/querying) to translate page content.
 
 - `conf`
   - Added local ESLint rule to flag untranslated user-facing strings in object properties, e.g. `{label: "foo"}`.
