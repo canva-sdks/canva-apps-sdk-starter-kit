@@ -4,7 +4,7 @@
 
 ### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
 
-- We're bringing [@canva/app-components](https://www.npmjs.com/package/@canva/app-components), used for digital management apps, out of beta and into GA! We've also added translations to the package. After your app is translated, the DAM template elements will be translated as well!
+- We're bringing [@canva/app-components](https://www.npmjs.com/package/@canva/app-components), used in the digital management app example, out of beta and into GA! We've also added translations to the package. After your app is translated, the DAM template elements will be translated as well!
 
 ### 🔧 Changed
 
