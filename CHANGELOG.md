@@ -1,5 +1,15 @@
 # Changelog
 
+## 2024-12-19
+
+### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
+
+- We're bringing [@canva/app-components](https://www.npmjs.com/package/@canva/app-components), used for digital management apps, out of beta and into GA! We've also added translations to the package. After your app is translated, the DAM template elements will be translated as well!
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-components` (used in the digital asset management example) to version `1.1.0`
+
 ## 2024-12-18
 
 ### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)
