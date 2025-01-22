@@ -10,7 +10,7 @@ The authentication API makes it easier to adopt the industry-standard OAuth 2, b
 
 Before using this example, you'll need to [configure you provider details](https://www.canva.dev/docs/apps/authenticating-users/oauth/#prerequisite-configure-developer-portal) in the developer portal.
 
-Once this is done, simply run the example from the root of `canva-api-starter-kit` with:
+Once this is done, simply run the example from the root of `canva-apps-sdk-starter-kit` with:
 
 ```sh
 npm start authentication

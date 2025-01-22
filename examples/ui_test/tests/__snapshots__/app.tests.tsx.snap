@@ -10,12 +10,12 @@ exports[`app Renders 🎉 1`] = `
       style="--NZu1Zw: 16px;"
     >
       <p
-        class="D6xAvw E44aNA rU8RQQ"
+        class="aWBg0w aZskFA u16U_g"
       >
         This example demonstrates how to test your App's UI.
       </p>
       <p
-        class="D6xAvw E44aNA rU8RQQ"
+        class="aWBg0w aZskFA u16U_g"
       >
         Checkout 
         <code>
@@ -24,7 +24,7 @@ exports[`app Renders 🎉 1`] = `
          to learn how to start testing.
       </p>
       <button
-        class="_5KtATA LQzFZw xwTbNA _8ERLTg rV61VQ LQzFZw xwTbNA _4_iekA j34Zww aqbYPg _3FvZZg"
+        class="_5KtATA LQzFZw VgvqkQ _8ERLTg rV61VQ LQzFZw VgvqkQ _4_iekA j34Zww aqbYPg _3FvZZg"
         type="button"
       >
         <span
