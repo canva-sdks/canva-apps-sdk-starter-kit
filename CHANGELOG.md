@@ -1,5 +1,30 @@
 # Changelog
 
+## 2025-01-22
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.7.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Moved `webpack.config.cjs` to `webpack.config.ts` for type checking.
+- Updated file name casing to be consistent, and added an elint rule to enforce this
+- Dependencies audit bringing modules up to date:
+
+```text
+  @eslint/js                                9.16.0   →   9.18.0
+  @formatjs/cli                             6.3.14   →   6.3.15
+  @formatjs/ts-transformer                 3.13.26   →  3.13.27
+  @typescript-eslint/eslint-plugin          8.18.0   →   8.20.0
+  @typescript-eslint/parser                 8.18.0   →   8.20.0
+  eslint                                    9.16.0   →   9.18.0
+  eslint-plugin-formatjs                     5.2.8   →    5.2.9
+  eslint-plugin-jest                        28.9.0   →  28.11.0
+  eslint-plugin-react                       7.37.2   →   7.37.4
+  globals                                  15.13.0   →  15.14.0
+  terser-webpack-plugin                     5.3.10   →   5.3.11
+  ts-loader                                  9.5.1   →    9.5.2
+  webpack-dev-server                         5.1.0   →    5.2.0
+```
+
 ## 2024-12-19
 
 ### 🎁 [Developer Christmas](https://community.canva.dev/t/developer-christmas-2024/5492)

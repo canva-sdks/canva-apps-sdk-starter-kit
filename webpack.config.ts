@@ -1,30 +1,33 @@
-require("dotenv").config();
-const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
-const { DefinePlugin, optimize } = require("webpack");
-const chalk = require("chalk");
-const { transform } = require("@formatjs/ts-transformer");
+import type { Configuration } from "webpack";
+import { DefinePlugin, optimize } from "webpack";
+import * as path from "path";
+import * as TerserPlugin from "terser-webpack-plugin";
+import { transform } from "@formatjs/ts-transformer";
+import * as chalk from "chalk";
+import { config } from "dotenv";
+import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
-/**
- *
- * @param {Object} [options]
- * @param {string} [options.appEntry=./src/index.tsx]
- * @param {string} [options.backendHost]
- * @param {Object} [options.devConfig]
- * @param {number} [options.devConfig.port]
- * @param {boolean} [options.devConfig.enableHmr]
- * @param {boolean} [options.devConfig.enableHttps]
- * @param {string} [options.devConfig.appOrigin]
- * @param {string} [options.devConfig.appId] - Deprecated in favour of appOrigin
- * @param {string} [options.devConfig.certFile]
- * @param {string} [options.devConfig.keyFile]
- * @returns {Object}
- */
-function buildConfig({
+config();
+
+type DevConfig = {
+  port: number;
+  enableHmr: boolean;
+  enableHttps: boolean;
+  appOrigin?: string;
+  appId?: string; // Deprecated in favour of appOrigin
+  certFile?: string;
+  keyFile?: string;
+};
+
+export function buildConfig({
   devConfig,
-  appEntry = path.join(__dirname, "src", "index.tsx"),
+  appEntry = path.join(process.cwd(), "src", "index.tsx"),
   backendHost = process.env.CANVA_BACKEND_HOST,
-} = {}) {
+}: {
+  devConfig?: DevConfig;
+  appEntry?: string;
+  backendHost?: string;
+} = {}): Configuration & DevServerConfiguration {
   const mode = devConfig ? "development" : "production";
 
   if (!backendHost) {
@@ -44,17 +47,17 @@ function buildConfig({
 
   return {
     mode,
-    context: path.resolve(__dirname, "./"),
+    context: path.resolve(process.cwd(), "./"),
     entry: {
       app: appEntry,
     },
     target: "web",
     resolve: {
       alias: {
-        assets: path.resolve(__dirname, "assets"),
-        utils: path.resolve(__dirname, "utils"),
-        styles: path.resolve(__dirname, "styles"),
-        src: path.resolve(__dirname, "src"),
+        assets: path.resolve(process.cwd(), "assets"),
+        utils: path.resolve(process.cwd(), "utils"),
+        styles: path.resolve(process.cwd(), "styles"),
+        src: path.resolve(process.cwd(), "src"),
       },
       extensions: [".ts", ".tsx", ".js", ".css", ".svg", ".woff", ".woff2"],
     },
@@ -164,7 +167,7 @@ function buildConfig({
     },
     output: {
       filename: `[name].js`,
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(process.cwd(), "dist"),
       clean: true,
     },
     plugins: [
@@ -173,32 +176,23 @@ function buildConfig({
       }),
       // Apps can only submit a single JS file via the developer portal
       new optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    ],
+    ].filter(Boolean),
     ...buildDevConfig(devConfig),
   };
 }
 
-/**
- *
- * @param {Object} [options]
- * @param {number} [options.port]
- * @param {boolean} [options.enableHmr]
- * @param {boolean} [options.enableHttps]
- * @param {string} [options.appOrigin]
- * @param {string} [options.appId] - Deprecated in favour of appOrigin
- * @param {string} [options.certFile]
- * @param {string} [options.keyFile]
- * @returns {Object|null}
- */
-function buildDevConfig(options) {
+function buildDevConfig(options?: DevConfig): {
+  devtool?: string;
+  devServer?: DevServerConfiguration;
+} {
   if (!options) {
-    return null;
+    return {};
   }
 
   const { port, enableHmr, appOrigin, appId, enableHttps, certFile, keyFile } =
     options;
 
-  let devServer = {
+  let devServer: DevServerConfiguration = {
     server: enableHttps
       ? {
           type: "https",
@@ -217,7 +211,7 @@ function buildDevConfig(options) {
       logging: "verbose",
     },
     static: {
-      directory: path.resolve(__dirname, "assets"),
+      directory: path.resolve(process.cwd(), "assets"),
       publicPath: "/assets",
     },
   };
@@ -265,6 +259,4 @@ function buildDevConfig(options) {
   };
 }
 
-module.exports = () => buildConfig();
-
-module.exports.buildConfig = buildConfig;
+export default buildConfig;

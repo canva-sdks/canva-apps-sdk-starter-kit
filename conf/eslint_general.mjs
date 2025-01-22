@@ -2,6 +2,7 @@ import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jest from "eslint-plugin-jest";
 import react from "eslint-plugin-react";
 import globals from "globals";
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
 
 export default [
   {
@@ -9,6 +10,7 @@ export default [
       "@typescript-eslint": typescriptEslint,
       jest,
       react,
+      unicorn: eslintPluginUnicorn,
     },
     languageOptions: {
       globals: {
@@ -220,6 +222,12 @@ export default [
       "prefer-rest-params": "error",
       "prefer-spread": "error",
       radix: "error",
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "snakeCase",
+        },
+      ],
     },
   },
   {
