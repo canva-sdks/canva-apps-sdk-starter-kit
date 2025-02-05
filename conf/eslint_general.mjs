@@ -180,6 +180,12 @@ export default [
           message:
             "Apps are currently not allowed to open popups, or new tabs via browser APIs. Please use `requestOpenExternalUrl` from `@canva/platform` to link to external URLs. To learn more, see https://www.canva.dev/docs/apps/api/platform-request-open-external-url/",
         },
+        {
+          selector:
+            "MemberExpression[object.name='localStorage'], MemberExpression[object.name='sessionStorage']",
+          message:
+            "Using `localStorage` or `sessionStorage` may not be appropriate for certain types of data, such as sensitive information. If your use case is safe and does not involve storing sensitive data (e.g., access tokens or keys), you can ignore this warning with an eslint-disable comment. Otherwise, seek secure storage alternatives. For more details, refer to the Canva Security Guidelines (https://www.canva.dev/docs/apps/security-guidelines/#store-secrets-securely).",
+        },
       ],
       "no-restricted-imports": [
         "warn",

@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "@canva/app-i18n-kit": "^1.0.2",
-    "@canva/app-ui-kit": "^4.7.0",
+    "@canva/app-ui-kit": "^4.7.1",
     "@canva/asset": "^2.1.0",
     "@canva/design": "^2.3.0",
     "@canva/error": "^2.1.0",

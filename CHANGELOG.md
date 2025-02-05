@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-02-05
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.7.1` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Introduced a new `eslint` rule to prevent using `localStorage` or `sessionStorage` for storing keys or other sensitive information. If these APIs are used for non-sensitive data, the rule can be ignored using an eslint-disable comment.
+
 ## 2025-01-22
 
 ### 🔧 Changed
