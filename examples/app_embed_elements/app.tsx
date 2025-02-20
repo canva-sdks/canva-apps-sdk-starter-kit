@@ -1,4 +1,4 @@
-import { initAppElement } from "@canva/design";
+import { type AppElementOptions, initAppElement } from "@canva/design";
 import {
   Button,
   FormField,
@@ -16,12 +16,20 @@ type AppElementData = {
   height: number;
 };
 
-type UIState = AppElementData;
+// The state of the user interface. In this example,
+// we have data representing AppElementData, but it could be different.
+// We also store an update function that can be used to update the app element.
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
 
-const initialState: UIState = {
-  url: "https://www.youtube.com/watch?v=o-YBDTqX_ZU",
-  width: 640,
-  height: 360,
+const initialState: AppElementChangeEvent = {
+  data: {
+    url: "https://www.youtube.com/watch?v=o-YBDTqX_ZU",
+    width: 640,
+    height: 360,
+  },
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -31,13 +39,22 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = useState<UIState>(initialState);
-  const { url, width, height } = state;
+  const [state, setState] = useState<AppElementChangeEvent>(initialState);
+  const {
+    data: { url, width, height },
+  } = state;
   const disabled = url?.trim().length < 1 || !width || !height;
 
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? {
+              data: appElement.data,
+              update: appElement.update,
+            }
+          : initialState,
+      );
     });
   }, []);
 
@@ -59,7 +76,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    url: value,
+                    data: {
+                      ...prevState.data,
+                      url: value,
+                    },
                   };
                 });
               }}
@@ -77,7 +97,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    width: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      width: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -95,7 +118,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    height: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      height: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -106,11 +132,15 @@ export const App = () => {
           variant="primary"
           stretch
           onClick={() => {
-            appElementClient.addOrUpdateElement(state);
+            if (state.update) {
+              state.update({ data: state.data });
+            } else {
+              appElementClient.addElement({ data: state.data });
+            }
           }}
           disabled={disabled}
         >
-          Add or update element
+          {`${state.update ? "Update" : "Add"} element`}
         </Button>
       </Rows>
     </div>

@@ -1,5 +1,30 @@
 # Changelog
 
+## 2025-02-20
+
+### 🧰 Added
+
+- Added functionality to the start script:
+  - the `preview` flag controls launching the app preview in Canva. Use `npm run start:preview` to automatically open the `PreviewUrl` when you start your app.
+  - the `override-frontend-port` can specify the port number that the frontend server runs on, overriding the `.env` file config.
+  - `scripts/start/tests/start.tests.ts` tests that the script launches correctly
+- `@canva/design`:
+  - Latest version of the App Element API is out of preview and Generally Available. This version enables atomic and predictable operations that are no longer tied current selection. To learn more, see [App Elements](https://www.canva.dev/docs/apps/creating-app-elements/).
+- `examples`
+  - Updated all example apps that use app element API to use the latest version:
+    - `examples/app_element_children`
+    - `examples/app_embed_elements`
+    - `examples/app_image_elements`
+    - `examples/app_shape_elements`
+    - `examples/app_text_elements`
+    - `examples/app_video_elements`
+    - `examples/positioning_elements`
+  - Removed `examples/beta_app_image_elements` as the updated App Element API is now Generally Available and `examples/app_image_elements` has been updated to use the latest API.
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.8.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+
 ## 2025-02-05
 
 ### 🔧 Changed

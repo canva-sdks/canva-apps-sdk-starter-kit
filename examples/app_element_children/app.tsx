@@ -9,6 +9,7 @@ import {
 import type {
   AppElementRendererOutput,
   ShapeElementAtPoint,
+  AppElementOptions,
 } from "@canva/design";
 import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
@@ -24,18 +25,24 @@ type AppElementData = {
   rotation: number;
 };
 
-// The state of the user interface. In this example, this is the same
-// as AppElementData, but it *could* be different.
-type UIState = AppElementData;
+// The state of the user interface. In this example,
+// we have data representing AppElementData, but it *could* be different.
+// We also store an update function that can be used to update the app element.
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
 
 // The default values for the UI components.
-const initialState: UIState = {
-  rows: 3,
-  columns: 3,
-  width: 100,
-  height: 100,
-  spacing: 25,
-  rotation: 0,
+const initialState: AppElementChangeEvent = {
+  data: {
+    rows: 3,
+    columns: 3,
+    width: 100,
+    height: 100,
+    spacing: 25,
+    rotation: 0,
+  },
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -66,8 +73,10 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = useState<UIState>(initialState);
-  const { width, height, rows, columns, spacing, rotation } = state;
+  const [state, setState] = useState<AppElementChangeEvent>(initialState);
+  const {
+    data: { width, height, rows, columns, spacing, rotation },
+  } = state;
   const disabled = width < 1 || height < 1 || rows < 1 || columns < 1;
 
   // This callback runs when the app element's data is modified or when the
@@ -75,7 +84,11 @@ export const App = () => {
   // to update the state of the UI to reflect the latest data.
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? { data: appElement.data, update: appElement.update }
+          : initialState,
+      );
     });
   }, []);
 
@@ -99,7 +112,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    rows: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      rows: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -117,7 +133,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    columns: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      columns: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -135,7 +154,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    spacing: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      spacing: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -154,7 +176,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    width: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      width: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -172,7 +197,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    height: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      height: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -191,7 +219,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    rotation: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      rotation: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -204,11 +235,15 @@ export const App = () => {
           onClick={() => {
             // This method attaches the provided data to the app element,
             // triggering the `registerRenderAppElement` callback.
-            appElementClient.addOrUpdateElement(state);
+            if (state.update) {
+              state.update({ data: state.data });
+            } else {
+              appElementClient.addElement({ data: state.data });
+            }
           }}
           disabled={disabled}
         >
-          Add or update element
+          {`${state.update ? "Update" : "Add"} element`}
         </Button>
       </Rows>
     </div>

@@ -58,7 +58,7 @@ export class AppRunner {
 
     await this.maybeRunBackendServer(ctx, table, cert, server);
 
-    await this.generateAndOpenPreviewUrl(table);
+    await this.generateAndOpenPreviewUrl(ctx.openPreview, table);
 
     console.log(table.toString(), "\n");
 
@@ -173,7 +173,10 @@ export class AppRunner {
   /**
    * Calls the Canva CLI to generate a preview URL for the app
    */
-  private readonly generateAndOpenPreviewUrl = async (table: Table.Table) => {
+  private readonly generateAndOpenPreviewUrl = async (
+    openPreview: boolean,
+    table: Table.Table,
+  ) => {
     const previewCellHeader = { content: "Preview your app in Canva" };
 
     const generatePreviewResult = await generatePreviewUrl();
@@ -191,6 +194,8 @@ export class AppRunner {
       { content: "Preview URL", href: generatePreviewResult.data },
     ]);
 
-    open(generatePreviewResult.data);
+    if (openPreview) {
+      open(generatePreviewResult.data);
+    }
   };
 }

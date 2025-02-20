@@ -10,7 +10,11 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import type { FontWeight, TextAttributes } from "@canva/design";
+import type {
+  AppElementOptions,
+  FontWeight,
+  TextAttributes,
+} from "@canva/design";
 import { initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
 import * as styles from "styles/components.css";
@@ -27,18 +31,23 @@ type AppElementData = {
   useCustomWidth: boolean;
 };
 
-type UIState = AppElementData;
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
 
-const initialState: UIState = {
-  text: "Hello world",
-  color: "#ff0099",
-  fontWeight: "normal",
-  fontStyle: "normal",
-  decoration: "none",
-  textAlign: "start",
-  width: 250,
-  rotation: 0,
-  useCustomWidth: false,
+const initialState: AppElementChangeEvent = {
+  data: {
+    text: "Hello world",
+    color: "#ff0099",
+    fontWeight: "normal",
+    fontStyle: "normal",
+    decoration: "none",
+    textAlign: "start",
+    width: 250,
+    rotation: 0,
+    useCustomWidth: false,
+  },
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -57,25 +66,34 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = useState<UIState>(initialState);
+  const [state, setState] = useState<AppElementChangeEvent>(initialState);
 
   const {
-    text,
-    color,
-    fontWeight,
-    fontStyle,
-    decoration,
-    textAlign,
-    width,
-    rotation,
-    useCustomWidth,
+    data: {
+      text,
+      color,
+      fontWeight,
+      fontStyle,
+      decoration,
+      textAlign,
+      width,
+      rotation,
+      useCustomWidth,
+    },
   } = state;
 
   const disabled = text.trim().length < 1 || color.trim().length < 1;
 
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? {
+              data: appElement.data,
+              update: appElement.update,
+            }
+          : initialState,
+      );
     });
   }, []);
 
@@ -97,7 +115,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    text: value,
+                    data: {
+                      ...prevState.data,
+                      text: value,
+                    },
                   };
                 });
               }}
@@ -114,7 +135,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    color: value,
+                    data: {
+                      ...prevState.data,
+                      color: value,
+                    },
                   };
                 });
               }}
@@ -135,7 +159,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    fontStyle: value,
+                    data: {
+                      ...prevState.data,
+                      fontStyle: value,
+                    },
                   };
                 });
               }}
@@ -163,7 +190,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    fontWeight: value,
+                    data: {
+                      ...prevState.data,
+                      fontWeight: value,
+                    },
                   };
                 });
               }}
@@ -185,7 +215,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    decoration: value,
+                    data: {
+                      ...prevState.data,
+                      decoration: value,
+                    },
                   };
                 });
               }}
@@ -208,7 +241,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    textAlign: value,
+                    data: {
+                      ...prevState.data,
+                      textAlign: value,
+                    },
                   };
                 });
               }}
@@ -236,7 +272,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    useCustomWidth: value,
+                    data: {
+                      ...prevState.data,
+                      useCustomWidth: value,
+                    },
                   };
                 });
               }}
@@ -255,7 +294,10 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      width: Number(value || 1),
+                      data: {
+                        ...prevState.data,
+                        width: Number(value || 1),
+                      },
                     };
                   });
                 }}
@@ -275,7 +317,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    rotation: Number(value || 0),
+                    data: {
+                      ...prevState.data,
+                      rotation: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -285,12 +330,16 @@ export const App = () => {
         <Button
           variant="primary"
           onClick={() => {
-            appElementClient.addOrUpdateElement(state);
+            if (state.update) {
+              state.update({ data: state.data });
+            } else {
+              appElementClient.addElement({ data: state.data });
+            }
           }}
           disabled={disabled}
           stretch
         >
-          Add or update text
+          {`${state.update ? "Update" : "Add"} text`}
         </Button>
       </Rows>
     </div>
