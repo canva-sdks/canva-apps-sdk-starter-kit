@@ -15,7 +15,7 @@ import {
   Select,
   Text,
 } from "@canva/app-ui-kit";
-import type { Placement } from "@canva/design";
+import type { AppElementOptions, Placement } from "@canva/design";
 import {
   addElementAtPoint,
   getCurrentPageContext,
@@ -47,9 +47,10 @@ type AppElementData = {
   imageId: string;
 };
 
-type UIState = AppElementData & {
+type UIState = {
   placement?: ElementPlacement;
-  isEditingAppElement: boolean;
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
 };
 
 const images = {
@@ -71,9 +72,10 @@ const images = {
 };
 
 const initialState: UIState = {
-  imageId: "dog",
+  data: {
+    imageId: "dog",
+  },
   placement: ElementPlacement.DEFAULT,
-  isEditingAppElement: false,
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -103,7 +105,9 @@ export const App = () => {
   );
 
   const [state, setState] = useState<UIState>(initialState);
-  const { imageId } = state;
+  const {
+    data: { imageId },
+  } = state;
   const disabled = !imageId || imageId.trim().length < 1;
 
   const getPlacement = async (
@@ -167,7 +171,10 @@ export const App = () => {
         setState((prevState) => {
           return {
             ...prevState,
-            imageId: key,
+            data: {
+              ...prevState.data,
+              imageId: key,
+            },
           };
         });
       },
@@ -175,46 +182,47 @@ export const App = () => {
   });
 
   const addOrUpdateAppImage = useCallback(async () => {
-    if (!images[state.imageId].imageRef) {
+    if (!images[state.data.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
-        url: images[state.imageId].imageSrc,
-        thumbnailUrl: images[state.imageId].imageSrc,
+        url: images[state.data.imageId].imageSrc,
+        thumbnailUrl: images[state.data.imageId].imageSrc,
         width: 400,
         height: 400,
         aiDisclosure: "none",
       });
-      images[state.imageId].imageRef = ref;
+      images[state.data.imageId].imageRef = ref;
     }
     const placement = await getPlacement(state.placement);
-    await appElementClient.addOrUpdateElement(
-      { imageId: state.imageId },
-      placement,
-    );
+    if (state.update) {
+      state.update({ data: state.data, placement });
+    } else {
+      appElementClient.addElement({ data: state.data, placement });
+    }
   }, [state]);
 
   const addImage = useCallback(async () => {
-    if (!images[state.imageId].imageRef) {
+    if (!images[state.data.imageId].imageRef) {
       // Upload local image
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
-        url: images[state.imageId].imageSrc,
-        thumbnailUrl: images[state.imageId].imageSrc,
+        url: images[state.data.imageId].imageSrc,
+        thumbnailUrl: images[state.data.imageId].imageSrc,
         width: 400,
         height: 400,
         aiDisclosure: "none",
       });
-      images[state.imageId].imageRef = ref;
+      images[state.data.imageId].imageRef = ref;
     }
     const placement = await getPlacement(state.placement);
     await addElementAtPoint({
       type: "image",
-      ref: images[state.imageId].imageRef,
+      ref: images[state.data.imageId].imageRef,
       altText: {
-        text: `photo of a ${images[state.imageId].title}`,
+        text: `photo of a ${images[state.data.imageId].title}`,
         decorative: undefined,
       },
       ...placement,
@@ -227,10 +235,13 @@ export const App = () => {
         return appElement
           ? {
               ...prevState,
-              ...appElement.data,
-              isEditingAppElement: Boolean(appElement.data),
+              data: {
+                ...prevState.data,
+                ...appElement.data,
+              },
+              update: appElement.update,
             }
-          : { ...prevState, isEditingAppElement: false };
+          : { ...prevState, update: undefined };
       });
     });
   }, []);
@@ -294,7 +305,7 @@ export const App = () => {
           // Positioning appElement absolutely is not supported in certain design types such as docs.
           disabled={disabled || !isRequiredFeatureSupported}
         >
-          {state.isEditingAppElement ? "Update app element" : "Add app element"}
+          {state.update ? "Update app element" : "Add app element"}
         </Button>
         <Button
           variant="secondary"

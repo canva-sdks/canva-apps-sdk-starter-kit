@@ -11,7 +11,7 @@ import {
   Text,
   Title,
 } from "@canva/app-ui-kit";
-import { initAppElement } from "@canva/design";
+import { type AppElementOptions, initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
 import * as styles from "styles/components.css";
 
@@ -34,27 +34,32 @@ type AppElementData = {
   rotation: number;
 };
 
-type UIState = AppElementData;
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
 
-const initialState: UIState = {
-  paths: [
-    {
-      d: "M 0 0 H 100 V 100 H 0 L 0 0",
-      fill: {
-        dropTarget: false,
-        color: "#ff0099",
+const initialState: AppElementChangeEvent = {
+  data: {
+    paths: [
+      {
+        d: "M 0 0 H 100 V 100 H 0 L 0 0",
+        fill: {
+          dropTarget: false,
+          color: "#ff0099",
+        },
       },
+    ],
+    viewBox: {
+      width: 100,
+      height: 100,
+      top: 0,
+      left: 0,
     },
-  ],
-  viewBox: {
     width: 100,
     height: 100,
-    top: 0,
-    left: 0,
+    rotation: 0,
   },
-  width: 100,
-  height: 100,
-  rotation: 0,
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -64,13 +69,22 @@ const appElementClient = initAppElement<AppElementData>({
 });
 
 export const App = () => {
-  const [state, setState] = useState<UIState>(initialState);
-  const { paths, viewBox, width, height, rotation } = state;
+  const [state, setState] = useState<AppElementChangeEvent>(initialState);
+  const {
+    data: { paths, viewBox, width, height, rotation },
+  } = state;
   const disabled = paths.length < 1;
 
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? {
+              data: appElement.data,
+              update: appElement.update,
+            }
+          : initialState,
+      );
     });
   }, []);
 
@@ -97,16 +111,19 @@ export const App = () => {
                     setState((prevState) => {
                       return {
                         ...prevState,
-                        paths: [
-                          ...prevState.paths,
-                          {
-                            d: "",
-                            fill: {
-                              dropTarget: false,
-                              color: "#000000",
+                        data: {
+                          ...prevState.data,
+                          paths: [
+                            ...prevState.data.paths,
+                            {
+                              d: "",
+                              fill: {
+                                dropTarget: false,
+                                color: "#000000",
+                              },
                             },
-                          },
-                        ],
+                          ],
+                        },
                       };
                     });
                   }}
@@ -127,15 +144,20 @@ export const App = () => {
                         setState((prevState) => {
                           return {
                             ...prevState,
-                            paths: prevState.paths.map((path, innerIndex) => {
-                              if (outerIndex === innerIndex) {
-                                return {
-                                  ...path,
-                                  d: value,
-                                };
-                              }
-                              return path;
-                            }),
+                            data: {
+                              ...prevState.data,
+                              paths: prevState.data.paths.map(
+                                (path, innerIndex) => {
+                                  if (outerIndex === innerIndex) {
+                                    return {
+                                      ...path,
+                                      d: value,
+                                    };
+                                  }
+                                  return path;
+                                },
+                              ),
+                            },
                           };
                         });
                       }}
@@ -151,18 +173,23 @@ export const App = () => {
                         setState((prevState) => {
                           return {
                             ...prevState,
-                            paths: prevState.paths.map((path, innerIndex) => {
-                              if (outerIndex === innerIndex) {
-                                return {
-                                  ...path,
-                                  fill: {
-                                    ...path.fill,
-                                    color: value,
-                                  },
-                                };
-                              }
-                              return path;
-                            }),
+                            data: {
+                              ...prevState.data,
+                              paths: prevState.data.paths.map(
+                                (path, innerIndex) => {
+                                  if (outerIndex === innerIndex) {
+                                    return {
+                                      ...path,
+                                      fill: {
+                                        ...path.fill,
+                                        color: value,
+                                      },
+                                    };
+                                  }
+                                  return path;
+                                },
+                              ),
+                            },
                           };
                         });
                       }}
@@ -186,9 +213,12 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      viewBox: {
-                        ...prevState.viewBox,
-                        width: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        viewBox: {
+                          ...prevState.data.viewBox,
+                          width: Number(value || 0),
+                        },
                       },
                     };
                   });
@@ -207,9 +237,12 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      viewBox: {
-                        ...prevState.viewBox,
-                        height: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        viewBox: {
+                          ...prevState.data.viewBox,
+                          height: Number(value || 0),
+                        },
                       },
                     };
                   });
@@ -228,9 +261,12 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      viewBox: {
-                        ...prevState.viewBox,
-                        top: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        viewBox: {
+                          ...prevState.data.viewBox,
+                          top: Number(value || 0),
+                        },
                       },
                     };
                   });
@@ -249,9 +285,12 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      viewBox: {
-                        ...prevState.viewBox,
-                        left: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        viewBox: {
+                          ...prevState.data.viewBox,
+                          left: Number(value || 0),
+                        },
                       },
                     };
                   });
@@ -273,7 +312,10 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      width: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        width: Number(value || 0),
+                      },
                     };
                   });
                 }}
@@ -291,7 +333,10 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      height: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        height: Number(value || 0),
+                      },
                     };
                   });
                 }}
@@ -310,7 +355,10 @@ export const App = () => {
                   setState((prevState) => {
                     return {
                       ...prevState,
-                      rotation: Number(value || 0),
+                      data: {
+                        ...prevState.data,
+                        rotation: Number(value || 0),
+                      },
                     };
                   });
                 }}
@@ -331,12 +379,16 @@ export const App = () => {
           <Button
             variant="primary"
             onClick={() => {
-              appElementClient.addOrUpdateElement(state);
+              if (state.update) {
+                state.update({ data: state.data });
+              } else {
+                appElementClient.addElement({ data: state.data });
+              }
             }}
             disabled={disabled}
             stretch
           >
-            Add or update shape
+            {`${state.update ? "Update" : "Add"} shape`}
           </Button>
         </Rows>
       </Rows>

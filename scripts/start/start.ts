@@ -25,6 +25,17 @@ yargs(hideBin(process.argv))
     default:
       process.env.npm_config_use_https?.toLocaleLowerCase().trim() === "true",
   })
+  .option("override-frontend-port", {
+    description:
+      "Port to run the local development server on. Overrides the frontend port set in the .env file.",
+    type: "number",
+    alias: "p",
+  })
+  .option("preview", {
+    description: "Open the app in Canva.",
+    type: "boolean",
+    default: false,
+  })
   .command(
     "$0 [example]",
     "Starts a local development for the app in /src, or an example app if specified",

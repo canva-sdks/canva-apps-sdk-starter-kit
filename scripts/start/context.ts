@@ -5,8 +5,10 @@ import * as path from "path";
 
 type CliArgs = {
   example?: string;
-  useHttps?: boolean;
-  ngrok?: boolean;
+  useHttps: boolean;
+  ngrok: boolean;
+  preview: boolean;
+  overrideFrontendPort?: number;
 };
 
 type EnvVars = {
@@ -59,7 +61,7 @@ export class Context {
   }
 
   get ngrokEnabled() {
-    return !!this.args.ngrok;
+    return this.args.ngrok;
   }
 
   get hmrEnabled() {
@@ -67,7 +69,7 @@ export class Context {
   }
 
   get httpsEnabled() {
-    return !!this.args.useHttps;
+    return this.args.useHttps;
   }
 
   get frontendEntryPath() {
@@ -83,11 +85,11 @@ export class Context {
   }
 
   get frontendUrl() {
-    return `${this.protocol}://localhost:${this.envVars.frontendPort}`;
+    return `${this.protocol}://localhost:${this.frontendPort}`;
   }
 
   get frontendPort() {
-    return this.envVars.frontendPort;
+    return this.args.overrideFrontendPort || this.envVars.frontendPort;
   }
 
   get developerBackendEntryPath(): string | undefined {
@@ -129,6 +131,10 @@ export class Context {
 
   get appId(): string | undefined {
     return this.envVars.appId;
+  }
+
+  get openPreview(): boolean {
+    return this.args.preview;
   }
 
   static get examples(): string[] {

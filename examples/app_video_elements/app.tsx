@@ -8,7 +8,7 @@ import {
   Rows,
   Text,
 } from "@canva/app-ui-kit";
-import { initAppElement } from "@canva/design";
+import { type AppElementOptions, initAppElement } from "@canva/design";
 import React from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
@@ -21,7 +21,10 @@ type AppElementData = {
   rotation: number;
 };
 
-type UIState = AppElementData;
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
 
 const videos = {
   building: {
@@ -48,12 +51,14 @@ const videos = {
   },
 };
 
-const initialState: UIState = {
-  title: "Pinwheel on building",
-  videoId: "building",
-  width: 405,
-  height: 720,
-  rotation: 0,
+const initialState: AppElementChangeEvent = {
+  data: {
+    title: "Pinwheel on building",
+    videoId: "building",
+    width: 405,
+    height: 720,
+    rotation: 0,
+  },
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -76,8 +81,10 @@ const appElementClient = initAppElement<AppElementData>({
 
 export const App = () => {
   const [loading, setLoading] = React.useState(false);
-  const [state, setState] = React.useState<UIState>(initialState);
-  const { videoId, width, height, rotation } = state;
+  const [state, setState] = React.useState<AppElementChangeEvent>(initialState);
+  const {
+    data: { videoId, width, height, rotation },
+  } = state;
   const disabled = loading || !videoId || videoId.trim().length < 1;
 
   const items = Object.entries(videos).map(([key, value]) => {
@@ -93,9 +100,12 @@ export const App = () => {
         setState((prevState) => {
           return {
             ...prevState,
-            videoId: key,
-            width,
-            height,
+            data: {
+              ...prevState.data,
+              videoId: key,
+              width,
+              height,
+            },
           };
         });
       },
@@ -105,8 +115,8 @@ export const App = () => {
   const addOrUpdateVideo = React.useCallback(async () => {
     setLoading(true);
     try {
-      if (!videos[state.videoId].videoRef) {
-        const item = videos[state.videoId];
+      if (!videos[state.data.videoId].videoRef) {
+        const item = videos[state.data.videoId];
         const { ref } = await upload({
           type: "video",
           mimeType: "video/mp4",
@@ -115,11 +125,15 @@ export const App = () => {
           thumbnailVideoUrl: item.thumbnailVideoUrl,
           aiDisclosure: "none",
         });
-        videos[state.videoId].videoRef = ref;
+        videos[state.data.videoId].videoRef = ref;
       }
 
       // Add or update app element
-      await appElementClient.addOrUpdateElement(state);
+      if (state.update) {
+        state.update({ data: state.data });
+      } else {
+        appElementClient.addElement({ data: state.data });
+      }
     } finally {
       setLoading(false);
     }
@@ -127,7 +141,14 @@ export const App = () => {
 
   React.useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? {
+              data: appElement.data,
+              update: appElement.update,
+            }
+          : initialState,
+      );
     });
   }, []);
 
@@ -173,7 +194,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    width: value || 0,
+                    data: {
+                      ...prevState.data,
+                      width: value || 0,
+                    },
                   };
                 });
               }}
@@ -191,7 +215,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    height: value || 0,
+                    data: {
+                      ...prevState.data,
+                      height: value || 0,
+                    },
                   };
                 });
               }}
@@ -210,7 +237,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    rotation: value || 0,
+                    data: {
+                      ...prevState.data,
+                      rotation: value || 0,
+                    },
                   };
                 });
               }}
@@ -223,7 +253,7 @@ export const App = () => {
           disabled={disabled}
           stretch
         >
-          Add or update video
+          {`${state.update ? "Update" : "Add"} video`}
         </Button>
       </Rows>
     </div>

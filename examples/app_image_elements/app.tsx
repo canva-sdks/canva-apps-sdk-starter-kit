@@ -14,7 +14,7 @@ import {
   Rows,
   Text,
 } from "@canva/app-ui-kit";
-import { initAppElement } from "@canva/design";
+import { type AppElementOptions, initAppElement } from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
@@ -32,7 +32,15 @@ type AppElementData = {
   rotation: number;
 };
 
-type UIState = AppElementData;
+type AppElementChangeEvent = {
+  data: AppElementData;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+};
+
+enum Operation {
+  Add,
+  Update,
+}
 
 const images = {
   dog: {
@@ -52,11 +60,8 @@ const images = {
   },
 };
 
-const initialState: UIState = {
-  imageId: "dog",
-  width: 400,
-  height: 400,
-  rotation: 0,
+const initialState: AppElementChangeEvent = {
+  data: { imageId: "dog", width: 400, height: 400, rotation: 0 },
 };
 
 const appElementClient = initAppElement<AppElementData>({
@@ -79,8 +84,10 @@ const appElementClient = initAppElement<AppElementData>({
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
-  const [state, setState] = useState<UIState>(initialState);
-  const { imageId, width, height, rotation } = state;
+  const [state, setState] = useState<AppElementChangeEvent>(initialState);
+  const {
+    data: { imageId, width, height, rotation },
+  } = state;
   const disabled = loading || !imageId || imageId.trim().length < 1;
 
   const items = Object.entries(images).map(([key, value]) => {
@@ -94,39 +101,61 @@ export const App = () => {
         setState((prevState) => {
           return {
             ...prevState,
-            imageId: key,
+            data: {
+              ...prevState.data,
+              imageId: key,
+            },
           };
         });
       },
     };
   });
 
-  const addOrUpdateImage = useCallback(async () => {
-    setLoading(true);
-    try {
-      if (!images[state.imageId].imageRef) {
-        // Upload local image
-        const imageSrc = images[state.imageId].imageSrc;
-        const { ref } = await upload({
-          type: "image",
-          mimeType: "image/jpeg",
-          url: imageSrc,
-          thumbnailUrl: imageSrc,
-          aiDisclosure: "none",
-        });
-        images[state.imageId].imageRef = ref;
-      }
+  const addOrUpdateImage = useCallback(
+    async (operation: Operation) => {
+      setLoading(true);
+      try {
+        if (!images[state.data.imageId].imageRef) {
+          // Upload local image
+          const imageSrc = images[state.data.imageId].imageSrc;
+          const { ref } = await upload({
+            type: "image",
+            mimeType: "image/jpeg",
+            url: imageSrc,
+            thumbnailUrl: imageSrc,
+            aiDisclosure: "none",
+          });
+          images[state.data.imageId].imageRef = ref;
+        }
 
-      // Add or update app element
-      await appElementClient.addOrUpdateElement(state);
-    } finally {
-      setLoading(false);
-    }
-  }, [state]);
+        if (operation === Operation.Add) {
+          await appElementClient.addElement({
+            data: state.data,
+          });
+        } else {
+          if (!state.update) {
+            throw new Error("Update function is not available");
+          }
+          await state.update({
+            data: state.data,
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [state],
+  );
 
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
-      setState(appElement ? appElement.data : initialState);
+      setState(
+        appElement
+          ? {
+              ...appElement,
+            }
+          : initialState,
+      );
     });
   }, []);
 
@@ -170,7 +199,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    width: value || 0,
+                    data: {
+                      ...prevState.data,
+                      width: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -188,7 +220,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    height: value || 0,
+                    data: {
+                      ...prevState.data,
+                      height: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -207,7 +242,10 @@ export const App = () => {
                 setState((prevState) => {
                   return {
                     ...prevState,
-                    rotation: value || 0,
+                    data: {
+                      ...prevState.data,
+                      rotation: Number(value || 0),
+                    },
                   };
                 });
               }}
@@ -216,12 +254,22 @@ export const App = () => {
         />
         <Button
           variant="primary"
-          onClick={addOrUpdateImage}
+          onClick={() => addOrUpdateImage(Operation.Add)}
           disabled={disabled}
           stretch
         >
-          Add or update image
+          Add image
         </Button>
+        {state.update && (
+          <Button
+            variant="primary"
+            onClick={() => addOrUpdateImage(Operation.Update)}
+            disabled={disabled}
+            stretch
+          >
+            Update image
+          </Button>
+        )}
       </Rows>
     </div>
   );

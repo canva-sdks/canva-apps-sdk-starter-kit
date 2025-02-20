@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "ts-node ./scripts/start/start.ts",
+    "start:preview": "npm run start -- --preview",
     "extract": "formatjs extract \"src/**/*.{ts,tsx}\" --out-file dist/messages_en.json",
     "build": "webpack --config webpack.config.ts --mode production && npm run extract",
     "lint:types": "tsc",
@@ -16,7 +17,7 @@
     "format": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js,mjs}' --write",
     "format:check": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js,mjs}' --check",
     "format:file": "prettier $1 --no-config --write",
-    "test": "jest --no-cache",
+    "test": "jest --no-cache --detectOpenHandles",
     "test:watch": "jest --no-cache --watch",
     "postinstall": "ts-node ./scripts/copy_env.ts"
   },
@@ -29,9 +30,9 @@
   ],
   "dependencies": {
     "@canva/app-i18n-kit": "^1.0.2",
-    "@canva/app-ui-kit": "^4.7.1",
+    "@canva/app-ui-kit": "^4.8.0",
     "@canva/asset": "^2.1.0",
-    "@canva/design": "^2.3.0",
+    "@canva/design": "^2.4.0",
     "@canva/error": "^2.1.0",
     "@canva/platform": "^2.1.0",
     "@canva/user": "^2.1.0",
@@ -94,6 +95,7 @@
     "prompts": "2.4.2",
     "style-loader": "4.0.0",
     "terser-webpack-plugin": "5.3.11",
+    "tree-kill": "1.2.2",
     "ts-jest": "29.2.5",
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
