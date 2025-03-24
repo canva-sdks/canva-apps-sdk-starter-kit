@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-03-24
+
+### 🧰 Added
+
+- Added the newly created `@canva/app-eslint-plugin` [library](https://www.npmjs.com/package/@canva/app-eslint-plugin).
+
+### 🗑️ Removed
+
+- Removed local eslint configs and rules in favour of `@canva/app-eslint-plugin`.
+
 ## 2025-02-20
 
 ### 🧰 Added
