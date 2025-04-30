@@ -1,5 +1,19 @@
 # Changelog
 
+## 2025-04-30
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to version `4.9.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
+- Updated `eslint`, `eslint-plugin-unicorn`, and `typescript-eslint`.
+- Updated `@canva/app-eslint-plugin` to `1.0.0-beta.3`
+- `examples/digital_asset_management`:
+  - Upgraded `@canva/app-components` to version `1.3.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-components/changelog/) for the list of changes.
+  - Reinforce i18n eslint rules on `digital_asset_management` app example.
+- Upgraded `@canva/asset` to version `2.2.0` from `2.1.0`
+  - Now supporting `video/x-msvideo` as an allowed MIME type
+- Updated `@canva/design` to version `2.4.1` from `2.4.0` to fix a bug affecting unit tests without mocks.
+
 ## 2025-03-24
 
 ### 🧰 Added

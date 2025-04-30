@@ -17,11 +17,11 @@ export async function generateHash(message: string) {
 }
 
 const imageUrls = [
-  "https://cdn.pixabay.com/photo/2023/09/16/18/26/hummingbird-8257355_1280.jpg",
-  "https://cdn.pixabay.com/photo/2023/12/10/03/00/peacock-8440548_1280.jpg",
-  "https://cdn.pixabay.com/photo/2023/12/20/07/04/mountains-8459056_1280.jpg",
-  "https://cdn.pixabay.com/photo/2023/11/26/07/29/sparrow-8413000_1280.jpg",
-  "https://cdn.pixabay.com/photo/2023/12/12/16/11/mountain-8445543_1280.jpg",
+  "https://images.pexels.com/photos/1495580/pexels-photo-1495580.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  "https://images.pexels.com/photos/3943197/pexels-photo-3943197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  "https://images.pexels.com/photos/7195267/pexels-photo-7195267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  "https://images.pexels.com/photos/2904142/pexels-photo-2904142.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  "https://images.pexels.com/photos/5403478/pexels-photo-5403478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
 ];
 
 export const createDamRouter = () => {
@@ -52,7 +52,7 @@ export const createDamRouter = () => {
     if (types.includes("IMAGE")) {
       resources = await Promise.all(
         Array.from({ length: 40 }, async (_, i) => ({
-          id: await generateHash(imageUrls[i % imageUrls.length]),
+          id: await generateHash(i + ""),
           mimeType: "image/jpeg",
           name: `My new thing in ${locale}`, // Use the `locale` value from the request if your backend supports i18n
           type: "IMAGE",
