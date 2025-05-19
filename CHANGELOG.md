@@ -1,5 +1,11 @@
 # Changelog
 
+## 2025-05-19
+
+### 🧰 Added
+
+- Added `examples/data_connector_intent` as a basic implementation of the data connector intent.
+
 ## 2025-04-30
 
 ### 🔧 Changed

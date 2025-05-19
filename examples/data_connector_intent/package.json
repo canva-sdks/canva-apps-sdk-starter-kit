@@ -1,0 +1,9 @@
+{
+  "name": "data_connector_intent",
+  "description": "An example data connector app",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/intents": "^0.0.0-beta.2"
+  }
+}
