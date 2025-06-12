@@ -1,12 +1,12 @@
 import type {
-  RenderSelectionUiParams,
-  FetchDataTableParams,
-  FetchDataTableResult,
+  RenderSelectionUiRequest,
+  GetDataTableRequest,
+  GetDataTableResponse,
 } from "@canva/intents/data";
 import { prepareDataConnector } from "@canva/intents/data";
 import { Alert, AppUiProvider } from "@canva/app-ui-kit";
 import { createRoot } from "react-dom/client";
-import { DataSelectionUI } from "./data_selection_ui";
+import { SelectionUI } from "./selection_ui";
 import "@canva/app-ui-kit/styles.css";
 import { fetchRealEstateData } from "./data";
 
@@ -18,29 +18,30 @@ prepareDataConnector({
    *
    * This action is called in two scenarios:
    *
-   * - During data selection to preview data before import (when {@link RenderSelectionUiParams.updateDataRef} is called).
+   * - During data selection to preview data before import (when {@link RenderSelectionUiRequest.updateDataRef} is called).
    * - When refreshing previously imported data (when the user requests an update).
    *
-   * @param params - Parameters for the data fetching operation.
+   * @param request - Parameters for the data fetching operation.
    * @returns A promise resolving to either a successful result with data or an error.
    */
-  fetchDataTable: async (
-    params: FetchDataTableParams,
-  ): Promise<FetchDataTableResult> => {
+  getDataTable: async (
+    request: GetDataTableRequest,
+  ): Promise<GetDataTableResponse> => {
     try {
-      const dataTable = await fetchRealEstateData(params);
-      if (dataTable != null) {
-        return {
-          status: "completed",
-          dataTable,
-        };
-      } else {
-        throw new Error();
-      }
+      const dataTable = await fetchRealEstateData(request);
+      return {
+        status: "completed",
+        dataTable,
+        metadata: {
+          description:
+            "Sydney construction project sales in each release stage",
+          providerInfo: { name: "Demo Sales API" },
+        },
+      };
     } catch {
       return {
         status: "app_error",
-        message: `Unknown dataSourceRef "${params.dataSourceRef}"`,
+        message: "Failed to process data request",
       };
     }
   },
@@ -51,13 +52,13 @@ prepareDataConnector({
    * When selection is complete, the implementation must call the `updateDataRef`
    * callback provided in the params to preview and confirm the data selection.
    *
-   * @param params - parameters that provide context and configuration for the data selection UI.
+   * @param request - parameters that provide context and configuration for the data selection UI.
    * Contains invocation context, size limits, and the updateDataRef callback
    */
-  renderSelectionUi: async (params: RenderSelectionUiParams) => {
+  renderSelectionUi: async (request: RenderSelectionUiRequest) => {
     root.render(
       <AppUiProvider>
-        <DataSelectionUI {...params} />
+        <SelectionUI {...request} />
       </AppUiProvider>,
     );
   },
