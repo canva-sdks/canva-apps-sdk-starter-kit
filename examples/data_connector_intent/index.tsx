@@ -14,7 +14,7 @@ const root = createRoot(document.getElementById("root") as Element);
 
 prepareDataConnector({
   /**
-   * Fetches structured data from an external source.
+   * Gets structured data from an external source.
    *
    * This action is called in two scenarios:
    *

@@ -8,7 +8,7 @@
 
 ### 🔧 Changed
 
-- Added the new `@canva/intents` package at version `1.0.0` and updated `examples/data_connector_intent` to match
+- Added the new `@canva/intents` package at version `2.0.0` and updated `examples/data_connector_intent` to match
 
 ## 2025-05-19
 

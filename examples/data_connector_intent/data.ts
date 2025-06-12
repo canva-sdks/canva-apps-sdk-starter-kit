@@ -42,7 +42,7 @@ export const fetchRealEstateData = async (
       const dataTable: DataTable = {
         columnConfigs: [
           {
-            name: "Month",
+            name: "Project",
             type: "string",
           },
           ...selectedStages.map((suburb) => ({
