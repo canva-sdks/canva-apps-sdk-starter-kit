@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-06-12
+
+### 🧰 Added
+
+- [Canva Dev MCP](https://www.canva.dev/blog/developers/canva-dev-mcp-server/) config in `.cursor/mcp.json` `.vscode/mcp.json`.
+
+### 🔧 Changed
+
+- Added the new `@canva/intents` package at version `2.0.0` and updated `examples/data_connector_intent` to match
+
 ## 2025-05-19
 
 ### 🧰 Added
