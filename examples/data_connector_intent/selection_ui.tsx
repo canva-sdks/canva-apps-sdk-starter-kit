@@ -92,7 +92,7 @@ export const SelectionUI = (request: RenderSelectionUiRequest) => {
           <Alert tone="positive" title="Data preview loaded successfully!" />
         )}
         <Text variant="bold">
-          Total construction project sales in each release stage
+          Sydney construction project sales in each release stage
         </Text>
         <Rows spacing="1u">
           <FormField
