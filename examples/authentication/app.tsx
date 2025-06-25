@@ -5,6 +5,8 @@ import {
   Title,
   Text,
   Box,
+  MultilineInput,
+  FormField,
 } from "@canva/app-ui-kit";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import type { AccessTokenResponse } from "@canva/user";
@@ -13,15 +15,20 @@ import * as styles from "styles/components.css";
 
 const scope = new Set(["openid"]);
 
+const BACKEND_URL = `${BACKEND_HOST}/custom-route`;
+
 export function App() {
   // initialize the OAuth client
   const oauth = useMemo(() => auth.initOauth(), []);
 
-  const [accessToken, setAccessToken] = useState<
+  const [accessTokenResponse, setAccessTokenResponse] = useState<
     AccessTokenResponse | undefined
   >(undefined);
   const [error, setError] = useState<string | null>(null);
-  const loading = accessToken === undefined;
+  const loading = accessTokenResponse === undefined;
+  const [responseBody, setResponseBody] = useState<unknown | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     // check if the user is already authenticated
@@ -29,7 +36,7 @@ export function App() {
   }, [oauth]);
 
   const authorize = useCallback(async () => {
-    setAccessToken(undefined);
+    setAccessTokenResponse(undefined);
     setError(null);
     try {
       await oauth.requestAuthorization({ scope });
@@ -43,17 +50,39 @@ export function App() {
   // Canva will handle caching and refreshing the token for you.
   const retrieveAndSetToken = useCallback(async (forceRefresh = false) => {
     try {
-      setAccessToken(await oauth.getAccessToken({ forceRefresh }));
+      setAccessTokenResponse(
+        await oauth.getAccessToken({ forceRefresh, scope }),
+      );
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
     }
   }, []);
 
   const logout = useCallback(async () => {
-    setAccessToken(undefined);
+    setAccessTokenResponse(undefined);
     await oauth.deauthorize();
-    setAccessToken(null);
+    setAccessTokenResponse(null);
   }, []);
+
+  const fetchData = useCallback(async () => {
+    const accessToken = accessTokenResponse?.token;
+    if (!accessToken) {
+      return;
+    }
+
+    try {
+      const res = await fetch(BACKEND_URL, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const data = await res.json();
+      setResponseBody(data);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Unknown error");
+    }
+  }, [accessTokenResponse]);
 
   const result = (
     <div className={styles.scrollContainer}>
@@ -74,7 +103,7 @@ export function App() {
           </Rows>
         ) : loading ? (
           <LoadingIndicator />
-        ) : !accessToken ? (
+        ) : !accessTokenResponse ? (
           <Rows spacing="2u">
             <Title>Sign in required</Title>
             <Text>
@@ -104,6 +133,18 @@ export function App() {
             >
               Log out
             </Button>
+            <Button variant="primary" onClick={fetchData}>
+              Fetch data
+            </Button>
+            {responseBody ? (
+              <FormField
+                label="Response"
+                value={JSON.stringify(responseBody, null, 2)}
+                control={(props) => (
+                  <MultilineInput {...props} maxRows={5} autoGrow readOnly />
+                )}
+              />
+            ) : null}
           </Rows>
         )}
       </Box>

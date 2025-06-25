@@ -1,5 +1,44 @@
 # Changelog
 
+## 2025-06-26
+
+### 🧰 Added
+
+- `@canva/design`
+  - `openDesign`:
+    - `helpers`: New async helper methods `group` and `ungroup`. See the documentation on [PageHelpers](https://www.canva.dev/docs/apps/api/latest/design-types-page-helpers/) for more information.
+- `@canva/design@beta`
+  - Added the [`getDesignMetadata`](https://www.canva.dev/docs/apps/api/preview/design-get-design-metadata/) method, which allows apps to get information about the design.
+- `@canva/platform` updated to version `2.2.0`.
+  - Added the `notification.addToast`: [Notification API](https://www.canva.dev/docs/apps/api/latest/platform-notification-add-toast/) which allows apps to display lightweight toast messages in the Canva editor.
+- `examples`
+  - Added `examples/notification` as a basic implementation of the new `@canva/platform` [`notification.addToast()`](https://www.canva.dev/docs/apps/api/latest/platform-notification-add-toast/) API.
+  - Added `examples/design_metadata` as a basic implementation to demonstrate the new [`getDesignMetadata`](https://www.canva.dev/docs/apps/api/preview/design-get-design-metadata/) method.
+
+### 🔧 Changed
+
+- Upgraded `webpack-dev-server` to version `5.2.2` from `5.2.0` and adjusted the webpack configuration to work with the new version.
+- `@canva/design` updated to version `2.6.0`.
+  - `openDesign`: [Design Editing API](https://www.canva.dev/docs/apps/api/latest/design-open-design/) is out of preview and Generally Available!
+    - `openDesign` function signature change:
+      - Before: `openDesign({ type: 'current_page' }, (draft: { page, save }, helpers) => {})`.
+      - After: `openDesign({ type: 'current_page' }, (session: { page, sync, helpers }) => {})`.
+        - `save` is superseded by `sync`. Unlike `save`, `sync` can be called multiple times as needed.
+    - `page`:
+      - Renamed page type: `fixed` → `absolute`.
+      - New page type: `unsupported`, which represents pages that are not `absolute` (previously `fixed`).
+    - `helpers`:
+      - Renamed `elementBuilder` to `elementStateBuilder`.
+        - `cloneElement` was removed as part of the refactor.
+    - Fills:
+      - `media` and `color` are superseded by `mediaContainer` and `colorContainer`.
+        - Read: `xxxContainer.ref`.
+        - Write: `xxxContainer.set(...)`.
+      - For shape path fills, `isMediaEditable` introduced to indicate editability.
+- `examples`:
+  - Updated `examples/authentication` to better align with the API spec.
+  - Updated `examples/design_editing` to reflect the latest `@canva/design` changes.
+
 ## 2025-06-12
 
 ### 🧰 Added

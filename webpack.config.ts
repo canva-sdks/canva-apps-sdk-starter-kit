@@ -191,6 +191,7 @@ function buildDevConfig(options?: DevConfig): {
 
   const { port, enableHmr, appOrigin, appId, enableHttps, certFile, keyFile } =
     options;
+  const host = "localhost";
 
   let devServer: DevServerConfiguration = {
     server: enableHttps
@@ -202,7 +203,8 @@ function buildDevConfig(options?: DevConfig): {
           },
         }
       : "http",
-    host: "localhost",
+    host,
+    allowedHosts: [host],
     historyApiFallback: {
       rewrites: [{ from: /^\/$/, to: "/app.js" }],
     },
@@ -219,7 +221,7 @@ function buildDevConfig(options?: DevConfig): {
   if (enableHmr && appOrigin) {
     devServer = {
       ...devServer,
-      allowedHosts: new URL(appOrigin).hostname,
+      allowedHosts: [host, new URL(appOrigin).hostname],
       headers: {
         "Access-Control-Allow-Origin": appOrigin,
         "Access-Control-Allow-Credentials": "true",
@@ -237,7 +239,7 @@ function buildDevConfig(options?: DevConfig): {
     const appDomain = `app-${appId.toLowerCase().trim()}.canva-apps.com`;
     devServer = {
       ...devServer,
-      allowedHosts: appDomain,
+      allowedHosts: [host, appDomain],
       headers: {
         "Access-Control-Allow-Origin": `https://${appDomain}`,
         "Access-Control-Allow-Credentials": "true",

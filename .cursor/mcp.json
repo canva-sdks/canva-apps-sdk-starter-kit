@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "canva": {
+      "command": "npx",
+      "args": ["-y", "@canva/cli@latest", "mcp"]
+    }
+  }
+}
