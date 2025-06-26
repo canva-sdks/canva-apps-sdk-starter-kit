@@ -9,6 +9,7 @@
     - `helpers`: New async helper methods `group` and `ungroup`. See the documentation on [PageHelpers](https://www.canva.dev/docs/apps/api/latest/design-types-page-helpers/) for more information.
 - `@canva/design@beta`
   - Added the [`getDesignMetadata`](https://www.canva.dev/docs/apps/api/preview/design-get-design-metadata/) method, which allows apps to get information about the design.
+  - Added a new content type to the [`EditContent`] method, enabling apps to edit image and video fill content within a page.
 - `@canva/platform` updated to version `2.2.0`.
   - Added the `notification.addToast`: [Notification API](https://www.canva.dev/docs/apps/api/latest/platform-notification-add-toast/) which allows apps to display lightweight toast messages in the Canva editor.
 - `examples`
@@ -17,6 +18,7 @@
 
 ### 🔧 Changed
 
+- Upgraded `@canva/app-ui-kit` to version `4.10.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
 - Upgraded `webpack-dev-server` to version `5.2.2` from `5.2.0` and adjusted the webpack configuration to work with the new version.
 - `@canva/design` updated to version `2.6.0`.
   - `openDesign`: [Design Editing API](https://www.canva.dev/docs/apps/api/latest/design-open-design/) is out of preview and Generally Available!
