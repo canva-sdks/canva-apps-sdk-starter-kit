@@ -2,8 +2,8 @@
   "name": "canva-apps-sdk-starter-kit",
   "description": "A boilerplate for creating Canva Apps.",
   "engines": {
-    "node": "^18 || ^20.10.0",
-    "npm": "^9 || ^10"
+    "node": "^18 || ^20.10.0 || ^22",
+    "npm": "^9 || ^10 || ^11"
   },
   "scripts": {
     "start": "ts-node ./scripts/start/start.ts",
@@ -29,21 +29,26 @@
     "./examples/*"
   ],
   "dependencies": {
-    "@canva/app-i18n-kit": "^1.0.2",
+    "@canva/app-i18n-kit": "^1.0.3",
     "@canva/app-ui-kit": "^4.10.0",
-    "@canva/asset": "^2.2.0",
-    "@canva/design": "^2.6.0",
+    "@canva/asset": "^2.2.1",
+    "@canva/design": "^2.6.1",
     "@canva/error": "^2.1.0",
     "@canva/intents": "^2.0.0",
     "@canva/platform": "^2.2.0",
-    "@canva/user": "^2.1.0",
+    "@canva/user": "^2.1.1",
+    "@types/papaparse": "^5.3.16",
+    "@types/qrcode": "^1.5.5",
+    "papaparse": "^5.5.3",
+    "qrcode": "^1.5.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-intl": "6.8.7"
   },
   "devDependencies": {
     "@canva/app-eslint-plugin": "^1.0.0-beta.3",
-    "@canva/cli": ">= 0.0.1-beta.13 < 0.0.2",
+    "@canva/cli": "^0.0.1-beta.34",
+    "@eslint/js": "^9.30.1",
     "@formatjs/cli": "6.3.15",
     "@formatjs/ts-transformer": "3.13.27",
     "@ngrok/ngrok": "1.4.1",
@@ -70,6 +75,12 @@
     "debug": "4.4.0",
     "dotenv": "16.4.7",
     "eslint": "9.23.0",
+    "eslint-plugin-formatjs": "^5.4.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-unicorn": "^59.0.1",
     "exponential-backoff": "3.1.1",
     "express": "4.21.2",
     "express-basic-auth": "1.2.1",
@@ -94,6 +105,7 @@
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "typescript": "5.5.4",
+    "typescript-eslint": "^8.36.0",
     "url-loader": "4.1.1",
     "webpack": "5.97.1",
     "webpack-cli": "5.1.4",
