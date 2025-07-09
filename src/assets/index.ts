@@ -1,0 +1,1 @@
+export { default as bmcQr } from "../../assets/images/bmc_qr.png"; 
