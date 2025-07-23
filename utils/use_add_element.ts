@@ -7,9 +7,9 @@ import type {
   VideoElement,
 } from "@canva/design";
 import { addElementAtCursor, addElementAtPoint } from "@canva/design";
-import { useFeatureSupport } from "./use_feature_support";
 import { features } from "@canva/platform";
 import { useEffect, useState } from "react";
+import { useFeatureSupport } from "./use_feature_support";
 
 type AddElementParams =
   | ImageElement

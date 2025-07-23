@@ -228,24 +228,6 @@ function buildDevConfig(options?: DevConfig): {
         "Access-Control-Allow-Private-Network": "true",
       },
     };
-  } else if (enableHmr && appId) {
-    // Deprecated - App ID should not be used to configure HMR in the future and can be safely removed
-    // after a few months.
-
-    console.warn(
-      "Enabling Hot Module Replacement (HMR) with an App ID is deprecated, please see the README.md on how to update.",
-    );
-
-    const appDomain = `app-${appId.toLowerCase().trim()}.canva-apps.com`;
-    devServer = {
-      ...devServer,
-      allowedHosts: [host, appDomain],
-      headers: {
-        "Access-Control-Allow-Origin": `https://${appDomain}`,
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Private-Network": "true",
-      },
-    };
   } else {
     if (enableHmr && !appOrigin) {
       console.warn(

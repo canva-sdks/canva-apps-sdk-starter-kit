@@ -19,6 +19,6 @@ export default [
       // should be updated:
       "examples/i18n/**/*",
     ],
-    ...canvaPlugin.configs.i18n,
+    ...canvaPlugin.configs.apps_i18n,
   },
 ];

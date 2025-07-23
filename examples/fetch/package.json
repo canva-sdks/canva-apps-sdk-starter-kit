@@ -5,10 +5,10 @@
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
     "cors": "2.8.5",
-    "dotenv": "16.4.7",
+    "dotenv": "16.6.0",
     "express": "4.21.2"
   },
   "devDependencies": {
-    "@types/cors": "2.8.17"
+    "@types/cors": "2.8.19"
   }
 }

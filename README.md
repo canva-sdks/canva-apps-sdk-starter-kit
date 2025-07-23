@@ -83,7 +83,7 @@ To enable HMR:
 
 By default, the development server is not HTTPS-enabled. This is convenient, as there's no need for a security certificate, but it prevents apps from being previewed in Safari.
 
-**Why Safari requires the development server to be HTTPS-enabled?**
+**Why does Safari require the development server to be HTTPS-enabled?**
 
 Canva itself is served via HTTPS and most browsers prevent HTTPS pages from loading scripts via non-HTTPS connections. Chrome and Firefox make exceptions for local servers, such as `localhost`, but Safari does not, so if you're using Safari, the development server must be HTTPS-enabled.
 
