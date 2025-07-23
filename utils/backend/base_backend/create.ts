@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
+import debug from "debug";
 import * as express from "express";
+import type { NextFunction, Request, Response } from "express";
+import * as fs from "fs";
 import * as http from "http";
 import * as https from "https";
-import * as fs from "fs";
-import type { Request, Response, NextFunction } from "express";
-import debug from "debug";
 
 const serverDebug = debug("server");
 

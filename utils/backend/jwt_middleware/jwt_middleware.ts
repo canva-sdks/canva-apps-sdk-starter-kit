@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import * as chalk from "chalk";
 import * as debug from "debug";
-import type { Request, Response, NextFunction } from "express";
-import * as jwt from "jsonwebtoken";
-import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
+import type { NextFunction, Request, Response } from "express";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Express from "express-serve-static-core";
+import * as jwt from "jsonwebtoken";
+import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
 
 /**
  * Prefix your start command with `DEBUG=express:middleware:jwt` to enable debug logging
@@ -110,7 +110,7 @@ export function createJwtMiddleware(
         return sendUnauthorizedResponse(res);
       }
 
-      req.canva = {
+      req["canva"] = {
         appId: payload.aud,
         brandId: payload.brandId,
         userId: payload.userId,

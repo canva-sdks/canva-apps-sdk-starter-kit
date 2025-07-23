@@ -23,7 +23,7 @@
    npm start digital_asset_management
    ```
 
-   This will launch one development server for the frontend and backend
+   This will launch one development server for the frontend and backend.
 
 1. Navigate to your app at `https://www.canva.com/developers/apps`, and click **Preview** to preview the app.
 
@@ -58,7 +58,7 @@ To use ngrok, you'll need to do the following:
 
 This environment variable is available for the current terminal session, so the command must be re-run for each new session. Alternatively, you can add the variable to your terminal's default parameters.
 
-## Step 3: Run the development server with ngrok and add authentication to the app
+## Step 4: Run the development server with ngrok and add authentication to the app
 
 These steps demonstrate how to start the local development server with ngrok.
 
@@ -70,21 +70,19 @@ From the `canva-apps-sdk-starter-kit` directory
    npm start digital_asset_management --ngrok
    ```
 
-2. After ngrok is running, copy your ngrok url
+2. After ngrok is running, copy your ngrok URL
    (e.g. <https://0000-0000.ngrok-free.app>) to the clipboard.
-
    1. Go to your app in the [Developer Portal](https://www.canva.com/developers/apps).
    2. Navigate to the "Add authentication" section of your app.
    3. Check "This app requires authentication"
-   4. In the "Redirect URL" text box, enter your ngrok url followed by `/redirect-url` e.g.
+   4. In the "Redirect URL" text box, enter your ngrok URL followed by `/redirect-url` e.g.
       <https://0000-0000.ngrok-free.app/redirect-url>
-   5. In the "Authentication base URL" text box, enter your ngrok url followed by `/` e.g.
+   5. In the "Authentication base URL" text box, enter your ngrok URL followed by `/` e.g.
       <https://0000-0000.ngrok-free.app/>
       Note: Your ngrok URL changes each time you restart ngrok. Keep these fields up to
       date to ensure your example authentication step will run.
 
 3. Make sure the app is authenticating users by making the following changes:
-
    1. Replace
 
       `router.post("/resources/find", async (req, res) => {`
@@ -114,7 +112,6 @@ From the `canva-apps-sdk-starter-kit` directory
       ```
 
 4. Navigate to your app at `https://www.canva.com/developers/apps`, and click **Preview** to preview the app.
-
    1. A new screen will appear asking if you want to authenticate.
       Press **Connect** to start the authentication flow.
    2. A ngrok screen may appear. If it does, select **Visit Site**

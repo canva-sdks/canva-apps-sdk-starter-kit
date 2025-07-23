@@ -1,6 +1,6 @@
 import { features } from "@canva/platform";
 import type { Feature } from "@canva/platform";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * This hook allows re-rendering of a React component whenever

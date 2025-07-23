@@ -1,28 +1,23 @@
 import type {
   DataTable,
-  DataTableCell,
   DataTableImageUpload,
   DataTableVideoUpload,
   GetDataTableRequest,
 } from "@canva/intents/data";
 
 export const saleStageOptions: string[] = [
-  "Pre-release Stage",
   "Initial Release Stage",
   "Construction Stage",
   "Final Release Stage",
 ];
-
-const MAX_PRICE = 100;
-const MIN_PRICE = 10;
 
 // define the data source structure - the configurable parameters of the data query
 export type RealEstateDataConfig = {
   selectedStageFilter?: string[];
 };
 
-// for a given data source query, fetch the data and build a table
-export const fetchRealEstateData = async (
+// for a given data source query, get the data from the mock API and transform it to DataTable format
+export const getRealEstateData = async (
   request: GetDataTableRequest,
 ): Promise<DataTable> => {
   return new Promise((resolve) => {
@@ -34,51 +29,13 @@ export const fetchRealEstateData = async (
         ? dataRef.selectedStageFilter
         : saleStageOptions;
 
-      // generate random data for the selected suburbs
-      // this would be replaced with a call to an API to fetch the data
-      const projectSales = getStageSales(selectedStages);
+      // get the projects data from the mock API
+      const projects = getProjects();
 
-      // construct the data table output, starting with defining the columns
-      const dataTable: DataTable = {
-        columnConfigs: [
-          {
-            name: "Project",
-            type: "string",
-          },
-          ...selectedStages.map((suburb) => ({
-            name: suburb,
-            type: "number" as const,
-          })),
-          {
-            name: "Media",
-            type: "media",
-          },
-        ],
-        rows: [],
-      };
+      // filter projects based on selected stages and transform to DataTable
+      const dataTable = transformToDataTable(projects, selectedStages);
 
-      // now convert the data into rows and cells for the table
-      projectSales.forEach((project) => {
-        const cells: DataTableCell[] = [
-          { type: "string", value: project.project },
-        ];
-
-        selectedStages.forEach((stage) => {
-          cells.push({
-            type: "number" as const,
-            value: project.sales[stage],
-          });
-        });
-
-        cells.push({
-          type: "media" as const,
-          value: project.media,
-        });
-
-        dataTable.rows.push({ cells });
-      });
-
-      // Ensure we don't exceed the row limit
+      // ensure we don't exceed row limit
       dataTable.rows = dataTable.rows.slice(0, limit.row);
 
       resolve(dataTable);
@@ -86,69 +43,145 @@ export const fetchRealEstateData = async (
   });
 };
 
-// this function generates example data. It is randomised and will be different when the data source is refreshed.
-const getStageSales = (
-  stages: string[],
-): {
-  project: string;
-  sales: Record<string, number>;
+// mock api response structure
+interface RealEstateProject {
+  name: string;
+  initialReleaseStage: number;
+  constructionStage: number;
+  finalReleaseStage: number;
   media: (DataTableImageUpload | DataTableVideoUpload)[];
-}[] => {
-  const generateRandomPrice = () => {
-    return Math.floor(Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE;
-  };
+}
 
-  const randomSales = () => {
-    return stages.reduce(
-      (sales, stage) => {
-        sales[stage] = generateRandomPrice();
-        return sales;
-      },
-      {} as Record<string, number>,
-    );
-  };
+/**
+ * Sample data for real estate projects.
+ * Each project has a name, sales stage values, and media assets.
+ */
+const getProjects = (): RealEstateProject[] => [
+  {
+    name: "The Kensington",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Horizon Hurstville",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Sterling Lane Cove",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Surry Hills Village",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Willoughby Grounds",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Marque Rockdale",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Atrium The Retreat",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+  {
+    name: "Aura by Aqualand",
+    initialReleaseStage: getRandomSalesValue(),
+    constructionStage: getRandomSalesValue(),
+    finalReleaseStage: getRandomSalesValue(),
+    media: staticMediaData,
+  },
+];
 
-  return [
-    "The Kensington",
-    "Horizon Hurstville",
-    "Sterling Lane Cove",
-    "Surry Hills Village",
-    "Willoughby Grounds",
-    "Marque Rockdale",
-    "Atrium The Retreat",
-    "Aura by Aqualand",
-    "Castle Residences",
-    "One Rose",
-    "Spring Garden",
-    "Delano Crows Nest",
-  ].map((project) => {
-    return {
-      project,
-      sales: randomSales(),
-      media: [
-        {
-          type: "video_upload",
-          mimeType: "video/mp4",
-          url: "https://www.canva.dev/example-assets/video-import/video.mp4",
-          thumbnailImageUrl:
-            "https://www.canva.dev/example-assets/video-import/thumbnail-image.jpg",
-          thumbnailVideoUrl:
-            "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
-          width: 405,
-          height: 720,
-          aiDisclosure: "none",
-        },
-        {
-          type: "image_upload",
-          mimeType: "image/jpeg",
-          url: "https://www.canva.dev/example-assets/image-import/image.jpg",
-          thumbnailUrl:
-            "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
-          width: 540,
-          height: 720,
-          aiDisclosure: "none",
-        },
-      ],
-    };
-  });
+// Transform mock api data to DataTable based on selected stages
+const transformToDataTable = (
+  projects: RealEstateProject[],
+  selectedStages: string[],
+): DataTable => {
+  const columnConfigs = [
+    { name: "Project", type: "string" as const },
+    ...(selectedStages.includes("Initial Release Stage")
+      ? [{ name: "Initial Release Stage", type: "number" as const }]
+      : []),
+    ...(selectedStages.includes("Construction Stage")
+      ? [{ name: "Construction Stage", type: "number" as const }]
+      : []),
+    ...(selectedStages.includes("Final Release Stage")
+      ? [{ name: "Final Release Stage", type: "number" as const }]
+      : []),
+    { name: "Media", type: "media" as const },
+  ];
+
+  const rows = projects.map((project) => ({
+    cells: [
+      { type: "string" as const, value: project.name },
+      ...(selectedStages.includes("Initial Release Stage")
+        ? [{ type: "number" as const, value: project.initialReleaseStage }]
+        : []),
+      ...(selectedStages.includes("Construction Stage")
+        ? [{ type: "number" as const, value: project.constructionStage }]
+        : []),
+      ...(selectedStages.includes("Final Release Stage")
+        ? [{ type: "number" as const, value: project.finalReleaseStage }]
+        : []),
+      { type: "media" as const, value: project.media },
+    ],
+  }));
+
+  return { columnConfigs, rows };
 };
+
+// static media data for the projects
+const staticMediaData: (DataTableImageUpload | DataTableVideoUpload)[] = [
+  {
+    type: "video_upload",
+    mimeType: "video/mp4",
+    url: "https://www.canva.dev/example-assets/video-import/video.mp4",
+    thumbnailImageUrl:
+      "https://www.canva.dev/example-assets/video-import/thumbnail-image.jpg",
+    thumbnailVideoUrl:
+      "https://www.canva.dev/example-assets/video-import/thumbnail-video.mp4",
+    width: 405,
+    height: 720,
+    aiDisclosure: "none",
+  },
+  {
+    type: "image_upload",
+    mimeType: "image/jpeg",
+    url: "https://www.canva.dev/example-assets/image-import/image.jpg",
+    thumbnailUrl:
+      "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
+    width: 540,
+    height: 720,
+    aiDisclosure: "none",
+  },
+];
+
+// Helper function to generate random numbers between 10 and 100
+function getRandomSalesValue(): number {
+  const min = 10;
+  const max = 100;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

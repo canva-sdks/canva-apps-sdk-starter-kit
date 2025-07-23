@@ -446,7 +446,7 @@ describe("createJwtMiddleware", () => {
         expect(res.status).not.toHaveBeenCalled();
         expect(res.json).not.toHaveBeenCalled();
 
-        expect(req.canva).toEqual({
+        expect(req["canva"]).toEqual({
           userId: FAKE_USER_ID,
           brandId: FAKE_BRAND_ID,
           appId: FAKE_APP_ID,

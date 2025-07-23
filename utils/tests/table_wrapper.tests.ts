@@ -1,5 +1,5 @@
-import { TableWrapper } from "../table_wrapper";
 import type { Cell, TableElement } from "@canva/design";
+import { TableWrapper } from "../table_wrapper";
 
 describe("TableWrapper", () => {
   describe("create", () => {

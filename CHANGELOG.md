@@ -1,5 +1,45 @@
 # Changelog
 
+## 2025-07-23
+
+### 🐞 Fixed
+
+- Fixed the `eslint.config.mjs` file to use the correct `apps_i18n` config.
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to version `2.7.0`, [`getDesignMetadata`](https://www.canva.dev/docs/apps/api/latest/design-get-design-metadata/) method is now generally available.
+- Upgraded `@canva/asset` to version `2.2.1`, changes includes TSDoc improvements.
+- Upgraded `@canva/user` to version `2.1.1`, changes includes TSDoc improvements.
+- Upgraded `@canva/app-i18n-kit` to version `1.0.3`.
+- Improved code organization by sorting imports consistently across all files.
+- `examples`
+  - Simplify `examples/data_connector_intent` by refactoring to use static data structure.
+- Dependencies audit bringing modules up to date:
+
+```text
+  @formatjs/cli                             6.3.15   ->   6.7.2
+  @formatjs/ts-transformer                 3.13.27   ->   3.14.0
+  @ngrok/ngrok                               1.4.1   ->   1.5.1
+  @testing-library/react                    16.1.0   ->   16.3.0
+  @types/jsonwebtoken                        9.0.7   ->   9.0.10
+  @types/node                              20.10.0   ->   20.19.2
+  @types/webpack-env                        1.18.5   ->   1.18.8
+  cssnano                                    7.0.6   ->   7.0.7
+  debug                                      4.4.0   ->   4.4.1
+  dotenv                                    16.4.7   ->   16.6.0
+  eslint                                    9.23.0   ->   9.29.0
+  exponential-backoff                        3.1.1   ->   3.1.2
+  globals                                  15.14.0   ->   16.2.0
+  jwks-rsa                                   3.1.0   ->   3.2.0
+  prettier                                   3.4.2   ->   3.6.1
+  terser-webpack-plugin                     5.3.11   ->   5.3.14
+  ts-jest                                   29.2.5   ->   29.4.0
+  typescript                                 5.5.4   ->   5.8.2
+  webpack                                   5.97.1   ->   5.99.9
+  webpack-cli                                5.1.4   ->   6.0.1
+```
+
 ## 2025-06-26
 
 ### 🧰 Added
@@ -9,7 +49,7 @@
     - `helpers`: New async helper methods `group` and `ungroup`. See the documentation on [PageHelpers](https://www.canva.dev/docs/apps/api/latest/design-types-page-helpers/) for more information.
 - `@canva/design@beta`
   - Added the [`getDesignMetadata`](https://www.canva.dev/docs/apps/api/preview/design-get-design-metadata/) method, which allows apps to get information about the design.
-  - Added a new content type to the [`EditContent`] method, enabling apps to edit image and video fill content within a page.
+  - Added a new content type to the [`EditContent`](https://www.canva.dev/docs/apps/api/preview/design-edit-content/) method, enabling apps to edit image and video fill content within a page.
 - `@canva/platform` updated to version `2.2.0`.
   - Added the `notification.addToast`: [Notification API](https://www.canva.dev/docs/apps/api/latest/platform-notification-add-toast/) which allows apps to display lightweight toast messages in the Canva editor.
 - `examples`
@@ -119,7 +159,7 @@
 
 - Upgraded `@canva/app-ui-kit` to version `4.7.0` Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/) for the list of changes.
 - Moved `webpack.config.cjs` to `webpack.config.ts` for type checking.
-- Updated file name casing to be consistent, and added an elint rule to enforce this
+- Updated file name casing to be consistent, and added an eslint rule to enforce this
 - Dependencies audit bringing modules up to date:
 
 ```text
@@ -199,7 +239,6 @@
   The following file types are now normalized to LF line endings `*.css`, `*.ts`, `*.tsx`, `*.json`, `*.js`, and `*.mjs`
 
 - `examples`
-
   - Added multiline examples to the `i18n` example to demonstrate how to handle multiline messages.
   - Added a link to the Apps SDK docs for the hello world example
   - Added an example app that uses the [Content Query API](https://www.canva.dev/docs/apps/querying) to translate page content.
@@ -256,7 +295,6 @@
 
 - Added tests for the `TableWrapper` sdk, `utils/tests/table_wrapper.tests.ts`.
 - `eslint`
-
   - Added arguments to formatjs eslint rules to require string literals for defaultMessage and description.
     Having variables for defaultMessage and description should not be used because it means formatjs can't generate message ids, and can't extract messages.
 
@@ -322,7 +360,6 @@
   - Added an example to demonstrate [adding an app-controlled videos](https://www.canva.dev/docs/apps/creating-app-elements/) in `examples/app_video_elements`.
 - Added a `.prettierrc` config file to introduce some consistency across the Starter Kit repo, for developers who have forked this repo for their own projects are welcome to adjust to their own liking and preferences.
 - `eslint`
-
   - Added arguments to the `formatjs/no-literal-string-in-jsx` rule to include App UI Kit props that should be localized (e.g. ariaLabel now is highlighted if developers are not using the recommend `react-intl` messaging pattern).
 
     ```jsx
@@ -529,7 +566,6 @@
 ### 🗑️ Removed
 
 - `@canva/preview`:
-
   - Removed `/sdk/preview`, as all of our preview SDKs are now published to NPM with an `@beta` tag. e.g. to install the preview `@canva/design` SDK, run the following command
 
     ```bash
@@ -561,7 +597,6 @@
 ### 🧰 Added
 
 - `@canva/asset`
-
   - Upgraded to version `1.7.0` which has the following changes:
     - Added [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors) which was previously in beta.
     - Added selectedColor prop to [asset.openColorSelector](https://www.canva.dev/docs/apps/using-color-selectors/#optional-step-5-handle-multiple-colors)
@@ -718,7 +753,6 @@
 ### 🔧 Changed
 
 - `@canva/preview`
-
   - Update typings to [appProcess](http://canva.dev/docs/apps/api/platform-app-process/) API methods including `setOnDispose`, `registerOnMessage` and `requestClose`.
 
 - Updated `@canva/app-components` version in digital_asset_management example.
@@ -833,7 +867,6 @@
 - `@canva/preview/asset`
   - Updated `requestFontSelection` and `findFonts` to `public`.
 - `@canva/app-ui-kit`
-
   - Upgraded `app-ui-kit` to version `3.3.0`. Please see the [changelog](https://www.canva.dev/docs/apps/app-ui-kit/changelog/).
 
 - Swapped out the community maintained `ngrok` package with the official `@ngrok/ngrok` SDK.
@@ -857,7 +890,6 @@
   For more information, refer to our docs on [Supporting drag-and-drop](https://www.canva.dev/docs/apps/supporting-drag-drop/).
 
 - Removed references to the now deleted `components` directory from the following files:
-
   - `tsconfig.json`
   - `webpack.config.js`
   - `package.json`
@@ -935,7 +967,6 @@
     - [@canva/user](https://www.npmjs.com/package/@canva/user)
   - Dependencies in [package.json](./package.json) were changed to use the NPM registry accordingly.
 - Updated node version in [.nvmrc](.nvmrc) to LTS version of [v20.10.0](https://nodejs.org/en/blog/release/v20.10.0)
-
   - Run the below command at the repo root to upgrade via [nvm](https://github.com/nvm-sh/nvm#intro)
 
     ```bash

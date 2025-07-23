@@ -8,7 +8,7 @@ import { Alert, AppUiProvider } from "@canva/app-ui-kit";
 import { createRoot } from "react-dom/client";
 import { SelectionUI } from "./selection_ui";
 import "@canva/app-ui-kit/styles.css";
-import { fetchRealEstateData } from "./data";
+import { getRealEstateData } from "./data";
 
 const root = createRoot(document.getElementById("root") as Element);
 
@@ -28,7 +28,7 @@ prepareDataConnector({
     request: GetDataTableRequest,
   ): Promise<GetDataTableResponse> => {
     try {
-      const dataTable = await fetchRealEstateData(request);
+      const dataTable = await getRealEstateData(request);
       return {
         status: "completed",
         dataTable,
