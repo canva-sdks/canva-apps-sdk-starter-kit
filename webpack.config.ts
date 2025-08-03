@@ -175,6 +175,7 @@ export function buildConfig({
         BACKEND_HOST: JSON.stringify(backendHost),
         "process.env.AGENCY_CLIENT_ID": JSON.stringify(process.env.AGENCY_CLIENT_ID),
         "process.env.AGENCY_CLIENT_SECRET": JSON.stringify(process.env.AGENCY_CLIENT_SECRET),
+        "process.env.AZURE_TENANT_ID": JSON.stringify(process.env.AZURE_TENANT_ID),
       }),
       // Apps can only submit a single JS file via the developer portal
       new optimize.LimitChunkCountPlugin({ maxChunks: 1 }),

@@ -1,4 +1,8 @@
 import { auth } from "@canva/user";
+import type { AccessTokenResponse } from "@canva/user";
+
+const oauth = auth.initOauth();
+const scope = new Set(["openid"]);
 
 interface UserProfile {
   id: string;
@@ -17,8 +21,6 @@ interface MicrosoftAuthState {
 
 class MicrosoftAuthService {
   private static instance: MicrosoftAuthService;
-  private oauth: ReturnType<typeof auth.initOauth>;
-  private scope = new Set(["openid", "profile", "email", "User.Read"]);
   private state: MicrosoftAuthState = {
     isAuthenticated: false,
     user: null,
@@ -29,7 +31,6 @@ class MicrosoftAuthService {
   private listeners: ((state: MicrosoftAuthState) => void)[] = [];
 
   private constructor() {
-    this.oauth = auth.initOauth();
     this.initialize();
   }
 
@@ -40,15 +41,10 @@ class MicrosoftAuthService {
     return MicrosoftAuthService.instance;
   }
 
-  /**
-   * Subscribe to authentication state changes
-   */
   subscribe(listener: (state: MicrosoftAuthState) => void): () => void {
     this.listeners.push(listener);
-    // Call immediately with current state
     listener(this.state);
     
-    // Return unsubscribe function
     return () => {
       const index = this.listeners.indexOf(listener);
       if (index > -1) {
@@ -57,17 +53,11 @@ class MicrosoftAuthService {
     };
   }
 
-  /**
-   * Update state and notify listeners
-   */
   private setState(updates: Partial<MicrosoftAuthState>): void {
     this.state = { ...this.state, ...updates };
     this.listeners.forEach(listener => listener(this.state));
   }
 
-  /**
-   * Initialize authentication state
-   */
   private async initialize(): Promise<void> {
     try {
       this.setState({ loading: true, error: null });
@@ -83,23 +73,27 @@ class MicrosoftAuthService {
     }
   }
 
-  /**
-   * Check if user is already authenticated
-   */
   private async checkExistingAuth(): Promise<void> {
     try {
-      const tokenResponse = await this.oauth.getAccessToken({ 
-        scope: this.scope,
+      const tokenResponse = await oauth.getAccessToken({ 
+        scope,
         forceRefresh: false 
       });
 
       if (tokenResponse && tokenResponse.token) {
-        await this.fetchUserProfile(tokenResponse.token);
+        const basicUser: UserProfile = {
+          id: "microsoft-user",
+          displayName: "Microsoft User",
+          mail: "",
+          userPrincipalName: "user@microsoft.com"
+        };
+        
         this.setState({
           loading: false,
           error: null,
           isAuthenticated: true,
           accessToken: tokenResponse.token,
+          user: basicUser
         });
       } else {
         this.setState({
@@ -110,7 +104,7 @@ class MicrosoftAuthService {
           accessToken: null,
         });
       }
-    } catch {
+    } catch (error) {
       this.setState({
         loading: false,
         error: null,
@@ -121,61 +115,15 @@ class MicrosoftAuthService {
     }
   }
 
-  /**
-   * Fetch user profile from Microsoft Graph API
-   */
-  private async fetchUserProfile(accessToken: string): Promise<void> {
-    try {
-      const response = await fetch("https://graph.microsoft.com/v1.0/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch user profile: ${response.statusText}`);
-      }
-
-      const userProfile: UserProfile = await response.json();
-      this.setState({ user: userProfile });
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error.message : "Failed to fetch user profile",
-        user: null,
-      });
-    }
-  }
-
-  /**
-   * Initiate Microsoft OAuth login
-   */
   async login(): Promise<void> {
     try {
       this.setState({ loading: true, error: null });
-
-      // Request authorization from Microsoft
-      await this.oauth.requestAuthorization({ scope: this.scope });
-
-      // Get the access token
-      const tokenResponse = await this.oauth.getAccessToken({ 
-        scope: this.scope,
-        forceRefresh: true 
-      });
-
-      if (!tokenResponse || !tokenResponse.token) {
-        throw new Error("Failed to obtain access token");
+      
+      const authorizeResponse = await oauth.requestAuthorization({ scope });
+      
+      if (authorizeResponse.status === "completed") {
+        await this.retrieveAndSetToken({ forceRefresh: true });
       }
-
-      // Fetch user profile
-      await this.fetchUserProfile(tokenResponse.token);
-
-      this.setState({
-        loading: false,
-        error: null,
-        isAuthenticated: true,
-        accessToken: tokenResponse.token,
-      });
     } catch (error) {
       this.setState({
         loading: false,
@@ -188,14 +136,38 @@ class MicrosoftAuthService {
     }
   }
 
-  /**
-   * Logout user
-   */
+  private async retrieveAndSetToken({ forceRefresh = false } = {}): Promise<void> {
+    try {
+      const accessTokenResponse = await oauth.getAccessToken({ scope, forceRefresh });
+      
+      if (accessTokenResponse && accessTokenResponse.token) {
+        const basicUser: UserProfile = {
+          id: "microsoft-user",
+          displayName: "Microsoft User",
+          mail: "",
+          userPrincipalName: "user@microsoft.com"
+        };
+        
+        this.setState({
+          loading: false,
+          error: null,
+          isAuthenticated: true,
+          accessToken: accessTokenResponse.token,
+          user: basicUser,
+        });
+      } else {
+        throw new Error("No access token received");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async logout(): Promise<void> {
     try {
       this.setState({ loading: true, error: null });
       
-      await this.oauth.deauthorize();
+      await oauth.deauthorize();
       
       this.setState({
         loading: false,
@@ -213,20 +185,14 @@ class MicrosoftAuthService {
     }
   }
 
-  /**
-   * Get current authentication state
-   */
   getState(): MicrosoftAuthState {
     return { ...this.state };
   }
 
-  /**
-   * Get current access token (refreshes if needed)
-   */
   async getAccessToken(): Promise<string | null> {
     try {
-      const tokenResponse = await this.oauth.getAccessToken({ 
-        scope: this.scope,
+      const tokenResponse = await oauth.getAccessToken({ 
+        scope,
         forceRefresh: false 
       });
       
@@ -236,21 +202,15 @@ class MicrosoftAuthService {
       }
       
       return null;
-    } catch {
+    } catch (error) {
       return null;
     }
   }
 
-  /**
-   * Check if user is authenticated
-   */
   isAuthenticated(): boolean {
     return this.state.isAuthenticated;
   }
 
-  /**
-   * Get current user
-   */
   getCurrentUser(): UserProfile | null {
     return this.state.user;
   }
