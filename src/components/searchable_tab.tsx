@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
   Rows,
   SearchInputMenu,
@@ -10,6 +10,13 @@ import {
   Text,
   ImageCard,
   LoadingIndicator,
+  Box,
+  Title,
+  Checkbox,
+  Select,
+  TypographyCard,
+  Masonry,
+  MasonryItem
 } from "@canva/app-ui-kit";
 import { useAddElement } from "utils/use_add_element";
 import { useSelection } from "utils/use_selection_hook";
@@ -32,16 +39,23 @@ interface DetailedData {
     field: string;
     value: string;
   }[];
+  marketData?: {
+    house: Record<string, unknown>;
+    unit: Record<string, unknown>;
+    labels: Array<{ property: string; label: string; format: string }>;
+  };
 }
 
 interface SearchableTabProps {
   endpoint: string;
   tabName: string;
+  userEmail?: string;
 }
 
 export const SearchableTab: React.FC<SearchableTabProps> = ({
   endpoint,
   tabName,
+  userEmail,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -50,12 +64,59 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   const [loading, setLoading] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  
+  // Filter states for listings
+  const [onlyMyOffice, setOnlyMyOffice] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
+  
+  // Metric search state for market data
+  const [metricSearchQuery, setMetricSearchQuery] = useState("");
+  
+  // Refs for managing search debouncing and cancellation
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currentSearchController = useRef<AbortController | null>(null);
 
   const addElement = useAddElement();
   const textSelection = useSelection("plaintext");
   const imageSelection = useSelection("image");
   const intl = useIntl();
   const apiClient = ApiClient.getInstance();
+
+  // Default metrics to display for market data
+  const defaultMetrics = [
+    "median_price_12_months",
+    "sales_12_months", 
+    "change_12m_median_price_12_months"
+  ];
+
+  // Helper function to get default metrics
+  const getDefaultMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
+    if (!labels) return [];
+    return labels.filter(label => defaultMetrics.includes(label.property));
+  }, []);
+
+  // Helper function to get searched metrics
+  const getSearchedMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
+    if (!labels || !metricSearchQuery.trim()) return [];
+    
+    const searchTerm = metricSearchQuery.toLowerCase();
+    return labels.filter(label => 
+      !defaultMetrics.includes(label.property) && 
+      label.label.toLowerCase().includes(searchTerm)
+    );
+  }, [metricSearchQuery]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+      if (currentSearchController.current) {
+        currentSearchController.current.abort();
+      }
+    };
+  }, []);
 
   const searchAPI = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -64,50 +125,138 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       return;
     }
 
+    // Cancel any existing search request
+    if (currentSearchController.current) {
+      currentSearchController.current.abort();
+    }
+
+    // Create new AbortController for this request
+    const controller = new AbortController();
+    currentSearchController.current = controller;
+
     setLoading(true);
     try {
-      // Use the authenticated API client
-      const response = await apiClient.search(endpoint, query);
+      // Use the new search endpoints
+      let searchEndpoint = "";
+      if (endpoint === "listings") {
+        searchEndpoint = "/listings/search";
+      } else if (endpoint === "market-data") {
+        searchEndpoint = "/market/search";
+      }
+
+      // Build query parameters
+      const params = new URLSearchParams();
+      params.append("search", query);
       
-      if (!response.success) {
-        // API error - silently fail and show no results
+      // Add filters for listings endpoint
+      if (endpoint === "listings") {
+        if (onlyMyOffice && userEmail) {
+          params.append("agent", userEmail);
+        }
+        if (statusFilter !== "all") {
+          params.append("status", statusFilter);
+        }
+      }
+
+      // Make GET request with search parameter and abort signal
+      const baseUrl = "https://api.theagencymiddleware.io/v1";
+      const authStatus = apiClient.getAuthStatus();
+      
+      const response = await fetch(`${baseUrl}${searchEndpoint}?${params.toString()}`, {
+        method: "GET",
+        signal: controller.signal,
+        headers: {
+          "Authorization": `Bearer ${authStatus.currentToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Check if request was aborted
+      if (controller.signal.aborted) {
+        return;
+      }
+
+      if (!response.ok) {
         setSearchResults([]);
         setShowResults(false);
         return;
       }
 
-      const data = response.data as any;
-      
-      // Get results array from the 'result' property (same as agent search)
+      const responseData = await response.json();
+      const data = responseData as any;
       let resultArray: Record<string, unknown>[] = [];
       
       if (data?.result && Array.isArray(data.result)) {
         resultArray = data.result;
       }
       
-      // Transform search response to SearchResult format (basic info only)
-      const results: SearchResult[] = resultArray.map((item: Record<string, unknown>, index: number) => ({
-        id: (item.id as string) || (item._id as string) || `result-${index}`,
-        displayValue: (item.name as string) || (item.displayName as string) || (item.title as string) || "Unknown",
-        data: item,
-      }));
+      // Check again if request was aborted before processing results
+      if (controller.signal.aborted) {
+        return;
+      }
 
-      setSearchResults(results);
-      setShowResults(true);
-    } catch {
-      // API error - silently fail and show no results
-      setSearchResults([]);
-      setShowResults(false);
+      // Transform search response based on endpoint type
+      const results: SearchResult[] = resultArray.map((item: Record<string, unknown>, index: number) => {
+        let id = "";
+        let displayValue = "";
+
+        if (endpoint === "listings") {
+          // Use external_id for listings
+          id = (item.external_id as string) || (item.id as string) || `result-${index}`;
+          const address = (item.address as string) || "Unknown Address";
+          const status = (item.status as string) || "";
+          displayValue = status ? `${address} (${status})` : address;
+        } else if (endpoint === "market-data") {
+          // Use suburbpostcode directly from the response
+          const suburbPostcode = item.suburbpostcode as string || "";
+          id = suburbPostcode || `result-${index}`;
+          displayValue = suburbPostcode || "Unknown Location";
+        }
+
+        return {
+          id,
+          displayValue,
+          data: item,
+        };
+      });
+
+      // Final check before setting results
+      if (!controller.signal.aborted) {
+        setSearchResults(results);
+        setShowResults(true);
+      }
+    } catch (error: any) {
+      // Don't show error if request was aborted
+      if (error.name !== 'AbortError' && !controller.signal.aborted) {
+        setSearchResults([]);
+        setShowResults(false);
+      }
     } finally {
-      setLoading(false);
+      // Only update loading state if this is still the current request
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
-  }, [endpoint, apiClient]);
+  }, [endpoint, apiClient, onlyMyOffice, userEmail, statusFilter]);
 
   const fetchDetailedData = useCallback(async (result: SearchResult) => {
     setLoadingDetails(true);
     try {
-      // Use the detailed data endpoint (same endpoint with item ID)
-      const response = await apiClient.getDetails(endpoint, result.id);
+      let detailEndpoint = "";
+      let params = "";
+
+      if (endpoint === "listings") {
+        detailEndpoint = "/listings/data";
+        params = `listing_id=${encodeURIComponent(result.id)}`;
+      } else if (endpoint === "market-data") {
+        detailEndpoint = "/market/data";
+        params = `suburbpostcode=${encodeURIComponent(result.id)}`;
+      }
+
+      const response = await apiClient.customRequest(
+        `${detailEndpoint}?${params}`,
+        "GET"
+      );
       
       if (!response.success) {
         setDetailedData(null);
@@ -116,27 +265,78 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
       const data = response.data as any;
       const itemData = data?.result || data || {};
+      
+      // Check if this is market data (has output property with house/unit/labels)
+      if (endpoint === "market-data" && itemData.output) {
+        const output = itemData.output;
+        if (output.house && output.unit && output.labels) {
+          // Special handling for market data
+          setDetailedData({
+            marketData: {
+              house: output.house,
+              unit: output.unit,
+              labels: output.labels,
+            }
+          });
+        } else {
+          setDetailedData(null);
+        }
+      } else {
+        // Standard handling for listings
+        const detailedInfo: DetailedData = {
+          images: [],
+          textFields: [],
+        };
 
-      // Transform detailed response to DetailedData format
-      const detailedInfo: DetailedData = {
-        images: Object.entries(itemData)
-          .filter(([, value]) => 
-            typeof value === "string" && 
-            (value.startsWith("http") && (value.includes(".jpg") || value.includes(".png") || value.includes(".jpeg") || value.includes(".gif")))
-          )
-          .map(([field, url]) => ({ field, url: url as string })),
-        textFields: Object.entries(itemData)
-          .filter(([key, value]) => 
-            typeof value === "string" && 
-            !key.toLowerCase().includes("image") && 
-            !key.toLowerCase().includes("photo") &&
-            !(value.startsWith("http")) &&
-            key !== "id"
-          )
-          .map(([field, value]) => ({ field, value: value as string })),
-      };
+        // Handle photos array specifically for listings
+        if (Array.isArray(itemData.photos) && itemData.photos.length > 0) {
+          detailedInfo.images = itemData.photos.map((url: string, index: number) => ({
+            field: `Photo ${index + 1}`,
+            url: url
+          }));
+        }
 
-      setDetailedData(detailedInfo);
+        // Handle all other fields as text fields, with proper formatting
+        const fieldsToDisplay = [
+          { key: "status", label: "Status" },
+          { key: "price_advertise_as", label: "Price" },
+          { key: "address", label: "Address" },
+          { key: "suburb", label: "Suburb" },
+          { key: "state", label: "State" },
+          { key: "postcode", label: "Postcode" },
+          { key: "property_type", label: "Property Type" },
+          { key: "bedrooms", label: "Bedrooms" },
+          { key: "bathrooms", label: "Bathrooms" },
+          { key: "garages", label: "Garages" },
+          { key: "year_built", label: "Year Built" },
+          { key: "landarea", label: "Land Area" },
+          { key: "listed_at", label: "Listed At" },
+          { key: "external_id", label: "External ID" },
+          { key: "type", label: "Type" },
+          { key: "property_category", label: "Property Category" },
+        ];
+
+        detailedInfo.textFields = fieldsToDisplay
+          .filter(({ key }) => {
+            const value = itemData[key];
+            return value !== null && value !== undefined && value !== "" && value !== "null";
+          })
+          .map(({ key, label }) => {
+            let value = itemData[key];
+            
+            // Format specific fields
+            if (key === "listed_at" && value) {
+              value = new Date(value).toLocaleDateString();
+            }
+            
+            return {
+              field: label,
+              value: String(value)
+            };
+          });
+
+        setDetailedData(detailedInfo);
+      }
     } catch {
       setDetailedData(null);
     } finally {
@@ -146,8 +346,50 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
-    searchAPI(value);
+    
+    // Clear existing timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    // Cancel any ongoing search request
+    if (currentSearchController.current) {
+      currentSearchController.current.abort();
+    }
+    
+    // If empty query, clear results immediately
+    if (!value.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      setLoading(false);
+      return;
+    }
+    
+    // Set new timeout for 200ms delay
+    searchTimeoutRef.current = setTimeout(() => {
+      searchAPI(value);
+    }, 200);
   }, [searchAPI]);
+
+  // Re-trigger search when filters change for listings only
+  useEffect(() => {
+    if (searchQuery.trim() && endpoint === "listings") {
+      // Clear existing timeout
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+      
+      // Cancel any ongoing search request
+      if (currentSearchController.current) {
+        currentSearchController.current.abort();
+      }
+      
+      // Set new timeout for 200ms delay
+      searchTimeoutRef.current = setTimeout(() => {
+        searchAPI(searchQuery);
+      }, 200);
+    }
+  }, [onlyMyOffice, statusFilter, searchAPI, searchQuery, endpoint]);
 
   const handleResultSelect = useCallback(async (result: SearchResult) => {
     setSelectedResult(result);
@@ -156,7 +398,6 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
     setSearchResults([]);
     setDetailedData(null);
 
-    // Fetch detailed data for the selected result
     await fetchDetailedData(result);
   }, [fetchDetailedData]);
 
@@ -165,19 +406,16 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       const selection = await textSelection.read();
       
       if (selection.contents.length > 0) {
-        // Replace selected text
         const content = selection.contents[0];
         content.text = value;
         await selection.save();
       } else {
-        // Add new text element
         addElement({
           type: "text",
           children: [value],
         });
       }
     } catch {
-      // Fallback: add new text element
       addElement({
         type: "text",
         children: [value],
@@ -187,10 +425,8 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
   const handleImageClick = useCallback(async (imageUrl: string) => {
     try {
-      // Create a proxy URL to bypass CORS issues
       const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}`;
       
-      // Get original image dimensions
       const img = new Image();
       const imageDimensions = await new Promise<{width: number, height: number}>((resolve, reject) => {
         img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
@@ -198,7 +434,6 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
         img.src = proxyUrl;
       });
       
-      // First upload the image to get a valid ImageRef with original dimensions
       const { ref } = await upload({
         type: "image",
         url: proxyUrl,
@@ -212,12 +447,10 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       const selection = await imageSelection.read();
       
       if (selection.contents.length > 0) {
-        // Replace selected image
         const content = selection.contents[0];
         content.ref = ref;
         await selection.save();
       } else {
-        // Add new image element
         addElement({
           type: "image",
           ref,
@@ -228,7 +461,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
         });
       }
     } catch {
-      // If upload fails, we can't add the image - silently fail
+      // Silent fail
     }
   }, [imageSelection, addElement]);
 
@@ -238,10 +471,69 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
     setDetailedData(null);
     setSearchResults([]);
     setShowResults(false);
+    
+    // Clean up pending search
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    if (currentSearchController.current) {
+      currentSearchController.current.abort();
+    }
+    setLoading(false);
   }, []);
+
+  const formatValue = (value: any, format: string): string => {
+    if (value === null || value === undefined) return "N/A";
+    
+    switch (format) {
+      case "currency":
+      case "dollar":
+        return `$${Number(value).toLocaleString()}`;
+      case "percentage":
+      case "percent":
+        // Convert decimal to percentage if needed (e.g., 0.05 -> 5%)
+        const numValue = Number(value);
+        if (numValue > 0 && numValue < 1) {
+          return `${(numValue * 100).toFixed(2)}%`;
+        }
+        return `${numValue.toFixed(2)}%`;
+      case "number":
+        return Number(value).toLocaleString();
+      case "date":
+        return value;
+      case "text":
+      default:
+        return String(value);
+    }
+  };
 
   return (
     <Rows spacing="3u">
+      {/* Filters for listings */}
+      {endpoint === "listings" && (
+        <Rows spacing="2u">
+          <Checkbox
+            checked={onlyMyOffice}
+            onChange={(value, checked) => setOnlyMyOffice(checked)}
+            label="Only my office"
+          />
+          <Rows spacing="1u">
+            <Text size="small">Status</Text>
+            <Select
+              value={statusFilter}
+              onChange={(value) => setStatusFilter(value as string)}
+              placeholder="Select status"
+              options={[
+                { value: "all", label: "All" },
+                { value: "current", label: "Current" },
+                { value: "sold", label: "Sold" },
+                { value: "pending", label: "Pending" }
+              ]}
+            />
+          </Rows>
+        </Rows>
+      )}
+      
       <SearchInputMenu
         value={searchQuery}
         onChange={handleSearchChange}
@@ -273,13 +565,15 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
       {selectedResult && (
         <Rows spacing="1u">
-          <Text variant="regular">
-            {intl.formatMessage({
-              id: "searchable_tab.selected_item",
-              defaultMessage: "Selected: {name}",
-              description: "Label showing selected item",
-            }, { name: selectedResult.displayValue })}
-          </Text>
+          {endpoint === "agents" && (
+            <Text variant="regular">
+              {intl.formatMessage({
+                id: "searchable_tab.selected_item",
+                defaultMessage: "Selected: {name}",
+                description: "Label showing selected item",
+              }, { name: selectedResult.displayValue })}
+            </Text>
+          )}
 
           {loadingDetails && (
             <Rows spacing="1u">
@@ -296,6 +590,95 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
           {detailedData && (
             <Rows spacing="1u">
+              {/* Market Data Display */}
+              {detailedData.marketData && (
+                <Box background="neutralLow" padding="2u" borderRadius="standard">
+                  <Rows spacing="2u">
+                    <Title size="small">Market Data</Title>
+                    
+                    {/* Default metrics - always shown */}
+                    {getDefaultMetrics(detailedData.marketData.labels).map((labelInfo) => {
+                      const houseValue = detailedData.marketData?.house[labelInfo.property];
+                      const unitValue = detailedData.marketData?.unit[labelInfo.property];
+                      
+                      return (
+                        <Rows key={labelInfo.property} spacing="1u">
+                          <Text size="small" variant="bold">{labelInfo.label}</Text>
+                          <Columns spacing="2u">
+                            <Column>
+                              <Text size="small">House:</Text>
+                              <TypographyCard
+                                onClick={() => handleTextFieldClick(formatValue(houseValue, labelInfo.format))}
+                                onDragStart={() => formatValue(houseValue, labelInfo.format)}
+                                ariaLabel={`Add house value: ${formatValue(houseValue, labelInfo.format)}`}
+                              >
+                                {formatValue(houseValue, labelInfo.format)}
+                              </TypographyCard>
+                            </Column>
+                            <Column>
+                              <Text size="small">Unit:</Text>
+                              <TypographyCard
+                                onClick={() => handleTextFieldClick(formatValue(unitValue, labelInfo.format))}
+                                onDragStart={() => formatValue(unitValue, labelInfo.format)}
+                                ariaLabel={`Add unit value: ${formatValue(unitValue, labelInfo.format)}`}
+                              >
+                                {formatValue(unitValue, labelInfo.format)}
+                              </TypographyCard>
+                            </Column>
+                          </Columns>
+                        </Rows>
+                      );
+                    })}
+                    
+                    {/* Search for additional metrics */}
+                    <Rows spacing="2u">
+                      <Text size="small" variant="bold">Search other metrics:</Text>
+                      <SearchInputMenu
+                        value={metricSearchQuery}
+                        onChange={setMetricSearchQuery}
+                        onClear={() => setMetricSearchQuery("")}
+                        placeholder="Search metrics..."
+                        ariaLabel="Search for additional metrics"
+                      />
+                      
+                      {/* Search results - shown below search box */}
+                      {getSearchedMetrics(detailedData.marketData.labels).map((labelInfo) => {
+                        const houseValue = detailedData.marketData?.house[labelInfo.property];
+                        const unitValue = detailedData.marketData?.unit[labelInfo.property];
+                        
+                        return (
+                          <Rows key={labelInfo.property} spacing="1u">
+                            <Text size="small" variant="bold">{labelInfo.label}</Text>
+                            <Columns spacing="2u">
+                              <Column>
+                                <Text size="small">House:</Text>
+                                <TypographyCard
+                                  onClick={() => handleTextFieldClick(formatValue(houseValue, labelInfo.format))}
+                                  onDragStart={() => formatValue(houseValue, labelInfo.format)}
+                                  ariaLabel={`Add house value: ${formatValue(houseValue, labelInfo.format)}`}
+                                >
+                                  {formatValue(houseValue, labelInfo.format)}
+                                </TypographyCard>
+                              </Column>
+                              <Column>
+                                <Text size="small">Unit:</Text>
+                                <TypographyCard
+                                  onClick={() => handleTextFieldClick(formatValue(unitValue, labelInfo.format))}
+                                  onDragStart={() => formatValue(unitValue, labelInfo.format)}
+                                  ariaLabel={`Add unit value: ${formatValue(unitValue, labelInfo.format)}`}
+                                >
+                                  {formatValue(unitValue, labelInfo.format)}
+                                </TypographyCard>
+                              </Column>
+                            </Columns>
+                          </Rows>
+                        );
+                      })}
+                    </Rows>
+                  </Rows>
+                </Box>
+              )}
+
               {/* Text Fields */}
               {detailedData.textFields && detailedData.textFields.length > 0 && (
                 <Rows spacing="1u">
@@ -306,15 +689,18 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                       description: "Label for text fields section",
                     })}
                   </Text>
-                  <Rows spacing="1u">
+                  <Rows spacing="2u">
                     {detailedData.textFields.map((field, index) => (
-                      <Button
-                        key={`${field.field}-${index}`}
-                        variant="secondary"
-                        onClick={() => handleTextFieldClick(field.value)}
-                      >
-                        {`${field.field}: ${field.value}`}
-                      </Button>
+                      <Rows key={`${field.field}-${index}`} spacing="0.5u">
+                        <Text size="small" variant="bold">{field.field}</Text>
+                        <TypographyCard
+                          onClick={() => handleTextFieldClick(field.value)}
+                          onDragStart={() => field.value}
+                          ariaLabel={`Add ${field.field}: ${field.value}`}
+                        >
+                          {field.value}
+                        </TypographyCard>
+                      </Rows>
                     ))}
                   </Rows>
                 </Rows>
@@ -326,34 +712,38 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                   <Text variant="bold">
                     {intl.formatMessage({
                       id: "searchable_tab.images_label",
-                      defaultMessage: "Images:",
+                      defaultMessage: "Photos:",
                       description: "Label for images section",
                     })}
                   </Text>
-                  <Columns spacing="1u">
+                  <Masonry targetRowHeightPx={200}>
                     {detailedData.images.map((image, index) => (
-                      <Column key={`${image.field}-${index}`}>
-                        <div>
-                          <Text>{image.field}</Text>
-                          <Button
-                            variant="tertiary"
-                            onClick={() => handleImageClick(image.url)}
-                          >
-                            {intl.formatMessage({
-                              id: "searchable_tab.add_image_button",
-                              defaultMessage: "Add Image",
-                              description: "Button text to add image to design",
-                            })}
-                          </Button>
+                      <MasonryItem 
+                        key={`${image.field}-${index}`}
+                        targetHeightPx={200}
+                        targetWidthPx={200}
+                      >
+                        <div onDoubleClick={() => handleImageClick(image.url)}>
                           <ImageCard
                             thumbnailUrl={image.url}
                             onClick={() => handleImageClick(image.url)}
-                            alt={`${image.field} thumbnail`}
+                            onDragStart={async () => {
+                              // Create a proxy URL for drag operation
+                              const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(image.url)}`;
+                              return {
+                                type: "IMAGE",
+                                url: proxyUrl,
+                                thumbnailUrl: proxyUrl,
+                                fullSizeUrl: proxyUrl
+                              };
+                            }}
+                            alt={`${image.field} photo`}
+                            ariaLabel={`Click or drag to add ${image.field} photo to design`}
                           />
                         </div>
-                      </Column>
+                      </MasonryItem>
                     ))}
-                  </Columns>
+                  </Masonry>
                 </Rows>
               )}
             </Rows>
@@ -362,13 +752,16 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       )}
 
       {loading && (
-        <Text variant="regular">
-          {intl.formatMessage({
-            id: "searchable_tab.searching",
-            defaultMessage: "Searching...",
-            description: "Loading text while searching",
-          })}
-        </Text>
+        <Rows spacing="1u" align="center">
+          <LoadingIndicator size="medium" />
+          <Text variant="regular">
+            {intl.formatMessage({
+              id: "searchable_tab.searching",
+              defaultMessage: "Searching...",
+              description: "Loading text while searching",
+            })}
+          </Text>
+        </Rows>
       )}
     </Rows>
   );

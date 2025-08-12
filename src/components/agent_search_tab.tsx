@@ -10,6 +10,7 @@ import {
   Text,
   ImageCard,
   LoadingIndicator,
+  TypographyCard,
 } from "@canva/app-ui-kit";
 import { useAddElement } from "utils/use_add_element";
 import { useSelection } from "utils/use_selection_hook";
@@ -325,15 +326,18 @@ export const AgentSearchTab: React.FC = () => {
                       description: "Label for agent profile fields section",
                     })}
                   </Text>
-                  <Rows spacing="1u">
+                  <Rows spacing="2u">
                     {agentProfile.textFields.map((field, index) => (
-                      <Button
-                        key={`${field.field}-${index}`}
-                        variant="secondary"
-                        onClick={() => handleTextFieldClick(field.value)}
-                      >
-                        {`${field.value}`}
-                      </Button>
+                      <Rows key={`${field.field}-${index}`} spacing="0.5u">
+                        <Text size="small" variant="bold">{field.field}</Text>
+                        <TypographyCard
+                          onClick={() => handleTextFieldClick(field.value)}
+                          onDragStart={() => field.value}
+                          ariaLabel={`Add ${field.field}: ${field.value}`}
+                        >
+                          {field.value}
+                        </TypographyCard>
+                      </Rows>
                     ))}
                   </Rows>
                 </Rows>
@@ -352,23 +356,22 @@ export const AgentSearchTab: React.FC = () => {
                   <Columns spacing="1u">
                     {agentProfile.images.map((image, index) => (
                       <Column key={`${image.field}-${index}`}>
-                        <div>
-                          {/*<Text>{image.field}</Text>
-                          <Button
-                            variant="tertiary"
-                            onClick={() => handleImageClick(image.url)}
-                          >
-                            {intl.formatMessage({
-                              id: "agent_search.add_photo_button",
-                              defaultMessage: "Add Photo",
-                              description: "Button text to add agent photo to design",
-                            })}
-                          </Button>
-                          */}
+                        <div onDoubleClick={() => handleImageClick(image.url)}>
                           <ImageCard
                             thumbnailUrl={image.url}
                             onClick={() => handleImageClick(image.url)}
+                            onDragStart={async () => {
+                              // Create a proxy URL for drag operation
+                              const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(image.url)}`;
+                              return {
+                                type: "IMAGE",
+                                url: proxyUrl,
+                                thumbnailUrl: proxyUrl,
+                                fullSizeUrl: proxyUrl
+                              };
+                            }}
                             alt={`${image.field} photo`}
+                            ariaLabel={`Click or drag to add ${image.field} photo to design`}
                           />
                         </div>
                       </Column>
@@ -382,13 +385,16 @@ export const AgentSearchTab: React.FC = () => {
       )}
 
       {loading && (
-        <Text variant="regular">
-          {intl.formatMessage({
-            id: "agent_search.searching",
-            defaultMessage: "Searching agents...",
-            description: "Loading text while searching agents",
-          })}
-        </Text>
+        <Rows spacing="1u" align="center">
+          <LoadingIndicator size="medium" />
+          <Text variant="regular">
+            {intl.formatMessage({
+              id: "agent_search.searching",
+              defaultMessage: "Searching agents...",
+              description: "Loading text while searching agents",
+            })}
+          </Text>
+        </Rows>
       )}
     </Rows>
   );

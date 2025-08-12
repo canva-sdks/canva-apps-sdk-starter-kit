@@ -36,3 +36,130 @@
 .scrollContainer:focus-within::-webkit-scrollbar-thumb {
   visibility: visible;
 }
+
+/* Login page styles */
+.loginContainer {
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ui-kit-space-2);
+}
+
+.loginContainer h1,
+.loginContainer h2,
+.loginContainer h3,
+.loginContainer h4,
+.loginContainer h5,
+.loginContainer h6 {
+  color: #FFFFFF !important;
+}
+
+.loginContainer p,
+.loginContainer span,
+.loginContainer div[data-component="text"] {
+  color: #FFFFFF !important;
+}
+
+.loginContainer .loginErrorText {
+  color: #eb5342 !important;
+}
+
+/* More aggressive button styling to override Canva defaults */
+.loginContainer button,
+.loginContainer button[data-variant="primary"],
+.loginContainer button[variant="primary"],
+.loginContainer div button,
+.loginContainer * button {
+  background-color: #eb5342 !important;
+  background: #eb5342 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #eb5342 !important;
+  border-color: #eb5342 !important;
+}
+
+.loginContainer button:hover,
+.loginContainer button[data-variant="primary"]:hover,
+.loginContainer button[variant="primary"]:hover,
+.loginContainer div button:hover,
+.loginContainer * button:hover {
+  background-color: #d64332 !important;
+  background: #d64332 !important;
+  border-color: #d64332 !important;
+}
+
+.loginContainer button:focus,
+.loginContainer button[data-variant="primary"]:focus,
+.loginContainer button[variant="primary"]:focus,
+.loginContainer div button:focus,
+.loginContainer * button:focus {
+  background-color: #eb5342 !important;
+  background: #eb5342 !important;
+  border-color: #eb5342 !important;
+  box-shadow: 0 0 0 2px rgba(235, 83, 66, 0.3) !important;
+}
+
+.loginContainer button:active,
+.loginContainer div button:active,
+.loginContainer * button:active {
+  background-color: #d64332 !important;
+  background: #d64332 !important;
+}
+
+/* Photo grid carousel styles */
+.photoCarousel {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--ui-kit-space-1);
+  padding: var(--ui-kit-space-1);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.photoCarousel::-webkit-scrollbar {
+  height: 4px;
+}
+
+.photoCarousel::-webkit-scrollbar-track {
+  background: var(--ui-kit-color-border-standard);
+  border-radius: 2px;
+}
+
+.photoCarousel::-webkit-scrollbar-thumb {
+  background: var(--ui-kit-color-border-strong);
+  border-radius: 2px;
+}
+
+.photoCarousel::-webkit-scrollbar-thumb:hover {
+  background: var(--ui-kit-color-border-stronger);
+}
+
+.photoGridPage {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--ui-kit-space-1);
+  width: 320px;
+  height: 240px;
+}
+
+.photoGridItem {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--ui-kit-border-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.photoGridItem:hover {
+  transform: scale(1.02);
+}
+
+.photoGridItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,7 +1,25 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import type { AccessTokenResponse } from "@canva/user";
 import { auth } from "@canva/user";
-import { Text, Button, Rows, Title, FormField, MultilineInput, Tabs, Tab, TabList, TabPanels, TabPanel, Box, Column, Columns } from "@canva/app-ui-kit";
+import { 
+  Text, 
+  Button, 
+  Rows, 
+  Title, 
+  Box, 
+  Column, 
+  Columns,
+  Tabs, 
+  Tab, 
+  TabList, 
+  TabPanels, 
+  TabPanel,
+  LoadingIndicator
+} from "@canva/app-ui-kit";
+import { AgentSearchTab } from "./components/agent_search_tab";
+import { SearchableTab } from "./components/searchable_tab";
+import { ApiConfigSetup } from "./components/api_config_setup";
+import { useApiConfig } from "./hooks/use_api_config";
 import * as styles from "styles/components.css";
 
 const oauth = auth.initOauth();
@@ -26,6 +44,8 @@ export const App = () => {
   const isAuthorized = useMemo(() => accessTokenResponse != null, [accessTokenResponse]);
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const { isReady } = useApiConfig();
+
   const fetchUserProfile = useCallback(async (token: string) => {
     setError(null);
     try {
@@ -69,8 +89,31 @@ export const App = () => {
   };
 
   useEffect(() => {
-    retrieveAndSetToken();
-  }, []);
+    const initAuth = async () => {
+      try {
+        // First try to get existing token
+        const tokenResponse = await oauth.getAccessToken({ scope });
+        
+        if (tokenResponse?.token) {
+          setAccessTokenResponse(tokenResponse);
+          await fetchUserProfile(tokenResponse.token);
+        } else {
+          // If no token, automatically start login flow
+          const authorizeResponse = await oauth.requestAuthorization({ scope });
+          if (authorizeResponse.status === "completed") {
+            await retrieveAndSetToken();
+          }
+        }
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Authentication failed");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    setIsLoading(true);
+    initAuth();
+  }, [fetchUserProfile]);
 
   async function login() {
     setError(null);
@@ -95,109 +138,16 @@ export const App = () => {
     }
   }
 
-  const ProfileTab = () => (
-    <Box paddingTop="2u">
-      <Rows spacing="2u">
-        <Title size="small">User Profile</Title>
-        {userProfile ? (
-          <Columns spacing="2u">
-            <Column>
-              <Rows spacing="1u">
-                <Text size="small" tone="tertiary">Display Name</Text>
-                <Text>{userProfile.displayName || "N/A"}</Text>
-              </Rows>
-            </Column>
-            <Column>
-              <Rows spacing="1u">
-                <Text size="small" tone="tertiary">Email</Text>
-                <Text>{userProfile.mail || userProfile.userPrincipalName || "N/A"}</Text>
-              </Rows>
-            </Column>
-          </Columns>
-        ) : (
-          <Text tone="tertiary">Loading profile...</Text>
-        )}
-        {userProfile && (
-          <>
-            <Columns spacing="2u">
-              <Column>
-                <Rows spacing="1u">
-                  <Text size="small" tone="tertiary">First Name</Text>
-                  <Text>{userProfile.givenName || "N/A"}</Text>
-                </Rows>
-              </Column>
-              <Column>
-                <Rows spacing="1u">
-                  <Text size="small" tone="tertiary">Last Name</Text>
-                  <Text>{userProfile.surname || "N/A"}</Text>
-                </Rows>
-              </Column>
-            </Columns>
-            {(userProfile.jobTitle || userProfile.officeLocation) && (
-              <Columns spacing="2u">
-                <Column>
-                  <Rows spacing="1u">
-                    <Text size="small" tone="tertiary">Job Title</Text>
-                    <Text>{userProfile.jobTitle || "N/A"}</Text>
-                  </Rows>
-                </Column>
-                <Column>
-                  <Rows spacing="1u">
-                    <Text size="small" tone="tertiary">Office Location</Text>
-                    <Text>{userProfile.officeLocation || "N/A"}</Text>
-                  </Rows>
-                </Column>
-              </Columns>
-            )}
-          </>
-        )}
-      </Rows>
-    </Box>
-  );
-
-  const RawDataTab = () => (
-    <Box paddingTop="2u">
-      <Rows spacing="2u">
-        <Title size="small">Raw API Response</Title>
-        {userProfile ? (
-          <FormField
-            label="Microsoft Graph API Response"
-            value={JSON.stringify(userProfile, null, 2)}
-            control={(props) => (
-              <MultilineInput {...props} maxRows={10} autoGrow readOnly />
-            )}
-          />
-        ) : (
-          <Text tone="tertiary">No data available</Text>
-        )}
-      </Rows>
-    </Box>
-  );
-
-  const ActionsTab = () => (
-    <Box paddingTop="2u">
-      <Rows spacing="2u">
-        <Title size="small">Actions</Title>
-        <Button variant="secondary" onClick={() => retrieveAndSetToken({ forceRefresh: true })}>
-          Refresh Token
-        </Button>
-        <Button variant="secondary" onClick={() => fetchUserProfile(accessTokenResponse?.token || "")}>
-          Refresh Profile
-        </Button>
-        <Button variant="secondary" onClick={logout}>
-          Logout
-        </Button>
-      </Rows>
-    </Box>
-  );
-
   if (error && !isAuthorized) {
     return (
       <div className={styles.scrollContainer}>
-        <Rows spacing="2u">
-          <Title>Authorization Error</Title>
-          <Text tone="critical">{error}</Text>
-          <Button variant="primary" onClick={login}>
+        <Rows spacing="2u" align="center">
+          <Text variant="bold">Authentication Error</Text>
+          <Text>{error}</Text>
+          <Button 
+            variant="primary" 
+            onClick={login}
+          >
             Try Again
           </Button>
         </Rows>
@@ -208,7 +158,8 @@ export const App = () => {
   if (isLoading) {
     return (
       <div className={styles.scrollContainer}>
-        <Rows spacing="2u">
+        <Rows spacing="2u" align="center">
+          <LoadingIndicator size="medium" />
           <Text>Loading...</Text>
         </Rows>
       </div>
@@ -218,12 +169,9 @@ export const App = () => {
   if (!isAuthorized) {
     return (
       <div className={styles.scrollContainer}>
-        <Rows spacing="2u">
-          <Title>Microsoft Authentication</Title>
-          <Text>Sign in with your Microsoft account to continue</Text>
-          <Button variant="primary" onClick={login}>
-            Sign in with Microsoft
-          </Button>
+        <Rows spacing="2u" align="center">
+          <LoadingIndicator size="medium" />
+          <Text>Authenticating...</Text>
         </Rows>
       </div>
     );
@@ -231,32 +179,50 @@ export const App = () => {
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="3u">
-        <Rows spacing="1u">
-          <Title>Microsoft Account Connected</Title>
-          {userProfile && (
-            <Text tone="tertiary">Signed in as {userProfile.displayName || userProfile.mail || "Microsoft User"}</Text>
-          )}
-        </Rows>
+      <Rows spacing="1u">
+        <Box background="neutralLow" padding="1u" borderRadius="standard">
+          <Columns spacing="1u" alignY="center">
+            <Column>
+              <Text>Hi {userProfile?.displayName || userProfile?.givenName || "Agent"}</Text>
+            </Column>
+            <Column width="content">
+              <Button 
+                variant="tertiary"
+                onClick={logout}
+              >
+                Sign out
+              </Button>
+            </Column>
+          </Columns>
+        </Box>
         
-        <Tabs>
-          <TabList>
-            <Tab id="profile">Profile</Tab>
-            <Tab id="raw">Raw Data</Tab>
-            <Tab id="actions">Actions</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel id="profile">
-              <ProfileTab />
-            </TabPanel>
-            <TabPanel id="raw">
-              <RawDataTab />
-            </TabPanel>
-            <TabPanel id="actions">
-              <ActionsTab />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        {/* Main App Content */}
+        {!isReady ? (
+          <ApiConfigSetup />
+        ) : (
+          <Tabs>
+            <TabList>
+              <Tab id="agents">Agent Search</Tab>
+              <Tab id="listings">Listings</Tab>
+              <Tab id="market">Market Data</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel id="agents">
+                <AgentSearchTab />
+              </TabPanel>
+              <TabPanel id="listings">
+                <SearchableTab 
+                  endpoint="listings" 
+                  tabName="Listings" 
+                  userEmail={userProfile?.mail || userProfile?.userPrincipalName}
+                />
+              </TabPanel>
+              <TabPanel id="market">
+                <SearchableTab endpoint="market-data" tabName="Market Data" />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        )}
       </Rows>
     </div>
   );
