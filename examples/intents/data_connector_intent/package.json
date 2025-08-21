@@ -1,0 +1,7 @@
+{
+  "name": "data_connector_intent",
+  "title": "Data connector intent",
+  "description": "Data connector integration for external data sources.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

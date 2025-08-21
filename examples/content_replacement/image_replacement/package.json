@@ -1,0 +1,7 @@
+{
+  "name": "image_replacement",
+  "title": "Image replacement",
+  "description": "Replace selected image elements with custom images.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

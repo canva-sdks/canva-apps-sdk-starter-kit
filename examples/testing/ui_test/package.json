@@ -1,0 +1,11 @@
+{
+  "name": "ui_test",
+  "title": "UI test",
+  "description": "UI and snapshot testing App UI.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "scripts": {
+    "test": "jest --no-cache --config='../../../jest.config.js' --testPathPattern='ui_test'",
+    "test:watch": "npm run test -- --watch"
+  }
+}

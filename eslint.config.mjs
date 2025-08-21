@@ -14,10 +14,10 @@ export default [
   {
     files: [
       "src/**/*",
-      // Currently only the 'i18n' example is localized and following the
-      // formatjs guidelines. If more examples are localized, this list
-      // should be updated:
-      "examples/i18n/**/*",
+      // Currently only the localization examples are localized and following the
+      // formatjs guidelines. If more examples are localized, this list should be
+      // updated:
+      "examples/localization/**/*",
     ],
     ...canvaPlugin.configs.apps_i18n,
   },

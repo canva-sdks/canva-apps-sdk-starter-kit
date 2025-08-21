@@ -57,7 +57,17 @@ export class Context {
   get entryDir() {
     const { example } = this.args;
 
-    return example ? path.join(Context.examplesDir, example) : Context.srcDir;
+    if (!example) {
+      return Context.srcDir;
+    }
+
+    // Handle nested examples with parent/child format
+    if (example.includes("/")) {
+      const [parent, child] = example.split("/");
+      return path.join(Context.examplesDir, parent, child);
+    }
+
+    return path.join(Context.examplesDir, example);
   }
 
   get ngrokEnabled() {
@@ -138,17 +148,59 @@ export class Context {
   }
 
   static get examples(): string[] {
+    return Object.keys(Context.categorizedExamples).flatMap((category) => {
+      return Context.categorizedExamples[category].map(
+        (example) => `${category}/${example}`,
+      );
+    });
+  }
+
+  static get categorizedExamples(): Record<string, string[]> {
     try {
       const files = fs.readdirSync(this.examplesDir, { withFileTypes: true });
-      const dirs = files
+      const categories = files
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => dirent.name);
 
-      return dirs;
+      const categorizedExamples: Record<string, string[]> = {};
+
+      categories.forEach((category) => {
+        const categoryPath = path.join(this.examplesDir, category);
+        const examples = fs.readdirSync(categoryPath, { withFileTypes: true });
+
+        // Check if this is a category with examples or a standalone example
+        if (fs.existsSync(path.join(categoryPath, "index.tsx"))) {
+          // This is a standalone example, add it to a special category
+          if (!categorizedExamples["root"]) {
+            categorizedExamples["root"] = [];
+          }
+          categorizedExamples["root"].push(category);
+        }
+
+        // Check for examples within this category
+        const categoryExamples: string[] = [];
+        examples.forEach((exampleDir) => {
+          if (!exampleDir.isDirectory()) {
+            return;
+          }
+
+          const exampleDirPath = path.join(categoryPath, exampleDir.name);
+          if (fs.existsSync(path.join(exampleDirPath, "index.tsx"))) {
+            categoryExamples.push(exampleDir.name);
+          }
+        });
+
+        // Add examples to their category if any were found
+        if (categoryExamples.length > 0) {
+          categorizedExamples[category] = categoryExamples;
+        }
+      });
+
+      return categorizedExamples;
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error("Error reading directory:", err);
-      return [];
+      return {};
     }
   }
 

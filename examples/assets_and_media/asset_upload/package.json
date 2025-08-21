@@ -1,0 +1,7 @@
+{
+  "name": "asset_upload",
+  "title": "Asset upload",
+  "description": "Upload and manage assets directly into Canva.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

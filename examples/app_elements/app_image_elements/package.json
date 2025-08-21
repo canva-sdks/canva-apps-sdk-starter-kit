@@ -1,0 +1,10 @@
+{
+  "name": "app_image_elements",
+  "title": "App image elements",
+  "description": "Create image elements inside app elements.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "clsx": "2.1.1"
+  }
+}
