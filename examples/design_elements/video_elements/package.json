@@ -1,0 +1,10 @@
+{
+  "name": "video_elements",
+  "title": "Video elements",
+  "description": "Add video elements to designs with playback controls.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "clsx": "2.1.1"
+  }
+}

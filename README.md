@@ -51,7 +51,7 @@ To preview an app:
 
 The app will appear in the side panel.
 
-### (Optional) Step 3: Enable Hot Module Replacement
+### Step 3 (Optional): Enable Hot Module Replacement
 
 By default, every time you make a change to an app, you have to reload the entire app to see the results of those changes. If you enable [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) (HMR), changes will be reflected without a full reload, which significantly speeds up the development loop.
 
@@ -60,23 +60,17 @@ By default, every time you make a change to an app, you have to reload the entir
 To enable HMR:
 
 1. Navigate to an app via the [Your apps](https://www.canva.com/developers/apps).
-2. Select **Configure your app**.
-3. Copy the value from the **App origin** field. This value is unique to each app and cannot be customized.
-4. In the starter kit's directory, open the `.env` file.
-5. Set the `CANVA_APP_ORIGIN` environment variable to the value copied from the **App origin** field:
+1. Select **Configuration** -> **Credentials** -> **.env file**.
+1. Copy the `.env` file contents.
+1. Paste the contents into the starter kit's `.env` file. For example:
 
    ```bash
-   CANVA_APP_ORIGIN=# YOUR APP ORIGIN GOES HERE
-   ```
-
-6. Set the `CANVA_HMR_ENABLED` environment variable to `true`:
-
-   ```bash
+   CANVA_APP_ORIGIN=https://app-aabbccddeeff.canva-apps.com
    CANVA_HMR_ENABLED=true
    ```
 
-7. Restart the local development server.
-8. Reload the app manually to ensure that HMR takes effect.
+1. Restart the local development server.
+1. Reload the app manually to ensure that HMR takes effect.
 
 <details>
   <summary>Previewing apps in Safari</summary>
@@ -98,7 +92,7 @@ To preview apps in Safari:
 npm start --use-https
 
 # Run an example
-npm start <example-name> --use-https
+npm start <example_name> --use-https
 ```
 
 2. Navigate to <https://localhost:8080>.
@@ -114,6 +108,10 @@ You need to bypass the invalid security certificate warning every time you start
 
 </details>
 
+### Step 4 (Optional): Setup the Canva Dev MCP Server
+
+If you're using AI coding tools, such as Cursor or Claude Code, you can connect to the Canva Dev MCP Server to supercharge your development workflow. See this [setup guide](https://www.canva.dev/docs/apps/mcp-server/) to get started.
+
 ## Running an example
 
 The `examples` folder contains demonstration apps for a variety of Canva APIs.
@@ -127,25 +125,27 @@ npm start examples
 You can use arrow keys to navigate the list and press enter to run a specific example. It will look something like this:
 
 ```bash
-   npm start examples
+  npm start examples
 
-   ? Which example would you like to run? ›
-   ❯   app element children
-       app embed elements
-       app image elements
-       app shape elements
-       app text elements
-       asset upload
-       authentication
-       color
-       design editing
-    ↓  design token
+  ? Which example would you like to run? ›
+  ❯   app elements > app element children
+      app elements > app embed elements
+      app elements > app image elements
+      app elements > app shape elements
+      app elements > app text elements
+      app elements > app video elements
+      assets and media > asset upload
+      assets and media > digital asset management
+      assets and media > fonts
+    ↓ assets and media > image editing overlay
 ```
 
 To start a specific example app, run the following command:
 
 ```bash
-npm start <example-name>
+npm start <example_category>/<example_name>
+// or simply
+npm start <example_name>
 ```
 
 ## Running an example's backend
@@ -155,21 +155,22 @@ Some examples have a backend. This backend is defined in the example's `backend/
 To run examples that have a backend:
 
 1. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
-2. Copy the ID of an app from the **App ID** column in the apps table.
-3. In the starter kit's `.env` file, set `CANVA_APP_ID` to the ID of the app.
+1. Select the app you want to run the example with.
+1. Copy your environment variables from **Configuration** -> **Credentials** -> **.env file**.
+1. Paste them into the starter kit's `.env` file.
 
    For example:
 
    ```bash
    CANVA_APP_ID=AABBccddeeff
-   CANVA_APP_ORIGIN=#
+   CANVA_APP_ORIGIN=https://app-aabbccddeeff.canva-apps.com
    CANVA_BACKEND_PORT=3001
    CANVA_FRONTEND_PORT=8080
    CANVA_BACKEND_HOST=http://localhost:3001
-   CANVA_HMR_ENABLED=FALSE
+   CANVA_HMR_ENABLED=TRUE
    ```
 
-4. Start the example:
+1. Start the example:
 
    ```bash
    npm start fetch

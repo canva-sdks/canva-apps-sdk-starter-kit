@@ -1,0 +1,7 @@
+{
+  "name": "text_translation",
+  "title": "Text translation",
+  "description": "Replace and translate text elements across different languages.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "feature_support",
+  "title": "Feature support",
+  "description": "Feature detection and conditional functionality based on platform support.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

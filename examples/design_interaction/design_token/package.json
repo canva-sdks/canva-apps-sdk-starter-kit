@@ -1,0 +1,16 @@
+{
+  "name": "design_token",
+  "title": "Design token",
+  "description": "Secure token-based authentication and design access.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "devDependencies": {
+    "@types/cors": "2.8.19"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "jwks-rsa": "3.2.0"
+  }
+}

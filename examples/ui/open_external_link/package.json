@@ -1,0 +1,7 @@
+{
+  "name": "open_external_link",
+  "title": "Open external link",
+  "description": "Open external URLs safely from within Canva apps.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}

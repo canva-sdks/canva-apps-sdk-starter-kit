@@ -1,0 +1,11 @@
+{
+  "name": "unit_test",
+  "title": "Unit test",
+  "description": "Unit testing Apps SDK packages.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "scripts": {
+    "test": "jest --no-cache --config='../../../jest.config.js' --testPathPattern='unit_test'",
+    "test:watch": "npm run test -- --watch"
+  }
+}

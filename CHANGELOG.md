@@ -1,5 +1,35 @@
 # Changelog
 
+## 2025-08-21
+
+### 🧰 Added
+
+- Added an optional step to setup the [Canva Dev MCP Server](https://www.canva.dev/docs/apps/mcp-server/) in `README.md`.
+- Added an `AGENTS.md` file to the project to provide instructions for AI agents such as Amp, Codex, Jules, etc...
+
+### 🐞 Fixed
+
+- Replaced a broken YouTube video used for demonstrating embeds in the example apps.
+- Updated the `README.md` and other documentation to reflect the new location of `CANVA_APP_ID` and `CANVA_APP_ORIGIN` environment variables in the Developer Portal.
+
+### 🔧 Changed
+
+- `examples`
+  - Grouped `/examples` by functionality to help with discoverability. Updated directory structure and updated the start script for the change.
+  - All examples now have README file that explains the example and provides usage information.
+  - Renamed `/text_translate` example to `text_translation`.
+  - Updated `examples/design_token` and `examples/page_addition` to use `design.getDesignMetadata` as `design.getDefaultPageDimensions` is deprecated.
+  - Updated the intro wording for the `app_elements` examples with a minor text edit.
+  - Updated the `design_interaction/page_addition` example's YouTube video to replaced it with a more appropriate one.
+  - Updated the `/design_interaction/page_addition/` example to not use the deprecated `title` property, and use `ariaLabel` instead.
+  - Updated the `ui/masonry` example to replace the Picsum API with some static images from <https://www.canva.dev/example-assets/images/>.
+- Upgraded `@canva/app-components` to version `1.3.1`.
+
+### ⛔️ Deprecated
+
+- `@canva/design`
+  - Deprecate `design.getDefaultPageDimensions`, use `design.getDesignMetadata` instead. [See the documentation](https://www.canva.dev/docs/apps/api/latest/design-get-design-metadata/).
+
 ## 2025-07-23
 
 ### 🐞 Fixed

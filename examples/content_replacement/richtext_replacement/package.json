@@ -1,0 +1,7 @@
+{
+  "name": "richtext_replacement",
+  "title": "Richtext replacement",
+  "description": "Replace selected rich text elements with formatted content.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory"
+}
