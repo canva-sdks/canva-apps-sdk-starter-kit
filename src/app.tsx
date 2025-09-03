@@ -208,7 +208,7 @@ export const App = () => {
             </TabList>
             <TabPanels>
               <TabPanel id="agents">
-                <AgentSearchTab />
+                <AgentSearchTab userEmail={userProfile?.mail || userProfile?.userPrincipalName} />
               </TabPanel>
               <TabPanel id="listings">
                 <SearchableTab 

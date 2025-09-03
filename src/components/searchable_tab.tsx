@@ -72,6 +72,9 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   // Metric search state for market data
   const [metricSearchQuery, setMetricSearchQuery] = useState("");
   
+  // Image upload loading states
+  const [uploadingImages, setUploadingImages] = useState<Set<string>>(new Set());
+  
   // Refs for managing search debouncing and cancellation
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const currentSearchController = useRef<AbortController | null>(null);
@@ -92,7 +95,35 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   // Helper function to get default metrics
   const getDefaultMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
     if (!labels) return [];
-    return labels.filter(label => defaultMetrics.includes(label.property));
+    
+    // First, let's see what properties are available
+    console.log('Available properties:', labels.map(l => ({ property: l.property, label: l.label })));
+    
+    // Look for metrics that match our patterns (case-insensitive and partial matching)
+    return labels.filter(label => {
+      const prop = label.property.toLowerCase();
+      const labelText = label.label.toLowerCase();
+      
+      // Check for median price
+      if ((prop.includes('median') && prop.includes('price') && prop.includes('12')) ||
+          (labelText.includes('median') && labelText.includes('price') && labelText.includes('12'))) {
+        return true;
+      }
+      
+      // Check for sales 12 months
+      if ((prop.includes('sales') && prop.includes('12')) ||
+          (labelText.includes('sales') && labelText.includes('12'))) {
+        return true;
+      }
+      
+      // Check for change in median price
+      if ((prop.includes('change') && prop.includes('median')) ||
+          (labelText.includes('change') && labelText.includes('median'))) {
+        return true;
+      }
+      
+      return false;
+    }).slice(0, 3); // Ensure we only get 3 metrics
   }, []);
 
   // Helper function to get searched metrics
@@ -100,11 +131,14 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
     if (!labels || !metricSearchQuery.trim()) return [];
     
     const searchTerm = metricSearchQuery.toLowerCase();
+    const defaultMetricsList = getDefaultMetrics(labels);
+    const defaultProperties = defaultMetricsList.map(m => m.property);
+    
     return labels.filter(label => 
-      !defaultMetrics.includes(label.property) && 
+      !defaultProperties.includes(label.property) && 
       label.label.toLowerCase().includes(searchTerm)
     );
-  }, [metricSearchQuery]);
+  }, [metricSearchQuery, getDefaultMetrics]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -271,6 +305,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
         const output = itemData.output;
         if (output.house && output.unit && output.labels) {
           // Special handling for market data
+          console.log('Market data labels:', output.labels);
           setDetailedData({
             marketData: {
               house: output.house,
@@ -424,6 +459,12 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   }, [textSelection, addElement]);
 
   const handleImageClick = useCallback(async (imageUrl: string) => {
+    // Prevent double-clicks during upload
+    if (uploadingImages.has(imageUrl)) return;
+    
+    // Add to uploading set
+    setUploadingImages(prev => new Set(prev).add(imageUrl));
+    
     try {
       const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}`;
       
@@ -460,10 +501,17 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
           },
         });
       }
-    } catch {
-      // Silent fail
+    } catch (error) {
+      console.error('Failed to add image:', error);
+    } finally {
+      // Remove from uploading set
+      setUploadingImages(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(imageUrl);
+        return newSet;
+      });
     }
-  }, [imageSelection, addElement]);
+  }, [imageSelection, addElement, uploadingImages]);
 
   const handleClear = useCallback(() => {
     setSearchQuery("");
@@ -679,71 +727,280 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                 </Box>
               )}
 
-              {/* Text Fields */}
-              {detailedData.textFields && detailedData.textFields.length > 0 && (
-                <Rows spacing="1u">
-                  <Text variant="bold">
-                    {intl.formatMessage({
-                      id: "searchable_tab.text_fields_label",
-                      defaultMessage: "Text Fields:",
-                      description: "Label for text fields section",
-                    })}
-                  </Text>
-                  <Rows spacing="2u">
-                    {detailedData.textFields.map((field, index) => (
-                      <Rows key={`${field.field}-${index}`} spacing="0.5u">
-                        <Text size="small" variant="bold">{field.field}</Text>
-                        <TypographyCard
-                          onClick={() => handleTextFieldClick(field.value)}
-                          onDragStart={() => field.value}
-                          ariaLabel={`Add ${field.field}: ${field.value}`}
-                        >
-                          {field.value}
-                        </TypographyCard>
-                      </Rows>
-                    ))}
-                  </Rows>
-                </Rows>
-              )}
+              {/* Listing Details - Custom Layout for endpoint="listings" */}
+              {endpoint === "listings" ? (
+                <Rows spacing="2u">
+                  {/* Photos First */}
+                  {detailedData.images && detailedData.images.length > 0 && (
+                    <Rows spacing="1u">
+                      <Text variant="bold">Photos</Text>
+                      <Masonry targetRowHeightPx={200}>
+                        {detailedData.images.map((image, index) => (
+                          <MasonryItem 
+                            key={`${image.field}-${index}`}
+                            targetHeightPx={200}
+                            targetWidthPx={200}
+                          >
+                            <Box position="relative">
+                              <ImageCard
+                                thumbnailUrl={image.url}
+                                onClick={() => handleImageClick(image.url)}
+                                alt={`${image.field} photo`}
+                                ariaLabel={`Add ${image.field} photo to design`}
+                                disabled={uploadingImages.has(image.url)}
+                              />
+                              {uploadingImages.has(image.url) && (
+                                <Box
+                                  position="absolute"
+                                  top="0"
+                                  left="0"
+                                  width="full"
+                                  height="full"
+                                  background="neutralMid"
+                                  borderRadius="standard"
+                                  style={{ opacity: 0.8 }}
+                                >
+                                  <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                                    <LoadingIndicator size="small" />
+                                  </Rows>
+                                </Box>
+                              )}
+                            </Box>
+                          </MasonryItem>
+                        ))}
+                      </Masonry>
+                    </Rows>
+                  )}
 
-              {/* Images */}
-              {detailedData.images && detailedData.images.length > 0 && (
+                  {/* Property Details */}
+                  {detailedData.textFields && detailedData.textFields.length > 0 && (
+                    <Rows spacing="2u">
+                      {/* Bedrooms, Bathrooms, Car Spaces Row */}
+                      {(() => {
+                        const bedrooms = detailedData.textFields.find(f => f.field.toLowerCase().includes('bedroom'));
+                        const bathrooms = detailedData.textFields.find(f => f.field.toLowerCase().includes('bathroom'));
+                        const carSpaces = detailedData.textFields.find(f => f.field.toLowerCase().includes('garage'));
+                        
+                        if (bedrooms || bathrooms || carSpaces) {
+                          return (
+                            <Columns spacing="2u">
+                              {bedrooms && (
+                                <Column>
+                                  <Text size="small" variant="bold">Bedrooms</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(bedrooms.value)}
+                                    onDragStart={() => bedrooms.value}
+                                    ariaLabel={`Add bedrooms: ${bedrooms.value}`}
+                                  >
+                                    {bedrooms.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                              {bathrooms && (
+                                <Column>
+                                  <Text size="small" variant="bold">Bathrooms</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(bathrooms.value)}
+                                    onDragStart={() => bathrooms.value}
+                                    ariaLabel={`Add bathrooms: ${bathrooms.value}`}
+                                  >
+                                    {bathrooms.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                              {carSpaces && (
+                                <Column>
+                                  <Text size="small" variant="bold">Car Spaces</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(carSpaces.value)}
+                                    onDragStart={() => carSpaces.value}
+                                    ariaLabel={`Add car spaces: ${carSpaces.value}`}
+                                  >
+                                    {carSpaces.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                            </Columns>
+                          );
+                        }
+                        return null;
+                      })()}
+
+                      {/* Address */}
+                      {(() => {
+                        const address = detailedData.textFields.find(f => f.field.toLowerCase().includes('address'));
+                        if (address) {
+                          return (
+                            <Rows spacing="0.5u">
+                              <Text size="small" variant="bold">Address</Text>
+                              <TypographyCard
+                                onClick={() => handleTextFieldClick(address.value)}
+                                onDragStart={() => address.value}
+                                ariaLabel={`Add address: ${address.value}`}
+                              >
+                                {address.value}
+                              </TypographyCard>
+                            </Rows>
+                          );
+                        }
+                        return null;
+                      })()}
+
+                      {/* Suburb, State, Postcode Row */}
+                      {(() => {
+                        const suburb = detailedData.textFields.find(f => f.field.toLowerCase().includes('suburb'));
+                        const state = detailedData.textFields.find(f => f.field.toLowerCase().includes('state'));
+                        const postcode = detailedData.textFields.find(f => f.field.toLowerCase().includes('postcode'));
+                        
+                        if (suburb || state || postcode) {
+                          return (
+                            <Columns spacing="2u">
+                              {suburb && (
+                                <Column>
+                                  <Text size="small" variant="bold">Suburb</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(suburb.value)}
+                                    onDragStart={() => suburb.value}
+                                    ariaLabel={`Add suburb: ${suburb.value}`}
+                                  >
+                                    {suburb.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                              {state && (
+                                <Column>
+                                  <Text size="small" variant="bold">State</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(state.value)}
+                                    onDragStart={() => state.value}
+                                    ariaLabel={`Add state: ${state.value}`}
+                                  >
+                                    {state.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                              {postcode && (
+                                <Column>
+                                  <Text size="small" variant="bold">Postcode</Text>
+                                  <TypographyCard
+                                    onClick={() => handleTextFieldClick(postcode.value)}
+                                    onDragStart={() => postcode.value}
+                                    ariaLabel={`Add postcode: ${postcode.value}`}
+                                  >
+                                    {postcode.value}
+                                  </TypographyCard>
+                                </Column>
+                              )}
+                            </Columns>
+                          );
+                        }
+                        return null;
+                      })()}
+
+                      {/* Other Fields */}
+                      {detailedData.textFields
+                        .filter(field => {
+                          const fieldName = field.field.toLowerCase();
+                          return !fieldName.includes('bedroom') && 
+                                 !fieldName.includes('bathroom') && 
+                                 !fieldName.includes('garage') && 
+                                 !fieldName.includes('address') && 
+                                 !fieldName.includes('suburb') && 
+                                 !fieldName.includes('state') && 
+                                 !fieldName.includes('postcode');
+                        })
+                        .map((field, index) => (
+                          <Rows key={`${field.field}-${index}`} spacing="0.5u">
+                            <Text size="small" variant="bold">{field.field}</Text>
+                            <TypographyCard
+                              onClick={() => handleTextFieldClick(field.value)}
+                              onDragStart={() => field.value}
+                              ariaLabel={`Add ${field.field}: ${field.value}`}
+                            >
+                              {field.value}
+                            </TypographyCard>
+                          </Rows>
+                        ))}
+                    </Rows>
+                  )}
+                </Rows>
+              ) : (
+                /* Non-listing tabs - keep original layout */
                 <Rows spacing="1u">
-                  <Text variant="bold">
-                    {intl.formatMessage({
-                      id: "searchable_tab.images_label",
-                      defaultMessage: "Photos:",
-                      description: "Label for images section",
-                    })}
-                  </Text>
-                  <Masonry targetRowHeightPx={200}>
-                    {detailedData.images.map((image, index) => (
-                      <MasonryItem 
-                        key={`${image.field}-${index}`}
-                        targetHeightPx={200}
-                        targetWidthPx={200}
-                      >
-                        <div onDoubleClick={() => handleImageClick(image.url)}>
-                          <ImageCard
-                            thumbnailUrl={image.url}
-                            onClick={() => handleImageClick(image.url)}
-                            onDragStart={async () => {
-                              // Create a proxy URL for drag operation
-                              const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(image.url)}`;
-                              return {
-                                type: "IMAGE",
-                                url: proxyUrl,
-                                thumbnailUrl: proxyUrl,
-                                fullSizeUrl: proxyUrl
-                              };
-                            }}
-                            alt={`${image.field} photo`}
-                            ariaLabel={`Click or drag to add ${image.field} photo to design`}
-                          />
-                        </div>
-                      </MasonryItem>
-                    ))}
-                  </Masonry>
+                  {/* Text Fields for non-listing tabs */}
+                  {detailedData.textFields && detailedData.textFields.length > 0 && (
+                    <Rows spacing="1u">
+                      <Text variant="bold">
+                        {intl.formatMessage({
+                          id: "searchable_tab.text_fields_label",
+                          defaultMessage: "Text Fields:",
+                          description: "Label for text fields section",
+                        })}
+                      </Text>
+                      <Rows spacing="2u">
+                        {detailedData.textFields.map((field, index) => (
+                          <Rows key={`${field.field}-${index}`} spacing="0.5u">
+                            <Text size="small" variant="bold">{field.field}</Text>
+                            <TypographyCard
+                              onClick={() => handleTextFieldClick(field.value)}
+                              onDragStart={() => field.value}
+                              ariaLabel={`Add ${field.field}: ${field.value}`}
+                            >
+                              {field.value}
+                            </TypographyCard>
+                          </Rows>
+                        ))}
+                      </Rows>
+                    </Rows>
+                  )}
+
+                  {/* Images for non-listing tabs */}
+                  {detailedData.images && detailedData.images.length > 0 && (
+                    <Rows spacing="1u">
+                      <Text variant="bold">
+                        {intl.formatMessage({
+                          id: "searchable_tab.images_label",
+                          defaultMessage: "Photos:",
+                          description: "Label for images section",
+                        })}
+                      </Text>
+                      <Masonry targetRowHeightPx={200}>
+                        {detailedData.images.map((image, index) => (
+                          <MasonryItem 
+                            key={`${image.field}-${index}`}
+                            targetHeightPx={200}
+                            targetWidthPx={200}
+                          >
+                            <Box position="relative">
+                              <ImageCard
+                                thumbnailUrl={image.url}
+                                onClick={() => handleImageClick(image.url)}
+                                alt={`${image.field} photo`}
+                                ariaLabel={`Add ${image.field} photo to design`}
+                                disabled={uploadingImages.has(image.url)}
+                              />
+                              {uploadingImages.has(image.url) && (
+                                <Box
+                                  position="absolute"
+                                  top="0"
+                                  left="0"
+                                  width="full"
+                                  height="full"
+                                  background="neutralMid"
+                                  borderRadius="standard"
+                                  style={{ opacity: 0.8 }}
+                                >
+                                  <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                                    <LoadingIndicator size="small" />
+                                  </Rows>
+                                </Box>
+                              )}
+                            </Box>
+                          </MasonryItem>
+                        ))}
+                      </Masonry>
+                    </Rows>
+                  )}
                 </Rows>
               )}
             </Rows>

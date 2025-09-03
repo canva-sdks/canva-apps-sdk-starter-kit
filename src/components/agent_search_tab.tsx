@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Rows,
   SearchInputMenu,
@@ -11,6 +11,7 @@ import {
   ImageCard,
   LoadingIndicator,
   TypographyCard,
+  Box,
 } from "@canva/app-ui-kit";
 import { useAddElement } from "utils/use_add_element";
 import { useSelection } from "utils/use_selection_hook";
@@ -37,7 +38,11 @@ interface AgentProfileData {
   }[];
 }
 
-export const AgentSearchTab: React.FC = () => {
+interface AgentSearchTabProps {
+  userEmail?: string;
+}
+
+export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<AgentSearchResult[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<AgentSearchResult | null>(null);
@@ -45,12 +50,16 @@ export const AgentSearchTab: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  
+  // Image upload loading states
+  const [uploadingImages, setUploadingImages] = useState<Set<string>>(new Set());
 
   const addElement = useAddElement();
   const textSelection = useSelection("plaintext");
   const imageSelection = useSelection("image");
   const intl = useIntl();
   const apiClient = ApiClient.getInstance();
+
 
   const searchAgents = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -148,6 +157,25 @@ export const AgentSearchTab: React.FC = () => {
     }
   }, [apiClient]);
 
+  // Load current user's profile on mount
+  useEffect(() => {
+    if (userEmail && !selectedAgent) {
+      // Set search query to user email
+      setSearchQuery(userEmail);
+      
+      // Create a fake selected agent for the logged-in user
+      const currentUserAgent: AgentSearchResult = {
+        id: 'current-user',
+        displayValue: 'My Profile',
+        email: userEmail,
+        data: { email: userEmail }
+      };
+      
+      setSelectedAgent(currentUserAgent);
+      fetchAgentProfile(userEmail);
+    }
+  }, [userEmail, selectedAgent, fetchAgentProfile]);
+
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
     searchAgents(value);
@@ -192,6 +220,12 @@ export const AgentSearchTab: React.FC = () => {
   }, [textSelection, addElement]);
 
   const handleImageClick = useCallback(async (imageUrl: string) => {
+    // Prevent double-clicks during upload
+    if (uploadingImages.has(imageUrl)) return;
+    
+    // Add to uploading set
+    setUploadingImages(prev => new Set(prev).add(imageUrl));
+    
     try {
       // Create a proxy URL to bypass CORS issues
       const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}`;
@@ -233,10 +267,17 @@ export const AgentSearchTab: React.FC = () => {
           },
         });
       }
-    } catch {
-      // If upload fails, we can't add the image - silently fail
+    } catch (error) {
+      console.error('Failed to add agent image:', error);
+    } finally {
+      // Remove from uploading set
+      setUploadingImages(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(imageUrl);
+        return newSet;
+      });
     }
-  }, [imageSelection, addElement]);
+  }, [imageSelection, addElement, uploadingImages]);
 
   const handleClear = useCallback(() => {
     setSearchQuery("");
@@ -356,24 +397,30 @@ export const AgentSearchTab: React.FC = () => {
                   <Columns spacing="1u">
                     {agentProfile.images.map((image, index) => (
                       <Column key={`${image.field}-${index}`}>
-                        <div onDoubleClick={() => handleImageClick(image.url)}>
+                        <Box position="relative">
                           <ImageCard
                             thumbnailUrl={image.url}
                             onClick={() => handleImageClick(image.url)}
-                            onDragStart={async () => {
-                              // Create a proxy URL for drag operation
-                              const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(image.url)}`;
-                              return {
-                                type: "IMAGE",
-                                url: proxyUrl,
-                                thumbnailUrl: proxyUrl,
-                                fullSizeUrl: proxyUrl
-                              };
-                            }}
                             alt={`${image.field} photo`}
-                            ariaLabel={`Click or drag to add ${image.field} photo to design`}
+                            disabled={uploadingImages.has(image.url)}
                           />
-                        </div>
+                          {uploadingImages.has(image.url) && (
+                            <Box
+                              position="absolute"
+                              top="0"
+                              left="0"
+                              width="full"
+                              height="full"
+                              background="neutralMid"
+                              borderRadius="standard"
+                              style={{ opacity: 0.8 }}
+                            >
+                              <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                                <LoadingIndicator size="small" />
+                              </Rows>
+                            </Box>
+                          )}
+                        </Box>
                       </Column>
                     ))}
                   </Columns>
