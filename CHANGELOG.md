@@ -1,5 +1,32 @@
 # Changelog
 
+## 2025-09-03
+
+### 🔧 Changed
+
+- Updated `@canva/app-eslint-plugin` to `1.0.0-beta.4`
+- Updated `typescript` to `5.9.2`
+- Dependencies audit bringing modules up to date:
+
+```text
+  @ngrok/ngrok                               1.5.1   ->   1.5.2
+  @testing-library/dom                      10.4.0   ->   10.4.1
+  @types/node-fetch                         2.6.12   ->   2.6.13
+  @types/node-forge                         1.3.11   ->   1.3.14
+  cssnano                                    7.0.7   ->   7.1.1
+  eslint                                    9.30.0   ->   9.34.0
+  globals                                   16.2.0   ->   16.3.0
+  mini-css-extract-plugin                    2.9.2   ->   2.9.4
+  ts-jest                                   29.4.0   ->   29.4.1
+  ts-loader                                  9.5.2   ->   9.5.4
+  typescript                                 5.8.2   ->   5.9.2
+  webpack                                   5.99.9   ->   5.101.3
+```
+
+### 🐞 Fixed
+
+- Upgraded `@canva/app-eslint-plugin` to version `1.0.0-beta.5` to fix a bug where the types were not being referenced correctly.
+
 ## 2025-08-21
 
 ### 🧰 Added

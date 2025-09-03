@@ -60,7 +60,7 @@ By default, every time you make a change to an app, you have to reload the entir
 To enable HMR:
 
 1. Navigate to an app via the [Your apps](https://www.canva.com/developers/apps).
-1. Select **Configuration** -> **Credentials** -> **.env file**.
+1. Select **Security** -> **Credentials** -> **.env file**.
 1. Copy the `.env` file contents.
 1. Paste the contents into the starter kit's `.env` file. For example:
 
@@ -156,7 +156,7 @@ To run examples that have a backend:
 
 1. Navigate to the [Your apps](https://www.canva.com/developers/apps) page.
 1. Select the app you want to run the example with.
-1. Copy your environment variables from **Configuration** -> **Credentials** -> **.env file**.
+1. Copy your environment variables from **Security** -> **Credentials** -> **.env file**.
 1. Paste them into the starter kit's `.env` file.
 
    For example:
