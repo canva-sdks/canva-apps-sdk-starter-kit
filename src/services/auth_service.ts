@@ -93,6 +93,7 @@ class AuthenticationService {
     }
 
     try {
+      console.log("doing auth",this.baseUrl,this.credentials)
       const response = await fetch(`${this.baseUrl}/auth/token`, {
         method: "POST",
         headers: {
@@ -103,6 +104,7 @@ class AuthenticationService {
           client_secret: this.credentials.client_secret,
         }),
       });
+      //console.log(response);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -110,6 +112,7 @@ class AuthenticationService {
       }
 
       const tokenData: TokenResponse = await response.json();
+      console.log(tokenData);
       
       if (!tokenData.access_token) {
         throw new Error("No access token received from authentication endpoint");
@@ -124,14 +127,14 @@ class AuthenticationService {
         // Default to 1 hour if no expiry provided
         this.tokenExpiry = Date.now() + (60 * 60 * 1000);
       }
-
+      console.log("Returning access_token",this.accessToken)
       return this.accessToken;
     } catch (error) {
       this.accessToken = null;
       this.tokenExpiry = null;
-      
+      console.log(error);
       if (error instanceof Error) {
-        throw new Error(`Authentication error: ${error.message}`);
+        throw new Error(`Middleware App Auth error: ${error.message}`);
       } else {
         throw new Error("Unknown authentication error occurred");
       }

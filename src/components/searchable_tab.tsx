@@ -85,13 +85,6 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   const intl = useIntl();
   const apiClient = ApiClient.getInstance();
 
-  // Default metrics to display for market data
-  const defaultMetrics = [
-    "median_price_12_months",
-    "sales_12_months", 
-    "change_12m_median_price_12_months"
-  ];
-
   // Helper function to get default metrics
   const getDefaultMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
     if (!labels) return [];
@@ -105,25 +98,12 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       const labelText = label.label.toLowerCase();
       
       // Check for median price
-      if ((prop.includes('median') && prop.includes('price') && prop.includes('12')) ||
-          (labelText.includes('median') && labelText.includes('price') && labelText.includes('12'))) {
-        return true;
-      }
-      
-      // Check for sales 12 months
-      if ((prop.includes('sales') && prop.includes('12')) ||
-          (labelText.includes('sales') && labelText.includes('12'))) {
-        return true;
-      }
-      
-      // Check for change in median price
-      if ((prop.includes('change') && prop.includes('median')) ||
-          (labelText.includes('change') && labelText.includes('median'))) {
+      if (['sales_12m','median_price_12m','change_12m_median_price_12m','total_sales_value_12m'].includes(prop)) {
         return true;
       }
       
       return false;
-    }).slice(0, 3); // Ensure we only get 3 metrics
+    }) //.slice(0, 3); // Limit results ? Ensure we only get 3 metrics
   }, []);
 
   // Helper function to get searched metrics
@@ -184,9 +164,11 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       
       // Add filters for listings endpoint
       if (endpoint === "listings") {
+        // Apply "Only my office" filter if checked
         if (onlyMyOffice && userEmail) {
           params.append("agent", userEmail);
         }
+        // Always apply status filter when not "all"
         if (statusFilter !== "all") {
           params.append("status", statusFilter);
         }
@@ -559,14 +541,18 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
     <Rows spacing="3u">
       {/* Filters for listings */}
       {endpoint === "listings" && (
-        <Rows spacing="2u">
-          <Checkbox
-            checked={onlyMyOffice}
-            onChange={(value, checked) => setOnlyMyOffice(checked)}
-            label="Only my office"
-          />
-          <Rows spacing="1u">
-            <Text size="small">Status</Text>
+        <Columns spacing="2u" alignY="center">
+          <Column width="content">
+            <Checkbox
+              checked={onlyMyOffice}
+              onChange={(value, checked) => setOnlyMyOffice(checked)}
+              label="Only my office"
+            />
+          </Column>
+          <Column width="content">
+            <Text size="small">Status:</Text>
+          </Column>
+          <Column>
             <Select
               value={statusFilter}
               onChange={(value) => setStatusFilter(value as string)}
@@ -578,8 +564,8 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                 { value: "pending", label: "Pending" }
               ]}
             />
-          </Rows>
-        </Rows>
+          </Column>
+        </Columns>
       )}
       
       <SearchInputMenu
