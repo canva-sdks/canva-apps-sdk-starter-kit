@@ -7,11 +7,15 @@ import * as styles from "styles/components.css";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
+  // Hook to monitor image element selection in the Canva editor
+  // Only triggers when image elements are selected by the user
   const selection = useSelection("image");
 
   const updateImage = async () => {
     setLoading(true);
-    // Start uploading the image
+
+    // Upload a new image using Canva's asset API
+    // This creates a queued image that can be referenced in the design
     const queuedImage = await upload({
       type: "image",
       url: "https://www.canva.dev/example-assets/image-import/image.jpg",
@@ -21,9 +25,13 @@ export const App = () => {
       aiDisclosure: "none",
     });
 
+    // Read the current selection draft to modify selected image elements
     const draft = await selection.read();
+    // Replace each selected image's reference with the new uploaded image
     draft.contents.forEach((s) => (s.ref = queuedImage.ref));
+    // Save the changes to update the design with the new image
     await draft.save();
+
     setLoading(false);
   };
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to implement a masonry grid layout for displaying images with drag-and-drop functionality and infinite scrolling. Shows advanced UI patterns for browsing and selecting assets.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/masonry/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/masonry/>.
 
 Related examples: See drag_and_drop/drag_and_drop_image for image drag-and-drop, or assets_and_media/digital_asset_management for asset browsing patterns.
 

@@ -12,12 +12,16 @@ const ACCEPTING_PAYMENTS_URL =
 
 export const App = () => {
   const openExternalUrl = async (url: string) => {
+    // requestOpenExternalUrl requires user consent before opening external URLs
+    // This ensures users are aware they're leaving the Canva environment
     const response = await requestOpenExternalUrl({
       url,
     });
 
+    // Handle user consent response - users can abort the navigation
     if (response.status === "aborted") {
-      // user decided not to navigate to the link
+      // User decided not to navigate to the external link
+      // In production apps, you might want to show feedback or alternative actions
     }
   };
 
@@ -27,6 +31,7 @@ export const App = () => {
         <Text>
           To learn more about how to open external URLs in your app, head over
           to the{" "}
+          {/* Link component with requestOpenExternalUrl prop handles external navigation */}
           <Link
             href={DOCS_URL}
             requestOpenExternalUrl={() => openExternalUrl(DOCS_URL)}
@@ -36,8 +41,8 @@ export const App = () => {
           </Link>
           .
         </Text>
-        <Title>Guidelines:</Title>
-        <Text>Be sure to checkout the below guidelines</Text>
+        <Title>Guidelines</Title>
+        <Text>Be sure to check out the guidelines below</Text>
         <Button
           variant="secondary"
           onClick={() => openExternalUrl(GUIDELINES_URL)}

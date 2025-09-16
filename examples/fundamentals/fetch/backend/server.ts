@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import "dotenv/config";
 import * as express from "express";
 import * as cors from "cors";
@@ -5,7 +6,7 @@ import { createBaseServer } from "../../../../utils/backend/base_backend/create"
 import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
 
 async function main() {
-  // TODO: Set the CANVA_APP_ID environment variable in the project's .env file
+  // Set the CANVA_APP_ID environment variable in the project's .env file
   const APP_ID = process.env.CANVA_APP_ID;
 
   if (!APP_ID) {
@@ -17,7 +18,7 @@ async function main() {
   const router = express.Router();
 
   /**
-   * TODO: Configure your CORS Policy
+   * IMPORTANT: You must configure your CORS Policy
    *
    * Cross-Origin Resource Sharing
    * ([CORS](https://developer.mozilla.org/en-US/docs/Glossary/CORS)) is an
@@ -46,15 +47,20 @@ async function main() {
    */
   router.use(cors());
 
+  // Initialize JWT middleware to verify Canva user tokens
+  // This middleware validates tokens sent from the frontend and extracts user information
   const jwtMiddleware = createJwtMiddleware(APP_ID);
   router.use(jwtMiddleware);
 
-  /*
-   * TODO: Define your backend routes after initializing the jwt middleware.
-   */
+  // IMPORTANT: You must define your own backend routes after initializing the jwt middleware
+  // This ensures all routes have access to verified user information via req.canva
   router.get("/custom-route", async (req, res) => {
-    // eslint-disable-next-line no-console
+    // Log the authenticated user information (extracted from JWT token)
+    /* eslint-disable-next-line no-console */
     console.log("request", req.canva);
+
+    // Return user context information from the verified JWT token
+    // This demonstrates how to access app, user, and brand information
     res.status(200).send({
       appId: req.canva.appId,
       userId: req.canva.userId,

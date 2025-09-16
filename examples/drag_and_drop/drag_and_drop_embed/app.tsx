@@ -10,19 +10,23 @@ export const App = () => {
   const isSupported = useFeatureSupport();
   const addElement = useAddElement();
 
+  // Static content for demo purposes - production apps should load content dynamically
   const thumbnailUrl =
     "https://www.canva.dev/example-assets/images/puppyhood.jpg";
   const previewSize = { width: 300, height: 200 };
   const embedUrl =
     "https://www.youtube.com/embed/L3MtFGWRXAA?si=duU555FqmToATe2j";
 
+  // Handle drag start for embedding content into the design
   const onDragStart = (event: React.DragEvent<HTMLElement>) => {
+    // Configure drag data for embed element with preview and URL
     const dragData: EmbedDragConfig = {
       type: "embed",
       previewUrl: thumbnailUrl,
       previewSize,
       embedUrl,
     };
+    // Use feature detection to support different drag APIs
     if (isSupported(ui.startDragToPoint)) {
       ui.startDragToPoint(event, dragData);
     } else if (isSupported(ui.startDragToCursor)) {
@@ -41,13 +45,14 @@ export const App = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         <Text>
-          This example demonstrates how apps can support drag-and-drop of embed.
+          This example demonstrates how apps can support drag and drop of embed
+          content.
         </Text>
         <EmbedCard
           ariaLabel="Add embed to design"
           thumbnailUrl={thumbnailUrl}
-          title="Heartwarming Chatter: Adorable Conversation with a puppy"
-          description="Pupppyhood"
+          title="Heartwarming chatter: Adorable conversation with a puppy"
+          description="Puppyhood"
           onDragStart={onDragStart}
           onClick={onAddEmbed}
         />

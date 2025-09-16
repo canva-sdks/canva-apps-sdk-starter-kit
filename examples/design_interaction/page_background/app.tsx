@@ -8,11 +8,15 @@ import { useFeatureSupport } from "utils/use_feature_support";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
+
+  // Check if the current design type supports page background changes
+  // (Some design types like docs don't support background modification)
   const isSupported = useFeatureSupport();
   const isRequiredFeatureSupported = isSupported(setCurrentPageBackground);
 
   const setBackgroundToSolidColor = async () => {
     setLoading(true);
+    // Set the page background to a solid color using hex color value
     await setCurrentPageBackground({
       color: "#ff0099",
     });
@@ -21,6 +25,9 @@ export const App = () => {
 
   const setBackgroundImage = async () => {
     setLoading(true);
+
+    // Upload an external image asset to Canva for use as background
+    // The upload function returns a reference that can be used with Canva APIs
     const { ref } = await upload({
       type: "image",
       mimeType: "image/jpeg",
@@ -31,6 +38,8 @@ export const App = () => {
       height: 720,
       aiDisclosure: "none",
     });
+
+    // Apply the uploaded image as the page background
     await setCurrentPageBackground({
       asset: { type: "image", ref },
     });
@@ -39,6 +48,9 @@ export const App = () => {
 
   const setBackgroundVideo = async () => {
     setLoading(true);
+
+    // Upload an external video asset to Canva for use as background
+    // Videos require both image and video thumbnails for preview
     const { ref } = await upload({
       type: "video",
       mimeType: "video/mp4",
@@ -51,6 +63,8 @@ export const App = () => {
       height: 720,
       aiDisclosure: "none",
     });
+
+    // Apply the uploaded video as the page background
     await setCurrentPageBackground({
       asset: { type: "video", ref },
     });
@@ -72,7 +86,7 @@ export const App = () => {
           variant="secondary"
           onClick={setBackgroundToSolidColor}
         >
-          Set Background to a Solid Color
+          Set background to a solid color
         </Button>
         <Button
           stretch
@@ -82,7 +96,7 @@ export const App = () => {
           disabled={loading || !isRequiredFeatureSupported}
           onClick={setBackgroundImage}
         >
-          Set Background to an Image
+          Set background to an image
         </Button>
         <Button
           stretch
@@ -92,7 +106,7 @@ export const App = () => {
           disabled={loading || !isRequiredFeatureSupported}
           onClick={setBackgroundVideo}
         >
-          Set Background to a Video
+          Set background to a video
         </Button>
         {!isRequiredFeatureSupported && <UnsupportedAlert />}
       </Rows>

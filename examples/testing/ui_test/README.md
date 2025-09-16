@@ -2,7 +2,7 @@
 
 Demonstrates how to set up and write tests for app UI components using standard testing frameworks. Shows basic component testing patterns and provides a foundation for testing user interactions.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/ui-test/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/ui-test/>.
 
 Related example: See testing/unit_test for testing app logic and business functions separately from UI.
 

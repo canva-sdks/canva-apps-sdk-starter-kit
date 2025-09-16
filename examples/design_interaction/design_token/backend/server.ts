@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import * as cors from "cors";
 
 import "dotenv/config";
@@ -10,7 +11,8 @@ import { SigningKeyNotFoundError } from "jwks-rsa";
 import * as jwt from "jsonwebtoken";
 
 /**
- * TODO: add your CANVA_APP_ID to the .env file at the root level
+ * Retrieve the CANVA_APP_ID from environment variables.
+ * Set this in your .env file at the root level of the project.
  */
 const APP_ID = process.env.CANVA_APP_ID;
 if (!APP_ID) {
@@ -30,12 +32,13 @@ const router = express.Router();
 const jwtMiddleware = createJwtMiddleware(APP_ID);
 
 /**
- * TODO: Replace this with a real database.
+ * In-memory database for demonstration purposes.
+ * Production apps should use a persistent database solution.
  */
 const data = createInMemoryDatabase();
 
 /**
- * TODO: Configure your CORS Policy
+ * IMPORTANT: You must configure your CORS Policy
  *
  * Cross-Origin Resource Sharing
  * ([CORS](https://developer.mozilla.org/en-US/docs/Glossary/CORS)) is an
@@ -65,8 +68,8 @@ const data = createInMemoryDatabase();
 router.use(cors());
 
 /**
- * TODO: Add this middleware to all routes that will receive authenticated requests from
- * your app.
+ * JWT middleware for authenticating requests from Canva apps.
+ * This should be applied to all routes that require user authentication.
  */
 router.use(jwtMiddleware);
 

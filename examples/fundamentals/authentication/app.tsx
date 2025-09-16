@@ -19,7 +19,7 @@ const scope = new Set(["openid"]);
 const BACKEND_URL = `${BACKEND_HOST}/custom-route`;
 
 export function App() {
-  // initialize the OAuth client
+  // Initialize the Canva OAuth client for user authentication
   const oauth = useMemo(() => auth.initOauth(), []);
 
   const [accessTokenResponse, setAccessTokenResponse] = useState<
@@ -32,7 +32,7 @@ export function App() {
   );
 
   useEffect(() => {
-    // check if the user is already authenticated
+    // Check if the user is already authenticated when the component mounts
     retrieveAndSetToken();
   }, [oauth]);
 
@@ -40,6 +40,7 @@ export function App() {
     setAccessTokenResponse(undefined);
     setError(null);
     try {
+      // Trigger the OAuth authorization flow - this opens Canva's authorization UI
       await oauth.requestAuthorization({ scope });
       await retrieveAndSetToken();
     } catch (error) {
@@ -47,8 +48,8 @@ export function App() {
     }
   }, []);
 
-  // you MUST call getAccessToken every time you need a token, as the token may expire.
-  // Canva will handle caching and refreshing the token for you.
+  // IMPORTANT: Always call getAccessToken when you need a token - tokens can expire.
+  // Canva automatically handles caching and refreshing tokens for you.
   const retrieveAndSetToken = useCallback(async (forceRefresh = false) => {
     try {
       setAccessTokenResponse(
@@ -61,6 +62,7 @@ export function App() {
 
   const logout = useCallback(async () => {
     setAccessTokenResponse(undefined);
+    // Revoke the user's authorization and clear stored tokens
     await oauth.deauthorize();
     setAccessTokenResponse(null);
   }, []);
@@ -72,6 +74,7 @@ export function App() {
     }
 
     try {
+      // Example of using the access token to make authenticated API requests
       const res = await fetch(BACKEND_URL, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -120,7 +123,7 @@ export function App() {
               account.
             </Text>
             <Button variant="primary" onClick={authorize}>
-              Sign into Example
+              Sign in to Example
             </Button>
           </Rows>
         ) : (

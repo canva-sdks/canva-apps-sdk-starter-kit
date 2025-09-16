@@ -6,11 +6,14 @@ import { useAddElement } from "utils/use_add_element";
 
 export const App = () => {
   const [url, setUrl] = useState("https://www.youtube.com/watch?v=o-YBDTqX_ZU");
+  // Hook for adding design elements to the current Canva design
   const addElement = useAddElement();
 
   const disabled = url.trim().length < 1;
 
   const addEmbed = useCallback(() => {
+    // Add an embed element to the design using the embed element API
+    // Supports URLs from platforms like YouTube, Vimeo, Spotify, etc.
     addElement({
       type: "embed",
       url,

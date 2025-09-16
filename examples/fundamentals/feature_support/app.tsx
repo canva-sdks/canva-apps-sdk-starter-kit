@@ -15,10 +15,12 @@ export const App = () => {
   const [appPage, setAppPage] = useState<AppPage>("home");
 
   // A new callback is returned each time the feature support profile of the
-  // current page changes in Canva.
+  // current design context changes in Canva. This allows the app to react to
+  // changes like switching between different design types (doc vs poster).
   const isSupported = useFeatureSupport();
 
-  // Check whether `addElementAtPoint` and `addPage` are supported in the current page.
+  // Check whether `addElementAtPoint` and `addPage` are supported in the current design context.
+  // These methods may not be available in certain design types like docs or whiteboards.
   const isInteractionSupported = isSupported(addElementAtPoint, addPage);
 
   const renderPage = (page: AppPage) => {
@@ -27,7 +29,6 @@ export const App = () => {
         return (
           <HomePage enterInteractionPage={() => setAppPage("interaction")} />
         );
-        break;
       case "interaction":
         return (
           <InteractionPage

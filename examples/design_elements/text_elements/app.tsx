@@ -9,11 +9,13 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
+// FontWeight and TextAttributes are Canva's type definitions for text styling
 import type { FontWeight, TextAttributes } from "@canva/design";
 import { useCallback, useState } from "react";
 import * as styles from "styles/components.css";
 import { useAddElement } from "utils/use_add_element";
 
+// UI state matches the properties accepted by Canva's text element API
 type UIState = {
   text: string;
   color: string;
@@ -34,16 +36,18 @@ const initialState: UIState = {
 
 export const App = () => {
   const [state, setState] = useState<UIState>(initialState);
+  // Custom hook that provides addElement function, which uses Canva's addElementAtPoint or addElementAtCursor APIs
   const addElement = useAddElement();
 
   const { text, color, fontWeight, fontStyle, decoration, textAlign } = state;
   const disabled = text.trim().length < 1 || color.trim().length < 1;
 
+  // Creates a text element in the Canva design using the configured styling options
   const addText = useCallback(async () => {
     await addElement({
-      type: "text",
+      type: "text", // Specifies this is a native Canva text element
       ...state,
-      children: [state.text],
+      children: [state.text], // Text content is passed as children array
     });
   }, [state, addElement]);
 
@@ -74,6 +78,7 @@ export const App = () => {
         <FormField
           label="Color"
           control={() => (
+            // ColorSelector provides Canva's native color picker interface
             <ColorSelector
               color={color}
               onChange={(value) => {

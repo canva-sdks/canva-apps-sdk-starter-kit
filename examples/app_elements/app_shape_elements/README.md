@@ -1,10 +1,10 @@
 # App shape elements
 
-Demonstrates how to create custom vector shape elements inside app elements using SVG path data. Shows shape creation, color customization, and path manipulation for building reusable custom shapes.
+This example demonstrates how to create custom vector shape elements inside app elements using SVG path data. It shows shape creation, color customization, and path manipulation for building reusable custom shapes.
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/app-shape-elements/.
 
-Related examples: See design_elements/shape_elements for direct shape insertion, or app_element_children for multiple shapes within app elements.
+Related examples: See `design_elements/shape_elements` for direct shape insertion, or `app_element_children` for multiple shapes within app elements.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

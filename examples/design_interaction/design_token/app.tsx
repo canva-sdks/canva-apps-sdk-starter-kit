@@ -9,9 +9,11 @@ import {
 } from "@canva/app-ui-kit";
 import { useState, useEffect } from "react";
 import * as styles from "styles/components.css";
+// Canva SDKs for accessing user authentication and design metadata
 import { auth } from "@canva/user";
 import { getDesignMetadata, getDesignToken } from "@canva/design";
 
+// Type definition for design data stored in the backend
 type DesignData = {
   title: string;
   defaultDimensions: {
@@ -26,10 +28,14 @@ export const App = () => {
   const [designData, setDesignData] = useState<DesignData | undefined>();
   const [error, setError] = useState<string | undefined>();
 
+  // Retrieves design data from the backend using design tokens for secure access
   const getDesignData = async () => {
     setState("loading");
     setError(undefined);
     try {
+      // Get both design token and user authentication token from Canva
+      // Design tokens provide secure access to design-specific data
+      // User tokens authenticate the current user
       const [designToken, authToken] = await Promise.all([
         getDesignToken(),
         auth.getCanvaUserToken(),
@@ -51,10 +57,13 @@ export const App = () => {
     }
   };
 
+  // Saves design data to the backend using tokens and metadata from Canva
   const saveDesignData = async () => {
     setState("loading");
     setError(undefined);
     try {
+      // Collect design token, user token, and current design metadata
+      // getDesignMetadata() provides access to design properties like dimensions
       const [designToken, authToken, { defaultPageDimensions: dimensions }] =
         await Promise.all([
           getDesignToken(),

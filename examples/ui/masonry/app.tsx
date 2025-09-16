@@ -24,7 +24,8 @@ const TARGET_ROW_HEIGHT_PX = 100;
 const NUM_PLACEHOLDERS = 10;
 
 const uploadImage = async (image: Image): Promise<QueuedImage> => {
-  // Upload the image directly since we're using static URLs from Canva's example assets
+  // Use Canva's upload API to prepare images for use in designs
+  // This creates a QueuedImage that can be referenced when adding elements to the design
   const queuedImage = await upload({
     type: "image",
     mimeType: image.url.endsWith(".png") ? "image/png" : "image/jpeg",
@@ -32,7 +33,7 @@ const uploadImage = async (image: Image): Promise<QueuedImage> => {
     thumbnailUrl: image.url,
     width: image.width,
     height: image.height,
-    aiDisclosure: "none",
+    aiDisclosure: "none", // Indicates no AI was used to generate this image
   });
 
   return queuedImage;
@@ -85,11 +86,13 @@ export const App = () => {
   }, [fetchImages]);
 
   const addImageToDesign = async (image: Image) => {
+    // Upload image to Canva's asset system first
     const queuedImage = await uploadImage(image);
 
+    // Add the uploaded image as an element to the user's design
     await addElement({
       type: "image",
-      ref: queuedImage.ref,
+      ref: queuedImage.ref, // Reference to the uploaded image asset
       altText: {
         text: "an example image",
         decorative: undefined,
@@ -101,9 +104,10 @@ export const App = () => {
     event: React.DragEvent<HTMLElement>,
     image: Image,
   ) => {
+    // Configure drag-and-drop data for Canva's design surface
     const dragData: ImageDragConfig = {
       type: "image",
-      resolveImageRef: () => uploadImage(image),
+      resolveImageRef: () => uploadImage(image), // Lazy upload when drag is completed
       // Our mock API doesn't return a thumbnail/preview image, but for a production app
       // you should use real lower resolution thumbnail/preview images
       previewUrl: image.url,
@@ -116,6 +120,9 @@ export const App = () => {
         height: image.height,
       },
     };
+    // Use feature detection to support different Canva editor versions:
+    // - startDragToPoint: For fixed designs (posters, social media) that use coordinate-based positioning
+    // - startDragToCursor: For responsive documents (presentations, docs) that slot content into text flow
     if (isSupported(ui.startDragToPoint)) {
       ui.startDragToPoint(event, dragData);
     } else if (isSupported(ui.startDragToCursor)) {

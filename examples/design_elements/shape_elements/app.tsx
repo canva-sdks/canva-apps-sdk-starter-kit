@@ -16,28 +16,30 @@ import {
 import { addElementAtPoint } from "@canva/design";
 import { useState } from "react";
 import * as styles from "styles/components.css";
+// Utility hook to check if specific Canva APIs are supported in the current design context
 import { useFeatureSupport } from "utils/use_feature_support";
 
+// Shape element configuration matching the Canva Design API shape element structure
 type UIState = {
   paths: {
-    d: string;
+    d: string; // SVG path data defining the shape geometry
     fill: {
-      dropTarget: boolean;
-      color: string;
+      dropTarget: boolean; // Whether this path can accept dropped colors/assets
+      color: string; // Fill color in hex format
     };
   }[];
   viewBox: {
-    width: number;
-    height: number;
-    top: number;
-    left: number;
+    width: number; // SVG viewBox width
+    height: number; // SVG viewBox height
+    top: number; // SVG viewBox top offset
+    left: number; // SVG viewBox left offset
   };
 };
 
 const initialState: UIState = {
   paths: [
     {
-      d: "M 0 0 H 100 V 100 H 0 L 0 0",
+      d: "M 0 0 H 100 V 100 H 0 L 0 0", // SVG path drawing a simple square
       fill: {
         dropTarget: false,
         color: "#ff0099",
@@ -55,6 +57,7 @@ const initialState: UIState = {
 export const App = () => {
   const [state, setState] = useState<UIState>(initialState);
   const isSupported = useFeatureSupport();
+  // Check if shape elements can be added to the current design type (not supported in docs, etc.)
   const isRequiredFeatureSupported = isSupported(addElementAtPoint);
 
   const { paths, viewBox } = state;
@@ -266,7 +269,7 @@ export const App = () => {
                 viewBox,
               });
             }}
-            // ShapeElement is not supported in certain design types such as docs.
+            // Shape elements are not supported in certain design types such as docs
             disabled={disabled || !isRequiredFeatureSupported}
             stretch
           >

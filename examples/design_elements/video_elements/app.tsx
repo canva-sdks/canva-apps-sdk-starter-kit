@@ -13,6 +13,7 @@ import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useAddElement } from "utils/use_add_element";
 
+// Static video assets for demo purposes - see README for production considerations
 const videos = {
   building: {
     title: "Pinwheel on building",
@@ -37,6 +38,7 @@ export const App = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const addElement = useAddElement();
 
+  // Transform video data for VideoCard components with selection state
   const items = Object.entries(videos).map(([key, value]) => {
     const { title, thumbnailImageUrl, thumbnailVideoUrl } = value;
     return {
@@ -55,21 +57,23 @@ export const App = () => {
     setIsLoading(true);
     try {
       const item = videos[selected];
+      // Upload video to Canva's asset storage and get reference
       const { ref } = await upload({
         type: "video",
         mimeType: "video/mp4",
         url: item.url,
         thumbnailImageUrl: item.thumbnailImageUrl,
         thumbnailVideoUrl: item.thumbnailVideoUrl,
-        aiDisclosure: "none",
+        aiDisclosure: "none", // Indicates this video is not AI-generated
       });
 
+      // Add the video element to the current design using the asset reference
       await addElement({
         type: "video",
         ref,
         altText: {
           text: item.title,
-          decorative: undefined,
+          decorative: undefined, // Set to true if video is purely decorative
         },
       });
     } finally {

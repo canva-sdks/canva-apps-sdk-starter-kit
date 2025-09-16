@@ -18,6 +18,7 @@ import { useEffect, useState, useCallback } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
+// App element data structure for image elements
 // We can't store the image's data URL in the app element's data, since it
 // exceeds the 5kb limit. We can, however, store an ID that references the
 // image.
@@ -60,6 +61,8 @@ const initialState: AppElementChangeEvent = {
   data: { imageId: "dog", width: 400, height: 400, rotation: 0 },
 };
 
+// Initialize the app element client for rendering image elements
+// This defines how the app element data gets rendered as design elements
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
@@ -111,8 +114,9 @@ export const App = () => {
     async (operation: Operation) => {
       setLoading(true);
       try {
+        // Upload the image asset if not already uploaded
+        // This creates a reusable image reference for the app element
         if (!images[state.data.imageId].imageRef) {
-          // Upload local image
           const imageSrc = images[state.data.imageId].imageSrc;
           const { ref } = await upload({
             type: "image",
@@ -124,6 +128,7 @@ export const App = () => {
           images[state.data.imageId].imageRef = ref;
         }
 
+        // Either add a new app element or update the existing one
         if (operation === Operation.Add) {
           await appElementClient.addElement({
             data: state.data,
@@ -143,6 +148,8 @@ export const App = () => {
     [state],
   );
 
+  // Register listener for app element selection changes
+  // This updates the UI when users select different app elements in the design
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(

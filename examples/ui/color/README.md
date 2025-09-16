@@ -1,8 +1,8 @@
-# UI color selection
+# Color selection
 
 Demonstrates how to implement color selection using the color selector interface. Shows color picker integration, brand color access, and color swatch functionality for design consistency.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/color/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/color/>.
 
 Related examples: See design_elements/text_elements for applying selected colors to elements, or other UI examples for design system integration.
 

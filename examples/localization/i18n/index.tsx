@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import { AppUiProvider } from "@canva/app-ui-kit";
 import { createRoot } from "react-dom/client";
 import { App } from "./app";
@@ -19,6 +20,7 @@ function render() {
 
 render();
 
+// Hot Module Replacement for development (automatically reloads the app when changes are made)
 if (module.hot) {
   module.hot.accept("./app", render);
 }

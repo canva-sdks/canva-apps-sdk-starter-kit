@@ -25,7 +25,7 @@ import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useFeatureSupport } from "utils/use_feature_support";
 
-// Below values are only for demonstration purposes.0
+// Below values are only for demonstration purposes.
 // You can position your elements anywhere on the page by providing arbitrary
 // values for placement attributes: top, left, width, height and rotation.
 const enum ElementPlacement {
@@ -36,9 +36,9 @@ const enum ElementPlacement {
   BOTTOM_RIGHT = "bottom_right",
 }
 
-// We can't store the image's data URL in the app element's data, since it
-// exceeds the 5kb limit. We can, however, store an ID that references the
-// image.
+// App elements in Canva have a 5KB data limit per element.
+// Rather than storing large image data URLs directly, we store a reference ID
+// that maps to the actual image asset after upload via the @canva/asset package.
 type AppElementData = {
   imageId: string;
 };
@@ -74,6 +74,9 @@ const initialState: UIState = {
   placement: ElementPlacement.DEFAULT,
 };
 
+// Initialize the app element client for creating interactive elements in designs.
+// App elements are reusable, customizable components that users can edit within Canva.
+// The render function defines how the element appears when placed in a design.
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
@@ -106,6 +109,8 @@ export const App = () => {
   } = state;
   const disabled = !imageId || imageId.trim().length < 1;
 
+  // Calculate placement coordinates based on page dimensions and desired position.
+  // Some design types (like docs) don't support absolute positioning, so we check compatibility.
   const getPlacement = async (
     placement?: ElementPlacement,
   ): Promise<Placement | undefined> => {
@@ -116,6 +121,7 @@ export const App = () => {
       return;
     }
 
+    // Scale element size to half the smaller page dimension for consistent appearance
     const elementSize =
       Math.min(pageDimensions.height, pageDimensions.width) / 2;
     switch (placement) {
@@ -177,9 +183,11 @@ export const App = () => {
     };
   });
 
+  // Add or update an app element (interactive, editable element) in the design.
+  // App elements can be updated in-place if they already exist in the design.
   const addOrUpdateAppImage = useCallback(async () => {
     if (!images[state.data.imageId].imageRef) {
-      // Upload local image
+      // Upload image to Canva's asset system to get a reference for use in designs
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
@@ -199,9 +207,11 @@ export const App = () => {
     }
   }, [state]);
 
+  // Add a static image element directly to the design at specified coordinates.
+  // Unlike app elements, these are not interactive or editable once placed.
   const addImage = useCallback(async () => {
     if (!images[state.data.imageId].imageRef) {
-      // Upload local image
+      // Upload image to Canva's asset system to get a reference for use in designs
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
@@ -225,6 +235,8 @@ export const App = () => {
     });
   }, [state]);
 
+  // Register listener for app element changes (when user selects/deselects elements in design).
+  // This allows the app to update its UI based on which app element is currently selected.
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState((prevState) => {
@@ -298,7 +310,7 @@ export const App = () => {
         <Button
           variant="secondary"
           onClick={addOrUpdateAppImage}
-          // Positioning appElement absolutely is not supported in certain design types such as docs.
+          // Absolute positioning is not supported in certain design types such as docs
           disabled={disabled || !isRequiredFeatureSupported}
         >
           {state.update ? "Update app element" : "Add app element"}
@@ -306,7 +318,7 @@ export const App = () => {
         <Button
           variant="secondary"
           onClick={addImage}
-          // Positioning elements absolutely is not supported in certain design types such as docs.
+          // Absolute positioning is not supported in certain design types such as docs
           disabled={disabled || !isRequiredFeatureSupported}
         >
           Add element

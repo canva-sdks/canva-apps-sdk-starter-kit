@@ -14,6 +14,7 @@ import React from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 
+// Type definition for the data stored within an app element
 type AppElementData = {
   title: string;
   videoId: string;
@@ -22,11 +23,13 @@ type AppElementData = {
   rotation: number;
 };
 
+// Event handler type for app element changes (creation or editing)
 type AppElementChangeEvent = {
   data: AppElementData;
   update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
 };
 
+// Sample video data for demonstration - in production apps, use CDN hosting
 const videos = {
   building: {
     title: "Pinwheel on building",
@@ -62,6 +65,7 @@ const initialState: AppElementChangeEvent = {
   },
 };
 
+// Initialize the app element client to handle video rendering in Canva designs
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
@@ -116,6 +120,7 @@ export const App = () => {
   const addOrUpdateVideo = React.useCallback(async () => {
     setLoading(true);
     try {
+      // Upload video to Canva if not already uploaded
       if (!videos[state.data.videoId].videoRef) {
         const item = videos[state.data.videoId];
         const { ref } = await upload({
@@ -129,7 +134,7 @@ export const App = () => {
         videos[state.data.videoId].videoRef = ref;
       }
 
-      // Add or update app element
+      // Add new app element or update existing one based on current state
       if (state.update) {
         state.update({ data: state.data });
       } else {
@@ -140,6 +145,7 @@ export const App = () => {
     }
   }, [state]);
 
+  // Register listener for when user selects an existing app element to edit
   React.useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
       setState(

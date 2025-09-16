@@ -6,9 +6,9 @@ export const App = (props: { onClick(): void }) => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
-        <Text>This example demonstrates how to test your App's UI.</Text>
+        <Text>This example demonstrates how to test your app's UI.</Text>
         <Text>
-          Checkout <code>examples/testing/ui_test/tests/app.tests.tsx</code> to
+          Check out <code>examples/testing/ui_test/tests/app.tests.tsx</code> to
           learn how to start testing.
         </Text>
         <Button variant="primary" onClick={props.onClick}>

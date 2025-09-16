@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import {
   Button,
   FormField,
@@ -45,17 +46,20 @@ const initialState: AppElementChangeEvent = {
   },
 };
 
+// Initialize the app element client with custom render logic
+// App elements are Canva design objects that can contain multiple child elements
 const appElementClient = initAppElement<AppElementData>({
-  // This callback runs when the app sets the element's data. It receives
-  // the data and must respond with an array of elements.
+  // This render callback executes when Canva needs to display the app element
+  // It transforms our app data into actual design elements positioned on the canvas
   render: (data) => {
     const elements: AppElementRendererOutput = [];
 
-    // For each row and column, create a shape element. The positions of the
-    // elements are offset to ensure that none of them overlap.
+    // Generate a grid of shape elements based on rows and columns
+    // Each shape is positioned using absolute coordinates relative to the app element
     for (let row = 0; row < data.rows; row++) {
       for (let column = 0; column < data.columns; column++) {
         const { width, height, spacing, rotation } = data;
+        // Calculate position offsets to create a non-overlapping grid layout
         const top = row * (height + spacing);
         const left = column * (width + spacing);
         const element = createSquareShapeElement({
@@ -79,11 +83,12 @@ export const App = () => {
   } = state;
   const disabled = width < 1 || height < 1 || rows < 1 || columns < 1;
 
-  // This callback runs when the app element's data is modified or when the
-  // user selects an app element. In both situations, we can use this callback
-  // to update the state of the UI to reflect the latest data.
+  // Register a change listener to sync UI state with selected app elements
+  // This is called when the user selects an app element in Canva or when element data changes
   useEffect(() => {
     appElementClient.registerOnElementChange((appElement) => {
+      // Update local state to reflect the current app element's data
+      // If no element is selected, reset to default values
       setState(
         appElement
           ? { data: appElement.data, update: appElement.update }
@@ -233,11 +238,13 @@ export const App = () => {
           variant="primary"
           stretch
           onClick={() => {
-            // This method attaches the provided data to the app element,
-            // triggering the `registerRenderAppElement` callback.
+            // Add new app element or update existing one with current data
+            // This triggers the render callback to create the visual elements on canvas
             if (state.update) {
+              // Update existing app element with new data
               state.update({ data: state.data });
             } else {
+              // Create new app element and add it to the design
               appElementClient.addElement({ data: state.data });
             }
           }}
@@ -250,6 +257,8 @@ export const App = () => {
   );
 };
 
+// Creates a square shape element using SVG path data
+// Shape elements are one of the core design element types in Canva
 const createSquareShapeElement = ({
   width,
   height,
@@ -265,21 +274,24 @@ const createSquareShapeElement = ({
 }): ShapeElementAtPoint => {
   return {
     type: "shape",
+    // SVG path defining a rectangle shape (Move to origin, Horizontal line, Vertical line, etc.)
     paths: [
       {
         d: `M 0 0 H ${width} V ${height} H 0 L 0 0`,
         fill: {
           dropTarget: false,
-          color: "#ff0099",
+          color: "#ff0099", // Bright pink fill color
         },
       },
     ],
+    // ViewBox defines the coordinate system for the shape
     viewBox: {
       width,
       height,
       top: 0,
       left: 0,
     },
+    // Physical dimensions and positioning on the canvas
     width,
     height,
     rotation,

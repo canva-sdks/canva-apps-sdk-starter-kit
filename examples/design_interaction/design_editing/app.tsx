@@ -23,8 +23,9 @@ export const App = () => {
   const [operation, setOperation] = useState<Operation>(Operation.NONE);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  // This is a helper function to check that the page we retrieved is
-  // an "Absolute" page. Other pages are not supported by the API.
+  // Helper function to verify the page type. The Design Editing API only supports
+  // "absolute" pages (like presentations, posters). Other page types like "flow"
+  // pages (docs, whiteboards) are not supported by the Design Editing API.
   function checkAbsolute(
     page: DesignEditing.Page,
   ): asserts page is DesignEditing.AbsolutePage {
@@ -36,14 +37,15 @@ export const App = () => {
     }
   }
 
-  // This method shows how to replace all fills on the page
-  // with an image
+  // Demonstrates updating element properties using the Design Editing API.
+  // Shows how to replace fills with uploaded images across multiple elements.
   const replaceAllFillsWithDogs = () => {
+    // openDesign creates a Design Editing session for the current page
     openDesign({ type: "current_page" }, async (session) => {
-      // Check that we're on a supported page
+      // Verify we're on a supported page type
       checkAbsolute(session.page);
 
-      // Find all elements on the page that can contain a fill
+      // Find elements that support fill modifications (rect and shape elements)
       const elementsToReplace = session.page.elements.filter(
         (el) => el.type === "rect" || el.type === "shape",
       );
@@ -54,7 +56,7 @@ export const App = () => {
 
       setOperation(Operation.UPDATE);
 
-      // Upload the image we want to use
+      // Upload image using the Asset API and create an ImageFill object
       const dogImage = await uploadLocalImage();
       const dogMedia: DesignEditing.ImageFill = {
         type: "image",
@@ -63,14 +65,14 @@ export const App = () => {
         imageRef: dogImage.ref,
       };
 
-      // For each element, update the fills to contain our new image
+      // Update each element's fill with the uploaded image
       elementsToReplace.forEach((element) => {
         switch (element.type) {
           case "rect":
             element.fill.mediaContainer.set(dogMedia);
             break;
           case "shape":
-            // Some shape paths cannot be edited, so we need to check for this
+            // Shape elements have paths - check if each path's fill can be edited
             element.paths.forEach(
               (p) =>
                 p.fill.isMediaEditable && p.fill.mediaContainer.set(dogMedia),
@@ -80,32 +82,33 @@ export const App = () => {
             throw new Error("Unexpected Element");
         }
       });
-      // Save the changes
+      // Commit all changes to the design using the session.sync() method
       return session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
       .finally(() => setOperation(Operation.NONE));
   };
 
-  // This method flips the design around the Y-axis
+  // Demonstrates element transformation by flipping the entire design horizontally.
+  // Shows how to manipulate element positions and media flip properties.
   const flipDesign = () => {
     openDesign({ type: "current_page" }, async (session) => {
       checkAbsolute(session.page);
-      // Whiteboards do not have static dimensions, so we can use this to figure out
-      // the dimensions that bound the elements
+      // Calculate bounding box for pages without fixed dimensions (like whiteboards)
       const dimensions = findElementsBoundingBox(session.page.elements);
 
-      // For designs with static dimensions, the center is just half the width.
+      // Determine the horizontal center point for flipping calculations
       const pageCenter = session.page.dimensions
         ? session.page.dimensions.width / 2
         : dimensions.centerX;
 
+      // Process all supported elements on the page
       session.page.elements
         .filter((element) => element.type !== "unsupported")
         .forEach((element) => {
-          // compute new x-position by flipping elements around the center
+          // Mirror element position around the page center
           element.left = 2 * pageCenter - element.left - element.width;
-          // also horizontally flip any media
+          // Also flip any media content horizontally to maintain visual consistency
           if (
             element.type === "rect" &&
             element.fill.mediaContainer.ref != null
@@ -124,20 +127,21 @@ export const App = () => {
         });
 
       setOperation(Operation.FLIP);
-      // Save the changes to the design
+      // Commit the transformation changes to the design
       return session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
       .finally(() => setOperation(Operation.NONE));
   };
 
-  // This shows an example of how to delete elements
+  // Demonstrates element deletion using the Design Editing API.
+  // Shows how to remove specific element types from the page.
   const deleteAllTextElements = () => {
     openDesign({ type: "current_page" }, async (session) => {
-      // Check that we're on a supported page
+      // Verify we're on a supported page type
       checkAbsolute(session.page);
       const page = session.page;
-      // Delete all text elements
+      // Remove all text elements from the page using the elements.delete() method
       page.elements.forEach((element) => {
         if (element.type === "text") {
           page.elements.delete(element);
@@ -145,29 +149,29 @@ export const App = () => {
       });
 
       setOperation(Operation.DELETE);
-      // Save the changes to the design
+      // Commit the deletion changes to the design
       return session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
       .finally(() => setOperation(Operation.NONE));
   };
 
-  // This examples shows how you can add elements to the design
+  // Demonstrates element creation and insertion using the Design Editing API.
+  // Shows how to create text and image elements and add them to the page.
   const addTextWithSparkles = () => {
     setOperation(Operation.INSERT);
     openDesign({ type: "current_page" }, async (session) => {
-      // Check that we're on a supported page
+      // Verify we're on a supported page type
       checkAbsolute(session.page);
-      // The elementStateBuilder provides convenience methods for creating new elements
+      // Use elementStateBuilder helper to create new elements with proper formatting
       const { elementStateBuilder } = session.helpers;
       const { ref } = await uploadSparkle();
       const text = elementStateBuilder.createRichtextRange();
       text.appendText("Hello World");
       text.formatParagraph({ index: 0, length: 11 }, { fontSize: 60 });
 
-      // Add text element to design
-      // Note that the only way to add elements to a design is to insert
-      // the element into a page's elements list
+      // Insert text element into the page using the elements.insertBefore() method
+      // Elements must be added to the page's elements list to appear in the design
       const insertedText = session.page.elements.insertBefore(
         undefined,
         elementStateBuilder.createTextElement({
@@ -182,7 +186,7 @@ export const App = () => {
         throw new Error(" Could not insert text");
       }
 
-      // Insert a sparkle behind the text
+      // Create decorative sparkle elements positioned relative to the text
       session.page.elements.insertBefore(
         insertedText,
         elementStateBuilder.createRectElement({
@@ -199,7 +203,7 @@ export const App = () => {
         }),
       );
 
-      // Insert a sparkle in front of the text
+      // Insert another sparkle element using insertAfter for z-order control
       session.page.elements.insertAfter(
         insertedText,
         elementStateBuilder.createRectElement({
@@ -216,21 +220,22 @@ export const App = () => {
         }),
       );
 
-      // Save the changes to the design
+      // Commit all element insertions to the design
       return session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
       .finally(() => setOperation(Operation.NONE));
   };
 
-  // This example shows how to use a helper to group elements
+  // Demonstrates element grouping using the Design Editing API helpers.
+  // Shows how to group existing elements on the page together.
   async function groupAllSupportedElements() {
     return openDesign({ type: "current_page" }, async (session) => {
-      // Check that we're on a supported page
+      // Verify we're on a supported page type
       checkAbsolute(session.page);
       const { group } = session.helpers;
 
-      // get all elements on the page that can be grouped
+      // Filter to get elements that support grouping operations
       const elsToGroup = session.page.elements.filter(
         (el) =>
           el.type === "embed" ||
@@ -245,25 +250,26 @@ export const App = () => {
         return;
       }
       setOperation(Operation.GROUP);
-      // Group the elements
+      // Use the group helper to combine elements into a single grouped element
       await group({ elements: elsToGroup });
-      // Save the changes to the design
+      // Commit the grouping changes to the design
       await session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
       .finally(() => setOperation(Operation.NONE));
   }
 
-  // This shows an example of how to add a group to a page
+  // Demonstrates creating new elements and immediately grouping them.
+  // Shows how to combine element creation, insertion, and grouping operations.
   async function insertAndGroup() {
     return openDesign({ type: "current_page" }, async (session) => {
-      // Check that we're on a supported page
+      // Verify we're on a supported page type
       checkAbsolute(session.page);
       const { group, elementStateBuilder } = session.helpers;
       const width = session.page.dimensions?.width || 0;
       const height = session.page.dimensions?.height || 0;
 
-      // Create the elements we want in the group
+      // Create a star-shaped element with custom SVG path data
       const shape = session.page.elements.insertBefore(
         undefined,
         elementStateBuilder.createShapeElement({
@@ -296,13 +302,15 @@ export const App = () => {
         return;
       }
 
+      // Create formatted text content using the richtext range builder
       const textRange = elementStateBuilder.createRichtextRange();
-      textRange.appendText("Well Done!");
+      textRange.appendText("Well done!");
       textRange.formatParagraph(
-        { index: 0, length: 11 },
+        { index: 0, length: 10 },
         { fontSize: 45, color: "#000000", textAlign: "center" },
       );
 
+      // Insert text element positioned over the star shape
       const text = session.page.elements.insertAfter(
         shape,
         elementStateBuilder.createTextElement({
@@ -319,9 +327,9 @@ export const App = () => {
       }
 
       setOperation(Operation.INSERT_AND_GROUP);
-      // Group the elements we created
+      // Group the newly created elements together into a single unit
       await group({ elements: [shape, text] });
-      // Save the changes to the design
+      // Commit all creation and grouping operations to the design
       await session.sync();
     })
       .catch((e) => (e instanceof Error ? setError(e.message) : setError(e)))
@@ -339,7 +347,7 @@ export const App = () => {
           disabled={operation !== Operation.NONE}
           loading={operation === Operation.FLIP}
         >
-          Flip Design
+          Flip design
         </Button>
         <Button
           variant="secondary"
@@ -347,7 +355,7 @@ export const App = () => {
           disabled={operation !== Operation.NONE}
           loading={operation === Operation.DELETE}
         >
-          Delete all Text Elements
+          Delete all text elements
         </Button>
         <Button
           variant="secondary"
@@ -379,13 +387,14 @@ export const App = () => {
           disabled={operation !== Operation.NONE}
           loading={operation === Operation.INSERT_AND_GROUP}
         >
-          Insert a group of Elements
+          Insert a group of elements
         </Button>
       </Rows>
     </div>
   );
 };
 
+// Helper function to upload the dog image asset using the Asset API
 function uploadLocalImage() {
   return upload({
     mimeType: "image/jpeg",
@@ -398,6 +407,7 @@ function uploadLocalImage() {
   });
 }
 
+// Helper function to upload the sparkle image asset using the Asset API
 function uploadSparkle() {
   return upload({
     mimeType: "image/png",
@@ -410,6 +420,8 @@ function uploadSparkle() {
   });
 }
 
+// Helper function to calculate the bounding box that contains all elements on a page
+// Used for pages without fixed dimensions (like whiteboards) to determine layout bounds
 function findElementsBoundingBox(elements: DesignEditing.ElementList) {
   const lefts: number[] = [];
   const tops: number[] = [];

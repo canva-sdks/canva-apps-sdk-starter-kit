@@ -6,13 +6,18 @@ import { useFeatureSupport } from "utils/use_feature_support";
 
 export const App = () => {
   const isSupported = useFeatureSupport();
+  // Check if the addElementAtPoint API is supported in the current design type
+  // Group elements are not supported in certain design types such as docs
   const isRequiredFeatureSupported = isSupported(addElementAtPoint);
 
   const handleClick = () => {
+    // Group elements allow multiple child elements to be positioned relative to each other
+    // and treated as a single unit within the Canva design
     addElementAtPoint({
       type: "group",
       children: [
         {
+          // First embed element positioned at the top-left of the group
           type: "embed",
           url: "https://www.youtube.com/watch?v=LLFhKaqnWwk",
           width: 100,
@@ -21,6 +26,8 @@ export const App = () => {
           left: 0,
         },
         {
+          // Second embed element positioned to the right of the first
+          // Child element positions are relative to the group's coordinate system
           type: "embed",
           url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           width: 100,

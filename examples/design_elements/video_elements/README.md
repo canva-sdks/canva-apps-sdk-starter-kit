@@ -2,9 +2,12 @@
 
 Demonstrates how to add video elements to designs using predefined video assets. Shows video selection, upload handling, and video insertion with thumbnail previews.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/video-elements/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/video-elements/>.
 
-Related examples: See app_video_elements for videos within app elements, or drag_and_drop/drag_and_drop_video for drag-and-drop video insertion.
+Related examples:
+
+- `app_video_elements` - For embedding videos within app elements
+- `drag_and_drop/drag_and_drop_video` - For drag-and-drop video insertion patterns
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

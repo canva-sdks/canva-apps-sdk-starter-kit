@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import {
   Box,
   Button,
@@ -204,7 +205,7 @@ export const CreditUsage = ({
 const SelectedEffects = () => {
   const intl = useIntl();
 
-  // TODO: Make this list change based on user selection!
+  // In production, this list would change based on user selection
   const selectedEffects = [
     intl.formatMessage({
       defaultMessage: "black and white",

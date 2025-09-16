@@ -6,6 +6,7 @@ import { selection } from "@canva/design";
 import * as styles from "styles/components.css";
 
 export const App = () => {
+  // State to track the current selection of richtext elements
   const [selectionState, setSelectionState] = useState<
     SelectionEvent<"richtext">
   >({
@@ -18,6 +19,7 @@ export const App = () => {
       }),
   });
 
+  // Register for selection changes to enable text manipulation when text is selected
   useEffect(() => {
     selection.registerOnChange({
       scope: "richtext",
@@ -29,16 +31,21 @@ export const App = () => {
     });
   }, []);
 
+  // Toggles bold formatting for the selected richtext by reading current formatting
+  // and applying the opposite state
   const updateFormatting = async () => {
     if (!selectionState) {
       return;
     }
 
+    // Create a draft to make changes to the selected richtext
     const draft = await selectionState.read();
     for (const richtext of draft.contents) {
+      // Read text regions to access formatting information
       const regions = await richtext.readTextRegions();
       let index = 0;
       regions.forEach((region) => {
+        // Toggle bold state: if currently bold, make normal; if normal, make bold
         richtext.formatText(
           { index, length: region.text.length },
           {
@@ -49,19 +56,23 @@ export const App = () => {
         index = index + region.text.length;
       });
     }
+    // Save changes to apply them to the design
     await draft.save();
   };
 
+  // Appends an exclamation mark to the end of selected richtext elements
   const appendText = async () => {
     if (!selectionState) {
       return;
     }
 
     const draft = await selectionState.read();
+    // Append text to each selected richtext element
     draft.contents.forEach((richtext) => richtext.appendText("!"));
     await draft.save();
   };
 
+  // Replaces all selected richtext content with underlined "Hello World"
   const replaceText = async () => {
     if (!selectionState) {
       return;
@@ -69,7 +80,9 @@ export const App = () => {
 
     const draft = await selectionState.read();
     for (const richtext of draft.contents) {
+      // Get the current text length to replace the entire content
       const plaintext = await richtext.readPlaintext();
+      // Replace all text with "Hello World" and apply underline formatting
       richtext.replaceText(
         { index: 0, length: plaintext.length },
         "Hello World",
@@ -91,7 +104,7 @@ export const App = () => {
           onClick={updateFormatting}
           disabled={selectionState.count === 0}
         >
-          Toggle boldness
+          Toggle bold
         </Button>
         <Button
           variant="primary"

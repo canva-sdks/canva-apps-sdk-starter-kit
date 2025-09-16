@@ -7,10 +7,12 @@ import { useSelection } from "utils/use_selection_hook";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
+  // Monitor selection for video elements in the design
   const selection = useSelection("video");
 
   const updateVideo = async () => {
     setLoading(true);
+    // Upload video asset to Canva's media storage
     const queuedVideo = await upload({
       type: "video",
       mimeType: "video/mp4",
@@ -23,9 +25,12 @@ export const App = () => {
       height: 180,
       aiDisclosure: "none",
     });
+    // Create a draft to modify the selected video elements
     const draft = await selection.read();
+    // Replace each selected video's content with the new uploaded video
     draft.contents.forEach((s) => (s.ref = queuedVideo.ref));
 
+    // Apply changes to the design
     await draft.save();
     setLoading(false);
   };

@@ -2,7 +2,7 @@
 
 Demonstrates how to create basic text elements with styling controls including color, font weight, style, decoration, and alignment. Shows fundamental text insertion and formatting patterns.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/text-elements/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/text-elements/>.
 
 Related examples: See design_elements/richtext_elements for advanced text formatting, or app_text_elements for text within app elements.
 

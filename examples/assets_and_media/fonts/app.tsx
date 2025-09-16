@@ -13,6 +13,7 @@ import {
   ImageCard,
 } from "@canva/app-ui-kit";
 import type { Font, FontStyle, FontWeightName } from "@canva/asset";
+// Canva's Font APIs for discovering available fonts and opening the font picker
 import { findFonts, requestFontSelection } from "@canva/asset";
 import { useState, useEffect, useCallback } from "react";
 import * as styles from "styles/components.css";
@@ -47,6 +48,7 @@ export const App = () => {
   const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
   const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
 
+  // Fetch all fonts available in Canva using the findFonts API
   const fetchFonts = useCallback(async () => {
     const response = await findFonts();
     setAvailableFonts(response.fonts);
@@ -138,6 +140,7 @@ export const App = () => {
           alignment="start"
           stretch={true}
           onClick={async () => {
+            // Open Canva's built-in font picker dialog
             const response = await requestFontSelection({
               selectedFontRef: selectedFont?.ref,
             });
@@ -205,6 +208,7 @@ export const App = () => {
         <Button
           variant="primary"
           onClick={() => {
+            // Create a text element with the selected font and add it to the Canva design
             addElement({
               type: "text",
               ...textConfig,
@@ -222,6 +226,7 @@ export const App = () => {
   );
 };
 
+// Extract available font weights from a Canva Font object for display in UI components
 const getFontWeights = (
   font?: Font,
 ): {
@@ -236,6 +241,7 @@ const getFontWeights = (
     : [];
 };
 
+// Extract available font styles for a specific weight from a Canva Font object
 const getFontStyles = (
   fontWeight: FontWeightName,
   font?: Font,
