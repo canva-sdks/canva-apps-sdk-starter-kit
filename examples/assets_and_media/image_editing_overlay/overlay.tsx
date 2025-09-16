@@ -1,182 +1,168 @@
-import { useEffect, useRef } from "react";
-import type { LaunchParams } from "./app";
 import { getTemporaryUrl, upload } from "@canva/asset";
-import { useSelection } from "utils/use_selection_hook";
-import type { AppProcessInfo, CloseParams } from "@canva/platform";
 import { appProcess } from "@canva/platform";
-import type { SelectionEvent } from "@canva/design";
+import * as React from "react";
+import { useSelection } from "utils/use_selection_hook";
 
-// App can extend CloseParams type to send extra data when closing the overlay
-// For example:
-// type CloseOpts = CloseParams & { message: string }
-export type CloseOpts = CloseParams;
-
-type OverlayProps = {
-  context: AppProcessInfo<LaunchParams>;
-};
-
-type UIState = {
-  brushSize: number;
-};
-
-export const Overlay = (props: OverlayProps) => {
-  const { context: appContext } = props;
+export const SelectedImageOverlay = () => {
   const selection = useSelection("image");
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const originalImageRef = React.useRef<HTMLImageElement | null>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isDraggingRef = useRef<boolean>();
-  const uiStateRef = useRef<UIState>({
-    brushSize: 7,
-  });
+  React.useEffect(() => {
+    const initializeCanvas = async () => {
+      try {
+        // Get the selected image
+        const draft = await selection.read();
+        const [image] = draft.contents;
 
-  useEffect(() => {
-    if (!selection || selection.count !== 1) {
-      return;
-    }
-
-    if (
-      !appContext.launchParams ||
-      appContext.surface !== "selected_image_overlay"
-    ) {
-      return void abort();
-    }
-
-    // set initial ui state
-    const uiState = appContext.launchParams;
-    uiStateRef.current = uiState;
-
-    // set up canvas
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return void abort();
-    }
-    const context = canvas.getContext("2d");
-    if (!context) {
-      return void abort();
-    }
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // load and draw image to canvas
-    const img = new Image();
-    let cssScale = 1;
-    const drawImage = () => {
-      // Set the canvas dimensions to match the original image dimensions to maintain image quality,
-      // when saving the output image back to the design using canvas.toDataUrl()
-      cssScale = window.innerWidth / img.width;
-      canvas.width = img.width;
-      canvas.height = img.height;
-      canvas.style.transform = `scale(${cssScale})`;
-      canvas.style.transformOrigin = "0 0";
-      context.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
-    img.onload = drawImage;
-    img.crossOrigin = "anonymous";
-    (async () => {
-      const selectedImageUrl = await loadOriginalImage(selection);
-      if (!selectedImageUrl) {
-        return void abort();
-      }
-      img.src = selectedImageUrl;
-    })();
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      if (img.complete) {
-        drawImage();
-      }
-    });
-
-    canvas.addEventListener("pointerdown", (e) => {
-      isDraggingRef.current = true;
-    });
-
-    canvas.addEventListener("pointermove", (e) => {
-      if (isDraggingRef.current) {
-        const mousePos = getCanvasMousePosition(canvas, e);
-        context.fillStyle = "white";
-        context.beginPath();
-        context.arc(
-          mousePos.x,
-          mousePos.y,
-          uiStateRef.current.brushSize * (1 / cssScale),
-          0,
-          Math.PI * 2,
-        );
-        context.fill();
-      }
-    });
-
-    canvas.addEventListener("pointerup", () => {
-      isDraggingRef.current = false;
-    });
-
-    return void appProcess.current.setOnDispose<CloseOpts>(
-      async ({ reason }) => {
-        // abort if image has not loaded or receive `aborted` signal
-        if (reason === "aborted" || !img.src || !img.complete) {
+        if (!image) {
           return;
         }
-        const dataUrl = canvas.toDataURL();
-        const draft = await selection.read();
-        const queueImage = await upload({
+
+        // Download the selected image
+        const { url } = await getTemporaryUrl({
           type: "image",
-          mimeType: "image/png",
-          url: dataUrl,
-          thumbnailUrl: dataUrl,
-          width: canvas.width,
-          height: canvas.height,
-          aiDisclosure: "none",
+          ref: image.ref,
         });
-        draft.contents[0].ref = queueImage.ref;
-        await draft.save();
-      },
-    );
+        const img = await downloadImage(url);
+
+        // Store reference to original image for reset functionality
+        originalImageRef.current = img;
+
+        // Render the selected image
+        const { canvas, context } = getCanvas(canvasRef.current);
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0, img.width, img.height);
+
+        // Notify that image is ready
+        appProcess.broadcastMessage({ isImageReady: true });
+      } catch {
+        appProcess.broadcastMessage({ isImageReady: false });
+      }
+    };
+
+    initializeCanvas();
   }, [selection]);
 
-  useEffect(() => {
-    // set up message handler
-    return void appProcess.registerOnMessage(async (_, message) => {
-      if (!message) {
+  React.useEffect(() => {
+    // Listen for editing commands from the object panel
+    appProcess.registerOnMessage(async (sender, message) => {
+      if (
+        typeof message !== "object" ||
+        message == null ||
+        !("action" in message)
+      ) {
         return;
       }
-      const { brushSize } = message as UIState;
-      uiStateRef.current = {
-        ...uiStateRef.current,
-        brushSize,
-      };
+
+      try {
+        const { canvas, context } = getCanvas(canvasRef.current);
+
+        switch (message.action) {
+          case "invert":
+            context.filter = "invert(100%)";
+            context.drawImage(canvas, 0, 0);
+            break;
+
+          case "blur":
+            context.filter = "blur(3px)";
+            context.drawImage(canvas, 0, 0);
+            break;
+
+          case "reset":
+            if (originalImageRef.current) {
+              context.filter = "none";
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              context.drawImage(originalImageRef.current, 0, 0);
+            }
+            break;
+
+          default:
+            // Unknown action, do nothing
+            break;
+        }
+      } catch {
+        // Silently handle effect application errors
+      }
     });
   }, []);
 
-  return <canvas ref={canvasRef} />;
+  React.useEffect(() => {
+    // Handle overlay disposal (save or close)
+    return void appProcess.current.setOnDispose(async (context) => {
+      try {
+        // Save changes if user completed the editing
+        if (context.reason === "completed") {
+          // Get the modified image data
+          const { canvas } = getCanvas(canvasRef.current);
+          const dataUrl = canvas.toDataURL("image/png", 1.0);
+
+          // Upload the modified image
+          const asset = await upload({
+            type: "image",
+            mimeType: "image/png",
+            url: dataUrl,
+            thumbnailUrl: dataUrl,
+            aiDisclosure: "none",
+          });
+
+          // Replace the original image with the modified version
+          const draft = await selection.read();
+          draft.contents[0].ref = asset.ref;
+          await draft.save();
+        }
+
+        // Reset image readiness state
+        appProcess.broadcastMessage({ isImageReady: false });
+      } catch {
+        // Handle save errors silently
+      }
+    });
+  }, [selection]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "block",
+      }}
+    />
+  );
 };
 
-const abort = () => appProcess.current.requestClose({ reason: "aborted" });
+// Utility function to download image from URL
+const downloadImage = async (url: string): Promise<HTMLImageElement> => {
+  const response = await fetch(url, { mode: "cors" });
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
 
-const loadOriginalImage = async (selection: SelectionEvent<"image">) => {
-  if (selection.count !== 1) {
-    return;
-  }
-  const draft = await selection.read();
-  const { url } = await getTemporaryUrl({
-    type: "image",
-    ref: draft.contents[0].ref,
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error("Image could not be loaded"));
+    img.src = objectUrl;
   });
-  return url;
+
+  URL.revokeObjectURL(objectUrl);
+  return img;
 };
 
-// get the mouse position relative to the canvas
-const getCanvasMousePosition = (
-  canvas: HTMLCanvasElement,
-  event: PointerEvent,
-) => {
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  return {
-    x: (event.clientX - rect.left) * scaleX,
-    y: (event.clientY - rect.top) * scaleY,
-  };
+// Utility function to get canvas and context in a type-safe way
+const getCanvas = (canvas: HTMLCanvasElement | null) => {
+  if (!canvas) {
+    throw new Error("HTMLCanvasElement does not exist");
+  }
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    throw new Error("CanvasRenderingContext2D does not exist");
+  }
+
+  return { canvas, context };
 };

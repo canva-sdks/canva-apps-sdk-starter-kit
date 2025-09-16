@@ -6,9 +6,13 @@ import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
 import { useAddElement } from "utils/use_add_element";
 
+// Create a global RichtextRange instance - this manages text content and formatting
 let richtext = createRichtextRange();
+
 export const App = () => {
+  // Track text regions to display the richtext structure
   const [regions, setRegions] = useState<TextRegion[]>([]);
+  // Hook to add elements to the Canva design
   const addElement = useAddElement();
 
   useEffect(() => {
@@ -16,14 +20,17 @@ export const App = () => {
   }, []);
 
   const reset = () => {
+    // Create a new RichtextRange instance and populate with initial text
     richtext = createRichtextRange();
     richtext.appendText(
       "This is an example richtext.\nUsing the RichtextRange API, individual parts of the text can be formatted.",
     );
+    // Update the regions state to reflect the current richtext structure
     setRegions(richtext.readTextRegions());
   };
 
   const formatText = () => {
+    // Apply text-level formatting (color and style) to the first word
     richtext.formatText(
       { index: 0, length: 4 },
       {
@@ -35,6 +42,7 @@ export const App = () => {
   };
 
   const formatParagraph = () => {
+    // Apply paragraph-level formatting (font size and alignment) to the second paragraph
     richtext.formatParagraph(
       {
         index: "This is an example richtext.\n".length,
@@ -49,6 +57,7 @@ export const App = () => {
   };
 
   const replaceText = () => {
+    // Replace the first word with alternate text to demonstrate text replacement
     richtext.replaceText(
       {
         index: 0,
@@ -60,11 +69,13 @@ export const App = () => {
   };
 
   const appendText = () => {
+    // Add additional text to the end of the richtext content
     richtext.appendText(" This is appended text.");
     setRegions(richtext.readTextRegions());
   };
 
   const addToDesign = async () => {
+    // Add the richtext element to the user's Canva design
     await addElement({ type: "richtext", range: richtext });
   };
 
@@ -96,6 +107,7 @@ export const App = () => {
   );
 };
 
+// Display the TextRegion structure to show how richtext is internally represented
 const Regions = ({ regions }: { regions: TextRegion[] }) => {
   return (
     <pre style={{ textWrap: "wrap", fontSize: 14 }}>

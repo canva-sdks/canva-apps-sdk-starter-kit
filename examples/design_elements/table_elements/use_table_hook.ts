@@ -1,4 +1,6 @@
+// For usage information, see the README.md file.
 import { TableWrapper } from "utils/table_wrapper";
+// TableElement is the Canva Design SDK type for table elements that can be added to designs
 import type { TableElement } from "@canva/design";
 import { useCallback, useEffect, useState } from "react";
 
@@ -96,6 +98,8 @@ export const useTable = (
     }
   }, [rowCount, columnCount]);
 
+  // Apply cell customizations to the table wrapper
+  // This configures individual cells with custom spans, text content, and styling
   useEffect(() => {
     setError(undefined);
     try {
@@ -104,6 +108,7 @@ export const useTable = (
           typeof cell.rowPos === "number" &&
           typeof cell.columnPos === "number"
         ) {
+          // Configure cell with Canva-specific properties: spans, content, and background color
           wrapper.setCellDetails(cell.rowPos, cell.columnPos, {
             rowSpan: cell.rowSpan,
             colSpan: cell.colSpan,

@@ -12,3 +12,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Asset format validation is not implemented. Production apps should validate asset formats and handle unsupported formats gracefully
 - Error handling is simplified for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The `no-console` ESLint rule is disabled for console.log statements used for debugging purposes to demonstrate upload completion events

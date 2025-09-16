@@ -15,6 +15,7 @@ import * as styles from "styles/components.css";
 import { useFeatureSupport } from "utils/use_feature_support";
 import { useAddElement } from "utils/use_add_element";
 
+// Upload external image to Canva's asset system and return a reference
 const uploadExternalImage = () => {
   return upload({
     mimeType: "image/jpeg",
@@ -28,6 +29,7 @@ const uploadExternalImage = () => {
   });
 };
 
+// Upload local bundled image to Canva's asset system and return a reference
 const uploadLocalImage = () => {
   return upload({
     mimeType: "image/jpeg",
@@ -59,6 +61,7 @@ export const App = () => {
     addElement({ type: "image", ref, altText });
   };
 
+  // Handle drag start for local bundled image with feature detection
   const onDragStartForLocalImage = (event: React.DragEvent<HTMLElement>) => {
     const dragData: ImageDragConfig = {
       type: "image",
@@ -73,6 +76,7 @@ export const App = () => {
         height: 100,
       },
     };
+    // Use feature detection to support different Canva Editor versions
     if (isSupported(ui.startDragToPoint)) {
       ui.startDragToPoint(event, dragData);
     } else if (isSupported(ui.startDragToCursor)) {
@@ -80,6 +84,7 @@ export const App = () => {
     }
   };
 
+  // Handle drag start for external hosted image with feature detection
   const onDragStartForExternalImage = (event: React.DragEvent<HTMLElement>) => {
     const dragData: ImageDragConfig = {
       type: "image",
@@ -96,6 +101,7 @@ export const App = () => {
       },
     };
 
+    // Use feature detection to support different Canva Editor versions
     if (isSupported(ui.startDragToPoint)) {
       ui.startDragToPoint(event, dragData);
     } else if (isSupported(ui.startDragToCursor)) {
@@ -125,7 +131,7 @@ export const App = () => {
           />
         </Rows>
         <Rows spacing="1u">
-          <Title size="small">External Image</Title>
+          <Title size="small">External image</Title>
           <Text size="small" tone="tertiary">
             This image is an external https image made draggable via drag and
             drop and asset upload.

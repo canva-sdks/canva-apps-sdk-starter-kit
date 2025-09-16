@@ -22,32 +22,30 @@ export const App = () => {
    */
   const translateWithoutFormatting = async () => {
     setInProgressTask(Task.WITHOUT_FORMATTING);
-    // Read the richtext content in the current page.
+    // Start a content editing session for all richtext elements on the current page
     await editContent(
       {
         contentType: "richtext",
         target: "current_page",
       },
       async (session) => {
-        // create a request object by simply reading the plaintext of each text object in the page
+        // Extract plaintext from each richtext element, ignoring any formatting like bold, italic, etc.
         const request: string[][] = session.contents.map((range) => [
           range.readPlaintext(),
         ]);
 
-        // This simulates an HTTP request to get the translation. For this example we translate into
-        // lorem ipsum.
+        // Simulate a translation API call (in production, this would call a real translation service)
         const response = await getTranslation(request);
 
-        // Take the contents object and get the text ranges. Because of our translate function we know that
-        // each entry in the response corresponds to a range in the contents array.
+        // Apply translations to each richtext element in the design
         session.contents.forEach((range, i) => {
-          // Get the text length of the existing text in the document
+          // Get the length of the original text to know how much to replace
           const length = range.readPlaintext().length;
-          // Replace all of the text in the design with the response from the translation request.
+          // Replace the entire text content with the translated text
           range.replaceText({ index: 0, length }, response[i][0]);
         });
 
-        // Save the changes to the design
+        // Commit all changes to the design - this makes the changes visible to the user
         await session.sync();
       },
     );
@@ -60,36 +58,32 @@ export const App = () => {
    */
   const translateWithFormatting = async () => {
     setInProgressTask(Task.WITH_FORMATTING);
-    // Read the richtext content in the current page.
+    // Start a content editing session for all richtext elements on the current page
     await editContent(
       {
         contentType: "richtext",
         target: "current_page",
       },
       async (session) => {
-        // create a request object by reading the attributed regions of each text object in the page
+        // Extract text regions which preserve formatting boundaries (bold, italic, etc.)
         const request = session.contents.map((range) =>
           range.readTextRegions().map((region) => region.text),
         );
 
-        // This simulates an HTTP request to get the translation. For this example we translate into
-        // lorem ipsum.
+        // Simulate a translation API call (in production, this would call a real translation service)
         const response = await getTranslation(request);
 
-        // For each richtext object we queried, apply the translation
+        // Apply translations to each richtext element while preserving formatting
         session.contents.forEach((range, index) => {
-          // Get the translation corresponding to the text object. Each entry contains an array of translations.
-          // Each translation is an array of strings with each entry corresponding to an entry in the text region array.
+          // Get the translated regions corresponding to this text element
           const translatedRegions = response[index];
-          // Get the endpoint of the text represented by the region.
+          // Track position from the end of the text to avoid index recalculation during replacement
           let endOfRegion = range.readPlaintext().length;
-          // Read the richtext objects as text regions
+          // Get all text regions with their formatting information
           const regionsToTranslate = range.readTextRegions();
-          // Reverse the regions and then iterate on them.
-          // We reverse it because when doing text replacement, changing text length would need us to recalculate regions.
-          // However ny changing the text from the back first we can avoid these recalculations.
+          // Process regions in reverse order to avoid position shifts affecting subsequent replacements
           regionsToTranslate.reverse().forEach((region, i) => {
-            // Get the end of the previous region (which also serves as the start of the current region)
+            // Calculate the start position of the current region
             endOfRegion = endOfRegion - region.text.length;
             // Replace the current region (starting at the end of the previous region with length equal to the length of the text in the region)
             // with the translated text.
@@ -103,7 +97,7 @@ export const App = () => {
           });
         });
 
-        // Save the changes to the design
+        // Commit all changes to the design - this makes the changes visible to the user
         await session.sync();
       },
     );
@@ -123,7 +117,7 @@ export const App = () => {
           disabled={inProgressTask != null}
           loading={inProgressTask === Task.WITH_FORMATTING}
         >
-          Translate with Formatting
+          Translate with formatting
         </Button>
         <Button
           variant="secondary"
@@ -131,7 +125,7 @@ export const App = () => {
           disabled={inProgressTask != null}
           loading={inProgressTask === Task.WITHOUT_FORMATTING}
         >
-          Translate without Formatting
+          Translate without formatting
         </Button>
       </Rows>
     </div>
@@ -139,11 +133,15 @@ export const App = () => {
 };
 
 /**
- * A function that simulates a request to translate some text
- * @param text the text chunks to translate
- * @returns the translated text chunks
+ * Mock function that simulates calling an external translation API.
+ * In a production app, this would make HTTP requests to services like Google Translate,
+ * AWS Translate, or Azure Translator Text.
+ * @param text Array of text chunks to translate, grouped by richtext element
+ * @returns Promise resolving to translated text chunks in the same structure
  */
 async function getTranslation(text: string[][]): Promise<string[][]> {
+  // Simulate network delay that would occur with a real translation API
   await new Promise((res) => setTimeout(res, 500));
+  // Convert to lorem ipsum as a placeholder for actual translation
   return text.map((t) => convertWordsToLorem(t));
 }

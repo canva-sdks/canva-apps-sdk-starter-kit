@@ -52,7 +52,7 @@ export const App = () => {
           case "quota_exceeded":
             setError(QUOTA_ERROR);
             break;
-          // TODO: handle other errors uniquely if required
+          // Handle other error types - you may want to customize error messages
           default:
             setError(e.message);
             break;

@@ -1,7 +1,14 @@
+// For usage information, see the README.md file.
 import type { Config } from "@canva/app-components";
 import { useIntl } from "react-intl";
 
 type ContainerTypes = "folder";
+
+/**
+ * Configuration hook for the SearchableListView component.
+ * Defines the digital asset management interface settings including search filters,
+ * container types, sort options, and export capabilities.
+ */
 export const useConfig = (): Config<ContainerTypes> => {
   const intl = useIntl();
   return {
@@ -197,12 +204,21 @@ export const useConfig = (): Config<ContainerTypes> => {
         "At the moment, we only support images and videos. Corrupted and unsupported files will not appear.",
       description: "Helper text to explain why some assets are not visible",
     }),
-    // TODO remove `export` if your app does not support exporting the Canva design into an external platform
+    /*
+      Remove this export configuration if your app does not support 
+      exporting Canva designs to your external platform
+    */
     export: {
       enabled: true,
-      // TODO provide a container type that user can choose to save into, or remove this field if user doesn't need to choose a container
+      /*
+        Specify container types that users can choose when saving exported designs.
+        Remove this field if users don't need to choose a specific container
+      */
       containerTypes: ["folder"],
-      // TODO remove file types that are not supported by your platform
+      /*
+        List the file types your platform supports for exported designs.
+        Remove any file types your platform cannot handle
+      */
       acceptedFileTypes: [
         "png",
         "pdf_standard",

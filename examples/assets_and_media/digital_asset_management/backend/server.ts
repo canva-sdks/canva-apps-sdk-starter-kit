@@ -1,10 +1,14 @@
+// For usage information, see the README.md file.
 import * as express from "express";
 import * as cors from "cors";
 import { createDamRouter } from "./routers/dam";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
 
 async function main() {
-  // TODO: Set the CANVA_APP_ID environment variable in the project's .env file
+  /*
+    Set the CANVA_APP_ID environment variable in your project's .env file.
+    This should match the app ID from your Canva Developer Portal.
+  */
   const APP_ID = process.env.CANVA_APP_ID;
 
   if (!APP_ID) {
@@ -16,7 +20,7 @@ async function main() {
   const router = express.Router();
 
   /**
-   * TODO: Configure your CORS Policy
+   * IMPORTANT: Configure your CORS Policy
    *
    * Cross-Origin Resource Sharing
    * ([CORS](https://developer.mozilla.org/en-US/docs/Glossary/CORS)) is an

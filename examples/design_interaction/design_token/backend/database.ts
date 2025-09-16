@@ -1,3 +1,6 @@
+// For usage information, see the README.md file.
+
+// Database type definitions for storing design data per brand and user
 type BrandId = string;
 type BrandData = {
   name: string;

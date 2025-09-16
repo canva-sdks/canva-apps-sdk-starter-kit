@@ -1,8 +1,8 @@
 # Feature support
 
-Demonstrates how to detect and handle feature availability across different design types and contexts. Shows dynamic feature detection, graceful degradation, and context-aware UI rendering.
+Demonstrates how to detect and handle feature availability across different design types and contexts. Shows dynamic feature detection, graceful degradation, and context-aware UI rendering using the Canva Apps SDK's feature support system.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/feature-support/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/feature-support/>.
 
 Related examples: This pattern should be used across all apps to ensure proper functionality across different design contexts.
 

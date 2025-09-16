@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-09-16
+
+### 🔧 Changed
+
+- Updated example apps comments and READMEs based on the AGENTS.md file.
+- Refactored the `assets_and_media/image_editing_overlay` example slightly to improve readability and better showcase the API.
+
 ## 2025-09-03
 
 ### 🔧 Changed

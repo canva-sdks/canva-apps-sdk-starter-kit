@@ -2,7 +2,7 @@
 
 Demonstrates how to replace selected video elements in a design with new video content. Shows selection detection, video upload, and content replacement patterns for updating existing design elements.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/video-replacement/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/video-replacement/>.
 
 Related examples: See content_replacement/image_replacement for image substitution, or asset_upload for general video import patterns.
 

@@ -12,12 +12,12 @@ exports[`app Renders 🎉 1`] = `
       <p
         class="aWBg0w aZskFA u16U_g"
       >
-        This example demonstrates how to test your App's UI.
+        This example demonstrates how to test your app's UI.
       </p>
       <p
         class="aWBg0w aZskFA u16U_g"
       >
-        Checkout 
+        Check out 
         <code>
           examples/testing/ui_test/tests/app.tests.tsx
         </code>

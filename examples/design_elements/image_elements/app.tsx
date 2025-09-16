@@ -1,5 +1,6 @@
 // For usage information, see the README.md file.
 /* eslint-disable no-restricted-imports */
+// ESLint rule is disabled to allow importing static assets for demonstration
 import {
   Box,
   Button,
@@ -17,6 +18,7 @@ import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useAddElement } from "utils/use_add_element";
 
+// Static image data for demonstration - in production, use hosted assets
 const images = {
   dog: {
     title: "Dog",
@@ -35,6 +37,7 @@ const images = {
 export const App = () => {
   const [dataUrl, setDataUrl] = useState(dog);
   const [isLoading, setIsLoading] = useState(false);
+  // Hook that provides the functionality to add elements to the Canva design
   const addElement = useAddElement();
   const disabled = !dataUrl || dataUrl.trim().length < 1;
 
@@ -54,20 +57,25 @@ export const App = () => {
   const addImage = useCallback(async () => {
     setIsLoading(true);
     try {
+      // Upload the image to Canva's asset system and get a reference
+      // This creates a reusable asset that can be used in multiple designs
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
         url: dataUrl,
         thumbnailUrl: dataUrl,
+        // AI disclosure indicates whether AI was used to create this content
         aiDisclosure: "none",
       });
 
+      // Add the uploaded image as a design element to the current page
+      // The element will appear at the default position on the design canvas
       await addElement({
         type: "image",
-        ref,
+        ref, // Reference to the uploaded asset
         altText: {
           text: "photo of an animal",
-          decorative: undefined,
+          decorative: undefined, // Set to true if image is purely decorative
         },
       });
     } finally {

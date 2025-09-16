@@ -2,7 +2,7 @@
 
 Demonstrates how to implement drag-and-drop functionality for embed elements using EmbedCard and startDragToPoint. Shows embed URL handling, preview configuration, and design integration with feature detection.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/drag-and-drop-embed/.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/drag-and-drop-embed/>.
 
 Related examples: See design_elements/embed_elements for direct embed insertion, or drag_and_drop/drag_and_drop_video for video drag-and-drop patterns.
 

@@ -13,6 +13,7 @@ import * as styles from "styles/components.css";
 
 export const App = () => {
   const [state, setState] = useState<"exporting" | "idle">("idle");
+  // Store the export response containing URLs and metadata for the exported design
   const [exportResponse, setExportResponse] = useState<
     ExportResponse | undefined
   >();
@@ -22,6 +23,7 @@ export const App = () => {
     try {
       setState("exporting");
 
+      // Request export with multiple format options - Canva will present user with format selection
       const response = await requestExport({
         acceptedFileTypes: [
           "png",
@@ -34,11 +36,13 @@ export const App = () => {
         ],
       });
 
-      // TODO: Send the URL to your backend using fetch
+      // In production apps: Send the export URL to your backend service for processing
+      // Replace this with: await fetch('/api/process-export', { method: 'POST', body: JSON.stringify(response) })
       setExportResponse(response);
     } catch (error) {
-      // TODO: Add error handling
-      // eslint-disable-next-line no-console
+      // In production apps: Implement comprehensive error handling with user-friendly messages
+      // Replace console.log with proper error reporting and user feedback
+      /* eslint-disable-next-line no-console */
       console.log(error);
     } finally {
       setState("idle");
@@ -55,7 +59,7 @@ export const App = () => {
           loading={state === "exporting"}
           stretch
         >
-          Export
+          Export design
         </Button>
         {exportResponse && (
           <FormField

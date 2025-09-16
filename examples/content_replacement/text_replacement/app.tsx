@@ -4,11 +4,15 @@ import { useSelection } from "utils/use_selection_hook";
 import * as styles from "styles/components.css";
 
 export const App = () => {
+  // Hook to track plaintext selection in the Canva editor
   const selection = useSelection("plaintext");
 
   const updateText = async () => {
+    // Create a draft of the selected text elements to enable modification
     const draft = await selection.read();
+    // Iterate through all selected text elements and append '!' to each
     draft.contents.forEach((s) => (s.text = `${s.text}!`));
+    // Apply the changes to the design
     await draft.save();
   };
 
@@ -17,7 +21,7 @@ export const App = () => {
       <Rows spacing="2u">
         <Text>
           This example demonstrates how apps can replace the selected text.
-          Select a text in the editor to begin.
+          Select text in the editor to begin.
         </Text>
         <Button
           variant="primary"

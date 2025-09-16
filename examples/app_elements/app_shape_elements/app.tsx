@@ -16,35 +16,41 @@ import { type AppElementOptions, initAppElement } from "@canva/design";
 import { useEffect, useState } from "react";
 import * as styles from "styles/components.css";
 
+// Data structure for shape elements within app elements
 type AppElementData = {
+  // Array of SVG path objects that define the shape geometry
   paths: {
-    d: string;
+    d: string; // SVG path data using standard path commands (M, L, H, V, C, etc.)
     fill: {
-      dropTarget: boolean;
-      color: string;
+      dropTarget: boolean; // Whether this path accepts dropped content from Canva
+      color: string; // Hex color value for the shape fill
     };
   }[];
+  // SVG viewBox defines the coordinate system and visible area
   viewBox: {
     width: number;
     height: number;
     top: number;
     left: number;
   };
+  // Physical dimensions and rotation of the app element in Canva
   width: number;
   height: number;
   rotation: number;
 };
 
+// Event object received when an app element is selected or modified in Canva
 type AppElementChangeEvent = {
   data: AppElementData;
-  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
+  update?: (opts: AppElementOptions<AppElementData>) => Promise<void>; // Function to update existing app element
 };
 
+// Default state when no app element is selected - creates a simple square path
 const initialState: AppElementChangeEvent = {
   data: {
     paths: [
       {
-        d: "M 0 0 H 100 V 100 H 0 L 0 0",
+        d: "M 0 0 H 100 V 100 H 0 L 0 0", // SVG path for a 100x100 square
         fill: {
           dropTarget: false,
           color: "#ff0099",
@@ -63,7 +69,9 @@ const initialState: AppElementChangeEvent = {
   },
 };
 
+// Initialize the app element client to handle shape rendering in Canva
 const appElementClient = initAppElement<AppElementData>({
+  // Define how the app element data should be rendered as design elements
   render: (data) => {
     return [{ type: "shape", top: 0, left: 0, ...data }];
   },
@@ -77,6 +85,7 @@ export const App = () => {
   const disabled = paths.length < 1;
 
   useEffect(() => {
+    // Register listener for when user selects an app element in Canva
     appElementClient.registerOnElementChange((appElement) => {
       setState(
         appElement
@@ -382,8 +391,10 @@ export const App = () => {
             variant="primary"
             onClick={() => {
               if (state.update) {
+                // Update existing app element in Canva
                 state.update({ data: state.data });
               } else {
+                // Add new app element to Canva design
                 appElementClient.addElement({ data: state.data });
               }
             }}

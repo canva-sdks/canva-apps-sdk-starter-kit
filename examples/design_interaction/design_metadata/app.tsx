@@ -14,14 +14,18 @@ import * as styles from "styles/components.css";
 import React, { useState } from "react";
 
 export const App = () => {
+  // State to store the design metadata retrieved from the Canva Design API
   const [designMetadata, setDesignMetadata] = useState<
     DesignMetadata | undefined
   >();
 
+  // Function to fetch design metadata using the Canva Design API
   const getDesignInfo = React.useCallback(async () => {
+    // The getDesignMetadata function returns metadata about the current design
+    // including title, dimensions, page count, and other properties
     const response = await getDesignMetadata();
     setDesignMetadata(response);
-  }, [getDesignMetadata]);
+  }, []);
 
   return (
     <div className={styles.scrollContainer}>
@@ -31,11 +35,12 @@ export const App = () => {
           design.
         </Text>
         <Button variant="primary" onClick={getDesignInfo} stretch>
-          Get Design Metadata
+          Get design metadata
         </Button>
 
+        {/* Display the design metadata as formatted JSON */}
         <FormField
-          label="Design Metadata"
+          label="Design metadata"
           value={JSON.stringify(designMetadata, null, 2)}
           control={(props) => (
             <MultilineInput {...props} maxRows={12} autoGrow readOnly />

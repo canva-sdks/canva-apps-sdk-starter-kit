@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import * as jwt from "jsonwebtoken";
 import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
 

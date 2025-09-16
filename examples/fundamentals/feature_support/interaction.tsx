@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import { Alert, Button, Rows } from "@canva/app-ui-kit";
 import { addElementAtPoint, addPage } from "@canva/design";
 
@@ -8,6 +9,8 @@ type InteractionPageProps = {
 
 /**
  * A page component containing various buttons to interact with the design.
+ * Demonstrates how to handle feature availability by disabling UI elements
+ * and showing appropriate feedback when features aren't supported.
  **/
 export const InteractionPage = (props: InteractionPageProps) => {
   return (
@@ -63,6 +66,8 @@ export const InteractionPage = (props: InteractionPageProps) => {
   );
 };
 
+// Simple shape configuration for demonstration purposes.
+// In production apps, this would typically be more dynamic or user-configurable.
 const shape = {
   paths: [
     {

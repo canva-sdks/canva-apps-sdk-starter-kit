@@ -17,8 +17,11 @@ import {
 } from "@canva/app-ui-kit";
 import type { CellState, TableState } from "./use_table_hook";
 import { useTable } from "./use_table_hook";
+// Hook that provides the addElementAtCursor method from the Canva Design SDK
 import { useAddElement } from "utils/use_add_element";
 
+// Demo table configuration with 4 rows, 5 columns, and sample cell customizations
+// including merged cells (colSpan/rowSpan), custom text, and fill colors
 const initialState: TableState = {
   rowCount: 4,
   columnCount: 5,
@@ -166,8 +169,11 @@ export const App = () => {
   const [submissionError, setSubmissionError] = useState("");
   const addElement = useAddElement();
 
+  // Handler to convert the table state to a TableElement and add it to the design
   const onClick = useCallback(async () => {
     try {
+      // Convert the current table configuration to a Canva TableElement
+      // and add it to the design at the user's cursor position
       await addElement(tableState.toElement());
     } catch (e) {
       if (e instanceof Error) {

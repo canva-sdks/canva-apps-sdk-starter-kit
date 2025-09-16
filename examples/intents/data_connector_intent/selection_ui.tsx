@@ -1,3 +1,5 @@
+// For usage information, see the README.md file.
+
 import type { RenderSelectionUiRequest } from "@canva/intents/data";
 import {
   Alert,
@@ -18,13 +20,13 @@ export const SelectionUI = (request: RenderSelectionUiRequest) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // handle the invocation context to respond to how the app was loaded
-  // there may be an existing data source to load or an error to display
+  // Handle different invocation contexts (data selection, errors, outdated references)
+  // This determines how to initialize the UI based on why the data connector was opened
   useEffect(() => {
     const { reason } = request.invocationContext;
     switch (reason) {
       case "data_selection":
-        // If there's an existing selection, pre-populate the UI
+        // Pre-populate UI with existing data source configuration if available
         if (request.invocationContext.dataSourceRef) {
           try {
             const savedParams = JSON.parse(
@@ -37,31 +39,32 @@ export const SelectionUI = (request: RenderSelectionUiRequest) => {
         }
         break;
       case "outdated_source_ref":
-        // data source reference persisted in Canva is outdated. Prompt users to reselect data.
+        // The data source reference stored in Canva is no longer valid
         setError(
           "Your previously selected data is no longer available. Please make a new selection.",
         );
         break;
       case "app_error":
+        // Display error message from previous data fetch attempt
         setError(
           request.invocationContext.message ||
             "An error occurred with your data",
         );
         break;
       default:
-        // this should never happen
         break;
     }
   }, [request.invocationContext]);
 
-  // use updateDataRef to set the new query config
-  // this will trigger the getDataTable callback for this connector
+  // Sends the selected data configuration to Canva and triggers data preview
+  // This calls the getDataTable function with the current selection
   const loadData = async () => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
+      // Call Canva's updateDataRef with the current configuration
       const result = await request.updateDataRef({
         source: JSON.stringify({ selectedStageFilter }),
         title: "Sydney construction project sales in each release stage",
@@ -117,7 +120,7 @@ export const SelectionUI = (request: RenderSelectionUiRequest) => {
             loading={loading}
             stretch
           >
-            Load Data
+            Load data
           </Button>
         </Rows>
       </Rows>

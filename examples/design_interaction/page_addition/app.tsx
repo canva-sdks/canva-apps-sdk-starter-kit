@@ -15,13 +15,17 @@ import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useFeatureSupport } from "utils/use_feature_support";
 
+// Constants for element sizing and positioning
 const IMAGE_ELEMENT_WIDTH = 50;
 const IMAGE_ELEMENT_HEIGHT = 50;
 const TEXT_ELEMENT_WIDTH = 130;
+// Scale factors to size elements relative to page dimensions
 const HEADER_ELEMENT_SCALE_FACTOR = 0.2;
 const EMBED_ELEMENT_SCALE_FACTOR = 0.4;
 
 const createHeaderElement = async (): Promise<GroupElement> => {
+  // Upload the image asset to Canva's asset management system
+  // This returns a reference that can be used in design elements
   const { ref } = await upload({
     mimeType: "image/png",
     thumbnailUrl: weather,
@@ -31,12 +35,14 @@ const createHeaderElement = async (): Promise<GroupElement> => {
     height: 100,
     aiDisclosure: "none",
   });
+  // Create a group element containing an image and text
+  // Groups allow multiple elements to be positioned and scaled together
   return {
     type: "group",
     children: [
       {
         type: "image",
-        ref,
+        ref, // Reference to the uploaded asset
         top: 0,
         left: 0,
         width: IMAGE_ELEMENT_WIDTH,
@@ -57,6 +63,8 @@ const createHeaderElement = async (): Promise<GroupElement> => {
   };
 };
 
+// Define an embed element that will display a YouTube video
+// Embed elements allow integration of external content like videos, social media posts, etc.
 const embedElement: EmbedElement = {
   type: "embed",
   url: "https://www.youtube.com/watch?v=tBe79N-4zm4",
@@ -68,10 +76,14 @@ export const App = () => {
   const [defaultPageDimensions, setDefaultPageDimensions] = useState<
     Dimensions | undefined
   >();
+  // Check if the current design type supports the addPage feature
+  // Some design types like docs may not support page addition
   const isSupported = useFeatureSupport();
   const isRequiredFeatureSupported = isSupported(addPage);
 
   useEffect(() => {
+    // Get design metadata to determine if page addition is supported
+    // and retrieve the default page dimensions for element positioning
     getDesignMetadata().then(({ defaultPageDimensions }) => {
       // Dimensions are undefined if the user is in an unbounded design (e.g. Whiteboard).
       if (!defaultPageDimensions) {
@@ -96,6 +108,8 @@ export const App = () => {
       const embedElementWidth =
         defaultPageDimensions.width * EMBED_ELEMENT_SCALE_FACTOR;
       const headerElement = await createHeaderElement();
+      // Add a new page to the current design with pre-populated elements
+      // The addPage API allows apps to create pages with content and layout
       await addPage({
         title: "Weather forecast",
         elements: [
@@ -103,9 +117,10 @@ export const App = () => {
             ...headerElement,
             width: headerElementWidth,
             height: "auto",
+            // Position elements relative to page dimensions for responsive layout
             // Shift from the top by 10%
             top: defaultPageDimensions.height * 0.1,
-            // Shift it by 50% of the page width, then subtract 50% of the group element width.
+            // Center horizontally: 50% page width minus 50% element width
             left: defaultPageDimensions.width / 2 - headerElementWidth / 2,
           },
           {
@@ -114,13 +129,14 @@ export const App = () => {
             height: "auto",
             // Shift from the top by 40%
             top: defaultPageDimensions.height * 0.4,
-            // Shift it by 50% of the page width, then subtract 50% of the group element width.
+            // Center horizontally: 50% page width minus 50% element width
             left: defaultPageDimensions.width / 2 - embedElementWidth / 2,
           },
         ],
       });
       setError(undefined);
     } catch (e) {
+      // Handle Canva-specific errors that can occur during page addition
       if (e instanceof CanvaError) {
         switch (e.code) {
           case "quota_exceeded":

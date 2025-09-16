@@ -4,6 +4,7 @@ import { notification } from "@canva/platform";
 import * as styles from "styles/components.css";
 
 export const App = () => {
+  // Static demonstration messages for example purposes
   const funMessages = [
     "🚀 Keep going, superstar!",
     "💪 You got this!",

@@ -24,7 +24,13 @@ export const App = () => {
   const sendGetRequest = async () => {
     try {
       setState("loading");
+
+      // Get the current user's authentication token from Canva
+      // This token allows the backend to verify the user's identity and permissions
       const token = await auth.getCanvaUserToken();
+
+      // Make authenticated request to custom backend
+      // The Authorization header contains the JWT token for verification
       const res = await fetch(BACKEND_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -36,7 +42,7 @@ export const App = () => {
       setState("success");
     } catch (error) {
       setState("error");
-      // eslint-disable-next-line no-console
+      /* eslint-disable-next-line no-console */
       console.error(error);
     }
   };

@@ -1,3 +1,5 @@
+// For usage information, see the README.md file.
+
 import type {
   RenderSelectionUiRequest,
   GetDataTableRequest,
@@ -12,6 +14,7 @@ import { getRealEstateData } from "./data";
 
 const root = createRoot(document.getElementById("root") as Element);
 
+// Configure the data connector intent with required callbacks
 prepareDataConnector({
   /**
    * Gets structured data from an external source.
@@ -64,8 +67,8 @@ prepareDataConnector({
   },
 });
 
-// TODO: Fallback message if you have not turned on the data connector intent.
-// You can remove this once your app is correctly configured.
+// Fallback message displayed when the data connector intent is not enabled.
+// Remove this once your app is correctly configured in the developer portal.
 root.render(
   <AppUiProvider>
     <Alert tone="critical">

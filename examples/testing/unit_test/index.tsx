@@ -14,6 +14,7 @@ function render() {
 
 render();
 
+// Hot Module Replacement for development (automatically reloads the app when changes are made)
 if (module.hot) {
   module.hot.accept("./app", render);
 }

@@ -12,7 +12,8 @@ export const App = () => {
   const addElement = useAddElement();
 
   const importAndAddImage = async () => {
-    // Start uploading the image
+    // Start uploading the image using Canva's upload API
+    // This creates an asset reference that can be used immediately while the upload continues in the background
     const image = await upload({
       type: "image",
       mimeType: "image/jpeg",
@@ -24,8 +25,8 @@ export const App = () => {
       aiDisclosure: "none",
     });
 
-    // Add the image to the design, using the thumbnail at first, and replacing
-    // with the full image once the upload completes
+    // Add the image element to the current design using the asset reference
+    // Canva will display the thumbnail initially and replace it with the full image once upload completes
     await addElement({
       type: "image",
       ref: image.ref,
@@ -35,16 +36,17 @@ export const App = () => {
       },
     });
 
-    // Wait for the upload to finish so we can report errors if it fails to
-    // upload
+    // Wait for the upload to complete to handle any upload errors
+    // In production apps, this should include proper error handling and user feedback
     await image.whenUploaded();
 
-    // upload is completed
+    // Upload completed successfully
     console.log("Upload complete!");
   };
 
   const importAndAddVideo = async () => {
-    // Start uploading the video
+    // Start uploading the video using Canva's upload API
+    // Videos support both image and video thumbnails for better preview experience
     const queuedVideo = await upload({
       type: "video",
       mimeType: "video/mp4",
@@ -58,8 +60,8 @@ export const App = () => {
       aiDisclosure: "none",
     });
 
-    // Add the video to the design, using the thumbnail at first, and replacing
-    // with the full image once the upload completes
+    // Add the video element to the current design using the asset reference
+    // The video thumbnail will be shown initially, replaced with the full video once upload completes
     await addElement({
       type: "video",
       ref: queuedVideo.ref,
@@ -69,15 +71,17 @@ export const App = () => {
       },
     });
 
-    // Wait for the upload to finish so we can report errors if it fails to
-    // upload
+    // Wait for the upload to complete to handle any upload errors
+    // In production apps, this should include proper error handling and user feedback
     await queuedVideo.whenUploaded();
 
-    // upload is completed
+    // Upload completed successfully
     console.log("Upload complete!");
   };
 
   const importAndAddAudio = async () => {
+    // Start uploading the audio file using Canva's upload API
+    // Audio uploads require duration metadata and optionally a title
     const queuedAudio = await upload({
       type: "audio",
       mimeType: "audio/mp3",
@@ -87,16 +91,17 @@ export const App = () => {
       aiDisclosure: "none",
     });
 
-    // Add the audio to the design as a new audio track
+    // Add the audio to the design as a new audio track (not supported in all design types)
+    // Audio tracks are added to the timeline and play in the background of the design
     await addAudioTrack({
       ref: queuedAudio.ref,
     });
 
-    // Wait for the upload to finish so we can report errors if it fails to
-    // upload
+    // Wait for the upload to complete to handle any upload errors
+    // In production apps, this should include proper error handling and user feedback
     await queuedAudio.whenUploaded();
 
-    // upload is completed
+    // Upload completed successfully
     console.log("Upload complete!");
   };
 
@@ -117,7 +122,7 @@ export const App = () => {
           <Button
             onClick={importAndAddAudio}
             variant="secondary"
-            // addAudioTrack is not supported in certain design types such as docs.
+            // addAudioTrack is not supported in certain design types such as docs
             disabled={!isSupported(addAudioTrack)}
             stretch
           >
@@ -132,7 +137,7 @@ export const App = () => {
 
 const UnsupportedAlert = () => (
   <Alert tone="warn">
-    Sorry, the required feature - addAudioTrack is not supported in the current
+    Sorry, the required feature (addAudioTrack) is not supported in the current
     design.
   </Alert>
 );

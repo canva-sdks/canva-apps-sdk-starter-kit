@@ -14,6 +14,8 @@ import * as styles from "styles/components.css";
 import { useAddElement } from "utils/use_add_element";
 import { useFeatureSupport } from "utils/use_feature_support";
 
+// Defines the configurable text styling properties for the drag-and-drop element
+// These match Canva's text styling API for consistent design integration
 type DraggableTextProperties = {
   textAlign: TextAttributes["textAlign"];
   fontWeight: FontWeight;
@@ -21,6 +23,7 @@ type DraggableTextProperties = {
   decoration: TextAttributes["decoration"];
 };
 
+// Hardcoded text content for demonstration purposes
 const content = "Add a little bit of body text";
 
 export const App = () => {
@@ -34,8 +37,11 @@ export const App = () => {
   });
   const addElement = useAddElement();
   const isSupported = useFeatureSupport();
+  // Check if the current design supports drag-and-drop functionality
   const isRequiredFeatureSupported = isSupported(ui.startDragToPoint);
 
+  // Start drag operation when user begins dragging the TypographyCard
+  // This uses Canva's drag-and-drop API to pass text element data to the design
   const onDragStart = (event: React.DragEvent<HTMLElement>) => {
     ui.startDragToPoint(event, {
       type: "text",
@@ -127,7 +133,7 @@ export const App = () => {
             )}
           />
           <FormField
-            label="Text align"
+            label="Text alignment"
             value={textAlign}
             control={(props) => (
               <Select<TextAttributes["textAlign"]>
@@ -152,6 +158,7 @@ export const App = () => {
           <TypographyCard
             ariaLabel="Add text to design"
             onClick={() =>
+              // Add text element directly when clicked (fallback for unsupported designs)
               addElement({
                 type: "text",
                 textAlign,
@@ -161,6 +168,7 @@ export const App = () => {
                 children: [content],
               })
             }
+            // Enable drag-and-drop only if supported by the current design
             onDragStart={isRequiredFeatureSupported ? onDragStart : undefined}
           >
             <Text
@@ -173,6 +181,7 @@ export const App = () => {
               {content}
             </Text>
           </TypographyCard>
+          {/* Show warning alert if drag-and-drop is not supported */}
           {!isRequiredFeatureSupported && <UnsupportedAlert />}
         </Rows>
       </Rows>

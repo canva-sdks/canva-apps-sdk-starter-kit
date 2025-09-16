@@ -4,7 +4,7 @@ Demonstrates how to create group elements that contain multiple child elements p
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/group-elements/.
 
-Related examples: See app_element_children for similar multi-element patterns, or other design_elements examples for individual element creation.
+See `app_element_children` for similar multi-element patterns, or other `design_elements` examples for individual element creation.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

@@ -11,6 +11,8 @@ import {
 import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
 
+// Data structure that defines the properties of our app element
+// This will be persisted when the user saves their design
 type AppElementData = {
   url: string;
   width: number;
@@ -33,8 +35,12 @@ const initialState: AppElementChangeEvent = {
   },
 };
 
+// Initialize the app element client - this handles communication with Canva's design APIs
+// The render function defines how our data becomes design elements when added to the canvas
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
+    // Return an embed element with our app element data
+    // The top/left positioning is handled by Canva when the user places the element
     return [{ type: "embed", ...data, top: 0, left: 0 }];
   },
 });
@@ -47,6 +53,8 @@ export const App = () => {
   const disabled = url?.trim().length < 1 || !width || !height;
 
   useEffect(() => {
+    // Register to listen for app element changes - this occurs when the user
+    // selects an existing app element in the design to edit it
     appElementClient.registerOnElementChange((appElement) => {
       setState(
         appElement
@@ -134,8 +142,10 @@ export const App = () => {
           stretch
           onClick={() => {
             if (state.update) {
+              // Update existing app element when editing
               state.update({ data: state.data });
             } else {
+              // Add new app element to the design
               appElementClient.addElement({ data: state.data });
             }
           }}

@@ -4,7 +4,7 @@ Demonstrates how to implement drag-and-drop functionality for images using Image
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/drag-and-drop-image/.
 
-Related examples: See drag_and_drop/drag_and_drop_video for video drag-and-drop, or asset_upload for direct image import.
+Related examples: See drag_and_drop/drag_and_drop_video for implementing similar drag-and-drop functionality with video assets, or assets_and_media/asset_upload for direct image import without drag-and-drop.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

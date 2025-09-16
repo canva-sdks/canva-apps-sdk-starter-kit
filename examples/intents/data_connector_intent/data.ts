@@ -1,3 +1,5 @@
+// For usage information, see the README.md file.
+
 import type {
   DataTable,
   DataTableImageUpload,
@@ -5,37 +7,40 @@ import type {
   GetDataTableRequest,
 } from "@canva/intents/data";
 
+// Available filter options for real estate project sales stages
 export const saleStageOptions: string[] = [
   "Initial Release Stage",
   "Construction Stage",
   "Final Release Stage",
 ];
 
-// define the data source structure - the configurable parameters of the data query
+// Configuration object that defines the structure of a data source query
 export type RealEstateDataConfig = {
   selectedStageFilter?: string[];
 };
 
-// for a given data source query, get the data from the mock API and transform it to DataTable format
+// Fetches data from the mock API and transforms it into Canva's DataTable format
 export const getRealEstateData = async (
   request: GetDataTableRequest,
 ): Promise<DataTable> => {
   return new Promise((resolve) => {
     const { dataSourceRef, limit } = request;
     if (dataSourceRef != null) {
+      // Parse the saved data source configuration from the request
       const dataRef = JSON.parse(dataSourceRef?.source) as RealEstateDataConfig;
 
+      // Use selected stages from config, or default to all stages if none selected
       const selectedStages = dataRef.selectedStageFilter?.length
         ? dataRef.selectedStageFilter
         : saleStageOptions;
 
-      // get the projects data from the mock API
+      // Fetch mock project data
       const projects = getProjects();
 
-      // filter projects based on selected stages and transform to DataTable
+      // Transform raw project data to Canva's DataTable format
       const dataTable = transformToDataTable(projects, selectedStages);
 
-      // ensure we don't exceed row limit
+      // Apply row limit as specified by Canva's data connector constraints
       dataTable.rows = dataTable.rows.slice(0, limit.row);
 
       resolve(dataTable);
@@ -43,7 +48,7 @@ export const getRealEstateData = async (
   });
 };
 
-// mock api response structure
+// Structure representing a real estate project from the mock API
 interface RealEstateProject {
   name: string;
   initialReleaseStage: number;
@@ -115,11 +120,12 @@ const getProjects = (): RealEstateProject[] => [
   },
 ];
 
-// Transform mock api data to DataTable based on selected stages
+// Converts the mock API project data into Canva's DataTable format with dynamic column configuration
 const transformToDataTable = (
   projects: RealEstateProject[],
   selectedStages: string[],
 ): DataTable => {
+  // Define column structure based on user's selected stages
   const columnConfigs = [
     { name: "Project", type: "string" as const },
     ...(selectedStages.includes("Initial Release Stage")
@@ -134,6 +140,7 @@ const transformToDataTable = (
     { name: "Media", type: "media" as const },
   ];
 
+  // Generate table rows with data cells matching the column structure
   const rows = projects.map((project) => ({
     cells: [
       { type: "string" as const, value: project.name },
@@ -153,7 +160,7 @@ const transformToDataTable = (
   return { columnConfigs, rows };
 };
 
-// static media data for the projects
+// Static media assets used for demonstration purposes in all projects
 const staticMediaData: (DataTableImageUpload | DataTableVideoUpload)[] = [
   {
     type: "video_upload",
@@ -179,7 +186,7 @@ const staticMediaData: (DataTableImageUpload | DataTableVideoUpload)[] = [
   },
 ];
 
-// Helper function to generate random numbers between 10 and 100
+// Generates random sales values for demonstration purposes
 function getRandomSalesValue(): number {
   const min = 10;
   const max = 100;

@@ -51,16 +51,18 @@ const initialState: AppElementChangeEvent = {
   },
 };
 
+// Initialize the app element client - this handles communication between the app and Canva
+// The render function defines how the app element appears in the user's design
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
     return [
       {
-        type: "text",
+        type: "text", // Creates a text element within the app element
         top: 0,
         left: 0,
         ...data,
         width: data.useCustomWidth ? data.width : undefined,
-        children: [data.text],
+        children: [data.text], // The actual text content to display
       },
     ];
   },
@@ -86,14 +88,16 @@ export const App = () => {
   const disabled = text.trim().length < 1 || color.trim().length < 1;
 
   useEffect(() => {
+    // Register handler for app element changes - this allows editing existing elements
+    // When a user selects an existing app element, we update the UI controls to match its properties
     appElementClient.registerOnElementChange((appElement) => {
       setState(
         appElement
           ? {
               data: appElement.data,
-              update: appElement.update,
+              update: appElement.update, // Function to update the existing element
             }
-          : initialState,
+          : initialState, // Reset to initial state when no element is selected
       );
     });
   }, []);
@@ -332,8 +336,10 @@ export const App = () => {
           variant="primary"
           onClick={() => {
             if (state.update) {
+              // Update existing app element with new data
               state.update({ data: state.data });
             } else {
+              // Create new app element and add it to the design
               appElementClient.addElement({ data: state.data });
             }
           }}

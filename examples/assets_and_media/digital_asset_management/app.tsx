@@ -10,19 +10,29 @@ export function App() {
   const config = useConfig();
   return (
     <Box className={styles.rootWrapper}>
+      {/*
+        SearchableListView is a Canva component that provides a complete digital asset management interface.
+        It handles searching, filtering, browsing containers, and importing assets from external platforms.
+      */}
       <SearchableListView
         config={config}
         findResources={findResources}
-        // TODO remove `saveExportedDesign` and `config.export` if your app does not support exporting the Canva design into an external platform
+        /*
+          Remove the saveExportedDesign prop and config.export settings if your app
+          does not support exporting Canva designs to an external platform
+        */
         saveExportedDesign={(
           exportedDesignUrl: string,
           containerId: string | undefined,
           designTitle: string | undefined,
         ) => {
-          // TODO update the function to save the design to your platform
+          /*
+            Replace this mock implementation with your platform's actual save logic.
+            The function should save the exported design to your digital asset management system.
+          */
           return new Promise((resolve) => {
             setTimeout(() => {
-              // eslint-disable-next-line no-console
+              /* eslint-disable-next-line no-console */
               console.info(
                 `Saving file "${designTitle}" from ${exportedDesignUrl} to ${config.serviceName} container id: ${containerId}`,
               );

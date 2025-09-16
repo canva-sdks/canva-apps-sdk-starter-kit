@@ -1,3 +1,4 @@
+// For usage information, see the README.md file.
 import { Button, Rows, Text, Title } from "@canva/app-ui-kit";
 
 type HomePageProps = {
