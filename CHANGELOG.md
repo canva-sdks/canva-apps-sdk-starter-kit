@@ -1,5 +1,14 @@
 # Changelog
 
+## 2025-10-01
+
+### 🔧 Changed
+
+- Refactored the `drag_and_drop/drag_and_drop_text` example to improve readability and better showcase the API.
+- Updated React to v19 and `@canva/app-ui-kit` to v5.0.0
+- Upgraded @canva/app-components to from `1.3.0` to `1.4.0`.
+- Upgraded @canva/app-ui-kit from `4.10.0` to `5.0.0`. See the App UI Kit changelog for full details https://www.canva.dev/docs/apps/app-ui-kit/changelog/
+
 ## 2025-09-16
 
 ### 🔧 Changed
