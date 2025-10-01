@@ -3,13 +3,13 @@
   box-sizing: border-box;
   overflow-y: scroll;
   height: 100%;
-  padding-top: var(--ui-kit-space-2);
-  padding-right: var(--ui-kit-space-2);
-  padding-bottom: var(--ui-kit-space-2);
+  padding-top: var(--ui-kit-space-200);
+  padding-right: var(--ui-kit-space-200);
+  padding-bottom: var(--ui-kit-space-200);
 
   /* for firefox */
   scrollbar-width: thin;
-  scrollbar-color: var(--ui-kit-color-typography-quaternary) transparent;
+  scrollbar-color: var(--ui-kit-color-content-placeholder-fg) transparent;
 }
 
 .scrollContainer::-webkit-scrollbar {
@@ -21,13 +21,13 @@
 .scrollContainer::-webkit-scrollbar-track {
   background: transparent;
   width: var(--ui-kit-base-unit);
-  margin-top: var(--ui-kit-space-1);
-  margin-bottom: var(--ui-kit-space-1);
+  margin-top: var(--ui-kit-space-100);
+  margin-bottom: var(--ui-kit-space-100);
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-  border-radius: var(--ui-kit-border-radius);
-  background: var(--ui-kit-color-typography-quaternary);
+  border-radius: var(--ui-kit-radius-element-standard);
+  background: var(--ui-kit-color-content-placeholder-fg);
   visibility: hidden;
 }
 
