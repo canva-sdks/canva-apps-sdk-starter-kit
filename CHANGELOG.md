@@ -1,5 +1,11 @@
 # Changelog
 
+## 2025-10-09
+
+### 🐞 Fixed
+
+- Updated @canva/app-ui-kit to v5.0.2 to incorporate a bug fix and updated tokens.
+
 ## 2025-10-01
 
 ### 🔧 Changed
