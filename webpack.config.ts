@@ -31,11 +31,10 @@ export function buildConfig({
   const mode = devConfig ? "development" : "production";
 
   if (!backendHost) {
-    console.error(
-      chalk.redBright.bold("BACKEND_HOST is undefined."),
-      `Refer to "Customizing the backend host" in the README.md for more information.`,
+    console.warn(
+      chalk.yellow.bold("BACKEND_HOST is undefined."),
+      `If your app requires a backend, refer to "Customizing the backend host" in the README.md for more information.`,
     );
-    process.exit(-1);
   } else if (backendHost.includes("localhost") && mode === "production") {
     console.error(
       chalk.redBright.bold(

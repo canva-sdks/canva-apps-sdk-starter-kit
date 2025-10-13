@@ -1,5 +1,21 @@
 # Changelog
 
+## 2025-10-13
+
+### 🧰 Added
+
+- Added `examples/design_interaction/design_audit` to demonstrate the preview multi-page Design Editing API functionality.
+
+### 🔧 Changed
+
+- Update `testRegex` in jest config to include `__tests__`
+- Upgraded @canva/app-eslint-plugin to 1.0.0-beta.7.
+- Updated `@canva/design` from `2.7.2` to `2.7.3`, fixing minor inaccuracies in type definitions.
+
+### 🐞 Fixed
+
+- Fixed a bug that causes app build to break when `BACKEND_HOST` is undefined.
+
 ## 2025-10-09
 
 ### 🐞 Fixed

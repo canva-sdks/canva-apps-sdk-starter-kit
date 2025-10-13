@@ -5,7 +5,7 @@ const { compilerOptions } = require("./tsconfig.json");
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  testRegex: "(/tests/.*|(\\.|/)(tests))\\.tsx?$",
+  testRegex: "(/(tests|__tests__)/.*|(\\.|/)(tests))\\.tsx?$",
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   transform: {

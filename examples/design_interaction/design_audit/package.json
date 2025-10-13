@@ -1,0 +1,10 @@
+{
+  "name": "design_audit",
+  "title": "Design audit",
+  "description": "Audit design elements for positioning issues and automatically fix elements that are too close to page edges.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/design": "^2.7.4-beta.0"
+  }
+}
