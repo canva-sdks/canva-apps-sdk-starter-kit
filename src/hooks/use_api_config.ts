@@ -59,22 +59,15 @@ export const useApiConfig = (): UseApiConfigReturn => {
   useEffect(() => {
     updateStatus();
 
-    // Check status every 30 seconds to detect token expiry
+    // Check status every 5 seconds to detect token expiry
     const interval = setInterval(updateStatus, 5000);
 
     return () => clearInterval(interval);
   }, [updateStatus]);
 
-  // Try to initialize from environment variables on mount
-  useEffect(() => {
-    const tryEnvInit = async () => {
-      if (!isReady && !isInitializing) {
-        await initializeFromEnv();
-      }
-    };
-
-    tryEnvInit();
-  }, [isReady, isInitializing, initializeFromEnv]);
+  // REMOVED: Auto-initialization on mount
+  // The middleware API auth is now explicitly initialized AFTER Microsoft OAuth completes
+  // See app.tsx -> initializeMiddlewareAuth() which is called after successful Microsoft login
 
   return {
     isReady,

@@ -1,25 +1,27 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import type { AccessTokenResponse } from "@canva/user";
 import { auth } from "@canva/user";
-import { 
-  Text, 
-  Button, 
-  Rows, 
-  Title, 
-  Box, 
-  Column, 
+import {
+  Text,
+  Button,
+  Rows,
+  Title,
+  Box,
+  Column,
   Columns,
-  Tabs, 
-  Tab, 
-  TabList, 
-  TabPanels, 
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
   TabPanel,
-  LoadingIndicator
+  LoadingIndicator,
+  Alert
 } from "@canva/app-ui-kit";
 import { AgentSearchTab } from "./components/agent_search_tab";
 import { SearchableTab } from "./components/searchable_tab";
 import { ApiConfigSetup } from "./components/api_config_setup";
 import { useApiConfig } from "./hooks/use_api_config";
+import ConfigurationService from "./services/config";
 import * as styles from "styles/components.css";
 
 const oauth = auth.initOauth();
@@ -44,6 +46,7 @@ export const App = () => {
   const isAuthorized = useMemo(() => accessTokenResponse != null, [accessTokenResponse]);
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isCheckingExistingAuth, setIsCheckingExistingAuth] = useState(true);
   const { isReady } = useApiConfig();
 
   const fetchUserProfile = useCallback(async (token: string) => {
@@ -57,8 +60,8 @@ export const App = () => {
 
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) {
-          await retrieveAndSetToken({ forceRefresh: true });
-          setError("Access token expired, please try again");
+          setError("Access token expired, please log in again");
+          await logout();
           return;
         }
         throw new Error(`Failed to fetch profile: ${res.status}`);
@@ -71,15 +74,30 @@ export const App = () => {
     }
   }, []);
 
+  const initializeMiddlewareAuth = useCallback(async () => {
+    try {
+      console.log("🔐 Initializing middleware API authentication...");
+      const configService = ConfigurationService.getInstance();
+      await configService.initializeFromEnv();
+      console.log("✅ Middleware API authentication successful");
+    } catch (error) {
+      console.error("❌ Middleware API authentication failed:", error);
+      throw error;
+    }
+  }, []);
+
   const retrieveAndSetToken = async ({ forceRefresh = false } = {}) => {
     try {
       setIsLoading(true);
       const tokenResponse = await oauth.getAccessToken({ scope, forceRefresh });
       setAccessTokenResponse(tokenResponse);
-      
-      // Automatically fetch user profile when token is retrieved
+
       if (tokenResponse?.token) {
+        // Fetch user profile
         await fetchUserProfile(tokenResponse.token);
+
+        // CRITICAL: Only initialize middleware API auth AFTER Microsoft login succeeds
+        await initializeMiddlewareAuth();
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to get access token");
@@ -88,90 +106,128 @@ export const App = () => {
     }
   };
 
+  // Check for existing authentication session on mount (but don't auto-login)
   useEffect(() => {
-    const initAuth = async () => {
+    const checkExistingAuth = async () => {
       try {
-        // First try to get existing token
+        setIsCheckingExistingAuth(true);
+        // Only check if a token exists, don't trigger auth flow
         const tokenResponse = await oauth.getAccessToken({ scope });
-        
+
         if (tokenResponse?.token) {
+          console.log("🔍 Found existing Microsoft OAuth session");
           setAccessTokenResponse(tokenResponse);
           await fetchUserProfile(tokenResponse.token);
+
+          // Initialize middleware API auth with existing session
+          await initializeMiddlewareAuth();
         } else {
-          // If no token, automatically start login flow
-          const authorizeResponse = await oauth.requestAuthorization({ scope });
-          if (authorizeResponse.status === "completed") {
-            await retrieveAndSetToken();
-          }
+          console.log("ℹ️ No existing Microsoft OAuth session found");
         }
       } catch (error) {
-        setError(error instanceof Error ? error.message : "Authentication failed");
+        console.log("ℹ️ No existing authentication session");
       } finally {
-        setIsLoading(false);
+        setIsCheckingExistingAuth(false);
       }
     };
-    
-    setIsLoading(true);
-    initAuth();
-  }, [fetchUserProfile]);
+
+    checkExistingAuth();
+  }, [fetchUserProfile, initializeMiddlewareAuth]);
 
   async function login() {
     setError(null);
+    setIsLoading(true);
     try {
+      console.log("🚀 Starting Microsoft OAuth login flow...");
       const authorizeResponse = await oauth.requestAuthorization({ scope });
+
       if (authorizeResponse.status === "completed") {
+        console.log("✅ Microsoft OAuth authorization completed");
+        // This will fetch profile AND initialize middleware API auth
         await retrieveAndSetToken();
+      } else {
+        console.log("❌ Microsoft OAuth authorization not completed:", authorizeResponse.status);
       }
     } catch (error) {
+      console.error("❌ Login failed:", error);
       setError(error instanceof Error ? error.message : "Login failed");
+      setIsLoading(false);
     }
   }
 
   async function logout() {
     try {
+      setIsLoading(true);
+      console.log("🚪 Logging out...");
+
+      // Deauthorize Microsoft OAuth
       await oauth.deauthorize();
+
+      // Clear middleware API auth
+      ConfigurationService.getInstance().reset();
+
+      // Clear local state
       setAccessTokenResponse(null);
       setUserProfile(null);
       setError(null);
+
+      console.log("✅ Logout successful");
     } catch (error) {
+      console.error("❌ Logout failed:", error);
       setError(error instanceof Error ? error.message : "Logout failed");
+    } finally {
+      setIsLoading(false);
     }
   }
 
-  if (error && !isAuthorized) {
+  // Show loading while checking for existing auth session
+  if (isCheckingExistingAuth) {
     return (
       <div className={styles.scrollContainer}>
         <Rows spacing="2u" align="center">
-          <Text variant="bold">Authentication Error</Text>
-          <Text>{error}</Text>
-          <Button 
-            variant="primary" 
+          <LoadingIndicator size="medium" />
+          <Text>Checking authentication...</Text>
+        </Rows>
+      </div>
+    );
+  }
+
+  // Show login screen if not authorized
+  if (!isAuthorized) {
+    return (
+      <div className={styles.scrollContainer}>
+        <Rows spacing="3u" align="center">
+          <Title size="medium">Welcome to Axis Canva</Title>
+          <Text alignment="center">
+            Please sign in with your Microsoft account to continue
+          </Text>
+
+          {error && (
+            <Alert tone="critical">
+              <Text>{error}</Text>
+            </Alert>
+          )}
+
+          <Button
+            variant="primary"
             onClick={login}
+            disabled={isLoading}
+            stretch
           >
-            Try Again
+            {isLoading ? "Signing in..." : "Sign in with Microsoft"}
           </Button>
         </Rows>
       </div>
     );
   }
 
+  // Show loading during authentication process
   if (isLoading) {
     return (
       <div className={styles.scrollContainer}>
         <Rows spacing="2u" align="center">
           <LoadingIndicator size="medium" />
-          <Text>Loading...</Text>
-        </Rows>
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className={styles.scrollContainer}>
-        <Rows spacing="2u" align="center">
-          <LoadingIndicator size="medium" />
-          <Text>Authenticating...</Text>
+          <Text>Completing authentication...</Text>
         </Rows>
       </div>
     );
