@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-10-16
+
+### 🔧 Changed
+
+- Updated @canva/app-ui-kit to 5.1.0 and React to 19.2.0.
+
+### 🐞 Fixed
+
+- Updated `react` dependencies to use ^ (compatible with) to reduce the impact of `@canva package` updates with react peer dependencies.
+
 ## 2025-10-13
 
 ### 🧰 Added
