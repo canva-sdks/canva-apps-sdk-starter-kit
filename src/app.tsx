@@ -24,7 +24,7 @@ import { useApiConfig } from "./hooks/use_api_config";
 import ConfigurationService from "./services/config";
 import * as styles from "styles/components.css";
 
-const oauth = auth.initOauth();
+const oauth_var = auth.initOauth();
 const scope = new Set(["openid"]);
 const BACKEND_URL = `https://graph.microsoft.com/v1.0/me`;
 
@@ -76,12 +76,12 @@ export const App = () => {
 
   const initializeMiddlewareAuth = useCallback(async () => {
     try {
-      console.log("🔐 Initializing middleware API authentication...");
+      console.log("Initializing middleware API authentication...");
       const configService = ConfigurationService.getInstance();
       await configService.initializeFromEnv();
-      console.log("✅ Middleware API authentication successful");
+      console.log("Middleware API authentication successful");
     } catch (error) {
-      console.error("❌ Middleware API authentication failed:", error);
+      console.error("Middleware API authentication failed:", error);
       throw error;
     }
   }, []);
@@ -89,7 +89,7 @@ export const App = () => {
   const retrieveAndSetToken = async ({ forceRefresh = false } = {}) => {
     try {
       setIsLoading(true);
-      const tokenResponse = await oauth.getAccessToken({ scope, forceRefresh });
+      const tokenResponse = await oauth_var.getAccessToken({ scope, forceRefresh });
       setAccessTokenResponse(tokenResponse);
 
       if (tokenResponse?.token) {
@@ -112,20 +112,20 @@ export const App = () => {
       try {
         setIsCheckingExistingAuth(true);
         // Only check if a token exists, don't trigger auth flow
-        const tokenResponse = await oauth.getAccessToken({ scope });
+        const tokenResponse = await oauth_var.getAccessToken({ scope });
 
         if (tokenResponse?.token) {
-          console.log("🔍 Found existing Microsoft OAuth session");
+          console.log("Found existing Microsoft OAuth session");
           setAccessTokenResponse(tokenResponse);
           await fetchUserProfile(tokenResponse.token);
 
           // Initialize middleware API auth with existing session
           await initializeMiddlewareAuth();
         } else {
-          console.log("ℹ️ No existing Microsoft OAuth session found");
+          console.log("No existing Microsoft OAuth session found");
         }
       } catch (error) {
-        console.log("ℹ️ No existing authentication session");
+        console.log("No existing authentication session");
       } finally {
         setIsCheckingExistingAuth(false);
       }
@@ -138,18 +138,18 @@ export const App = () => {
     setError(null);
     setIsLoading(true);
     try {
-      console.log("🚀 Starting Microsoft OAuth login flow...");
-      const authorizeResponse = await oauth.requestAuthorization({ scope });
+      console.log("Starting Microsoft OAuth login flow...");
+      const authorizeResponse = await oauth_var.requestAuthorization({ scope });
 
       if (authorizeResponse.status === "completed") {
-        console.log("✅ Microsoft OAuth authorization completed");
+        console.log("Microsoft OAuth authorization completed");
         // This will fetch profile AND initialize middleware API auth
         await retrieveAndSetToken();
       } else {
-        console.log("❌ Microsoft OAuth authorization not completed:", authorizeResponse.status);
+        console.log("Microsoft OAuth authorization not completed:", authorizeResponse.status);
       }
     } catch (error) {
-      console.error("❌ Login failed:", error);
+      console.error("Login failed:", error);
       setError(error instanceof Error ? error.message : "Login failed");
       setIsLoading(false);
     }
@@ -158,10 +158,10 @@ export const App = () => {
   async function logout() {
     try {
       setIsLoading(true);
-      console.log("🚪 Logging out...");
+      console.log("Logging out...");
 
       // Deauthorize Microsoft OAuth
-      await oauth.deauthorize();
+      await oauth_var.deauthorize();
 
       // Clear middleware API auth
       ConfigurationService.getInstance().reset();
@@ -171,9 +171,9 @@ export const App = () => {
       setUserProfile(null);
       setError(null);
 
-      console.log("✅ Logout successful");
+      console.log("Logout successful");
     } catch (error) {
-      console.error("❌ Logout failed:", error);
+      console.error("Logout failed:", error);
       setError(error instanceof Error ? error.message : "Logout failed");
     } finally {
       setIsLoading(false);

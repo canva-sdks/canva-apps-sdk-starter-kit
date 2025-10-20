@@ -23,10 +23,10 @@ export function useMicrosoftAuth(): UseMicrosoftAuthReturn {
   const authService = MicrosoftAuthService.getInstance();
 
   useEffect(() => {
-    console.log("🔗 [useMicrosoftAuth] Setting up auth state subscription...");
+    console.log("[useMicrosoftAuth] Setting up auth state subscription...");
     // Subscribe to auth state changes
     const unsubscribe = authService.subscribe((newState) => {
-      console.log("📡 [useMicrosoftAuth] Received auth state update:", {
+      console.log("[useMicrosoftAuth] Received auth state update:", {
         isAuthenticated: newState.isAuthenticated,
         loading: newState.loading,
         error: newState.error,
@@ -38,29 +38,29 @@ export function useMicrosoftAuth(): UseMicrosoftAuthReturn {
 
     // Cleanup subscription on unmount
     return () => {
-      console.log("🔌 [useMicrosoftAuth] Cleaning up auth state subscription");
+      console.log("[useMicrosoftAuth] Cleaning up auth state subscription");
       unsubscribe();
     };
   }, [authService]);
 
   const login = useCallback(async () => {
-    console.log("🚀 [useMicrosoftAuth] Login requested by component");
+    console.log("[useMicrosoftAuth] Login requested by component");
     try {
       await authService.login();
-      console.log("✅ [useMicrosoftAuth] Login completed successfully");
+      console.log("[useMicrosoftAuth] Login completed successfully");
     } catch (error) {
-      console.error("💥 [useMicrosoftAuth] Login failed:", error);
+      console.error("[useMicrosoftAuth] Login failed:", error);
       // Error is already handled by the service and reflected in state
     }
   }, [authService]);
 
   const logout = useCallback(async () => {
-    console.log("🚪 [useMicrosoftAuth] Logout requested by component");
+    console.log("[useMicrosoftAuth] Logout requested by component");
     try {
       await authService.logout();
-      console.log("✅ [useMicrosoftAuth] Logout completed successfully");
+      console.log("[useMicrosoftAuth] Logout completed successfully");
     } catch (error) {
-      console.error("💥 [useMicrosoftAuth] Logout failed:", error);
+      console.error("[useMicrosoftAuth] Logout failed:", error);
       // Error is already handled by the service and reflected in state
     }
   }, [authService]);
