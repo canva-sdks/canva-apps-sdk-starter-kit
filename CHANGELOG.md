@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-10-23
+
+### 🔧 Changed
+
+- Updated `@canva/app-ui-kit` to `v5.2.0`.
+
+### 🐞 Fixed
+
+- Fixed some UI issues in the digital_asset_management example by updating `@canva/app-components` to `v2.1.0`.
+
 ## 2025-10-16
 
 ### 🔧 Changed
