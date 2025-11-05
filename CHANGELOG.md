@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-11-06
+
+### 🔧 Changed
+
+- Clarified preview app link text to indicate clear CTA
+
+### 🐞 Fixed
+
+- Updated `copy_env.ts` script to not throw if a template .env file does not exist
+
 ## 2025-10-23
 
 ### 🔧 Changed
