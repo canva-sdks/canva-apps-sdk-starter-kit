@@ -107,7 +107,11 @@ export const App = () => {
           retrieve data on a per-design basis.
         </Text>
         <Text>Data stored for this design:</Text>
-        <MultilineInput autoGrow readOnly value={JSON.stringify(designData)} />
+        <MultilineInput
+          autoGrow
+          readOnly
+          value={JSON.stringify(designData, null, 2)}
+        />
         <Button
           loading={state === "loading"}
           disabled={state === "loading"}

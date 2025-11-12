@@ -1,6 +1,6 @@
 // For usage information, see the README.md file.
-import * as express from "express";
-import * as crypto from "crypto";
+import express from "express";
+import crypto from "crypto";
 import type { Container, Resource } from "@canva/app-components";
 
 /**

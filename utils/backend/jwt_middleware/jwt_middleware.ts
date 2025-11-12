@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-import * as chalk from "chalk";
-import * as debug from "debug";
+import debug from "debug";
 import type { NextFunction, Request, Response } from "express";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Express from "express-serve-static-core";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { JwksClient, SigningKeyNotFoundError } from "jwks-rsa";
 
 /**
@@ -125,9 +124,7 @@ export function createJwtMiddleware(
       if (e instanceof SigningKeyNotFoundError) {
         return sendUnauthorizedResponse(
           res,
-          `Public key not found. ${chalk.bgRedBright(
-            "Ensure you have the correct App_ID set",
-          )}.`,
+          `Public key not found. Ensure you have the correct App_ID set`,
         );
       }
 
