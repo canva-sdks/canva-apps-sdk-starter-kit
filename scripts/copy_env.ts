@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 
 const envPath = path.resolve(__dirname, "..", ".env");
 const templatePath = path.resolve(__dirname, "..", ".env.template");

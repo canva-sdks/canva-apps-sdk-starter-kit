@@ -1,6 +1,6 @@
 // For usage information, see the README.md file.
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import { createDamRouter } from "./routers/dam";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
 

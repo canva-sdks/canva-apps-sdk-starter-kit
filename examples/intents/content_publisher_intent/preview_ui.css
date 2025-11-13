@@ -1,0 +1,88 @@
+/* Main container for the preview UI */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Scale down preview on mobile devices */
+@media (max-width: 600px) {
+  .container {
+    transform: scale(0.3);
+  }
+}
+
+/* Wrapper for the social media post preview */
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(400px + 32px + 2px); /* Image width + padding + border */
+}
+
+/* User profile section styling */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Avatar styling to match social media appearance */
+.avatar {
+  transform: scale(0.6);
+  width: 24px;
+  height: 24px;
+  transform-origin: top left;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text placeholder for loading states */
+.textPlaceholder {
+  min-width: calc(8 * 20);
+}
+
+/* Container for media images */
+.imageContainer {
+  overflow: hidden; /* Enable border radius */
+}
+
+/* Row containing all images */
+.imageRow {
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 400px;
+  display: flex;
+}
+
+/* Aspect ratio helpers for different image formats */
+.aspect-1-1 {
+  padding-top: 100%;
+}
+
+.aspect-3-4 {
+  padding-top: 133.33%;
+}
+
+/* Individual image and placeholder styling */
+.imagePlaceholder,
+.image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  display: inline-block;
+  position: relative;
+}
+
+/* Icon placeholder styling */
+.iconPlaceholder {
+  width: 24px;
+  height: 24px;
+}

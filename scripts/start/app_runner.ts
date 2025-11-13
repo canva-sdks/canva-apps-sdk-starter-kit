@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
 import type { Context } from "./context";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { buildConfig } from "../../webpack.config";
-import * as ngrok from "@ngrok/ngrok";
-import * as nodemon from "nodemon";
-import * as Table from "cli-table3";
-import * as webpack from "webpack";
-import * as WebpackDevServer from "webpack-dev-server";
-import * as open from "open";
+import ngrok from "@ngrok/ngrok";
+import nodemon from "nodemon";
+import Table from "cli-table3";
+import webpack from "webpack";
+import WebpackDevServer from "webpack-dev-server";
+import open from "open";
 import { generatePreviewUrl } from "@canva/cli";
 import type { Certificate } from "../ssl/ssl";
 import { createOrRetrieveCertificate } from "../ssl/ssl";
-import * as os from "os";
+import os from "os";
 
 export const infoChalk = chalk.blue.bold;
 export const warnChalk = chalk.bgYellow.bold;

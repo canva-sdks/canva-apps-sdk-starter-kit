@@ -2,7 +2,7 @@
 
 import type { ChildProcess } from "child_process";
 import { spawn } from "child_process";
-import * as treeKill from "tree-kill";
+import treeKill from "tree-kill";
 
 describe("start script", () => {
   let serverProcess: ChildProcess;

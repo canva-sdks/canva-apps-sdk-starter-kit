@@ -1,9 +1,9 @@
 import type { Configuration } from "webpack";
 import { DefinePlugin, optimize } from "webpack";
-import * as path from "path";
-import * as TerserPlugin from "terser-webpack-plugin";
+import path from "path";
+import TerserPlugin from "terser-webpack-plugin";
 import { transform } from "@formatjs/ts-transformer";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { config } from "dotenv";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
