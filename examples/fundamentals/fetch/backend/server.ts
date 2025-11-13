@@ -1,7 +1,7 @@
 // For usage information, see the README.md file.
 import "dotenv/config";
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
 import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2025-11-13
+
+### 🧰 Added
+
+- Added `examples/intents/content_publisher_intent` as a basic implementation of the content publisher intent.
+
+### 🔧 Changed
+
+- Set `moduleResolution` to `bundler`, enabled `esModuleInterop`, and updated necessary import statements.
+- Updated `@canva/app-ui-kit` to version `5.2.1`.
+
 ## 2025-11-06
 
 ### 🔧 Changed
