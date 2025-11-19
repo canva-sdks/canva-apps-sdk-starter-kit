@@ -11,7 +11,7 @@ import {
   Select,
   Text,
 } from "@canva/app-ui-kit";
-import type { AppElementOptions, Placement } from "@canva/design";
+import type { AppElementOptions, Placement, ImageRef } from "@canva/design";
 import {
   addElementAtPoint,
   getCurrentPageContext,
@@ -49,22 +49,20 @@ type UIState = {
   update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
 };
 
-const images = {
-  dog: {
-    title: "Dog",
-    imageSrc: dog,
-    imageRef: undefined,
-  },
-  cat: {
-    title: "Cat",
-    imageSrc: cat,
-    imageRef: undefined,
-  },
-  rabbit: {
-    title: "Rabbit",
-    imageSrc: rabbit,
-    imageRef: undefined,
-  },
+type ExampleImage = {
+  title: string;
+  imageSrc: string;
+  imageRef: ImageRef | undefined;
+};
+
+// Static images are used here for demonstration purposes only.
+// In a real app, to avoid bloating your app bundle size,
+// you should use a CDN/hosting service to host your images,
+// then upload them to Canva using the `upload` function from the `@canva/asset` package.
+const STATIC_IMAGES: Record<string, ExampleImage> = {
+  dog: { title: "Dog", imageSrc: dog, imageRef: undefined },
+  cat: { title: "Cat", imageSrc: cat, imageRef: undefined },
+  rabbit: { title: "Rabbit", imageSrc: rabbit, imageRef: undefined },
 };
 
 const initialState: UIState = {
@@ -79,16 +77,26 @@ const initialState: UIState = {
 // The render function defines how the element appears when placed in a design.
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
+    // In production, you would likely be fetching this from a database or API
+    const image = STATIC_IMAGES[data.imageId];
+    if (!image) {
+      throw new Error(`Unknown image ID: ${data.imageId}`);
+    }
+
+    if (!image.imageRef) {
+      throw new Error(`Image ${data.imageId} has not been uploaded yet`);
+    }
+
     return [
       {
         type: "image",
-        ref: images[data.imageId].imageRef,
+        ref: image.imageRef,
         top: 0,
         left: 0,
         width: 400,
         height: 400,
         altText: {
-          text: `photo of a ${images[data.imageId].title}`,
+          text: `photo of a ${image.title}`,
           decorative: undefined,
         },
       },
@@ -162,7 +170,7 @@ export const App = () => {
     }
   };
 
-  const items = Object.entries(images).map(([key, value]) => {
+  const items = Object.entries(STATIC_IMAGES).map(([key, value]) => {
     const { title, imageSrc } = value;
     return {
       key,
@@ -186,18 +194,25 @@ export const App = () => {
   // Add or update an app element (interactive, editable element) in the design.
   // App elements can be updated in-place if they already exist in the design.
   const addOrUpdateAppImage = useCallback(async () => {
-    if (!images[state.data.imageId].imageRef) {
-      // Upload image to Canva's asset system to get a reference for use in designs
+    // In production, you would likely be fetching this from a database or API
+    const image = STATIC_IMAGES[state.data.imageId];
+    if (!image) {
+      throw new Error(`Unknown image ID: ${state.data.imageId}`);
+    }
+
+    // Image has not yet been uploaded
+    // Upload image to Canva's asset system to get a reference for use in designs
+    if (!image.imageRef) {
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
-        url: images[state.data.imageId].imageSrc,
-        thumbnailUrl: images[state.data.imageId].imageSrc,
+        url: image.imageSrc,
+        thumbnailUrl: image.imageSrc,
         width: 400,
         height: 400,
         aiDisclosure: "none",
       });
-      images[state.data.imageId].imageRef = ref;
+      image.imageRef = ref;
     }
     const placement = await getPlacement(state.placement);
     if (state.update) {
@@ -210,25 +225,31 @@ export const App = () => {
   // Add a static image element directly to the design at specified coordinates.
   // Unlike app elements, these are not interactive or editable once placed.
   const addImage = useCallback(async () => {
-    if (!images[state.data.imageId].imageRef) {
+    // In production, you would likely be fetching this from a database or API
+    const image = STATIC_IMAGES[state.data.imageId];
+    if (!image) {
+      throw new Error(`Unknown image ID: ${state.data.imageId}`);
+    }
+
+    if (!image.imageRef) {
       // Upload image to Canva's asset system to get a reference for use in designs
       const { ref } = await upload({
         type: "image",
         mimeType: "image/jpeg",
-        url: images[state.data.imageId].imageSrc,
-        thumbnailUrl: images[state.data.imageId].imageSrc,
+        url: image.imageSrc,
+        thumbnailUrl: image.imageSrc,
         width: 400,
         height: 400,
         aiDisclosure: "none",
       });
-      images[state.data.imageId].imageRef = ref;
+      image.imageRef = ref;
     }
     const placement = await getPlacement(state.placement);
     await addElementAtPoint({
       type: "image",
-      ref: images[state.data.imageId].imageRef,
+      ref: image.imageRef,
       altText: {
-        text: `photo of a ${images[state.data.imageId].title}`,
+        text: `photo of a ${image.title}`,
         decorative: undefined,
       },
       ...placement,

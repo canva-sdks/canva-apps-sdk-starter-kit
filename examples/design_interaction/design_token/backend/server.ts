@@ -98,7 +98,7 @@ router.get("/design/:token", async (req, res) => {
   const { userId, brandId } = req.canva;
   const brand = data.get(brandId);
   const user = brand?.users?.get(userId);
-  res.send(user?.designs?.get(designId) || {});
+  return res.send(user?.designs?.get(designId) || {});
 });
 
 /**
@@ -135,7 +135,7 @@ router.post("/design/:token", async (req, res) => {
     brand.users.set(userId, user);
   }
   user.designs.set(designId, req.body);
-  res.sendStatus(200);
+  return res.sendStatus(200);
 });
 
 const server = createBaseServer(router);

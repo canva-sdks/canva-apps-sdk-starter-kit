@@ -7,8 +7,8 @@ describe("TableWrapper", () => {
       const wrapper = TableWrapper.create(2, 3);
       const element = wrapper.toElement();
       expect(element.rows.length).toBe(2);
-      expect(element.rows[0].cells.length).toBe(3);
-      expect(element.rows[1].cells.length).toBe(3);
+      expect(element.rows[0]?.cells.length).toBe(3);
+      expect(element.rows[1]?.cells.length).toBe(3);
     });
     it("should throw an error if the row count is less than 1", () => {
       expect(() => TableWrapper.create(0, 1)).toThrow();
@@ -52,7 +52,7 @@ describe("TableWrapper", () => {
       expect(wrapper.toElement()).toEqual(element);
 
       // Make sure the new element is not a reference
-      if (element.rows[1].cells[1]?.attributes) {
+      if (element.rows[1]?.cells[1]?.attributes) {
         element.rows[1].cells[1].attributes.backgroundColor = "#ff0000";
       }
       expect(wrapper.toElement()).not.toEqual(element);
@@ -108,7 +108,7 @@ describe("TableWrapper", () => {
       wrapper.addRow(0);
       const element = wrapper.toElement();
       expect(element.rows.length).toBe(3);
-      expect(element.rows[0].cells.length).toBe(3);
+      expect(element.rows[0]?.cells.length).toBe(3);
     });
     it("should copy the fill value if top and bottom cells are the same", () => {
       const wrapper = TableWrapper.create(2, 3);
@@ -145,7 +145,7 @@ describe("TableWrapper", () => {
       wrapper.addColumn(0);
       const element = wrapper.toElement();
       expect(element.rows.length).toBe(2);
-      expect(element.rows[0].cells.length).toBe(4);
+      expect(element.rows[0]?.cells.length).toBe(4);
     });
     it("should copy the fill value if left and right cells are the same", () => {
       const wrapper = TableWrapper.create(2, 3);
@@ -208,14 +208,14 @@ describe("TableWrapper", () => {
       expect(wrapper.isGhostCell(2, 1)).toBe(true);
       expect(wrapper.isGhostCell(2, 2)).toBe(true);
       const element = wrapper.toElement();
-      const firstCell = element.rows[0].cells[0] as Cell & {
+      const firstCell = element.rows[0]?.cells[0] as Cell & {
         type: "string";
         value: string;
       };
       expect(firstCell?.type).toBe("string");
-      expect(firstCell.value).toBe("hello");
-      expect(firstCell.attributes).toBeDefined();
-      expect(firstCell.attributes?.backgroundColor).toBe("#ff0000");
+      expect(firstCell?.value).toBe("hello");
+      expect(firstCell?.attributes).toBeDefined();
+      expect(firstCell?.attributes?.backgroundColor).toBe("#ff0000");
     });
     it("should throw an error if the position is out of bounds", () => {
       const wrapper = TableWrapper.create(2, 3);

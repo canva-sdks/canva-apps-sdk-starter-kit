@@ -64,6 +64,10 @@ export class Context {
     // Handle nested examples with parent/child format
     if (example.includes("/")) {
       const [parent, child] = example.split("/");
+      if (!parent || !child) {
+        throw new Error(`Invalid example format: ${example}`);
+      }
+
       return path.join(Context.examplesDir, parent, child);
     }
 
@@ -149,9 +153,13 @@ export class Context {
 
   static get examples(): string[] {
     return Object.keys(Context.categorizedExamples).flatMap((category) => {
-      return Context.categorizedExamples[category].map(
-        (example) => `${category}/${example}`,
-      );
+      const examples = Context.categorizedExamples[category];
+
+      if (!examples) {
+        throw new Error(`No examples found for category: ${category}`);
+      }
+
+      return examples.map((example) => `${category}/${example}`);
     });
   }
 

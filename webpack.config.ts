@@ -188,7 +188,7 @@ function buildDevConfig(options?: DevConfig): {
     return {};
   }
 
-  const { port, enableHmr, appOrigin, appId, enableHttps, certFile, keyFile } =
+  const { port, enableHmr, appOrigin, enableHttps, certFile, keyFile } =
     options;
   const host = "localhost";
 

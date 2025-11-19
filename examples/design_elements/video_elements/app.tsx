@@ -13,8 +13,15 @@ import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { useAddElement } from "utils/use_add_element";
 
+type ExampleStaticVideo = {
+  title: string;
+  url: string;
+  thumbnailImageUrl: string;
+  thumbnailVideoUrl: string;
+};
+
 // Static video assets for demo purposes - see README for production considerations
-const videos = {
+const STATIC_VIDEOS: Record<string, ExampleStaticVideo> = {
   building: {
     title: "Pinwheel on building",
     url: "https://www.canva.dev/example-assets/video-import/video.mp4",
@@ -39,7 +46,7 @@ export const App = () => {
   const addElement = useAddElement();
 
   // Transform video data for VideoCard components with selection state
-  const items = Object.entries(videos).map(([key, value]) => {
+  const items = Object.entries(STATIC_VIDEOS).map(([key, value]) => {
     const { title, thumbnailImageUrl, thumbnailVideoUrl } = value;
     return {
       key,
@@ -56,7 +63,12 @@ export const App = () => {
   const addVideo = React.useCallback(async () => {
     setIsLoading(true);
     try {
-      const item = videos[selected];
+      // In production, you would likely be fetching this from a database or API
+      const item = STATIC_VIDEOS[selected];
+      if (!item) {
+        throw new Error(`Unknown video: ${selected}`);
+      }
+
       // Upload video to Canva's asset storage and get reference
       const { ref } = await upload({
         type: "video",
