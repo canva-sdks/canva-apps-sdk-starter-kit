@@ -30,6 +30,11 @@ export const useAddElement = () => {
       } else if (features.isSupported(addElementAtCursor)) {
         return addElementAtCursor(element);
       }
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Neither addElementAtPoint nor addElementAtCursor are supported",
+      );
+      return Promise.resolve();
     };
   });
 
@@ -40,6 +45,11 @@ export const useAddElement = () => {
       } else if (isSupported(addElementAtCursor)) {
         return addElementAtCursor(element);
       }
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Neither addElementAtPoint nor addElementAtCursor are supported",
+      );
+      return Promise.resolve();
     };
     setAddElement(() => addElement);
   }, [isSupported]);

@@ -19,9 +19,10 @@ export class TableWrapper {
     }[],
   ) {
     this.validateRowColumn();
-    this.metaCells = Array.from({ length: this.rows.length }, () =>
-      Array.from({ length: this.rows[0].cells.length }, () => ({})),
-    );
+    this.metaCells = [];
+    for (const row of this.rows) {
+      this.metaCells.push(Array.from({ length: row.cells.length }, () => ({})));
+    }
     this.syncMergedCellsFromRows();
   }
 
@@ -94,16 +95,14 @@ export class TableWrapper {
 
     this.validateRowColumn(1, 0);
 
+    const columnLength = this.rows[0]?.cells.length || 0;
     const newRow = {
-      cells: Array.from(
-        { length: this.rows[0].cells.length },
-        () => ({}) as Cell,
-      ),
+      cells: Array.from({ length: columnLength }, () => ({}) as Cell),
     };
     this.rows.splice(afterRowPos, 0, newRow);
 
     const newMergeCells: MetaCell[] = Array.from(
-      { length: this.rows[0].cells.length },
+      { length: columnLength },
       () => ({}),
     );
     this.metaCells.splice(afterRowPos, 0, newMergeCells);
@@ -134,22 +133,24 @@ export class TableWrapper {
    * column is inserted between them, the new column will also have the same background color.
    */
   addColumn(afterColumnPos: number) {
-    if (afterColumnPos < 0 || afterColumnPos > this.rows[0].cells.length) {
+    const columnLength = this.rows[0]?.cells.length || 0;
+    if (afterColumnPos < 0 || afterColumnPos > columnLength) {
       throw new TableValidationError(
-        `New column position must be between 0 and ${this.rows[0].cells.length}.`,
+        `New column position must be between 0 and ${columnLength}.`,
       );
     }
 
     this.validateRowColumn(0, 1);
 
     this.rows.forEach((row) => row.cells.splice(afterColumnPos, 0, null));
+    const newColumnLength = this.rows[0]?.cells.length || 0;
 
     const newMergeCell: MetaCell = {};
     this.metaCells.forEach((row) =>
       row.splice(afterColumnPos, 0, newMergeCell),
     );
 
-    if (0 < afterColumnPos && afterColumnPos < this.rows[0].cells.length) {
+    if (0 < afterColumnPos && afterColumnPos < newColumnLength) {
       // Insert in between columns
       for (let i = 0; i < this.rows.length; i++) {
         this.mayCopyStyles({
@@ -178,7 +179,7 @@ export class TableWrapper {
     this.validateCellBoundaries(rowPos, columnPos);
     const rowIndex = rowPos - 1;
     const columnIndex = columnPos - 1;
-    const { mergedInto } = this.metaCells[rowIndex][columnIndex];
+    const { mergedInto } = this.getMetaCell(rowIndex, columnIndex);
     if (!mergedInto) {
       // Not belongs to any merged cell
       return false;
@@ -199,7 +200,15 @@ export class TableWrapper {
         `The cell at ${rowPos},${columnPos} is squashed into another cell`,
       );
     }
-    return this.rows[rowPos - 1].cells[columnPos - 1];
+    return this.getCellInternal(rowPos - 1, columnPos - 1);
+  }
+
+  getCellInternal(rowIdx: number, columnIdx: number) {
+    const row = this.rows[rowIdx];
+    if (!row) {
+      throw new Error("validateCellBoundaries should be called first");
+    }
+    return row.cells[columnIdx];
   }
 
   /**
@@ -222,8 +231,12 @@ export class TableWrapper {
     const rowIndex = rowPos - 1;
     const columnIndex = columnPos - 1;
     const { rowSpan: oldRowSpan, colSpan: oldColSpan } =
-      this.rows[rowIndex].cells[columnIndex] || {};
-    this.rows[rowIndex].cells[columnIndex] = details;
+      this.getCellInternal(rowIndex, columnIndex) || {};
+
+    const row = this.rows[rowIndex];
+    if (row) {
+      row.cells[columnIndex] = details;
+    }
 
     if (oldRowSpan !== rowSpan || oldColSpan !== colSpan) {
       this.syncMergedCellsFromRows();
@@ -232,10 +245,11 @@ export class TableWrapper {
 
   private validateRowColumn(toBeAddedRow = 0, toBeAddedColumn = 0) {
     const rowCount = this.rows.length + toBeAddedRow;
-    const columnCount = this.rows[0].cells.length + toBeAddedColumn;
-    if (rowCount === 0) {
+    const row = this.rows[0];
+    if (rowCount === 0 || !row) {
       throw new TableValidationError("Table must have at least one row.");
     }
+    const columnCount = row.cells.length + toBeAddedColumn;
     if (columnCount === 0) {
       throw new TableValidationError("Table must have at least one column.");
     }
@@ -267,6 +281,9 @@ export class TableWrapper {
     // Then loop through this.rows to find any merged cells
     for (let rowIndex = 0; rowIndex < this.rows.length; rowIndex++) {
       const row = this.rows[rowIndex];
+      if (!row) {
+        continue;
+      }
       for (let columnIndex = 0; columnIndex < row.cells.length; columnIndex++) {
         const cell = row.cells[columnIndex] || { colSpan: 1, rowSpan: 1 };
         const colSpan = cell.colSpan || 1;
@@ -304,7 +321,7 @@ export class TableWrapper {
   ) {
     for (let row = fromRow; row <= toRow; row++) {
       for (let column = fromColumn; column <= toColumn; column++) {
-        const metaCell = this.metaCells[row][column];
+        const metaCell = this.getMetaCell(row, column);
 
         if (metaCell.mergedInto) {
           // This cell may be squashed by another merge cell
@@ -344,39 +361,57 @@ export class TableWrapper {
     currentColumnIdx: number;
   }) {
     // Continue span if both front and behind cells belong to a same merged cell
-    const frontMergedCell =
-      this.metaCells[frontRowIdx][frontColumnIdx].mergedInto;
-    const behindMergedCell =
-      this.metaCells[behindRowIdx][behindColumnIdx].mergedInto;
+    const frontMergedCell = this.getMetaCell(
+      frontRowIdx,
+      frontColumnIdx,
+    ).mergedInto;
+    const behindMergedCell = this.getMetaCell(
+      behindRowIdx,
+      behindColumnIdx,
+    ).mergedInto;
     if (
       frontMergedCell &&
       frontMergedCell.row === behindMergedCell?.row &&
       frontMergedCell.column === behindMergedCell?.column
     ) {
-      this.metaCells[currentRowIdx][currentColumnIdx].mergedInto = {
+      this.getMetaCell(currentRowIdx, currentColumnIdx).mergedInto = {
         ...frontMergedCell,
       };
     }
 
     // Copy attributes if both front and behind cells are the same
-    const frontCell = this.rows[frontRowIdx].cells[frontColumnIdx];
-    const behindCell = this.rows[behindRowIdx].cells[behindColumnIdx];
+    const frontCell = this.getCellInternal(frontRowIdx, frontColumnIdx);
+    const behindCell = this.getCellInternal(behindRowIdx, behindColumnIdx);
     if (
       frontCell != null &&
       behindCell != null &&
       frontCell.attributes &&
       behindCell.attributes
     ) {
-      let currentCell = this.rows[currentRowIdx].cells[currentColumnIdx];
-      for (const key of Object.keys(frontCell.attributes)) {
+      let currentCell = this.getCellInternal(currentRowIdx, currentColumnIdx);
+      const attrs = Object.keys(
+        frontCell.attributes,
+      ) as (keyof Cell["attributes"])[];
+      for (const key of attrs) {
         if (frontCell.attributes[key] === behindCell.attributes[key]) {
           currentCell = currentCell || { type: "empty" };
           currentCell.attributes = currentCell.attributes || {};
           currentCell.attributes[key] = frontCell.attributes[key];
         }
       }
-      this.rows[currentRowIdx].cells[currentColumnIdx] = currentCell;
+      const targetRow = this.rows[currentRowIdx];
+      if (currentCell && targetRow) {
+        targetRow.cells[currentColumnIdx] = currentCell;
+      }
     }
+  }
+
+  private getMetaCell(rowIdx: number, columnIdx: number): MetaCell {
+    const metaCell = this.metaCells[rowIdx]?.[columnIdx];
+    if (!metaCell) {
+      throw new Error("MetaCells does not match the table dimension");
+    }
+    return metaCell;
   }
 
   /**
@@ -386,13 +421,17 @@ export class TableWrapper {
   private syncCellSpansFromMetaCells() {
     const groups = new Map<string, { row: number; column: number }[]>();
     for (let row = 0; row < this.metaCells.length; row++) {
-      for (let column = 0; column < this.metaCells[row].length; column++) {
+      const metaRow = this.metaCells[row];
+      if (!metaRow) {
+        continue;
+      }
+      for (let column = 0; column < metaRow.length; column++) {
         // Reset all rowSpans and colSpans
-        const currentCell = this.rows[row].cells[column];
+        const currentCell = this.getCellInternal(row, column);
         currentCell && delete currentCell.rowSpan;
         currentCell && delete currentCell.colSpan;
 
-        const mergedCell = this.metaCells[row][column];
+        const mergedCell = this.getMetaCell(row, column);
         if (!mergedCell.mergedInto) {
           continue;
         }
@@ -429,12 +468,15 @@ export class TableWrapper {
       const rowSpan = maxRow - minRow + 1;
       const columnSpan = maxColumn - minColumn + 1;
       if (rowSpan > 1 || columnSpan > 1) {
-        const currentCell = this.rows[minRow].cells[minColumn] || {
+        const currentCell = this.getCellInternal(minRow, minColumn) || {
           type: "empty",
         };
         currentCell.rowSpan = rowSpan;
         currentCell.colSpan = columnSpan;
-        this.rows[minRow].cells[minColumn] = currentCell;
+        const targetRow = this.rows[minRow];
+        if (targetRow) {
+          targetRow.cells[minColumn] = currentCell;
+        }
       }
     });
   }
@@ -450,9 +492,10 @@ export class TableWrapper {
         `Row position must be between 1 and ${this.rows.length} (number of rows).`,
       );
     }
-    if (columnPos < 1 || columnPos > this.rows[0].cells.length) {
+    const columnLength = this.rows[0]?.cells.length || 0;
+    if (columnPos < 1 || columnPos > columnLength) {
       throw new TableValidationError(
-        `Column position must be between 1 and ${this.rows[0].cells.length} (number of columns).`,
+        `Column position must be between 1 and ${columnLength} (number of columns).`,
       );
     }
     if (rowSpan < 1) {
@@ -466,9 +509,9 @@ export class TableWrapper {
         `Cannot expand ${rowSpan} rows from the cell at ${rowPos},${columnPos}. Table has ${this.rows.length} rows.`,
       );
     }
-    if (columnPos + columnSpan - 1 > this.rows[0].cells.length) {
+    if (columnPos + columnSpan - 1 > columnLength) {
       throw new TableValidationError(
-        `Cannot expand ${columnSpan} columns from the cell at ${rowPos},${columnPos}. Table has ${this.rows[0].cells.length} columns.`,
+        `Cannot expand ${columnSpan} columns from the cell at ${rowPos},${columnPos}. Table has ${columnLength} columns.`,
       );
     }
   }

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2025-11-20
+
+### 🔧 Changed
+
+- Make `tsconfig` stricter to increase runtime type safety.
+- Upgraded `@canva/design` for `examples/design_interaction/design_audit` to `2.7.4-beta.2`.
+
+### 🐞 Fixed
+
+- Removed incorrect `node_modules/@types/` include from tsconfig.json.
+
 ## 2025-11-13
 
 ### 🧰 Added

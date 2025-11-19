@@ -57,11 +57,13 @@ export function useOverlay<
   const open = async (
     opts: { launchParameters?: unknown } = {},
   ): Promise<AppProcessId | undefined> => {
-    if (overlay && overlay.canOpen) {
-      const overlayId = await overlay.open(opts);
-      setOverlayId(overlayId);
-      return overlayId;
+    if (!overlay || !overlay.canOpen) {
+      return undefined;
     }
+
+    const overlayId = await overlay.open(opts);
+    setOverlayId(overlayId);
+    return overlayId;
   };
 
   const close = async (opts: C) => {

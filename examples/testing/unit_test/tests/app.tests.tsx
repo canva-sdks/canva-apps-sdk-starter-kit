@@ -66,7 +66,7 @@ describe("Example Tests", () => {
     expect(mockRequestOpenExternalUrl).toHaveBeenCalled();
 
     // assert that the requestOpenExternalUrl function was called with the expected arguments
-    expect(mockRequestOpenExternalUrl.mock.calls[0][0]).toEqual({
+    expect(mockRequestOpenExternalUrl.mock.calls[0]?.[0]).toEqual({
       url: DOCS_URL,
     });
 
@@ -76,7 +76,7 @@ describe("Example Tests", () => {
     });
     fireEvent.click(referenceButton);
     expect(mockRequestOpenExternalUrl).toHaveBeenCalledTimes(2);
-    expect(mockRequestOpenExternalUrl.mock.calls[1][0]).toEqual({
+    expect(mockRequestOpenExternalUrl.mock.calls[1]?.[0]).toEqual({
       url: API_URL,
     });
   });

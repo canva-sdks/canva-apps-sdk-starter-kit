@@ -179,7 +179,7 @@ export const App = () => {
                   label="Color"
                   control={() => (
                     <ColorSelector
-                      color={paths[outerIndex].fill.color}
+                      color={path.fill.color}
                       onChange={(value) => {
                         setState((prevState) => {
                           return {

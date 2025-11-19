@@ -109,7 +109,13 @@ export const SelectedImageOverlay = () => {
 
           // Replace the original image with the modified version
           const draft = await selection.read();
-          draft.contents[0].ref = asset.ref;
+          const [image] = draft.contents;
+
+          if (!image) {
+            return;
+          }
+
+          image.ref = asset.ref;
           await draft.save();
         }
 

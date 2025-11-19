@@ -11,7 +11,7 @@
       "es2020.promise",
       "es2020.string"
     ],
-    "types": ["node", "jest"],
+    "types": ["node", "webpack-env", "jest"],
     "composite": false,
     "declaration": false,
     "declarationMap": false,
@@ -28,7 +28,10 @@
     "sourceMap": true,
     "inlineSources": true,
     "module": "ESNext",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
@@ -38,7 +41,7 @@
       "styles": ["./styles"]
     }
   },
-  "include": ["**/*", "./node_modules/@types/**/*"],
+  "include": ["**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
