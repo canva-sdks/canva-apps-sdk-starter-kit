@@ -397,7 +397,7 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
                   <Columns spacing="1u">
                     {agentProfile.images.map((image, index) => (
                       <Column key={`${image.field}-${index}`}>
-                        <Box position="relative">
+                        <div style={{ position: 'relative' }}>
                           <ImageCard
                             thumbnailUrl={image.url}
                             onClick={() => handleImageClick(image.url)}
@@ -405,22 +405,21 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
                             disabled={uploadingImages.has(image.url)}
                           />
                           {uploadingImages.has(image.url) && (
-                            <Box
-                              position="absolute"
-                              top="0"
-                              left="0"
-                              width="full"
-                              height="full"
-                              background="neutralMid"
-                              borderRadius="standard"
-                              style={{ opacity: 0.8 }}
-                            >
-                              <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                              <Box
+                                width="full"
+                                height="full"
+                                background="neutral"
+                                borderRadius="standard"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
                                 <LoadingIndicator size="small" />
-                              </Rows>
-                            </Box>
+                              </Box>
+                            </div>
                           )}
-                        </Box>
+                        </div>
                       </Column>
                     ))}
                   </Columns>

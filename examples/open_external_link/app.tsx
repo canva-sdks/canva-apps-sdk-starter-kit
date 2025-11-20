@@ -29,7 +29,7 @@ export const App = () => {
           <Link
             href={DOCS_URL}
             requestOpenExternalUrl={() => openExternalUrl(DOCS_URL)}
-            title="Canva Apps SDK docs"
+            tooltipLabel="Canva Apps SDK docs"
           >
             docs
           </Link>

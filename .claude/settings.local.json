@@ -10,7 +10,8 @@
       "Bash(npm run extract:*)",
       "WebFetch(domain:www.canva.dev)",
       "Bash(npm run lint:types:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

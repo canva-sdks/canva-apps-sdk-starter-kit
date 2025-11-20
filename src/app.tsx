@@ -5,7 +5,6 @@ import {
   Text,
   Button,
   Rows,
-  Title,
   Box,
   Column,
   Columns,
@@ -19,13 +18,12 @@ import {
 } from "@canva/app-ui-kit";
 import { AgentSearchTab } from "./components/agent_search_tab";
 import { SearchableTab } from "./components/searchable_tab";
-import { ApiConfigSetup } from "./components/api_config_setup";
-import { useApiConfig } from "./hooks/use_api_config";
 import ConfigurationService from "./services/config";
 import * as styles from "styles/components.css";
 
 const oauth_var = auth.initOauth();
-const scope = new Set(["openid"]);
+// Microsoft Graph API scope for reading user profile
+const scope = new Set(["https://graph.microsoft.com/User.Read"]);
 const BACKEND_URL = `https://graph.microsoft.com/v1.0/me`;
 
 interface UserProfile {
@@ -47,7 +45,9 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isCheckingExistingAuth, setIsCheckingExistingAuth] = useState(true);
-  const { isReady } = useApiConfig();
+  const [isInitializingMiddleware, setIsInitializingMiddleware] = useState(false);
+  const [middlewareError, setMiddlewareError] = useState<string | null>(null);
+  const [middlewareReady, setMiddlewareReady] = useState(false);
 
   const fetchUserProfile = useCallback(async (token: string) => {
     setError(null);
@@ -76,17 +76,27 @@ export const App = () => {
 
   const initializeMiddlewareAuth = useCallback(async () => {
     try {
+      setIsInitializingMiddleware(true);
+      setMiddlewareError(null);
       console.log("Initializing middleware API authentication...");
+
       const configService = ConfigurationService.getInstance();
       await configService.initializeFromEnv();
+
+      setMiddlewareReady(true);
       console.log("Middleware API authentication successful");
     } catch (error) {
-      console.error("Middleware API authentication failed:", error);
+      const errorMsg = error instanceof Error ? error.message : "Failed to initialize middleware API";
+      console.error("Middleware API authentication failed:", errorMsg);
+      setMiddlewareError(errorMsg);
+      setMiddlewareReady(false);
       throw error;
+    } finally {
+      setIsInitializingMiddleware(false);
     }
   }, []);
 
-  const retrieveAndSetToken = async ({ forceRefresh = false } = {}) => {
+  const retrieveAndSetToken = useCallback(async ({ forceRefresh = false } = {}) => {
     try {
       setIsLoading(true);
       const tokenResponse = await oauth_var.getAccessToken({ scope, forceRefresh });
@@ -104,37 +114,9 @@ export const App = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // Check for existing authentication session on mount (but don't auto-login)
-  useEffect(() => {
-    const checkExistingAuth = async () => {
-      try {
-        setIsCheckingExistingAuth(true);
-        // Only check if a token exists, don't trigger auth flow
-        const tokenResponse = await oauth_var.getAccessToken({ scope });
-
-        if (tokenResponse?.token) {
-          console.log("Found existing Microsoft OAuth session");
-          setAccessTokenResponse(tokenResponse);
-          await fetchUserProfile(tokenResponse.token);
-
-          // Initialize middleware API auth with existing session
-          await initializeMiddlewareAuth();
-        } else {
-          console.log("No existing Microsoft OAuth session found");
-        }
-      } catch (error) {
-        console.log("No existing authentication session");
-      } finally {
-        setIsCheckingExistingAuth(false);
-      }
-    };
-
-    checkExistingAuth();
   }, [fetchUserProfile, initializeMiddlewareAuth]);
 
-  async function login() {
+  const login = useCallback(async () => {
     setError(null);
     setIsLoading(true);
     try {
@@ -153,7 +135,56 @@ export const App = () => {
       setError(error instanceof Error ? error.message : "Login failed");
       setIsLoading(false);
     }
-  }
+  }, [retrieveAndSetToken]);
+
+  // Check for existing authentication session on mount and auto-trigger login if needed
+  useEffect(() => {
+    let mounted = true;
+
+    const checkExistingAuth = async () => {
+      if (!mounted) return;
+
+      try {
+        setIsCheckingExistingAuth(true);
+        // Check if a token exists
+        const tokenResponse = await oauth_var.getAccessToken({ scope });
+
+        if (!mounted) return;
+
+        if (tokenResponse?.token) {
+          console.log("Found existing Microsoft OAuth session");
+          setAccessTokenResponse(tokenResponse);
+          await fetchUserProfile(tokenResponse.token);
+
+          // Initialize middleware API auth with existing session
+          await initializeMiddlewareAuth();
+
+          if (mounted) {
+            setIsCheckingExistingAuth(false);
+          }
+        } else {
+          console.log("No existing Microsoft OAuth session found, auto-triggering login");
+          setIsCheckingExistingAuth(false);
+          // Automatically trigger the login flow
+          await login();
+        }
+      } catch (error) {
+        console.log("No existing authentication session, auto-triggering login");
+        if (mounted) {
+          setIsCheckingExistingAuth(false);
+          // Automatically trigger the login flow
+          await login();
+        }
+      }
+    };
+
+    checkExistingAuth();
+
+    return () => {
+      mounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   async function logout() {
     try {
@@ -170,64 +201,55 @@ export const App = () => {
       setAccessTokenResponse(null);
       setUserProfile(null);
       setError(null);
+      setMiddlewareReady(false);
+      setMiddlewareError(null);
 
       console.log("Logout successful");
+
+      // Trigger login flow again after logout
+      setIsLoading(false);
+      setIsCheckingExistingAuth(false);
+      await login();
     } catch (error) {
       console.error("Logout failed:", error);
       setError(error instanceof Error ? error.message : "Logout failed");
-    } finally {
       setIsLoading(false);
     }
   }
 
-  // Show loading while checking for existing auth session
-  if (isCheckingExistingAuth) {
+  // Show loading while authenticating or checking auth
+  if (isCheckingExistingAuth || !isAuthorized) {
     return (
       <div className={styles.scrollContainer}>
         <Rows spacing="2u" align="center">
           <LoadingIndicator size="medium" />
-          <Text>Checking authentication...</Text>
-        </Rows>
-      </div>
-    );
-  }
-
-  // Show login screen if not authorized
-  if (!isAuthorized) {
-    return (
-      <div className={styles.scrollContainer}>
-        <Rows spacing="3u" align="center">
-          <Title size="medium">Welcome to Axis Canva</Title>
-          <Text alignment="center">
-            Please sign in with your Microsoft account to continue
+          <Text>
+            {isCheckingExistingAuth
+              ? "Checking authentication..."
+              : "Authenticating with Microsoft..."}
           </Text>
-
           {error && (
             <Alert tone="critical">
               <Text>{error}</Text>
             </Alert>
           )}
-
-          <Button
-            variant="primary"
-            onClick={login}
-            disabled={isLoading}
-            stretch
-          >
-            {isLoading ? "Signing in..." : "Sign in with Microsoft"}
-          </Button>
         </Rows>
       </div>
     );
   }
 
-  // Show loading during authentication process
-  if (isLoading) {
+  // Show loading while initializing middleware API
+  if (isInitializingMiddleware || !middlewareReady) {
     return (
       <div className={styles.scrollContainer}>
         <Rows spacing="2u" align="center">
           <LoadingIndicator size="medium" />
-          <Text>Completing authentication...</Text>
+          <Text>Setting up API connection...</Text>
+          {middlewareError && (
+            <Alert tone="critical">
+              <Text>{middlewareError}</Text>
+            </Alert>
+          )}
         </Rows>
       </div>
     );
@@ -253,32 +275,28 @@ export const App = () => {
         </Box>
         
         {/* Main App Content */}
-        {!isReady ? (
-          <ApiConfigSetup />
-        ) : (
-          <Tabs>
-            <TabList>
-              <Tab id="agents">Agent Search</Tab>
-              <Tab id="listings">Listings</Tab>
-              <Tab id="market">Market Data</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel id="agents">
-                <AgentSearchTab userEmail={userProfile?.mail || userProfile?.userPrincipalName} />
-              </TabPanel>
-              <TabPanel id="listings">
-                <SearchableTab 
-                  endpoint="listings" 
-                  tabName="Listings" 
-                  userEmail={userProfile?.mail || userProfile?.userPrincipalName}
-                />
-              </TabPanel>
-              <TabPanel id="market">
-                <SearchableTab endpoint="market-data" tabName="Market Data" />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        )}
+        <Tabs>
+          <TabList>
+            <Tab id="agents">Agent Search</Tab>
+            <Tab id="listings">Listings</Tab>
+            <Tab id="market">Market Data</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel id="agents">
+              <AgentSearchTab userEmail={userProfile?.mail || userProfile?.userPrincipalName} />
+            </TabPanel>
+            <TabPanel id="listings">
+              <SearchableTab
+                endpoint="listings"
+                tabName="Listings"
+                userEmail={userProfile?.mail || userProfile?.userPrincipalName}
+              />
+            </TabPanel>
+            <TabPanel id="market">
+              <SearchableTab endpoint="market-data" tabName="Market Data" />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Rows>
     </div>
   );

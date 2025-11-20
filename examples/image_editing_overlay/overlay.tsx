@@ -24,7 +24,7 @@ export const Overlay = (props: OverlayProps) => {
   const selection = useSelection("image");
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isDraggingRef = useRef<boolean>();
+  const isDraggingRef = useRef<boolean>(false);
   const uiStateRef = useRef<UIState>({
     brushSize: 7,
   });

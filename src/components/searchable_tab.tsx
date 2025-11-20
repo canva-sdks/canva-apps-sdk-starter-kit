@@ -153,7 +153,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       // Use the new search endpoints
       let searchEndpoint = "";
       if (endpoint === "listings") {
-        searchEndpoint = "/listings/search";
+        searchEndpoint = "/api/listing/search";
       } else if (endpoint === "market-data") {
         searchEndpoint = "/market/search";
       }
@@ -166,7 +166,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       if (endpoint === "listings") {
         // Apply "Only my office" filter if checked
         if (onlyMyOffice && userEmail) {
-          params.append("agent", userEmail);
+          params.append("agent_email", userEmail);
         }
         // Always apply status filter when not "all"
         if (statusFilter !== "all") {
@@ -201,8 +201,11 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       const responseData = await response.json();
       const data = responseData as any;
       let resultArray: Record<string, unknown>[] = [];
-      
-      if (data?.result && Array.isArray(data.result)) {
+
+      // Check both 'response' and 'result' fields for compatibility
+      if (data?.response && Array.isArray(data.response)) {
+        resultArray = data.response;
+      } else if (data?.result && Array.isArray(data.result)) {
         resultArray = data.result;
       }
       
@@ -722,12 +725,12 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                       <Text variant="bold">Photos</Text>
                       <Masonry targetRowHeightPx={200}>
                         {detailedData.images.map((image, index) => (
-                          <MasonryItem 
+                          <MasonryItem
                             key={`${image.field}-${index}`}
                             targetHeightPx={200}
                             targetWidthPx={200}
                           >
-                            <Box position="relative">
+                            <div style={{ position: 'relative' }}>
                               <ImageCard
                                 thumbnailUrl={image.url}
                                 onClick={() => handleImageClick(image.url)}
@@ -736,22 +739,21 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                                 disabled={uploadingImages.has(image.url)}
                               />
                               {uploadingImages.has(image.url) && (
-                                <Box
-                                  position="absolute"
-                                  top="0"
-                                  left="0"
-                                  width="full"
-                                  height="full"
-                                  background="neutralMid"
-                                  borderRadius="standard"
-                                  style={{ opacity: 0.8 }}
-                                >
-                                  <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                                  <Box
+                                    width="full"
+                                    height="full"
+                                    background="neutral"
+                                    borderRadius="standard"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
                                     <LoadingIndicator size="small" />
-                                  </Rows>
-                                </Box>
+                                  </Box>
+                                </div>
                               )}
-                            </Box>
+                            </div>
                           </MasonryItem>
                         ))}
                       </Masonry>
@@ -952,12 +954,12 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                       </Text>
                       <Masonry targetRowHeightPx={200}>
                         {detailedData.images.map((image, index) => (
-                          <MasonryItem 
+                          <MasonryItem
                             key={`${image.field}-${index}`}
                             targetHeightPx={200}
                             targetWidthPx={200}
                           >
-                            <Box position="relative">
+                            <div style={{ position: 'relative' }}>
                               <ImageCard
                                 thumbnailUrl={image.url}
                                 onClick={() => handleImageClick(image.url)}
@@ -966,22 +968,21 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                                 disabled={uploadingImages.has(image.url)}
                               />
                               {uploadingImages.has(image.url) && (
-                                <Box
-                                  position="absolute"
-                                  top="0"
-                                  left="0"
-                                  width="full"
-                                  height="full"
-                                  background="neutralMid"
-                                  borderRadius="standard"
-                                  style={{ opacity: 0.8 }}
-                                >
-                                  <Rows spacing="1u" align="center" alignY="center" style={{ height: '100%' }}>
+                                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                                  <Box
+                                    width="full"
+                                    height="full"
+                                    background="neutral"
+                                    borderRadius="standard"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
                                     <LoadingIndicator size="small" />
-                                  </Rows>
-                                </Box>
+                                  </Box>
+                                </div>
                               )}
-                            </Box>
+                            </div>
                           </MasonryItem>
                         ))}
                       </Masonry>
