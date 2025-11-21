@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   Rows,
   SearchInputMenu,
@@ -10,8 +10,10 @@ import {
   Text,
   ImageCard,
   LoadingIndicator,
-  TypographyCard,
+  Pill,
   Box,
+  Masonry,
+  MasonryItem,
 } from "@canva/app-ui-kit";
 import { useAddElement } from "utils/use_add_element";
 import { useSelection } from "utils/use_selection_hook";
@@ -50,9 +52,16 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
   const [loading, setLoading] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  
+
   // Image upload loading states
   const [uploadingImages, setUploadingImages] = useState<Set<string>>(new Set());
+
+  // Track if initial user profile has been loaded
+  const hasLoadedInitialProfile = useRef(false);
+
+  // Refs for managing search debouncing and cancellation
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currentSearchController = useRef<AbortController | null>(null);
 
   const addElement = useAddElement();
   const textSelection = useSelection("plaintext");
@@ -68,10 +77,24 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
       return;
     }
 
+    // Cancel any existing search request
+    if (currentSearchController.current) {
+      currentSearchController.current.abort();
+    }
+
+    // Create new AbortController for this request
+    const controller = new AbortController();
+    currentSearchController.current = controller;
+
     setLoading(true);
     try {
       const response = await apiClient.searchAgents(query);
-      
+
+      // Check if this request was aborted
+      if (controller.signal.aborted) {
+        return;
+      }
+
       if (!response.success) {
         setSearchResults([]);
         setShowResults(false);
@@ -79,20 +102,20 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
       }
 
       const data = response.data as any;
-      
+
       // Get agents array from the 'result' property
       let agentArray: Record<string, unknown>[] = [];
-      
+
       if (data?.result && Array.isArray(data.result)) {
         agentArray = data.result;
       }
-      
+
       // Transform agent list response to AgentSearchResult format
       const results: AgentSearchResult[] = agentArray.map((agent: Record<string, unknown>, index: number) => {
         const name = (agent.name as string) || (agent.displayName as string) || (agent.fullName as string) || (agent.firstName as string) || "Unknown Agent";
         const office = (agent.office as string) || "";
         const displayValue = office ? `${name} - ${office}` : name;
-        
+
         return {
           id: (agent.id as string) || (agent._id as string) || `agent-${index}`,
           displayValue,
@@ -101,13 +124,22 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
         };
       });
 
-      setSearchResults(results);
-      setShowResults(true);
-    } catch {
-      setSearchResults([]);
-      setShowResults(false);
+      // Only update state if request wasn't aborted
+      if (!controller.signal.aborted) {
+        setSearchResults(results);
+        setShowResults(true);
+      }
+    } catch (error) {
+      // Don't update state if request was aborted
+      if (!controller.signal.aborted) {
+        setSearchResults([]);
+        setShowResults(false);
+      }
     } finally {
-      setLoading(false);
+      // Only update loading state if request wasn't aborted
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   }, [apiClient]);
 
@@ -157,12 +189,26 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
     }
   }, [apiClient]);
 
-  // Load current user's profile on mount
+  // Cleanup on unmount
   useEffect(() => {
-    if (userEmail && !selectedAgent) {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+      if (currentSearchController.current) {
+        currentSearchController.current.abort();
+      }
+    };
+  }, []);
+
+  // Load current user's profile on mount - only once
+  useEffect(() => {
+    if (userEmail && !hasLoadedInitialProfile.current) {
+      hasLoadedInitialProfile.current = true;
+
       // Set search query to user email
       setSearchQuery(userEmail);
-      
+
       // Create a fake selected agent for the logged-in user
       const currentUserAgent: AgentSearchResult = {
         id: 'current-user',
@@ -170,15 +216,31 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
         email: userEmail,
         data: { email: userEmail }
       };
-      
+
       setSelectedAgent(currentUserAgent);
       fetchAgentProfile(userEmail);
     }
-  }, [userEmail, selectedAgent, fetchAgentProfile]);
+  }, [userEmail, fetchAgentProfile]);
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
-    searchAgents(value);
+
+    // Clear existing timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // If query is empty, clear results immediately
+    if (!value.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    // Debounce search by 300ms
+    searchTimeoutRef.current = setTimeout(() => {
+      searchAgents(value);
+    }, 300);
   }, [searchAgents]);
 
   const handleAgentSelect = useCallback(async (agent: AgentSearchResult) => {
@@ -367,18 +429,20 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
                       description: "Label for agent profile fields section",
                     })}
                   </Text>
-                  <Rows spacing="2u">
+                  <Rows spacing="1u">
                     {agentProfile.textFields.map((field, index) => (
-                      <Rows key={`${field.field}-${index}`} spacing="0.5u">
-                        <Text size="small" variant="bold">{field.field}</Text>
-                        <TypographyCard
-                          onClick={() => handleTextFieldClick(field.value)}
-                          onDragStart={() => field.value}
-                          ariaLabel={`Add ${field.field}: ${field.value}`}
-                        >
-                          {field.value}
-                        </TypographyCard>
-                      </Rows>
+                      <Columns key={`${field.field}-${index}`} spacing="1u" alignY="center">
+                        <Column width="1/3">
+                          <Text size="small" variant="bold">{field.field.toUpperCase()}</Text>
+                        </Column>
+                        <Column width="2/3">
+                          <Pill
+                            text={field.value}
+                            onClick={() => handleTextFieldClick(field.value)}
+                            ariaLabel={`Add ${field.field}: ${field.value}`}
+                          />
+                        </Column>
+                      </Columns>
                     ))}
                   </Rows>
                 </Rows>
@@ -386,44 +450,40 @@ export const AgentSearchTab: React.FC<AgentSearchTabProps> = ({ userEmail }) => 
 
               {/* Images */}
               {agentProfile.images && agentProfile.images.length > 0 && (
-                <Rows spacing="1u">
-                  <Text variant="bold">
-                    {intl.formatMessage({
-                      id: "agent_search.photos_label",
-                      defaultMessage: "Photos:",
-                      description: "Label for agent photos section",
-                    })}
-                  </Text>
-                  <Columns spacing="1u">
-                    {agentProfile.images.map((image, index) => (
-                      <Column key={`${image.field}-${index}`}>
-                        <div style={{ position: 'relative' }}>
-                          <ImageCard
-                            thumbnailUrl={image.url}
-                            onClick={() => handleImageClick(image.url)}
-                            alt={`${image.field} photo`}
-                            disabled={uploadingImages.has(image.url)}
-                          />
-                          {uploadingImages.has(image.url) && (
-                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-                              <Box
-                                width="full"
-                                height="full"
-                                background="neutral"
-                                borderRadius="standard"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                              >
-                                <LoadingIndicator size="small" />
-                              </Box>
-                            </div>
-                          )}
-                        </div>
-                      </Column>
-                    ))}
-                  </Columns>
-                </Rows>
+                <Masonry targetRowHeightPx={200}>
+                  {agentProfile.images.map((image, index) => (
+                    <MasonryItem
+                      key={`${image.field}-${index}`}
+                      targetHeightPx={200}
+                      targetWidthPx={200}
+                    >
+                      <div style={{ position: 'relative' }}>
+                        <ImageCard
+                          thumbnailUrl={image.url}
+                          onClick={() => handleImageClick(image.url)}
+                          alt={`${image.field} photo`}
+                          ariaLabel={`Add ${image.field} photo to design`}
+                          disabled={uploadingImages.has(image.url)}
+                        />
+                        {uploadingImages.has(image.url) && (
+                          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                            <Box
+                              width="full"
+                              height="full"
+                              background="neutral"
+                              borderRadius="standard"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <LoadingIndicator size="small" />
+                            </Box>
+                          </div>
+                        )}
+                      </div>
+                    </MasonryItem>
+                  ))}
+                </Masonry>
               )}
             </Rows>
           )}

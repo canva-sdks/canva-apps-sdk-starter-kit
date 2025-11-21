@@ -11,7 +11,8 @@
       "WebFetch(domain:www.canva.dev)",
       "Bash(npm run lint:types:*)",
       "WebSearch",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }

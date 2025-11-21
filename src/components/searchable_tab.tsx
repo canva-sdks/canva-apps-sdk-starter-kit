@@ -12,11 +12,15 @@ import {
   LoadingIndicator,
   Box,
   Title,
-  Checkbox,
   Select,
-  TypographyCard,
+  Pill,
   Masonry,
-  MasonryItem
+  MasonryItem,
+  Flyout,
+  CogIcon,
+  FormField,
+  Checkbox,
+  Scrollable
 } from "@canva/app-ui-kit";
 import { useAddElement } from "utils/use_add_element";
 import { useSelection } from "utils/use_selection_hook";
@@ -43,6 +47,7 @@ interface DetailedData {
     house: Record<string, unknown>;
     unit: Record<string, unknown>;
     labels: Array<{ property: string; label: string; format: string }>;
+    month_end?: string;
   };
 }
 
@@ -64,11 +69,12 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   const [loading, setLoading] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  
+
   // Filter states for listings
-  const [onlyMyOffice, setOnlyMyOffice] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
-  
+  const [myListingsOnly, setMyListingsOnly] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   // Metric search state for market data
   const [metricSearchQuery, setMetricSearchQuery] = useState("");
   
@@ -78,6 +84,9 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
   // Refs for managing search debouncing and cancellation
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const currentSearchController = useRef<AbortController | null>(null);
+
+  // Ref for filter button (used as trigger for Flyout)
+  const filterButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const addElement = useAddElement();
   const textSelection = useSelection("plaintext");
@@ -97,8 +106,8 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       const prop = label.property.toLowerCase();
       const labelText = label.label.toLowerCase();
       
-      // Check for median price
-      if (['sales_12m','median_price_12m','change_12m_median_price_12m','total_sales_value_12m'].includes(prop)) {
+      // Check for median price and month_end
+      if (['sales_12m','median_price_12m','change_12m_median_price_12m','total_sales_value_12m','month_end'].includes(prop)) {
         return true;
       }
       
@@ -106,16 +115,26 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
     }) //.slice(0, 3); // Limit results ? Ensure we only get 3 metrics
   }, []);
 
+  // Helper function to get all non-default metrics for display
+  const getAllOtherMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
+    if (!labels) return [];
+
+    const defaultMetricsList = getDefaultMetrics(labels);
+    const defaultProperties = defaultMetricsList.map(m => m.property);
+
+    return labels.filter(label => !defaultProperties.includes(label.property));
+  }, [getDefaultMetrics]);
+
   // Helper function to get searched metrics
   const getSearchedMetrics = useCallback((labels: Array<{ property: string; label: string; format: string }>) => {
     if (!labels || !metricSearchQuery.trim()) return [];
-    
+
     const searchTerm = metricSearchQuery.toLowerCase();
     const defaultMetricsList = getDefaultMetrics(labels);
     const defaultProperties = defaultMetricsList.map(m => m.property);
-    
-    return labels.filter(label => 
-      !defaultProperties.includes(label.property) && 
+
+    return labels.filter(label =>
+      !defaultProperties.includes(label.property) &&
       label.label.toLowerCase().includes(searchTerm)
     );
   }, [metricSearchQuery, getDefaultMetrics]);
@@ -164,13 +183,13 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
       
       // Add filters for listings endpoint
       if (endpoint === "listings") {
-        // Apply "Only my office" filter if checked
-        if (onlyMyOffice && userEmail) {
-          params.append("agent_email", userEmail);
-        }
-        // Always apply status filter when not "all"
+        // Apply status filter when not "all"
         if (statusFilter !== "all") {
           params.append("status", statusFilter);
+        }
+        // Apply "My Listings only" filter if checked
+        if (myListingsOnly && userEmail) {
+          params.append("agent_email", userEmail);
         }
       }
 
@@ -256,7 +275,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
         setLoading(false);
       }
     }
-  }, [endpoint, apiClient, onlyMyOffice, userEmail, statusFilter]);
+  }, [endpoint, apiClient, statusFilter, myListingsOnly, userEmail]);
 
   const fetchDetailedData = useCallback(async (result: SearchResult) => {
     setLoadingDetails(true);
@@ -409,7 +428,7 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
         searchAPI(searchQuery);
       }, 200);
     }
-  }, [onlyMyOffice, statusFilter, searchAPI, searchQuery, endpoint]);
+  }, [statusFilter, myListingsOnly, searchAPI, searchQuery, endpoint]);
 
   const handleResultSelect = useCallback(async (result: SearchResult) => {
     setSelectedResult(result);
@@ -542,35 +561,6 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
 
   return (
     <Rows spacing="3u">
-      {/* Filters for listings */}
-      {endpoint === "listings" && (
-        <Columns spacing="2u" alignY="center">
-          <Column width="content">
-            <Checkbox
-              checked={onlyMyOffice}
-              onChange={(value, checked) => setOnlyMyOffice(checked)}
-              label="Only my office"
-            />
-          </Column>
-          <Column width="content">
-            <Text size="small">Status:</Text>
-          </Column>
-          <Column>
-            <Select
-              value={statusFilter}
-              onChange={(value) => setStatusFilter(value as string)}
-              placeholder="Select status"
-              options={[
-                { value: "all", label: "All" },
-                { value: "current", label: "Current" },
-                { value: "sold", label: "Sold" },
-                { value: "pending", label: "Pending" }
-              ]}
-            />
-          </Column>
-        </Columns>
-      )}
-      
       <SearchInputMenu
         value={searchQuery}
         onChange={handleSearchChange}
@@ -586,6 +576,16 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
           description: "Aria label for search input",
         }, { tabName: tabName.toLowerCase() })}
         onOutsidePointerDown={() => setShowResults(false)}
+        end={endpoint === "listings" ? (
+          <div ref={filterButtonRef as any}>
+            <Button
+              variant="tertiary"
+              icon={CogIcon}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              ariaLabel="Filter listings"
+            />
+          </div>
+        ) : undefined}
       >
         {showResults && searchResults.length > 0 && (
           <Menu ariaLabel="Search results">
@@ -599,6 +599,45 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
           </Menu>
         )}
       </SearchInputMenu>
+
+      {/* Flyout for listings filters */}
+      {endpoint === "listings" && (
+        <Flyout
+          open={isFilterOpen}
+          onRequestClose={() => setIsFilterOpen(false)}
+          trigger={filterButtonRef.current}
+          width="32u"
+        >
+          <Box padding="2u">
+            <Rows spacing="2u">
+              <FormField
+                label="Status"
+                value={statusFilter}
+                control={(controlProps) => (
+                  <Select
+                    {...controlProps}
+                    value={statusFilter}
+                    onChange={(value) => setStatusFilter(value as string)}
+                    placeholder="Select status"
+                    options={[
+                      { value: "all", label: "All" },
+                      { value: "current", label: "Current" },
+                      { value: "sold", label: "Sold" },
+                      { value: "pending", label: "Pending" }
+                    ]}
+                    stretch
+                  />
+                )}
+              />
+              <Checkbox
+                checked={myListingsOnly}
+                onChange={(value, checked) => setMyListingsOnly(checked)}
+                label="My Listings only"
+              />
+            </Rows>
+          </Box>
+        </Flyout>
+      )}
 
       {selectedResult && (
         <Rows spacing="1u">
@@ -629,134 +668,174 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
             <Rows spacing="1u">
               {/* Market Data Display */}
               {detailedData.marketData && (
-                <Box background="neutralLow" padding="2u" borderRadius="standard">
-                  <Rows spacing="2u">
-                    <Title size="small">Market Data</Title>
-                    
-                    {/* Default metrics - always shown */}
-                    {getDefaultMetrics(detailedData.marketData.labels).map((labelInfo) => {
-                      const houseValue = detailedData.marketData?.house[labelInfo.property];
-                      const unitValue = detailedData.marketData?.unit[labelInfo.property];
-                      
-                      return (
-                        <Rows key={labelInfo.property} spacing="1u">
-                          <Text size="small" variant="bold">{labelInfo.label}</Text>
-                          <Columns spacing="2u">
-                            <Column>
-                              <Text size="small">House:</Text>
-                              <TypographyCard
+                <Rows spacing="2u">
+                  <Title size="small">Market Data</Title>
+
+                  {/* Default metrics - always shown */}
+                  {getDefaultMetrics(detailedData.marketData.labels).map((labelInfo) => {
+                    const houseValue = detailedData.marketData?.house[labelInfo.property];
+                    const unitValue = detailedData.marketData?.unit[labelInfo.property];
+
+                    return (
+                      <Rows key={labelInfo.property} spacing="1u">
+                        <Text size="small" variant="bold">{labelInfo.label}</Text>
+                        <Columns spacing="1u">
+                          <Column>
+                            <Text size="small" tone="tertiary">House:</Text>
+                            <Box paddingTop="0.5u">
+                              <Pill
+                                text={formatValue(houseValue, labelInfo.format)}
                                 onClick={() => handleTextFieldClick(formatValue(houseValue, labelInfo.format))}
-                                onDragStart={() => formatValue(houseValue, labelInfo.format)}
                                 ariaLabel={`Add house value: ${formatValue(houseValue, labelInfo.format)}`}
-                              >
-                                {formatValue(houseValue, labelInfo.format)}
-                              </TypographyCard>
-                            </Column>
-                            <Column>
-                              <Text size="small">Unit:</Text>
-                              <TypographyCard
+                              />
+                            </Box>
+                          </Column>
+                          <Column>
+                            <Text size="small" tone="tertiary">Unit:</Text>
+                            <Box paddingTop="0.5u">
+                              <Pill
+                                text={formatValue(unitValue, labelInfo.format)}
                                 onClick={() => handleTextFieldClick(formatValue(unitValue, labelInfo.format))}
-                                onDragStart={() => formatValue(unitValue, labelInfo.format)}
                                 ariaLabel={`Add unit value: ${formatValue(unitValue, labelInfo.format)}`}
-                              >
-                                {formatValue(unitValue, labelInfo.format)}
-                              </TypographyCard>
-                            </Column>
-                          </Columns>
-                        </Rows>
-                      );
-                    })}
-                    
-                    {/* Search for additional metrics */}
-                    <Rows spacing="2u">
-                      <Text size="small" variant="bold">Search other metrics:</Text>
-                      <SearchInputMenu
-                        value={metricSearchQuery}
-                        onChange={setMetricSearchQuery}
-                        onClear={() => setMetricSearchQuery("")}
-                        placeholder="Search metrics..."
-                        ariaLabel="Search for additional metrics"
-                      />
-                      
-                      {/* Search results - shown below search box */}
-                      {getSearchedMetrics(detailedData.marketData.labels).map((labelInfo) => {
-                        const houseValue = detailedData.marketData?.house[labelInfo.property];
-                        const unitValue = detailedData.marketData?.unit[labelInfo.property];
-                        
-                        return (
-                          <Rows key={labelInfo.property} spacing="1u">
-                            <Text size="small" variant="bold">{labelInfo.label}</Text>
-                            <Columns spacing="2u">
-                              <Column>
-                                <Text size="small">House:</Text>
-                                <TypographyCard
-                                  onClick={() => handleTextFieldClick(formatValue(houseValue, labelInfo.format))}
-                                  onDragStart={() => formatValue(houseValue, labelInfo.format)}
-                                  ariaLabel={`Add house value: ${formatValue(houseValue, labelInfo.format)}`}
-                                >
-                                  {formatValue(houseValue, labelInfo.format)}
-                                </TypographyCard>
-                              </Column>
-                              <Column>
-                                <Text size="small">Unit:</Text>
-                                <TypographyCard
-                                  onClick={() => handleTextFieldClick(formatValue(unitValue, labelInfo.format))}
-                                  onDragStart={() => formatValue(unitValue, labelInfo.format)}
-                                  ariaLabel={`Add unit value: ${formatValue(unitValue, labelInfo.format)}`}
-                                >
-                                  {formatValue(unitValue, labelInfo.format)}
-                                </TypographyCard>
-                              </Column>
-                            </Columns>
-                          </Rows>
-                        );
-                      })}
-                    </Rows>
+                              />
+                            </Box>
+                          </Column>
+                        </Columns>
+                      </Rows>
+                    );
+                  })}
+
+                  {/* Disclaimer Pills */}
+                  <Rows spacing="1u">
+                    <Text size="small" variant="bold">Disclaimers</Text>
+                    <Columns spacing="1u">
+                      <Column>
+                        <Pill
+                          text="Disclaimer"
+                          onClick={() => {
+                            const monthEnd = detailedData.marketData?.month_end || new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                            const disclaimerText = `Statistics powered by Cotality. Sales Statistics latest as at today including results up to ${monthEnd}`;
+                            handleTextFieldClick(disclaimerText);
+                          }}
+                          ariaLabel="Add disclaimer to design"
+                        />
+                      </Column>
+                      <Column>
+                        <Pill
+                          text="Long Disclaimer"
+                          onClick={() => {
+                            const monthEnd = detailedData.marketData?.month_end || new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                            const longDisclaimerText = `Statistics powered by Cotality. Sales Statistics latest as at today including results up to ${monthEnd}. The Cotality Data provided in this publication is of a general nature and should not be construed as specific advice or relied upon in lieu of appropriate professional advice. While Cotality uses commercially reasonable efforts to ensure the Cotality Data is current, Cotality does not warrant the accuracy, currency or completeness of the Cotality Data and to the full extent permitted by law excludes all liability for any loss or damage howsoever arising (including through negligence) in connection with the Cotality Data.`;
+                            handleTextFieldClick(longDisclaimerText);
+                          }}
+                          ariaLabel="Add long disclaimer to design"
+                        />
+                      </Column>
+                    </Columns>
                   </Rows>
-                </Box>
+
+                  {/* Search for additional metrics */}
+                  <Rows spacing="2u">
+                    <Text size="small" variant="bold">Search metrics:</Text>
+                    <SearchInputMenu
+                      value={metricSearchQuery}
+                      onChange={setMetricSearchQuery}
+                      onClear={() => setMetricSearchQuery("")}
+                      placeholder="Search metrics..."
+                      ariaLabel="Search for metrics"
+                    />
+
+                    {/* All metrics in scrollable area - filter if search active */}
+                    <div style={{ height: '50vh' }}>
+                      <Scrollable direction="vertical">
+                        <Rows spacing="1u">
+                          {(metricSearchQuery.trim()
+                            ? getSearchedMetrics(detailedData.marketData.labels)
+                            : getAllOtherMetrics(detailedData.marketData.labels)
+                          ).map((labelInfo) => {
+                            const houseValue = detailedData.marketData?.house[labelInfo.property];
+                            const unitValue = detailedData.marketData?.unit[labelInfo.property];
+
+                            return (
+                              <Rows key={labelInfo.property} spacing="1u">
+                                <Text size="small" variant="bold">{labelInfo.label}</Text>
+                                <Columns spacing="1u">
+                                  <Column>
+                                    <Text size="small" tone="tertiary">House:</Text>
+                                    <Box paddingTop="0.5u">
+                                      <Pill
+                                        text={formatValue(houseValue, labelInfo.format)}
+                                        onClick={() => handleTextFieldClick(formatValue(houseValue, labelInfo.format))}
+                                        ariaLabel={`Add house value: ${formatValue(houseValue, labelInfo.format)}`}
+                                      />
+                                    </Box>
+                                  </Column>
+                                  <Column>
+                                    <Text size="small" tone="tertiary">Unit:</Text>
+                                    <Box paddingTop="0.5u">
+                                      <Pill
+                                        text={formatValue(unitValue, labelInfo.format)}
+                                        onClick={() => handleTextFieldClick(formatValue(unitValue, labelInfo.format))}
+                                        ariaLabel={`Add unit value: ${formatValue(unitValue, labelInfo.format)}`}
+                                      />
+                                    </Box>
+                                  </Column>
+                                </Columns>
+                              </Rows>
+                            );
+                          })}
+                        </Rows>
+                      </Scrollable>
+                    </div>
+                  </Rows>
+                </Rows>
               )}
 
               {/* Listing Details - Custom Layout for endpoint="listings" */}
               {endpoint === "listings" ? (
                 <Rows spacing="2u">
-                  {/* Photos First */}
+                  {/* Photos First - Scrollable area at 70% height */}
                   {detailedData.images && detailedData.images.length > 0 && (
                     <Rows spacing="1u">
                       <Text variant="bold">Photos</Text>
-                      <Masonry targetRowHeightPx={200}>
-                        {detailedData.images.map((image, index) => (
-                          <MasonryItem
-                            key={`${image.field}-${index}`}
-                            targetHeightPx={200}
-                            targetWidthPx={200}
-                          >
-                            <div style={{ position: 'relative' }}>
-                              <ImageCard
-                                thumbnailUrl={image.url}
-                                onClick={() => handleImageClick(image.url)}
-                                alt={`${image.field} photo`}
-                                ariaLabel={`Add ${image.field} photo to design`}
-                                disabled={uploadingImages.has(image.url)}
-                              />
-                              {uploadingImages.has(image.url) && (
-                                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-                                  <Box
-                                    width="full"
-                                    height="full"
-                                    background="neutral"
-                                    borderRadius="standard"
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                  >
-                                    <LoadingIndicator size="small" />
-                                  </Box>
+                      <div style={{ height: '70vh' }}>
+                        <Scrollable direction="vertical">
+                          <Masonry targetRowHeightPx={200}>
+                            {detailedData.images.map((image, index) => (
+                              <MasonryItem
+                                key={`${image.field}-${index}`}
+                                targetHeightPx={200}
+                                targetWidthPx={200}
+                              >
+                                <div style={{ position: 'relative' }}>
+                                  <ImageCard
+                                    thumbnailUrl={image.url}
+                                    onClick={() => handleImageClick(image.url)}
+                                    alt={`${image.field} photo`}
+                                    ariaLabel={`Add ${image.field} photo to design`}
+                                    disabled={uploadingImages.has(image.url)}
+                                  />
+                                  {uploadingImages.has(image.url) && (
+                                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                                      <Box
+                                        width="full"
+                                        height="full"
+                                        background="neutral"
+                                        borderRadius="standard"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        <LoadingIndicator size="small" />
+                                      </Box>
+                                    </div>
+                                  )}
                                 </div>
-                              )}
-                            </div>
-                          </MasonryItem>
-                        ))}
-                      </Masonry>
+                              </MasonryItem>
+                            ))}
+                          </Masonry>
+                        </Scrollable>
+                      </div>
                     </Rows>
                   )}
 
@@ -768,44 +847,44 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                         const bedrooms = detailedData.textFields.find(f => f.field.toLowerCase().includes('bedroom'));
                         const bathrooms = detailedData.textFields.find(f => f.field.toLowerCase().includes('bathroom'));
                         const carSpaces = detailedData.textFields.find(f => f.field.toLowerCase().includes('garage'));
-                        
+
                         if (bedrooms || bathrooms || carSpaces) {
                           return (
-                            <Columns spacing="2u">
+                            <Columns spacing="1u">
                               {bedrooms && (
                                 <Column>
                                   <Text size="small" variant="bold">Bedrooms</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(bedrooms.value)}
-                                    onDragStart={() => bedrooms.value}
-                                    ariaLabel={`Add bedrooms: ${bedrooms.value}`}
-                                  >
-                                    {bedrooms.value}
-                                  </TypographyCard>
+                                  <Box paddingTop="0.5u">
+                                    <Pill
+                                      text={bedrooms.value}
+                                      onClick={() => handleTextFieldClick(bedrooms.value)}
+                                      ariaLabel={`Add bedrooms: ${bedrooms.value}`}
+                                    />
+                                  </Box>
                                 </Column>
                               )}
                               {bathrooms && (
                                 <Column>
                                   <Text size="small" variant="bold">Bathrooms</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(bathrooms.value)}
-                                    onDragStart={() => bathrooms.value}
-                                    ariaLabel={`Add bathrooms: ${bathrooms.value}`}
-                                  >
-                                    {bathrooms.value}
-                                  </TypographyCard>
+                                  <Box paddingTop="0.5u">
+                                    <Pill
+                                      text={bathrooms.value}
+                                      onClick={() => handleTextFieldClick(bathrooms.value)}
+                                      ariaLabel={`Add bathrooms: ${bathrooms.value}`}
+                                    />
+                                  </Box>
                                 </Column>
                               )}
                               {carSpaces && (
                                 <Column>
                                   <Text size="small" variant="bold">Car Spaces</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(carSpaces.value)}
-                                    onDragStart={() => carSpaces.value}
-                                    ariaLabel={`Add car spaces: ${carSpaces.value}`}
-                                  >
-                                    {carSpaces.value}
-                                  </TypographyCard>
+                                  <Box paddingTop="0.5u">
+                                    <Pill
+                                      text={carSpaces.value}
+                                      onClick={() => handleTextFieldClick(carSpaces.value)}
+                                      ariaLabel={`Add car spaces: ${carSpaces.value}`}
+                                    />
+                                  </Box>
                                 </Column>
                               )}
                             </Columns>
@@ -819,67 +898,73 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                         const address = detailedData.textFields.find(f => f.field.toLowerCase().includes('address'));
                         if (address) {
                           return (
-                            <Rows spacing="0.5u">
+                            <Box>
                               <Text size="small" variant="bold">Address</Text>
-                              <TypographyCard
-                                onClick={() => handleTextFieldClick(address.value)}
-                                onDragStart={() => address.value}
-                                ariaLabel={`Add address: ${address.value}`}
-                              >
-                                {address.value}
-                              </TypographyCard>
-                            </Rows>
+                              <Box paddingTop="0.5u">
+                                <Pill
+                                  text={address.value}
+                                  onClick={() => handleTextFieldClick(address.value)}
+                                  ariaLabel={`Add address: ${address.value}`}
+                                />
+                              </Box>
+                            </Box>
                           );
                         }
                         return null;
                       })()}
 
-                      {/* Suburb, State, Postcode Row */}
+                      {/* Suburb, State, Postcode - Suburb on its own line, State/Postcode together */}
                       {(() => {
                         const suburb = detailedData.textFields.find(f => f.field.toLowerCase().includes('suburb'));
                         const state = detailedData.textFields.find(f => f.field.toLowerCase().includes('state'));
                         const postcode = detailedData.textFields.find(f => f.field.toLowerCase().includes('postcode'));
-                        
+
                         if (suburb || state || postcode) {
                           return (
-                            <Columns spacing="2u">
+                            <Rows spacing="1u">
+                              {/* Suburb on its own line */}
                               {suburb && (
-                                <Column>
+                                <Box>
                                   <Text size="small" variant="bold">Suburb</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(suburb.value)}
-                                    onDragStart={() => suburb.value}
-                                    ariaLabel={`Add suburb: ${suburb.value}`}
-                                  >
-                                    {suburb.value}
-                                  </TypographyCard>
-                                </Column>
+                                  <Box paddingTop="0.5u">
+                                    <Pill
+                                      text={suburb.value}
+                                      onClick={() => handleTextFieldClick(suburb.value)}
+                                      ariaLabel={`Add suburb: ${suburb.value}`}
+                                    />
+                                  </Box>
+                                </Box>
                               )}
-                              {state && (
-                                <Column>
-                                  <Text size="small" variant="bold">State</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(state.value)}
-                                    onDragStart={() => state.value}
-                                    ariaLabel={`Add state: ${state.value}`}
-                                  >
-                                    {state.value}
-                                  </TypographyCard>
-                                </Column>
+                              {/* State and Postcode on same line */}
+                              {(state || postcode) && (
+                                <Columns spacing="1u">
+                                  {state && (
+                                    <Column>
+                                      <Text size="small" variant="bold">State</Text>
+                                      <Box paddingTop="0.5u">
+                                        <Pill
+                                          text={state.value}
+                                          onClick={() => handleTextFieldClick(state.value)}
+                                          ariaLabel={`Add state: ${state.value}`}
+                                        />
+                                      </Box>
+                                    </Column>
+                                  )}
+                                  {postcode && (
+                                    <Column>
+                                      <Text size="small" variant="bold">Postcode</Text>
+                                      <Box paddingTop="0.5u">
+                                        <Pill
+                                          text={postcode.value}
+                                          onClick={() => handleTextFieldClick(postcode.value)}
+                                          ariaLabel={`Add postcode: ${postcode.value}`}
+                                        />
+                                      </Box>
+                                    </Column>
+                                  )}
+                                </Columns>
                               )}
-                              {postcode && (
-                                <Column>
-                                  <Text size="small" variant="bold">Postcode</Text>
-                                  <TypographyCard
-                                    onClick={() => handleTextFieldClick(postcode.value)}
-                                    onDragStart={() => postcode.value}
-                                    ariaLabel={`Add postcode: ${postcode.value}`}
-                                  >
-                                    {postcode.value}
-                                  </TypographyCard>
-                                </Column>
-                              )}
-                            </Columns>
+                            </Rows>
                           );
                         }
                         return null;
@@ -889,25 +974,25 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                       {detailedData.textFields
                         .filter(field => {
                           const fieldName = field.field.toLowerCase();
-                          return !fieldName.includes('bedroom') && 
-                                 !fieldName.includes('bathroom') && 
-                                 !fieldName.includes('garage') && 
-                                 !fieldName.includes('address') && 
-                                 !fieldName.includes('suburb') && 
-                                 !fieldName.includes('state') && 
+                          return !fieldName.includes('bedroom') &&
+                                 !fieldName.includes('bathroom') &&
+                                 !fieldName.includes('garage') &&
+                                 !fieldName.includes('address') &&
+                                 !fieldName.includes('suburb') &&
+                                 !fieldName.includes('state') &&
                                  !fieldName.includes('postcode');
                         })
                         .map((field, index) => (
-                          <Rows key={`${field.field}-${index}`} spacing="0.5u">
+                          <Box key={`${field.field}-${index}`}>
                             <Text size="small" variant="bold">{field.field}</Text>
-                            <TypographyCard
-                              onClick={() => handleTextFieldClick(field.value)}
-                              onDragStart={() => field.value}
-                              ariaLabel={`Add ${field.field}: ${field.value}`}
-                            >
-                              {field.value}
-                            </TypographyCard>
-                          </Rows>
+                            <Box paddingTop="0.5u">
+                              <Pill
+                                text={field.value}
+                                onClick={() => handleTextFieldClick(field.value)}
+                                ariaLabel={`Add ${field.field}: ${field.value}`}
+                              />
+                            </Box>
+                          </Box>
                         ))}
                     </Rows>
                   )}
@@ -925,18 +1010,18 @@ export const SearchableTab: React.FC<SearchableTabProps> = ({
                           description: "Label for text fields section",
                         })}
                       </Text>
-                      <Rows spacing="2u">
+                      <Rows spacing="1u">
                         {detailedData.textFields.map((field, index) => (
-                          <Rows key={`${field.field}-${index}`} spacing="0.5u">
-                            <Text size="small" variant="bold">{field.field}</Text>
-                            <TypographyCard
-                              onClick={() => handleTextFieldClick(field.value)}
-                              onDragStart={() => field.value}
-                              ariaLabel={`Add ${field.field}: ${field.value}`}
-                            >
-                              {field.value}
-                            </TypographyCard>
-                          </Rows>
+                          <Box key={`${field.field}-${index}`}>
+                            <Text size="small" variant="bold" tone="tertiary">{field.field}</Text>
+                            <Box paddingTop="0.5u">
+                              <Pill
+                                text={field.value}
+                                onClick={() => handleTextFieldClick(field.value)}
+                                ariaLabel={`Add ${field.field}: ${field.value}`}
+                              />
+                            </Box>
+                          </Box>
                         ))}
                       </Rows>
                     </Rows>

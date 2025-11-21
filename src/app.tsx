@@ -283,17 +283,23 @@ export const App = () => {
           </TabList>
           <TabPanels>
             <TabPanel id="agents">
-              <AgentSearchTab userEmail={userProfile?.mail || userProfile?.userPrincipalName} />
+              <Box padding="3u">
+                <AgentSearchTab userEmail={userProfile?.mail || userProfile?.userPrincipalName} />
+              </Box>
             </TabPanel>
             <TabPanel id="listings">
-              <SearchableTab
-                endpoint="listings"
-                tabName="Listings"
-                userEmail={userProfile?.mail || userProfile?.userPrincipalName}
-              />
+              <Box padding="3u">
+                <SearchableTab
+                  endpoint="listings"
+                  tabName="Listings"
+                  userEmail={userProfile?.mail || userProfile?.userPrincipalName}
+                />
+              </Box>
             </TabPanel>
             <TabPanel id="market">
-              <SearchableTab endpoint="market-data" tabName="Market Data" />
+              <Box padding="3u">
+                <SearchableTab endpoint="market-data" tabName="Market Data" />
+              </Box>
             </TabPanel>
           </TabPanels>
         </Tabs>
