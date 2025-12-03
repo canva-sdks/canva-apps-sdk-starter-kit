@@ -18,6 +18,7 @@ import {
 } from "@canva/app-ui-kit";
 import { AgentSearchTab } from "./components/agent_search_tab";
 import { SearchableTab } from "./components/searchable_tab";
+import { DataFieldsTab } from "./components/data_fields_tab";
 import ConfigurationService from "./services/config";
 import * as styles from "styles/components.css";
 
@@ -280,6 +281,7 @@ export const App = () => {
             <Tab id="agents">Agent Search</Tab>
             <Tab id="listings">Listings</Tab>
             <Tab id="market">Market Data</Tab>
+            <Tab id="fields">Data Fields</Tab>
           </TabList>
           <TabPanels>
             <TabPanel id="agents">
@@ -299,6 +301,11 @@ export const App = () => {
             <TabPanel id="market">
               <Box padding="3u">
                 <SearchableTab endpoint="market-data" tabName="Market Data" />
+              </Box>
+            </TabPanel>
+            <TabPanel id="fields">
+              <Box padding="3u">
+                <DataFieldsTab />
               </Box>
             </TabPanel>
           </TabPanels>
