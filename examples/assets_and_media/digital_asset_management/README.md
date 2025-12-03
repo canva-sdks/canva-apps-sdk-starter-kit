@@ -14,3 +14,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - **CORS configuration**: The example uses permissive CORS settings (`cors()` with no restrictions). Production apps must implement proper CORS policies restricting origins to specific app domains
 - **Console logging**: ESLint rule `no-console` is disabled for debugging purposes. Production apps should replace console statements with proper logging solutions and avoid disabling linting rules without justification
 - **Localization**: While the example shows basic locale usage, production apps must implement complete internationalization using the `@canva/app-i18n-kit` package to support multiple languages as required for Canva review
+- **Code structure**: The code structure is simplified. Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

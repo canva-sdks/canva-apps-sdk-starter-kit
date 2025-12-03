@@ -10,3 +10,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - **Localization**: Text content is hardcoded in English. Production apps require proper internationalization using the `@canva/app-i18n-kit` package for multi-language support.
 - **Data validation**: The example assumes well-formed data responses. Production apps should implement robust data validation and sanitization.
 - **API integration**: This example uses mock data. Production apps need to implement proper API authentication, rate limiting, and error handling for external data sources.
+- **Code structure**: The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDataConnector function from src/intents/data_connector/index.tsx

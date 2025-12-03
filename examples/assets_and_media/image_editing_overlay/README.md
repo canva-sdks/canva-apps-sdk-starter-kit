@@ -12,3 +12,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Image effects are simplified for demonstration. Production apps should implement more sophisticated image processing and comprehensive error handling
 - Internationalization isn't implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
 - The example uses basic image effects. Production apps should consider offering customizable parameters (e.g., blur radius, effect intensity) for better user experience
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

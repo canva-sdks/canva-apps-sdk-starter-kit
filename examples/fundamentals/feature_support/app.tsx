@@ -2,7 +2,7 @@
 import { addElementAtPoint, addPage } from "@canva/design";
 import { useState } from "react";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 import { HomePage } from "./home";
 import { InteractionPage } from "./interaction";
 

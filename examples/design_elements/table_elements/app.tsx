@@ -15,10 +15,9 @@ import {
   TextInput,
   Title,
 } from "@canva/app-ui-kit";
-import type { CellState, TableState } from "./use_table_hook";
-import { useTable } from "./use_table_hook";
-// Hook that provides the addElementAtCursor method from the Canva Design SDK
-import { useAddElement } from "utils/use_add_element";
+import type { CellState, TableState } from "@canva/app-hooks";
+import { useFeatureSupport, useTable } from "@canva/app-hooks";
+import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 
 // Demo table configuration with 4 rows, 5 columns, and sample cell customizations
 // including merged cells (colSpan/rowSpan), custom text, and fill colors
@@ -167,20 +166,27 @@ const CellElement = ({
 export const App = () => {
   const tableState = useTable(initialState);
   const [submissionError, setSubmissionError] = useState("");
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   // Handler to convert the table state to a TableElement and add it to the design
   const onClick = useCallback(async () => {
+    if (!addElement) {
+      return;
+    }
+
     try {
       // Convert the current table configuration to a Canva TableElement
       // and add it to the design at the user's cursor position
-      await addElement(tableState.toElement());
+      await addElement(tableState.build());
     } catch (e) {
       if (e instanceof Error) {
         setSubmissionError(e.message);
       }
     }
-  }, [tableState]);
+  }, [tableState, addElement]);
 
   const onAddCell = useCallback(() => {
     tableState.cells = [...(tableState.cells || []), {}];
@@ -241,7 +247,17 @@ export const App = () => {
         <Button variant="secondary" onClick={onAddCell} icon={PlusIcon}>
           New custom cell
         </Button>
-        <Button variant="primary" onClick={onClick} stretch>
+        <Button
+          variant="primary"
+          onClick={onClick}
+          disabled={!addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
+          stretch
+        >
           Add element
         </Button>
       </Rows>

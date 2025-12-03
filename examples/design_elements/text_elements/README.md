@@ -11,4 +11,5 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Text content and styling are hardcoded for demonstration purposes only. Production apps should provide comprehensive text editing interfaces or dynamic content loading
 - Font validation and fallback handling is not implemented. Production apps must validate fonts and provide fallback options
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx
 - Accessibility features are simplified for demonstration. Production apps must meet WCAG 2.0 AA standards

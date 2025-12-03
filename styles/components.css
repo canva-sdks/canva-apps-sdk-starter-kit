@@ -36,3 +36,21 @@
 .scrollContainer:focus-within::-webkit-scrollbar-thumb {
   visibility: visible;
 }
+
+/* Main container for the content publisher preview UI */
+.previewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Wrapper for the content publisher post preview */
+.previewWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(400px + 32px + 2px); /* Image width + padding + border */
+}

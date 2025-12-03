@@ -23,7 +23,7 @@ import rabbit from "assets/images/rabbit.jpg";
 import { useCallback, useEffect, useState } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Below values are only for demonstration purposes.
 // You can position your elements anywhere on the page by providing arbitrary

@@ -12,3 +12,4 @@ NOTE: This example differs from what's expected for public apps to pass a Canva 
 - Accessibility features aren't fully implemented. Production apps must meet WCAG 2.0 AA standards with proper keyboard navigation and ARIA labels
 - Input validation is minimal for demonstration. Production apps must validate all user inputs and provide clear error messaging
 - Internationalization isn't implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

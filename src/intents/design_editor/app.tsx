@@ -1,14 +1,22 @@
 import { Button, Rows, Text } from "@canva/app-ui-kit";
+import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 import { requestOpenExternalUrl } from "@canva/platform";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as styles from "styles/components.css";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 export const DOCS_URL = "https://www.canva.dev/docs/apps/";
 
 export const App = () => {
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
   const onClick = () => {
+    if (!addElement) {
+      return;
+    }
+
     addElement({
       type: "text",
       children: ["Hello world!"],
@@ -42,7 +50,22 @@ export const App = () => {
             }}
           />
         </Text>
-        <Button variant="primary" onClick={onClick} stretch>
+        <Button
+          variant="primary"
+          onClick={onClick}
+          disabled={!addElement}
+          tooltipLabel={
+            !addElement
+              ? intl.formatMessage({
+                  defaultMessage:
+                    "This feature is not supported in the current page",
+                  description:
+                    "Tooltip label for when a feature is not supported in the current design",
+                })
+              : undefined
+          }
+          stretch
+        >
           {intl.formatMessage({
             defaultMessage: "Do something cool",
             description:

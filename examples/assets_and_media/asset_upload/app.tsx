@@ -2,16 +2,25 @@
 /* eslint-disable no-console */
 import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
-import { addAudioTrack } from "@canva/design";
+import {
+  addAudioTrack,
+  addElementAtCursor,
+  addElementAtPoint,
+} from "@canva/design";
 import * as styles from "styles/components.css";
-import { useAddElement } from "utils/use_add_element";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 export const App = () => {
   const isSupported = useFeatureSupport();
-  const addElement = useAddElement();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   const importAndAddImage = async () => {
+    if (!addElement) {
+      return;
+    }
+
     // Start uploading the image using Canva's upload API
     // This creates an asset reference that can be used immediately while the upload continues in the background
     const image = await upload({
@@ -45,6 +54,10 @@ export const App = () => {
   };
 
   const importAndAddVideo = async () => {
+    if (!addElement) {
+      return;
+    }
+
     // Start uploading the video using Canva's upload API
     // Videos support both image and video thumbnails for better preview experience
     const queuedVideo = await upload({
@@ -113,10 +126,30 @@ export const App = () => {
           assets into Canva.
         </Text>
         <Rows spacing="1.5u">
-          <Button onClick={importAndAddImage} variant="secondary" stretch>
+          <Button
+            onClick={importAndAddImage}
+            variant="secondary"
+            disabled={!addElement}
+            tooltipLabel={
+              !addElement
+                ? "This feature is not supported in the current page"
+                : undefined
+            }
+            stretch
+          >
             Import image
           </Button>
-          <Button onClick={importAndAddVideo} variant="secondary" stretch>
+          <Button
+            onClick={importAndAddVideo}
+            variant="secondary"
+            disabled={!addElement}
+            tooltipLabel={
+              !addElement
+                ? "This feature is not supported in the current page"
+                : undefined
+            }
+            stretch
+          >
             Import video
           </Button>
           <Button
@@ -124,6 +157,11 @@ export const App = () => {
             variant="secondary"
             // addAudioTrack is not supported in certain design types such as docs
             disabled={!isSupported(addAudioTrack)}
+            tooltipLabel={
+              !isSupported(addAudioTrack)
+                ? "This feature is not supported in the current page"
+                : undefined
+            }
             stretch
           >
             Import audio

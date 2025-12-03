@@ -4,7 +4,7 @@ import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
 import { setCurrentPageBackground } from "@canva/design";
 import * as styles from "styles/components.css";
 import { useState } from "react";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);

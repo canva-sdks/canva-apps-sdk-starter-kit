@@ -11,7 +11,8 @@ import {
 import React from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
-import { useAddElement } from "utils/use_add_element";
+import { addElementAtCursor, addElementAtPoint } from "@canva/design";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 type ExampleStaticVideo = {
   title: string;
@@ -43,7 +44,10 @@ const STATIC_VIDEOS: Record<string, ExampleStaticVideo> = {
 export const App = () => {
   const [selected, setSelected] = React.useState("building");
   const [isLoading, setIsLoading] = React.useState(false);
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   // Transform video data for VideoCard components with selection state
   const items = Object.entries(STATIC_VIDEOS).map(([key, value]) => {
@@ -61,6 +65,10 @@ export const App = () => {
   });
 
   const addVideo = React.useCallback(async () => {
+    if (!addElement) {
+      return;
+    }
+
     setIsLoading(true);
     try {
       // In production, you would likely be fetching this from a database or API
@@ -91,7 +99,7 @@ export const App = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [selected]);
+  }, [selected, addElement]);
 
   return (
     <div className={styles.scrollContainer}>
@@ -124,6 +132,12 @@ export const App = () => {
         />
         <Button
           variant="primary"
+          disabled={!addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
           loading={isLoading}
           onClick={addVideo}
           stretch
