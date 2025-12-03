@@ -120,13 +120,21 @@ class AuthenticationService {
 
       // Store the token and calculate expiry
       this.accessToken = tokenData.access_token;
-      
+
       if (tokenData.expires_in) {
         this.tokenExpiry = Date.now() + (tokenData.expires_in * 1000);
       } else {
         // Default to 1 hour if no expiry provided
         this.tokenExpiry = Date.now() + (60 * 60 * 1000);
       }
+
+      // Store token in localStorage for data connector access
+      try {
+        localStorage.setItem("middleware_api_token", this.accessToken);
+      } catch {
+        // localStorage may not be available in all contexts
+      }
+
       console.log("Returning access_token",this.accessToken)
       return this.accessToken;
     } catch (error) {
@@ -148,6 +156,12 @@ class AuthenticationService {
     this.accessToken = null;
     this.tokenExpiry = null;
     this.authPromise = null;
+    // Also clear from localStorage
+    try {
+      localStorage.removeItem("middleware_api_token");
+    } catch {
+      // localStorage may not be available in all contexts
+    }
   }
 
   /**
