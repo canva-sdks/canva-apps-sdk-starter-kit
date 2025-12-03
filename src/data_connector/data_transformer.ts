@@ -26,20 +26,20 @@ export function transformAgentToDataTable(
   selectedFields?: string[]
 ): DataTable {
   const allTextFields = [
-    { key: "name", label: "Name" },
-    { key: "displayName", label: "Display Name" },
-    { key: "fullName", label: "Full Name" },
-    { key: "firstName", label: "First Name" },
-    { key: "lastName", label: "Last Name" },
-    { key: "email", label: "Email" },
-    { key: "emailAddress", label: "Email Address" },
-    { key: "phone", label: "Phone" },
-    { key: "mobile", label: "Mobile" },
-    { key: "office", label: "Office" },
-    { key: "position", label: "Position" },
-    { key: "title", label: "Title" },
-    { key: "bio", label: "Bio" },
-    { key: "description", label: "Description" },
+    { key: "name", label: "agent.name" },
+    { key: "displayName", label: "agent.name" },
+    { key: "fullName", label: "agent.fullName" },
+    { key: "firstName", label: "agent.firstName" },
+    { key: "lastName", label: "agent.lastName" },
+    { key: "email", label: "agent.email" },
+    { key: "emailAddress", label: "agent.email" },
+    { key: "phone", label: "agent.phone" },
+    { key: "mobile", label: "agent.mobile" },
+    { key: "office", label: "agent.office" },
+    { key: "position", label: "agent.position" },
+    { key: "title", label: "agent.title" },
+    { key: "bio", label: "agent.bio" },
+    { key: "description", label: "agent.bio" },
   ];
 
   // Filter fields based on what's actually present in the data
@@ -79,7 +79,7 @@ export function transformAgentToDataTable(
   }));
 
   if (imageFields.length > 0) {
-    columnConfigs.push({ name: "Photo", type: "media" as const });
+    columnConfigs.push({ name: "agent.photo", type: "media" as const });
   }
 
   // Build row cells - using DataTableCell type explicitly
@@ -116,24 +116,24 @@ export function transformListingToDataTable(
   selectedFields?: string[]
 ): DataTable {
   const stringFields = [
-    { key: "address", label: "Address" },
-    { key: "suburb", label: "Suburb" },
-    { key: "state", label: "State" },
-    { key: "postcode", label: "Postcode" },
-    { key: "price_advertise_as", label: "Price" },
-    { key: "status", label: "Status" },
-    { key: "property_type", label: "Property Type" },
-    { key: "landarea", label: "Land Area" },
-    { key: "year_built", label: "Year Built" },
-    { key: "listed_at", label: "Listed Date" },
-    { key: "external_id", label: "Listing ID" },
-    { key: "property_category", label: "Category" },
+    { key: "address", label: "listing.address" },
+    { key: "suburb", label: "listing.suburb" },
+    { key: "state", label: "listing.state" },
+    { key: "postcode", label: "listing.postcode" },
+    { key: "price_advertise_as", label: "listing.price" },
+    { key: "status", label: "listing.status" },
+    { key: "property_type", label: "listing.propertyType" },
+    { key: "landarea", label: "listing.landArea" },
+    { key: "year_built", label: "listing.yearBuilt" },
+    { key: "listed_at", label: "listing.listedDate" },
+    { key: "external_id", label: "listing.id" },
+    { key: "property_category", label: "listing.category" },
   ];
 
   const numberFields = [
-    { key: "bedrooms", label: "Bedrooms" },
-    { key: "bathrooms", label: "Bathrooms" },
-    { key: "garages", label: "Car Spaces" },
+    { key: "bedrooms", label: "listing.bedrooms" },
+    { key: "bathrooms", label: "listing.bathrooms" },
+    { key: "garages", label: "listing.carSpaces" },
   ];
 
   // Filter fields based on what's actually present in the data
@@ -178,7 +178,7 @@ export function transformListingToDataTable(
   ];
 
   if (hasPhotos) {
-    columnConfigs.push({ name: "Photos", type: "media" as const });
+    columnConfigs.push({ name: "listing.photos", type: "media" as const });
   }
 
   // Build row cells - using DataTableCell type explicitly
@@ -247,9 +247,9 @@ export function transformMarketDataToDataTable(
 
   // Build column configs: Metric Name, House Value, Unit Value
   const columnConfigs: ColumnConfig[] = [
-    { name: "Metric", type: "string" as const },
-    { name: "House", type: "string" as const },
-    { name: "Unit", type: "string" as const },
+    { name: "suburb.metric", type: "string" as const },
+    { name: "suburb.houseValue", type: "string" as const },
+    { name: "suburb.unitValue", type: "string" as const },
   ];
 
   // Build rows - one row per metric
@@ -315,41 +315,41 @@ export function getAvailableFields(
   switch (dataType) {
     case "agent":
       return [
-        { key: "name", label: "Name" },
-        { key: "displayName", label: "Display Name" },
-        { key: "fullName", label: "Full Name" },
-        { key: "firstName", label: "First Name" },
-        { key: "lastName", label: "Last Name" },
-        { key: "email", label: "Email" },
-        { key: "phone", label: "Phone" },
-        { key: "mobile", label: "Mobile" },
-        { key: "office", label: "Office" },
-        { key: "position", label: "Position" },
-        { key: "title", label: "Title" },
-        { key: "bio", label: "Bio" },
+        { key: "name", label: "agent.name" },
+        { key: "displayName", label: "agent.name" },
+        { key: "fullName", label: "agent.fullName" },
+        { key: "firstName", label: "agent.firstName" },
+        { key: "lastName", label: "agent.lastName" },
+        { key: "email", label: "agent.email" },
+        { key: "phone", label: "agent.phone" },
+        { key: "mobile", label: "agent.mobile" },
+        { key: "office", label: "agent.office" },
+        { key: "position", label: "agent.position" },
+        { key: "title", label: "agent.title" },
+        { key: "bio", label: "agent.bio" },
       ];
     case "listing":
       return [
-        { key: "address", label: "Address" },
-        { key: "suburb", label: "Suburb" },
-        { key: "state", label: "State" },
-        { key: "postcode", label: "Postcode" },
-        { key: "price_advertise_as", label: "Price" },
-        { key: "status", label: "Status" },
-        { key: "property_type", label: "Property Type" },
-        { key: "bedrooms", label: "Bedrooms" },
-        { key: "bathrooms", label: "Bathrooms" },
-        { key: "garages", label: "Car Spaces" },
-        { key: "landarea", label: "Land Area" },
-        { key: "year_built", label: "Year Built" },
-        { key: "listed_at", label: "Listed Date" },
+        { key: "address", label: "listing.address" },
+        { key: "suburb", label: "listing.suburb" },
+        { key: "state", label: "listing.state" },
+        { key: "postcode", label: "listing.postcode" },
+        { key: "price_advertise_as", label: "listing.price" },
+        { key: "status", label: "listing.status" },
+        { key: "property_type", label: "listing.propertyType" },
+        { key: "bedrooms", label: "listing.bedrooms" },
+        { key: "bathrooms", label: "listing.bathrooms" },
+        { key: "garages", label: "listing.carSpaces" },
+        { key: "landarea", label: "listing.landArea" },
+        { key: "year_built", label: "listing.yearBuilt" },
+        { key: "listed_at", label: "listing.listedDate" },
       ];
     case "market-data":
       return [
-        { key: "sales_12m", label: "Sales (12 months)" },
-        { key: "median_price_12m", label: "Median Price (12 months)" },
-        { key: "change_12m_median_price_12m", label: "Price Change (12 months)" },
-        { key: "total_sales_value_12m", label: "Total Sales Value (12 months)" },
+        { key: "sales_12m", label: "suburb.sales" },
+        { key: "median_price_12m", label: "suburb.medianPrice" },
+        { key: "change_12m_median_price_12m", label: "suburb.priceChange" },
+        { key: "total_sales_value_12m", label: "suburb.totalSalesValue" },
       ];
     default:
       return [];
