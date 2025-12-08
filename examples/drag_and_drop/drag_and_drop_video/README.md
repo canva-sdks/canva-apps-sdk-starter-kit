@@ -12,3 +12,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Error handling is simplified for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes
 - Video format validation and thumbnail generation is not implemented. Production apps should validate video formats and provide proper thumbnail generation
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

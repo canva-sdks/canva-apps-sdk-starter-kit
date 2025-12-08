@@ -3,7 +3,7 @@ import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { useState } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
-import { useSelection } from "utils/use_selection_hook";
+import { useSelection } from "@canva/app-hooks";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);

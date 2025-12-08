@@ -13,7 +13,7 @@ import { requestOpenExternalUrl } from "@canva/platform";
 import type { Anchor } from "@canva/asset";
 import { openColorSelector } from "@canva/asset";
 import { useState } from "react";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 import { addPage } from "@canva/design";
 import { CanvaError } from "@canva/error";
 

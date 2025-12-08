@@ -12,13 +12,12 @@ import * as styles from "styles/components.css";
 import type { QueuedImage } from "@canva/asset";
 import { upload } from "@canva/asset";
 import type { ImageDragConfig } from "@canva/design";
-import { ui } from "@canva/design";
+import { addElementAtCursor, addElementAtPoint, ui } from "@canva/design";
 import type { Image } from "./fake_api";
 import { getImages } from "./fake_api";
 import InfiniteScroll from "react-infinite-scroller";
 import { generatePlaceholders } from "./utils";
-import { useAddElement } from "utils/use_add_element";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 const TARGET_ROW_HEIGHT_PX = 100;
 const NUM_PLACEHOLDERS = 10;
@@ -58,7 +57,9 @@ export const App = () => {
   const [page, setPage] = useState<number | undefined>(1);
   const [hasMore, setHasMore] = useState(true);
   const isSupported = useFeatureSupport();
-  const addElement = useAddElement();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   const scrollContainerRef = useRef(null);
 
@@ -86,6 +87,10 @@ export const App = () => {
   }, [fetchImages]);
 
   const addImageToDesign = async (image: Image) => {
+    if (!addElement) {
+      return;
+    }
+
     // Upload image to Canva's asset system first
     const queuedImage = await uploadImage(image);
 
@@ -139,6 +144,7 @@ export const App = () => {
       <ImageCard
         ariaLabel="Add image to design"
         onClick={() => addImageToDesign(image)}
+        disabled={!addElement}
         thumbnailUrl={image.url}
         alt={image.title}
         onDragStart={(event: React.DragEvent<HTMLElement>) =>

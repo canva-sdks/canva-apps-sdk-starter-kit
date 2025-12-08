@@ -3,10 +3,9 @@ import React from "react";
 import { Rows, Text, Title, VideoCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import type { VideoDragConfig } from "@canva/design";
-import { ui } from "@canva/design";
+import { addElementAtCursor, addElementAtPoint, ui } from "@canva/design";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "utils/use_feature_support";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Uploads a video asset to Canva using the upload API
 const uploadVideo = () => {
@@ -34,7 +33,9 @@ const altText = {
 
 export const App = () => {
   const isSupported = useFeatureSupport();
-  const addElement = useAddElement();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   // Configuration for drag-and-drop behavior in Canva
   const dragData: VideoDragConfig = {
@@ -64,6 +65,10 @@ export const App = () => {
 
   // Alternative method to add video directly without drag-and-drop
   const insertVideo = async () => {
+    if (!addElement) {
+      return;
+    }
+
     const { ref } = await uploadVideo();
     addElement({ type: "video", ref, altText });
   };
@@ -89,6 +94,7 @@ export const App = () => {
             mimeType="video/mp4"
             onDragStart={onDragStart}
             onClick={insertVideo}
+            disabled={!addElement}
           />
         </Rows>
       </Rows>
