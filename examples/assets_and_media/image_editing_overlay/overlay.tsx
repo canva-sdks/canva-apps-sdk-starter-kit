@@ -1,7 +1,7 @@
 import { getTemporaryUrl, upload } from "@canva/asset";
 import { appProcess } from "@canva/platform";
 import * as React from "react";
-import { useSelection } from "utils/use_selection_hook";
+import { useSelection } from "@canva/app-hooks";
 
 export const SelectedImageOverlay = () => {
   const selection = useSelection("image");

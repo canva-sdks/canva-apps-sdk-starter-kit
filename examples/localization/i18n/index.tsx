@@ -5,9 +5,12 @@ import { App } from "./app";
 import "@canva/app-ui-kit/styles.css";
 import { AppI18nProvider } from "@canva/app-i18n-kit";
 import { requestOpenExternalUrl } from "@canva/platform";
+import type { DesignEditorIntent } from "@canva/intents/design";
+import { prepareDesignEditor } from "@canva/intents/design";
 
-const root = createRoot(document.getElementById("root") as Element);
-function render() {
+async function render() {
+  const root = createRoot(document.getElementById("root") as Element);
+
   root.render(
     <AppI18nProvider>
       <AppUiProvider>
@@ -18,7 +21,8 @@ function render() {
   );
 }
 
-render();
+const designEditor: DesignEditorIntent = { render };
+prepareDesignEditor(designEditor);
 
 // Hot Module Replacement for development (automatically reloads the app when changes are made)
 if (module.hot) {

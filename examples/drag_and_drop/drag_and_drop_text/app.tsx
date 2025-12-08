@@ -12,7 +12,7 @@ import {
 import type { FontWeight, TextAttributes, TextDragConfig } from "@canva/design";
 import { ui } from "@canva/design";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // UI state for text styling configuration
 type UIState = {

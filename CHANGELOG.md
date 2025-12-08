@@ -1,5 +1,29 @@
 # Changelog
 
+## 2025-12-08
+
+### 🧰 Added
+
+- Added `examples/intents/implement_multiple_intents` to demonstrate how an app can implement multiple intents together.
+- Add `reference-apps` directory containing the Real Estate MLS reference app. Reference apps are complete, working examples that demonstrate how to build apps for specific industries or use cases.
+- Added `examples/fundamentals/multi_account_authentication` as a basic implementation of the multi-account authentication
+
+### 🔧 Changed
+
+- Updated examples to use the Design Editor intent (now recommended). See the [Design Editor Intent Migration Guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/design-editor-migration-guide/) to migrate existing apps.
+- Updated `body-parser`, `express`, `js-yaml` and `node-forge` dev/transitive dependencies
+- Moved `use_table_hook.ts` to `utils/use_table_hook.ts`
+- Upgraded `@canva/intents` to `2.0.2-beta.3`.
+
+### 🗑️ Removed
+
+- Removed `use_add_element` hook in favour of a more accurate inline implementation.
+- Removed the React utility hooks from `/utils` in favour of our brand new [@canva/app-hooks](https://www.npmjs.com/package/@canva/app-hooks) SDK.
+
+### 🐞 Fixed
+
+- Updated `caniuse-lite` to version `1.0.30001757` to suppress a warning shown when starting a development server.
+
 ## 2025-11-20
 
 ### 🔧 Changed

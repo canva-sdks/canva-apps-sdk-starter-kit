@@ -29,8 +29,9 @@ The app, once submitted to Canva, will be rendered in a sandboxed iframe within 
 ## Architecture
 
 - **Main App**:
-  - `src/index.tsx` - Main application react application entry point.
-  - `src/app.tsx` - Main application component, which can/should be split into smaller components as needed, following react best practices.
+  - `src/index.tsx` - Main application React application entry point.
+  - `src/intents/[intent]/index.tsx` - Every intent that the app implements should be contained in the intents path.
+  - `src/intents/[intent]/app.tsx` - Main application component for each intent, which should be split into smaller components as needed, following React best practices.
   - `src/styles/component.css` - Main application styles.
   - `utils/` - Utility functions and helpers, which can be used across the app.
   - `scripts/` - Scripts for building, and running the app, should not contain any business logic.
@@ -74,3 +75,80 @@ The app, once submitted to Canva, will be rendered in a sandboxed iframe within 
 - **Required**: AI agents should verify and encourage the user to enable Canva Dev MCP server.
 - **Documentation**: <https://www.canva.dev/docs/apps/mcp-server.md>
 - **If not setup**: Read the docs and prompt user to configure the MCP server for enhanced Canva APIs assistance.
+
+## Intent-based architecture
+
+All apps should follow the intent-based architecture pattern. Each root index file should call the prepare function for each enabled intent. Each intent index file should implement the full intent contract.
+
+### File structure
+
+Organize code with a dedicated folder for each intent under `src/intents/`:
+
+```
+src/
+├── intents/
+│   ├── design_editor/
+│   │   ├── index.tsx
+│   │   └── editor_app.tsx
+│   └── content_publisher/
+│       ├── index.tsx
+│       ├── preview_ui.tsx
+│       └── setting_ui.tsx
+└── index.tsx
+```
+
+### Root index file
+
+The root `src/index.tsx` should be minimal, containing only:
+
+- Importing each prepare function
+- Importing each intent
+- The prepare call for each intent implementation.
+
+```tsx
+import { prepareContentPublisher } from "@canva/intents/content";
+import { prepareDesignEditor } from "@canva/intents/design";
+
+import contentPublisher from "./intents/content_publisher";
+import designEditor from "./intents/design_editor";
+
+prepareContentPublisher(contentPublisher);
+prepareDesignEditor(designEditor);
+```
+
+### Intent index files
+
+Each intent's `index.tsx` file should:
+
+- Import dependencies, including the app ui kit css.
+- Implement the full contract for the intent and use this as the default export from the file.
+
+```tsx
+// src/intents/design_editor/index.tsx
+import "@canva/app-ui-kit/styles.css";
+import type { DesignEditorIntent } from "@canva/intents/design";
+import { prepareDesignEditor } from "@canva/intents/design";
+import { AppI18nProvider } from "@canva/app-i18n-kit";
+import { AppUiProvider } from "@canva/app-ui-kit";
+import { createRoot } from "react-dom/client";
+import { App } from "./app";
+
+async function render() {
+  const root = createRoot(document.getElementById("root") as Element);
+
+  root.render(
+    <AppI18nProvider>
+      <AppUiProvider>
+        <App />
+      </AppUiProvider>
+    </AppI18nProvider>,
+  );
+}
+
+const designEditor: DesignEditorIntent = { render };
+export default designEditor;
+
+if (module.hot) {
+  module.hot.accept("./app", render);
+}
+```

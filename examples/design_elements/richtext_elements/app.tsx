@@ -1,10 +1,14 @@
 // For usage information, see the README.md file.
 import { Button, Rows, Text } from "@canva/app-ui-kit";
-import { createRichtextRange } from "@canva/design";
+import {
+  addElementAtCursor,
+  addElementAtPoint,
+  createRichtextRange,
+} from "@canva/design";
 import type { TextRegion } from "@canva/design";
 import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Create a global RichtextRange instance - this manages text content and formatting
 let richtext = createRichtextRange();
@@ -13,7 +17,10 @@ export const App = () => {
   // Track text regions to display the richtext structure
   const [regions, setRegions] = useState<TextRegion[]>([]);
   // Hook to add elements to the Canva design
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   useEffect(() => {
     reset();
@@ -75,6 +82,10 @@ export const App = () => {
   };
 
   const addToDesign = async () => {
+    if (!addElement) {
+      return;
+    }
+
     // Add the richtext element to the user's Canva design
     await addElement({ type: "richtext", range: richtext });
   };
@@ -99,7 +110,16 @@ export const App = () => {
         <Button variant="secondary" onClick={reset}>
           Reset
         </Button>
-        <Button variant="primary" onClick={addToDesign}>
+        <Button
+          variant="primary"
+          onClick={addToDesign}
+          disabled={!addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
+        >
           Add richtext to design
         </Button>
       </Rows>

@@ -12,3 +12,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Progress indicators are not implemented. Production apps should provide visual feedback during long-running operations like exports
 - The export response is displayed directly in the UI. Production apps should send export URLs to backend services for processing
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

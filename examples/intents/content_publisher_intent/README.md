@@ -20,3 +20,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - **Localization**: Text content is hardcoded in English. Production apps should implement proper internationalization using the `@canva/app-i18n-kit` package for multi-language support.
 - **Error handling**: Production apps should have comprehensive error handling for network failures, API errors, and edge cases.
 - **Validation**: Production apps should implement platform-specific validation (e.g., caption length limits, aspect ratio requirements).
+- **Code structure**: The code structure is simplified. Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareContentPublisher function from src/intents/content_publisher/index.tsx
