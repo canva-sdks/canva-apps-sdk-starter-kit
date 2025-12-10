@@ -1,5 +1,19 @@
 # Changelog
 
+## 2025-12-11
+
+### 🧰 Added
+
+- Add `examples/intents/intent_navigation` to demonstrate launching bulk create and publish actions from within an app
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `v2.7.5` and beta examples to use `v2.7.6-beta.0`.
+- Updated `react` and `react-dom` to `19.2.1`.
+- Upgraded `@canva/user` to `2.1.2-beta.1` for the `multi_account_authentication` example.
+- Upgraded `@canva/app-i18n-kit` to `1.2.0`.
+- Upgraded `@canva/app-ui-kit` to `5.3.0`.
+
 ## 2025-12-08
 
 ### 🧰 Added
