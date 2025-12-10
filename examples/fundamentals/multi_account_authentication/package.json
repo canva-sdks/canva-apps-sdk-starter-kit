@@ -9,7 +9,7 @@
     "cors": "2.8.5",
     "express": "4.22.1",
     "express-basic-auth": "1.2.1",
-    "@canva/user": "^2.1.2-beta.0"
+    "@canva/user": "^2.1.2-beta.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.9",

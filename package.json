@@ -30,16 +30,16 @@
   ],
   "dependencies": {
     "@canva/app-hooks": "^0.0.0-beta.4",
-    "@canva/app-i18n-kit": "^1.1.1",
-    "@canva/app-ui-kit": "^5.2.1",
+    "@canva/app-i18n-kit": "^1.2.0",
+    "@canva/app-ui-kit": "^5.3.0",
     "@canva/asset": "^2.2.1",
-    "@canva/design": "^2.7.3",
+    "@canva/design": "^2.7.5",
     "@canva/error": "^2.1.0",
     "@canva/intents": "^2.0.0",
     "@canva/platform": "^2.2.0",
     "@canva/user": "^2.1.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-intl": "^7.1.11"
   },
   "devDependencies": {
@@ -103,7 +103,7 @@
   },
   "overrides": {
     "react-infinite-scroller": {
-      "react": "19.2.0"
+      "react": "$react"
     }
   }
 }

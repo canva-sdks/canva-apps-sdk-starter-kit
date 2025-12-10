@@ -42,6 +42,7 @@
     }
   },
   "include": ["**/*"],
+  "exclude": ["reference-apps", "node_modules", "dist"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
