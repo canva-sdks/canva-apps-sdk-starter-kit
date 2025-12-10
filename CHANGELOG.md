@@ -4,7 +4,6 @@
 
 ### 🧰 Added
 
-- Add `reference-apps` directory containing the Real Estate MLS reference app. Reference apps are complete, working examples that demonstrate how to build apps for specific industries or use cases.
 - Add `examples/intents/intent_navigation` to demonstrate launching bulk create and publish actions from within an app
 
 ### 🔧 Changed
