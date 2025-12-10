@@ -19,7 +19,6 @@
 ### 🧰 Added
 
 - Added `examples/intents/implement_multiple_intents` to demonstrate how an app can implement multiple intents together.
-- Add `reference-apps` directory containing the Real Estate MLS reference app. Reference apps are complete, working examples that demonstrate how to build apps for specific industries or use cases.
 - Added `examples/fundamentals/multi_account_authentication` as a basic implementation of the multi-account authentication
 
 ### 🔧 Changed
