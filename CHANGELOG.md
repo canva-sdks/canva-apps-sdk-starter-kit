@@ -1,5 +1,27 @@
 # Changelog
 
+## 2025-12-18
+
+### 🧰 Added
+
+- Add `reference-apps` directory containing the Real Estate MLS reference app. Reference apps are complete, working examples that demonstrate how to build apps for specific industries or use cases.
+- Add example app for URL Expander Intent.
+
+### 🔧 Changed
+
+- Upgraded `@canva/asset` to `2.2.2`.
+- Updated `examples/intents/content_publisher_intent` to use correct localization patterns.
+
+### 🗑️ Removed
+
+- Cleanup unnecessary `utils` alias in webpack config.
+
+### 🐞 Fixed
+
+- Renamed some intent example apps to improve documentation consistency.
+- Fixed broken infinite scroll in `examples/masonry`.
+- Added missing JWT verification middleware in digital asset example.
+
 ## 2025-12-11
 
 ### 🧰 Added

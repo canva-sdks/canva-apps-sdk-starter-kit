@@ -1,5 +1,6 @@
 import type { OutputType, PreviewMedia } from "@canva/intents/content";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 import { parsePublishSettings } from "./types";
 import * as styles from "./preview_ui.css";
 import {
@@ -164,20 +165,43 @@ const ImagePreview = ({
 
 // Renders individual preview based on its type and status
 const PreviewRenderer = ({ preview }: { preview: Preview }) => {
+  const intl = useIntl();
+
   // Handle different preview states
   if (preview.status === "loading") {
-    return <ImageStatusText text="Loading..." />;
+    return (
+      <ImageStatusText
+        text={intl.formatMessage({
+          defaultMessage: "Loading...",
+          description:
+            "Loading state text shown while image preview is loading",
+        })}
+      />
+    );
   }
 
   if (preview.status === "error") {
-    return <ImageStatusText text="Error loading preview" />;
+    return (
+      <ImageStatusText
+        text={intl.formatMessage({
+          defaultMessage: "Error loading preview",
+          description: "Error message shown when image preview fails to load",
+        })}
+      />
+    );
   }
 
   // Handle image previews (ready status)
   if (isImagePreviewReady(preview)) {
     return (
       <ImageCard
-        alt={`Image preview ${preview.id}`}
+        alt={intl.formatMessage(
+          {
+            defaultMessage: "Image preview {id}",
+            description: "Alt text for image preview thumbnails",
+          },
+          { id: preview.id },
+        )}
         thumbnailUrl={preview.url}
       />
     );
@@ -194,7 +218,10 @@ const PreviewRenderer = ({ preview }: { preview: Preview }) => {
       justifyContent="center"
     >
       <Text size="medium" tone="tertiary" alignment="center">
-        Preview not available
+        {intl.formatMessage({
+          defaultMessage: "Preview not available",
+          description: "Fallback text shown when preview type is not supported",
+        })}
       </Text>
     </Box>
   );

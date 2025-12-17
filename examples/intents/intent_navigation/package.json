@@ -1,6 +1,6 @@
 {
   "name": "intent_navigation",
-  "title": "Intent navigation example",
+  "title": "Intent navigation",
   "description": "Example app demonstrating navigating from Design Editor intent to the Content Publisher and Data Connector intents in bulk create.",
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
