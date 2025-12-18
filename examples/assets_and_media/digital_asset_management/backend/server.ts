@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { createDamRouter } from "./routers/dam";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
+import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
 
 async function main() {
   /*
@@ -48,6 +49,13 @@ async function main() {
    * [here](https://www.npmjs.com/package/cors#configuring-cors-w-dynamic-origin).
    */
   router.use(cors());
+
+  /**
+   * JWT middleware for authenticating requests from Canva apps.
+   * This should be applied to all routes that require user authentication.
+   */
+  const jwtMiddleware = createJwtMiddleware(APP_ID);
+  router.use(jwtMiddleware);
 
   /**
    * Add routes for digital asset management.

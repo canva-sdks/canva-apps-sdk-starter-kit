@@ -1,0 +1,10 @@
+{
+  "name": "url_expander_intent",
+  "title": "URL expander intent",
+  "description": "URL expander integration for Canva AI to expand URLs to Canva supported assets.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/intents": "^2.0.2-beta.3"
+  }
+}

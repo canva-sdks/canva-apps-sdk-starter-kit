@@ -54,7 +54,6 @@ export function buildConfig({
     resolve: {
       alias: {
         assets: path.resolve(process.cwd(), "assets"),
-        utils: path.resolve(process.cwd(), "utils"),
         styles: path.resolve(process.cwd(), "styles"),
         src: path.resolve(process.cwd(), "src"),
       },

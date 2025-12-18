@@ -81,10 +81,10 @@ export const App = () => {
     }
   }, [isFetching, page, hasMore]);
 
-  // Load first page on mount
   useEffect(() => {
     fetchImages();
-  }, [fetchImages]);
+    // Only run once on mount
+  }, []);
 
   const addImageToDesign = async (image: Image) => {
     if (!addElement) {

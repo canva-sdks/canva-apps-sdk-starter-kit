@@ -10,8 +10,11 @@ import { prepareContentPublisher } from "@canva/intents/content";
 import { createRoot } from "react-dom/client";
 import "@canva/app-ui-kit/styles.css";
 import { AppUiProvider } from "@canva/app-ui-kit";
+import { AppI18nProvider, initIntl } from "@canva/app-i18n-kit";
 import { PreviewUi } from "./preview_ui";
 import { SettingUi } from "./setting_ui";
+
+const intl = initIntl();
 
 // Render the settings UI where users configure publishing options
 function renderSettingsUi({
@@ -20,21 +23,25 @@ function renderSettingsUi({
 }: RenderSettingsUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
   root.render(
-    <AppUiProvider>
-      <SettingUi
-        updatePublishSettings={updatePublishSettings}
-        registerOnSettingsUiContextChange={registerOnSettingsUiContextChange}
-      />
-    </AppUiProvider>,
+    <AppI18nProvider>
+      <AppUiProvider>
+        <SettingUi
+          updatePublishSettings={updatePublishSettings}
+          registerOnSettingsUiContextChange={registerOnSettingsUiContextChange}
+        />
+      </AppUiProvider>
+    </AppI18nProvider>,
   );
 }
 // Render the preview UI showing how the content will appear after publishing
 function renderPreviewUi({ registerOnPreviewChange }: RenderPreviewUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
   root.render(
-    <AppUiProvider>
-      <PreviewUi registerOnPreviewChange={registerOnPreviewChange} />
-    </AppUiProvider>,
+    <AppI18nProvider>
+      <AppUiProvider>
+        <PreviewUi registerOnPreviewChange={registerOnPreviewChange} />
+      </AppUiProvider>
+    </AppI18nProvider>,
   );
 }
 
@@ -46,11 +53,18 @@ async function getPublishConfiguration(): Promise<GetPublishConfigurationRespons
     outputTypes: [
       {
         id: "post",
-        displayName: "Feed Post",
+        displayName: intl.formatMessage({
+          defaultMessage: "Feed Post",
+          description:
+            "Label for publishing format shown in the output type dropdown",
+        }),
         mediaSlots: [
           {
             id: "media",
-            displayName: "Media",
+            displayName: intl.formatMessage({
+              defaultMessage: "Media",
+              description: "Label for the media upload slot",
+            }),
             fileCount: { exact: 1 },
             accepts: {
               image: {

@@ -4,6 +4,7 @@ import type {
 } from "@canva/intents/content";
 import { FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 import * as styles from "styles/components.css";
 import type { PublishSettings } from "./types";
 
@@ -12,6 +13,7 @@ export const SettingUi = ({
   updatePublishSettings,
   registerOnSettingsUiContextChange,
 }: RenderSettingsUiRequest) => {
+  const intl = useIntl();
   const [settings, setSettings] = useState<PublishSettings>({
     caption: "",
   });
@@ -40,7 +42,11 @@ export const SettingUi = ({
       <Rows spacing="2u">
         <Text>{settingsUiContext?.outputType.displayName}</Text>
         <FormField
-          label="Caption"
+          label={intl.formatMessage({
+            defaultMessage: "Caption",
+            description:
+              "Label for the caption input field in publish settings",
+          })}
           control={(props) => (
             <TextInput
               {...props}
