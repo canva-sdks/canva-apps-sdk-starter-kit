@@ -13,7 +13,7 @@ import weather from "assets/images/weather.png";
 import { useState, useEffect } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Constants for element sizing and positioning
 const IMAGE_ELEMENT_WIDTH = 50;

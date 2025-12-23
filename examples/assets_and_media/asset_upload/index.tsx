@@ -4,9 +4,12 @@ import { createRoot } from "react-dom/client";
 import "@canva/app-ui-kit/styles.css";
 
 import { App } from "./app";
+import type { DesignEditorIntent } from "@canva/intents/design";
+import { prepareDesignEditor } from "@canva/intents/design";
 
-const root = createRoot(document.getElementById("root") as Element);
-function render() {
+async function render() {
+  const root = createRoot(document.getElementById("root") as Element);
+
   root.render(
     <AppUiProvider>
       <App />
@@ -14,7 +17,8 @@ function render() {
   );
 }
 
-render();
+const designEditor: DesignEditorIntent = { render };
+prepareDesignEditor(designEditor);
 
 // Hot Module Replacement for development (automatically reloads the app when changes are made)
 if (module.hot) {

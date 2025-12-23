@@ -1,5 +1,96 @@
 # Changelog
 
+## 2025-12-18
+
+### 🧰 Added
+
+- Add `reference-apps` directory containing the Real Estate MLS reference app. Reference apps are complete, working examples that demonstrate how to build apps for specific industries or use cases.
+- Add example app for URL Expander Intent.
+
+### 🔧 Changed
+
+- Upgraded `@canva/asset` to `2.2.2`.
+- Updated `examples/intents/content_publisher_intent` to use correct localization patterns.
+
+### 🗑️ Removed
+
+- Cleanup unnecessary `utils` alias in webpack config.
+
+### 🐞 Fixed
+
+- Renamed some intent example apps to improve documentation consistency.
+- Fixed broken infinite scroll in `examples/masonry`.
+- Added missing JWT verification middleware in digital asset example.
+
+## 2025-12-11
+
+### 🧰 Added
+
+- Add `examples/intents/intent_navigation` to demonstrate launching bulk create and publish actions from within an app
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `v2.7.5` and beta examples to use `v2.7.6-beta.0`.
+- Updated `react` and `react-dom` to `19.2.1`.
+- Upgraded `@canva/user` to `2.1.2-beta.1` for the `multi_account_authentication` example.
+- Upgraded `@canva/app-i18n-kit` to `1.2.0`.
+- Upgraded `@canva/app-ui-kit` to `5.3.0`.
+
+## 2025-12-08
+
+### 🧰 Added
+
+- Added `examples/intents/implement_multiple_intents` to demonstrate how an app can implement multiple intents together.
+- Added `examples/fundamentals/multi_account_authentication` as a basic implementation of the multi-account authentication
+
+### 🔧 Changed
+
+- Updated examples to use the Design Editor intent (now recommended). See the [Design Editor Intent Migration Guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/design-editor-migration-guide/) to migrate existing apps.
+- Updated `body-parser`, `express`, `js-yaml` and `node-forge` dev/transitive dependencies
+- Moved `use_table_hook.ts` to `utils/use_table_hook.ts`
+- Upgraded `@canva/intents` to `2.0.2-beta.3`.
+
+### 🗑️ Removed
+
+- Removed `use_add_element` hook in favour of a more accurate inline implementation.
+- Removed the React utility hooks from `/utils` in favour of our brand new [@canva/app-hooks](https://www.npmjs.com/package/@canva/app-hooks) SDK.
+
+### 🐞 Fixed
+
+- Updated `caniuse-lite` to version `1.0.30001757` to suppress a warning shown when starting a development server.
+
+## 2025-11-20
+
+### 🔧 Changed
+
+- Make `tsconfig` stricter to increase runtime type safety.
+- Upgraded `@canva/design` for `examples/design_interaction/design_audit` to `2.7.4-beta.2`.
+
+### 🐞 Fixed
+
+- Removed incorrect `node_modules/@types/` include from tsconfig.json.
+
+## 2025-11-13
+
+### 🧰 Added
+
+- Added `examples/intents/content_publisher_intent` as a basic implementation of the content publisher intent.
+
+### 🔧 Changed
+
+- Set `moduleResolution` to `bundler`, enabled `esModuleInterop`, and updated necessary import statements.
+- Updated `@canva/app-ui-kit` to version `5.2.1`.
+
+## 2025-11-06
+
+### 🔧 Changed
+
+- Clarified preview app link text to indicate clear CTA
+
+### 🐞 Fixed
+
+- Updated `copy_env.ts` script to not throw if a template .env file does not exist
+
 ## 2025-10-23
 
 ### 🔧 Changed

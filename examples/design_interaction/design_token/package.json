@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "cors": "2.8.5",
-    "express": "4.21.2",
+    "express": "4.22.1",
     "jsonwebtoken": "9.0.2",
     "jwks-rsa": "3.2.0"
   }

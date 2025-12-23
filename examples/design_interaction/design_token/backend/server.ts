@@ -1,14 +1,14 @@
 // For usage information, see the README.md file.
-import * as cors from "cors";
+import cors from "cors";
 
 import "dotenv/config";
-import * as express from "express";
+import express from "express";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
 import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
 import { createBrand, createInMemoryDatabase, createUser } from "./database";
 import { decodeAndVerifyDesignToken } from "./decode_jwt";
 import { SigningKeyNotFoundError } from "jwks-rsa";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 /**
  * Retrieve the CANVA_APP_ID from environment variables.
@@ -98,7 +98,7 @@ router.get("/design/:token", async (req, res) => {
   const { userId, brandId } = req.canva;
   const brand = data.get(brandId);
   const user = brand?.users?.get(userId);
-  res.send(user?.designs?.get(designId) || {});
+  return res.send(user?.designs?.get(designId) || {});
 });
 
 /**
@@ -135,7 +135,7 @@ router.post("/design/:token", async (req, res) => {
     brand.users.set(userId, user);
   }
   user.designs.set(designId, req.body);
-  res.sendStatus(200);
+  return res.sendStatus(200);
 });
 
 const server = createBaseServer(router);

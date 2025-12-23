@@ -12,4 +12,5 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Text handling is simplified for demonstration. Production apps should handle various text formats, provide validation, and include undo functionality for better user experience
 - Error handling is minimal for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes for network issues and API errors
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx
 - The app uses simplified selection logic. Production apps should handle edge cases like mixed content selection and provide clear feedback when no valid text is selected

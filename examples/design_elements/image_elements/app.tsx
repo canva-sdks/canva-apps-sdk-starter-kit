@@ -16,7 +16,8 @@ import rabbit from "assets/images/rabbit.jpg";
 import { useState, useCallback } from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
-import { useAddElement } from "utils/use_add_element";
+import { addElementAtCursor, addElementAtPoint } from "@canva/design";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Static image data for demonstration - in production, use hosted assets
 const images = {
@@ -37,8 +38,10 @@ const images = {
 export const App = () => {
   const [dataUrl, setDataUrl] = useState(dog);
   const [isLoading, setIsLoading] = useState(false);
-  // Hook that provides the functionality to add elements to the Canva design
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
   const disabled = !dataUrl || dataUrl.trim().length < 1;
 
   const items = Object.entries(images).map(([key, value]) => {
@@ -55,6 +58,10 @@ export const App = () => {
   });
 
   const addImage = useCallback(async () => {
+    if (!addElement) {
+      return;
+    }
+
     setIsLoading(true);
     try {
       // Upload the image to Canva's asset system and get a reference
@@ -112,7 +119,12 @@ export const App = () => {
         />
         <Button
           variant="primary"
-          disabled={disabled}
+          disabled={disabled || !addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
           loading={isLoading}
           onClick={addImage}
           stretch

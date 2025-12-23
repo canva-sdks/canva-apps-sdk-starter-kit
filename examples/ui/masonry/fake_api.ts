@@ -12,7 +12,7 @@ export type PaginatedResponse = {
 };
 
 // Static images from Canva example assets
-// In a real app, you would fetch images from your API instead of using static data
+// In a real app, you would fetch images from your CDN/database instead of using static data
 const STATIC_IMAGES: Image[] = [
   {
     title: "Bee",
@@ -46,10 +46,12 @@ const generateImages = (numImages: number) => {
   const images: Image[] = [];
   for (let i = 0; i < numImages; i++) {
     const baseImage = STATIC_IMAGES[i % STATIC_IMAGES.length];
-    images.push({
-      ...baseImage,
-      title: `${baseImage.title} ${Math.floor(i / STATIC_IMAGES.length) + 1}`,
-    });
+    if (baseImage) {
+      images.push({
+        ...baseImage,
+        title: `${baseImage.title} ${Math.floor(i / STATIC_IMAGES.length) + 1}`,
+      });
+    }
   }
   return images;
 };

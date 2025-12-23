@@ -10,7 +10,11 @@ import {
   Rows,
   Text,
 } from "@canva/app-ui-kit";
-import { type AppElementOptions, initAppElement } from "@canva/design";
+import {
+  type AppElementOptions,
+  initAppElement,
+  type ImageRef,
+} from "@canva/design";
 import cat from "assets/images/cat.jpg";
 import dog from "assets/images/dog.jpg";
 import rabbit from "assets/images/rabbit.jpg";
@@ -39,7 +43,17 @@ enum Operation {
   Update,
 }
 
-const images = {
+type ExampleImage = {
+  title: string;
+  imageSrc: string;
+  imageRef: ImageRef | undefined;
+};
+
+// Static images are used here for demonstration purposes only.
+// In a real app, to avoid bloating your app bundle size,
+// you should use a CDN/hosting service to host your images,
+// then upload them to Canva using the `upload` function from the `@canva/asset` package.
+const STATIC_IMAGES: Record<string, ExampleImage> = {
   dog: {
     title: "Dog",
     imageSrc: dog,
@@ -65,14 +79,24 @@ const initialState: AppElementChangeEvent = {
 // This defines how the app element data gets rendered as design elements
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
+    // In production, you would likely be fetching this from a database or API
+    const image = STATIC_IMAGES[data.imageId];
+    if (!image) {
+      throw new Error(`Unknown image ID: ${data.imageId}`);
+    }
+
+    if (!image.imageRef) {
+      throw new Error(`Image ${data.imageId} has not been uploaded yet`);
+    }
+
     return [
       {
         type: "image",
         top: 0,
         left: 0,
-        ref: images[data.imageId].imageRef,
+        ref: image.imageRef,
         altText: {
-          text: `photo of a ${images[data.imageId].title}`,
+          text: `photo of a ${image.title}`,
           decorative: undefined,
         },
         ...data,
@@ -89,7 +113,7 @@ export const App = () => {
   } = state;
   const disabled = loading || !imageId || imageId.trim().length < 1;
 
-  const items = Object.entries(images).map(([key, value]) => {
+  const items = Object.entries(STATIC_IMAGES).map(([key, value]) => {
     const { title, imageSrc } = value;
     return {
       key,
@@ -113,11 +137,18 @@ export const App = () => {
   const addOrUpdateImage = useCallback(
     async (operation: Operation) => {
       setLoading(true);
+
+      // In production, you would likely be fetching this from a database or API
+      const image = STATIC_IMAGES[state.data.imageId];
+      if (!image) {
+        throw new Error(`Unknown image ID: ${state.data.imageId}`);
+      }
+
       try {
         // Upload the image asset if not already uploaded
         // This creates a reusable image reference for the app element
-        if (!images[state.data.imageId].imageRef) {
-          const imageSrc = images[state.data.imageId].imageSrc;
+        if (!image.imageRef) {
+          const imageSrc = image.imageSrc;
           const { ref } = await upload({
             type: "image",
             mimeType: "image/jpeg",
@@ -125,7 +156,8 @@ export const App = () => {
             thumbnailUrl: imageSrc,
             aiDisclosure: "none",
           });
-          images[state.data.imageId].imageRef = ref;
+
+          image.imageRef = ref;
         }
 
         // Either add a new app element or update the existing one

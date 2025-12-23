@@ -1,9 +1,9 @@
 import type { Configuration } from "webpack";
 import { DefinePlugin, optimize } from "webpack";
-import * as path from "path";
-import * as TerserPlugin from "terser-webpack-plugin";
+import path from "path";
+import TerserPlugin from "terser-webpack-plugin";
 import { transform } from "@formatjs/ts-transformer";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { config } from "dotenv";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
@@ -54,7 +54,6 @@ export function buildConfig({
     resolve: {
       alias: {
         assets: path.resolve(process.cwd(), "assets"),
-        utils: path.resolve(process.cwd(), "utils"),
         styles: path.resolve(process.cwd(), "styles"),
         src: path.resolve(process.cwd(), "src"),
       },
@@ -188,7 +187,7 @@ function buildDevConfig(options?: DevConfig): {
     return {};
   }
 
-  const { port, enableHmr, appOrigin, appId, enableHttps, certFile, keyFile } =
+  const { port, enableHmr, appOrigin, enableHttps, certFile, keyFile } =
     options;
   const host = "localhost";
 

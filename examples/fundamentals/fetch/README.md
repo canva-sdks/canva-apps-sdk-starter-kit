@@ -15,3 +15,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Loading states and progress indicators are basic. Production apps should provide comprehensive visual feedback during API calls
 - Token management is simplified for demonstration. Production apps must implement secure token storage, validation, and rotation
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

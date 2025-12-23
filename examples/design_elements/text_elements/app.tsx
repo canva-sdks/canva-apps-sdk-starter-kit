@@ -10,10 +10,15 @@ import {
   Title,
 } from "@canva/app-ui-kit";
 // FontWeight and TextAttributes are Canva's type definitions for text styling
-import type { FontWeight, TextAttributes } from "@canva/design";
+import {
+  addElementAtCursor,
+  addElementAtPoint,
+  type FontWeight,
+  type TextAttributes,
+} from "@canva/design";
 import { useCallback, useState } from "react";
 import * as styles from "styles/components.css";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // UI state matches the properties accepted by Canva's text element API
 type UIState = {
@@ -37,13 +42,20 @@ const initialState: UIState = {
 export const App = () => {
   const [state, setState] = useState<UIState>(initialState);
   // Custom hook that provides addElement function, which uses Canva's addElementAtPoint or addElementAtCursor APIs
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   const { text, color, fontWeight, fontStyle, decoration, textAlign } = state;
   const disabled = text.trim().length < 1 || color.trim().length < 1;
 
   // Creates a text element in the Canva design using the configured styling options
   const addText = useCallback(async () => {
+    if (!addElement) {
+      return;
+    }
+
     await addElement({
       type: "text", // Specifies this is a native Canva text element
       ...state,
@@ -187,7 +199,17 @@ export const App = () => {
             />
           )}
         />
-        <Button variant="primary" onClick={addText} disabled={disabled} stretch>
+        <Button
+          variant="primary"
+          onClick={addText}
+          disabled={disabled || !addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
+          stretch
+        >
           Add element
         </Button>
       </Rows>

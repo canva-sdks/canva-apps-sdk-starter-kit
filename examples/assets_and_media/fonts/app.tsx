@@ -15,9 +15,10 @@ import {
 import type { Font, FontStyle, FontWeightName } from "@canva/asset";
 // Canva's Font APIs for discovering available fonts and opening the font picker
 import { findFonts, requestFontSelection } from "@canva/asset";
+import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 import { useState, useEffect, useCallback } from "react";
 import * as styles from "styles/components.css";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 type TextConfig = {
   text: string;
@@ -43,7 +44,10 @@ const fontStyleOptions: {
 ];
 
 export const App = () => {
-  const addElement = useAddElement();
+  const isSupported = useFeatureSupport();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
   const [textConfig, setTextConfig] = useState<TextConfig>(initialConfig);
   const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
   const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
@@ -208,6 +212,10 @@ export const App = () => {
         <Button
           variant="primary"
           onClick={() => {
+            if (!addElement) {
+              return;
+            }
+
             // Create a text element with the selected font and add it to the Canva design
             addElement({
               type: "text",
@@ -216,7 +224,12 @@ export const App = () => {
               children: [textConfig.text],
             });
           }}
-          disabled={disabled}
+          disabled={disabled || !addElement}
+          tooltipLabel={
+            !addElement
+              ? "This feature is not supported in the current page"
+              : undefined
+          }
           stretch
         >
           Add text element

@@ -2,13 +2,19 @@
 import React from "react";
 import { Rows, Text, EmbedCard } from "@canva/app-ui-kit";
 import * as styles from "styles/components.css";
-import { ui, type EmbedDragConfig } from "@canva/design";
-import { useFeatureSupport } from "utils/use_feature_support";
-import { useAddElement } from "utils/use_add_element";
+import {
+  addElementAtCursor,
+  addElementAtPoint,
+  ui,
+  type EmbedDragConfig,
+} from "@canva/design";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 export const App = () => {
   const isSupported = useFeatureSupport();
-  const addElement = useAddElement();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   // Static content for demo purposes - production apps should load content dynamically
   const thumbnailUrl =
@@ -35,6 +41,10 @@ export const App = () => {
   };
 
   const onAddEmbed = () => {
+    if (!addElement) {
+      return;
+    }
+
     addElement({
       type: "embed",
       url: embedUrl,
@@ -55,6 +65,7 @@ export const App = () => {
           description="Puppyhood"
           onDragStart={onDragStart}
           onClick={onAddEmbed}
+          disabled={!addElement}
         />
       </Rows>
     </div>

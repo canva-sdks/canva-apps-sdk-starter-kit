@@ -11,14 +11,15 @@
       "es2020.promise",
       "es2020.string"
     ],
-    "types": ["node", "jest"],
+    "types": ["node", "webpack-env", "jest"],
     "composite": false,
     "declaration": false,
     "declarationMap": false,
     "experimentalDecorators": true,
     "importHelpers": true,
     "noImplicitOverride": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
     "rootDir": ".",
     "outDir": "dist",
     "strict": true,
@@ -27,7 +28,10 @@
     "sourceMap": true,
     "inlineSources": true,
     "module": "ESNext",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
@@ -37,7 +41,8 @@
       "styles": ["./styles"]
     }
   },
-  "include": ["**/*", "./node_modules/@types/**/*"],
+  "include": ["**/*"],
+  "exclude": ["reference_apps", "node_modules", "dist"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

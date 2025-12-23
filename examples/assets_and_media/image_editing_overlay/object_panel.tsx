@@ -2,8 +2,7 @@ import { Alert, Button, Rows, Text, Title } from "@canva/app-ui-kit";
 import { appProcess } from "@canva/platform";
 import * as React from "react";
 import * as styles from "styles/components.css";
-import { useOverlay } from "utils/use_overlay_hook";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport, useOverlay } from "@canva/app-hooks";
 
 export const ObjectPanel = () => {
   const overlay = useOverlay("image_selection");

@@ -9,7 +9,11 @@ import {
   Rows,
   Text,
 } from "@canva/app-ui-kit";
-import { type AppElementOptions, initAppElement } from "@canva/design";
+import {
+  type AppElementOptions,
+  initAppElement,
+  type VideoRef,
+} from "@canva/design";
 import React from "react";
 import * as styles from "styles/components.css";
 import { upload } from "@canva/asset";
@@ -29,8 +33,18 @@ type AppElementChangeEvent = {
   update?: (opts: AppElementOptions<AppElementData>) => Promise<void>;
 };
 
+type ExampleStaticVideo = {
+  title: string;
+  url: string;
+  thumbnailImageUrl: string;
+  thumbnailVideoUrl: string;
+  width: number;
+  height: number;
+  videoRef: VideoRef | undefined;
+};
+
 // Sample video data for demonstration - in production apps, use CDN hosting
-const videos = {
+const STATIC_VIDEOS: Record<string, ExampleStaticVideo> = {
   building: {
     title: "Pinwheel on building",
     url: "https://www.canva.dev/example-assets/video-import/video.mp4",
@@ -68,6 +82,17 @@ const initialState: AppElementChangeEvent = {
 // Initialize the app element client to handle video rendering in Canva designs
 const appElementClient = initAppElement<AppElementData>({
   render: (data) => {
+    // In production, you would likely be fetching this from a database or API
+    const video = STATIC_VIDEOS[data.videoId];
+
+    if (!video) {
+      throw new Error(`Unknown video ID: ${data.videoId}`);
+    }
+
+    if (!video.videoRef) {
+      throw new Error(`Video ${data.videoId} has not been uploaded yet`);
+    }
+
     return [
       {
         type: "video",
@@ -77,7 +102,7 @@ const appElementClient = initAppElement<AppElementData>({
           text: `a video of ${data.title}`,
           decorative: undefined,
         },
-        ref: videos[data.videoId].videoRef,
+        ref: video.videoRef,
         ...data,
       },
     ];
@@ -92,7 +117,7 @@ export const App = () => {
   } = state;
   const disabled = loading || !videoId || videoId.trim().length < 1;
 
-  const items = Object.entries(videos).map(([key, value]) => {
+  const items = Object.entries(STATIC_VIDEOS).map(([key, value]) => {
     const { title, thumbnailImageUrl, thumbnailVideoUrl, width, height } =
       value;
     return {
@@ -120,18 +145,26 @@ export const App = () => {
   const addOrUpdateVideo = React.useCallback(async () => {
     setLoading(true);
     try {
+      // In production, you would likely be fetching this from a database or API
+      const video = STATIC_VIDEOS[state.data.videoId];
+
+      if (!video) {
+        throw new Error(`Unknown video ID: ${state.data.videoId}`);
+      }
+
       // Upload video to Canva if not already uploaded
-      if (!videos[state.data.videoId].videoRef) {
-        const item = videos[state.data.videoId];
+      if (!video.videoRef) {
         const { ref } = await upload({
           type: "video",
           mimeType: "video/mp4",
-          url: item.url,
-          thumbnailImageUrl: item.thumbnailImageUrl,
-          thumbnailVideoUrl: item.thumbnailVideoUrl,
+          url: video.url,
+          thumbnailImageUrl: video.thumbnailImageUrl,
+          thumbnailVideoUrl: video.thumbnailVideoUrl,
           aiDisclosure: "none",
         });
-        videos[state.data.videoId].videoRef = ref;
+
+        // Update the mutable videoRef property
+        video.videoRef = ref;
       }
 
       // Add new app element or update existing one based on current state
