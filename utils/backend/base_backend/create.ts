@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import debug from "debug";
-import * as express from "express";
+import express from "express";
 import type { NextFunction, Request, Response } from "express";
-import * as fs from "fs";
-import * as http from "http";
-import * as https from "https";
+import fs from "fs";
+import http from "http";
+import https from "https";
 
 const serverDebug = debug("server");
 
@@ -41,12 +41,12 @@ export function createBaseServer(router: express.Router): BaseServer {
   app.disable("x-powered-by");
 
   // Health check endpoint
-  app.get("/healthz", (req, res: Response) => {
+  app.get("/healthz", (req, res) => {
     res.sendStatus(200);
   });
 
   // logging middleware
-  app.use((req: Request, res: Response, next: NextFunction) => {
+  app.use((req, _res, next) => {
     serverDebug(`${new Date().toISOString()}: ${req.method} ${req.url}`);
     next();
   });
@@ -62,7 +62,7 @@ export function createBaseServer(router: express.Router): BaseServer {
   });
 
   // default error handler
-  app.use((err, req, res, next) => {
+  app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err.stack);
     res.status(500).send({
       error: "something went wrong",

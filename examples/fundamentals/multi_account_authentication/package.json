@@ -1,0 +1,18 @@
+{
+  "name": "multi_account_authentication",
+  "title": "Multi-account Authentication",
+  "description": "Multi-account authentication integration for external platforms.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "cookie-parser": "1.4.7",
+    "cors": "2.8.5",
+    "express": "4.22.1",
+    "express-basic-auth": "1.2.1",
+    "@canva/user": "^2.1.2-beta.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "1.4.9",
+    "@types/cors": "2.8.19"
+  }
+}

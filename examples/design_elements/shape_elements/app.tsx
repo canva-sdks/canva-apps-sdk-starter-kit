@@ -17,7 +17,7 @@ import { addElementAtPoint } from "@canva/design";
 import { useState } from "react";
 import * as styles from "styles/components.css";
 // Utility hook to check if specific Canva APIs are supported in the current design context
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Shape element configuration matching the Canva Design API shape element structure
 type UIState = {
@@ -135,7 +135,7 @@ export const App = () => {
                     label="Color"
                     control={() => (
                       <ColorSelector
-                        color={paths[outerIndex].fill.color}
+                        color={path.fill.color}
                         onChange={(value) => {
                           setState((prevState) => {
                             return {

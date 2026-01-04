@@ -1,6 +1,6 @@
 // For usage information, see the README.md file.
-import * as express from "express";
-import * as crypto from "crypto";
+import express from "express";
+import crypto from "crypto";
 import type { Container, Resource } from "@canva/app-components";
 
 /**
@@ -52,16 +52,24 @@ export const createDamRouter = () => {
     // Handle image resource requests
     if (types.includes("IMAGE")) {
       resources = await Promise.all(
-        Array.from({ length: 40 }, async (_, i) => ({
-          id: await generateHash(i + ""),
-          mimeType: "image/jpeg",
-          name: `My new thing in ${locale}`, // Uses locale for demonstration - implement proper i18n
-          type: "IMAGE",
-          thumbnail: {
-            url: imageUrls[i % imageUrls.length],
-          },
-          url: imageUrls[i % imageUrls.length],
-        })),
+        Array.from({ length: 40 }, async (_, i) => {
+          const imageUrl = imageUrls[i % imageUrls.length];
+
+          if (!imageUrl) {
+            throw new Error(`Image URL not found for index ${i}`);
+          }
+
+          return {
+            id: await generateHash(i + ""),
+            mimeType: "image/jpeg",
+            name: `My new thing in ${locale}`, // Uses locale for demonstration - implement proper i18n
+            type: "IMAGE",
+            thumbnail: {
+              url: imageUrl,
+            },
+            url: imageUrl,
+          };
+        }),
       );
     }
 

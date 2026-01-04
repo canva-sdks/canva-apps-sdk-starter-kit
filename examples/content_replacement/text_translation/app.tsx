@@ -42,7 +42,10 @@ export const App = () => {
           // Get the length of the original text to know how much to replace
           const length = range.readPlaintext().length;
           // Replace the entire text content with the translated text
-          range.replaceText({ index: 0, length }, response[i][0]);
+          const translatedText = response[i]?.[0];
+          if (translatedText) {
+            range.replaceText({ index: 0, length }, translatedText);
+          }
         });
 
         // Commit all changes to the design - this makes the changes visible to the user
@@ -87,13 +90,17 @@ export const App = () => {
             endOfRegion = endOfRegion - region.text.length;
             // Replace the current region (starting at the end of the previous region with length equal to the length of the text in the region)
             // with the translated text.
-            range.replaceText(
-              {
-                index: endOfRegion,
-                length: region.text.length,
-              },
-              translatedRegions[regionsToTranslate.length - 1 - i],
-            );
+            const translatedText =
+              translatedRegions?.[regionsToTranslate.length - 1 - i];
+            if (translatedText) {
+              range.replaceText(
+                {
+                  index: endOfRegion,
+                  length: region.text.length,
+                },
+                translatedText,
+              );
+            }
           });
         });
 

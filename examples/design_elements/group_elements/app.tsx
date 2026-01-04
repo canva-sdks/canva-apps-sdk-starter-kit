@@ -2,7 +2,7 @@
 import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
 import { addElementAtPoint } from "@canva/design";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "utils/use_feature_support";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 export const App = () => {
   const isSupported = useFeatureSupport();

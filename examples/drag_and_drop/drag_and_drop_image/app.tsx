@@ -3,7 +3,7 @@ import React from "react";
 import { Rows, Text, Title, ImageCard } from "@canva/app-ui-kit";
 import { upload } from "@canva/asset";
 import type { ImageDragConfig } from "@canva/design";
-import { ui } from "@canva/design";
+import { addElementAtCursor, addElementAtPoint, ui } from "@canva/design";
 /**
  * Static images are used here for demonstration purposes only.
  * In a real app, you should use a CDN/hosting service to host your images,
@@ -12,8 +12,7 @@ import { ui } from "@canva/design";
 /* eslint-disable-next-line no-restricted-imports */
 import dog from "assets/images/dog.jpg";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "utils/use_feature_support";
-import { useAddElement } from "utils/use_add_element";
+import { useFeatureSupport } from "@canva/app-hooks";
 
 // Upload external image to Canva's asset system and return a reference
 const uploadExternalImage = () => {
@@ -49,14 +48,24 @@ const altText = {
 
 export const App = () => {
   const isSupported = useFeatureSupport();
-  const addElement = useAddElement();
+  const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    isSupported(fn),
+  );
 
   const insertLocalImage = async () => {
+    if (!addElement) {
+      return;
+    }
+
     const { ref } = await uploadLocalImage();
     await addElement({ type: "image", ref, altText });
   };
 
   const insertExternalImage = async () => {
+    if (!addElement) {
+      return;
+    }
+
     const { ref } = await uploadExternalImage();
     addElement({ type: "image", ref, altText });
   };
@@ -128,6 +137,7 @@ export const App = () => {
             thumbnailUrl={dog}
             onDragStart={onDragStartForLocalImage}
             onClick={insertLocalImage}
+            disabled={!addElement}
           />
         </Rows>
         <Rows spacing="1u">
@@ -142,6 +152,7 @@ export const App = () => {
             thumbnailUrl="https://www.canva.dev/example-assets/image-import/grass-image.jpg"
             onClick={insertExternalImage}
             onDragStart={onDragStartForExternalImage}
+            disabled={!addElement}
           />
         </Rows>
       </Rows>

@@ -10,3 +10,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 
 - Path validation and error handling is simplified for demonstration. Production apps must validate SVG paths and handle malformed path data gracefully
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

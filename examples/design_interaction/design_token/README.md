@@ -13,3 +13,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - **Token management**: Token usage patterns are simplified for demonstration purposes. Production apps should implement proper token refresh mechanisms, secure backend communication, and appropriate rate limiting for API calls
 - **Error handling**: Error handling is simplified for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes
 - **Internationalization**: Not implemented in this example. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- **Code structure**: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx

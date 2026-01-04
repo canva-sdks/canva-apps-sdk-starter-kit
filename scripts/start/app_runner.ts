@@ -1,22 +1,39 @@
 /* eslint-disable no-console */
 import type { Context } from "./context";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { buildConfig } from "../../webpack.config";
-import * as ngrok from "@ngrok/ngrok";
-import * as nodemon from "nodemon";
-import * as Table from "cli-table3";
-import * as webpack from "webpack";
-import * as WebpackDevServer from "webpack-dev-server";
-import * as open from "open";
+import ngrok from "@ngrok/ngrok";
+import nodemon from "nodemon";
+import Table from "cli-table3";
+import webpack from "webpack";
+import WebpackDevServer from "webpack-dev-server";
+import open from "open";
 import { generatePreviewUrl } from "@canva/cli";
 import type { Certificate } from "../ssl/ssl";
 import { createOrRetrieveCertificate } from "../ssl/ssl";
+import os from "os";
 
 export const infoChalk = chalk.blue.bold;
 export const warnChalk = chalk.bgYellow.bold;
 export const errorChalk = chalk.bgRed.bold;
 export const highlightChalk = chalk.greenBright.bold;
 export const linkChalk = chalk.cyan;
+
+/**
+ * Returns the appropriate modifier key text based on the user's operating system.
+ * @returns "cmd" for macOS, "ctrl" for Windows and Linux
+ */
+export function getModifierKey(): string {
+  const platform = os.platform();
+  switch (platform) {
+    case "darwin": // macOS
+      return "cmd";
+    case "win32": // Windows
+      return "ctrl";
+    default: // Linux and others
+      return "ctrl";
+  }
+}
 
 export class AppRunner {
   async run(ctx: Context) {
@@ -189,9 +206,14 @@ export class AppRunner {
       return;
     }
 
+    const modifierKey = getModifierKey();
+
     table.push([
       previewCellHeader,
-      { content: "Preview URL", href: generatePreviewResult.data },
+      {
+        content: `Preview URL (${modifierKey} + click)`,
+        href: generatePreviewResult.data,
+      },
     ]);
 
     if (openPreview) {

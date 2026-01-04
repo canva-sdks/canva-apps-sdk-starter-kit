@@ -17,7 +17,7 @@ export const App = () => {
     const randomMessage =
       funMessages[Math.floor(Math.random() * funMessages.length)];
     notification.addToast({
-      messageText: randomMessage,
+      messageText: randomMessage || "🎲 Random notification!",
     });
   };
   return (

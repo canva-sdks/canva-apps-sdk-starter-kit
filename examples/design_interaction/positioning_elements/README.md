@@ -13,3 +13,4 @@ NOTE: This example differs from what is expected for public apps to pass a Canva
 - Positioning coordinate validation is simplified for demonstration. Production apps should validate positioning coordinates and handle different page types appropriately
 - Error handling is simplified for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements
+- The code structure is simplified: Production apps using [intents](https://www.canva.dev/docs/apps/intents/) are recommended to call the prepareDesignEditor function from src/intents/design_editor/index.tsx
