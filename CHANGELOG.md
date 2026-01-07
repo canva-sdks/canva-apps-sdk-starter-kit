@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-01-08
+
+### 🧰 Added
+
+- Added `examples/fundamentals/multi_provider_authentication` to demonstrate multi-provider OAuth authentication.
+
+### 🔧 Changed
+
+- Upgraded `@canva/user` to `2.1.2`.
+- Upgraded `@canva/app-ui-kit` to `5.4.0`.
+- Upgraded `react` and `react-dom` to `19.2.3`.
+- Upgraded `@canva/asset` to `2.3.0`.
+
 ## 2025-12-18
 
 ### 🧰 Added
