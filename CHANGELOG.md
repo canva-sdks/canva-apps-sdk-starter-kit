@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-01-14
+
+### 🧰 Added
+
+- Templates from the Canva CLI are now available in the starter kit in the /templates directory
+
+### 🔧 Changed
+
+- Moved `/assets` directory into `/examples`, since they're only used as sample data.
+
+### 🐞 Fixed
+
+- Fixed the case in the titles of the "Multi-account authentication" and "Multi-provider authentication" example apps to be consistent with the other examples.
+
 ## 2026-01-08
 
 ### 🧰 Added

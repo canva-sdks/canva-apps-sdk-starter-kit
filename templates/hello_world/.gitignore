@@ -1,0 +1,8 @@
+.DS_Store
+.env
+.idea
+.ssl
+*.log*
+**/*/db.json
+dist
+node_modules

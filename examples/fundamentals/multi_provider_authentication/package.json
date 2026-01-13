@@ -1,6 +1,6 @@
 {
   "name": "multi_provider_authentication",
-  "title": "Multi-provider Authentication",
+  "title": "Multi-provider authentication",
   "description": "Multiple OAuth provider authentication integration for external platforms.",
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
