@@ -1,0 +1,21 @@
+{
+  "$schema": "https://www.canva.dev/schemas/app/v1/manifest-schema.json",
+  "manifest_schema_version": 1,
+  "runtime": {
+    "permissions": [
+      {
+        "name": "canva:design:content:read",
+        "type": "mandatory"
+      },
+      {
+        "name": "canva:design:content:write",
+        "type": "mandatory"
+      }
+    ]
+  },
+  "intent": {
+    "design_editor": {
+      "enrolled": true
+    }
+  }
+}

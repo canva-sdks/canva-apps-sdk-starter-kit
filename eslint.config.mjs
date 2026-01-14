@@ -8,6 +8,7 @@ export default [
       "**/*.d.ts",
       "**/*.d.tsx",
       "**/*.config.*",
+      "templates/**/*",
     ],
   },
   ...canvaPlugin.configs.apps_no_i18n,

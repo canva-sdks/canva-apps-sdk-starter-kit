@@ -1,0 +1,10 @@
+.rootWrapper {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.centerInPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

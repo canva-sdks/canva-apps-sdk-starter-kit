@@ -37,12 +37,12 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "assets": ["./assets"],
+      "assets": ["./examples/assets"],
       "styles": ["./styles"]
     }
   },
   "include": ["**/*"],
-  "exclude": ["reference_apps", "node_modules", "dist"],
+  "exclude": ["templates", "reference_apps", "node_modules", "dist"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
