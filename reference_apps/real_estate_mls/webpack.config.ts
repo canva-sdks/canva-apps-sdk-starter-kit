@@ -62,7 +62,6 @@ export function buildConfig({
     target: "web",
     resolve: {
       alias: {
-        assets: path.resolve(process.cwd(), "assets"),
         styles: path.resolve(process.cwd(), "styles"),
         src: path.resolve(process.cwd(), "src"),
       },
@@ -218,10 +217,6 @@ function buildDevConfig(options?: DevConfig): {
     port,
     client: {
       logging: "verbose",
-    },
-    static: {
-      directory: path.resolve(process.cwd(), "assets"),
-      publicPath: "/assets",
     },
   };
 

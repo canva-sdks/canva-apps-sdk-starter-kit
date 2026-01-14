@@ -28,6 +28,11 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ["node_modules"],
-  testPathIgnorePatterns: ["/node_modules/", "/dist/", "/reference_apps/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/dist/",
+    "/templates/",
+    "/reference_apps/",
+  ],
   setupFiles: ["<rootDir>/jest.setup.ts"],
 };

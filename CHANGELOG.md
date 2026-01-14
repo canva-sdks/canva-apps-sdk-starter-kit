@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-01-14
+
+### 🧰 Added
+
+- Templates from the Canva CLI are now available in the starter kit in the /templates directory
+
+### 🔧 Changed
+
+- Moved `/assets` directory into `/examples`, since they're only used as sample data.
+- Upgraded `@canva/app-ui-kit` to `5.5.0`.
+- Upgraded `@canva/cli` to `1.14.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+jsonwebtoken                               9.0.2   ->   9.0.3
+react-router-dom                           7.8.2   ->   7.12.0
+```
+
+### 🐞 Fixed
+
+- Fixed the case in the titles of the "Multi-account authentication" and "Multi-provider authentication" example apps to be consistent with the other examples.
+
 ## 2026-01-08
 
 ### 🧰 Added

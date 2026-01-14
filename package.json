@@ -31,7 +31,7 @@
   "dependencies": {
     "@canva/app-hooks": "^0.0.0-beta.4",
     "@canva/app-i18n-kit": "^1.2.0",
-    "@canva/app-ui-kit": "^5.4.0",
+    "@canva/app-ui-kit": "^5.5.0",
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.7.5",
     "@canva/error": "^2.1.0",
@@ -78,7 +78,7 @@
     "jest": "29.7.0",
     "jest-css-modules-transform": "4.4.2",
     "jest-environment-jsdom": "29.7.0",
-    "jsonwebtoken": "9.0.2",
+    "jsonwebtoken": "9.0.3",
     "jwks-rsa": "3.2.0",
     "mini-css-extract-plugin": "2.9.4",
     "node-fetch": "3.3.2",
