@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { createDamRouter } from "./routers/dam";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
+import { user } from "@canva/app-middleware/express";
 
 async function main() {
   /*
@@ -54,8 +54,7 @@ async function main() {
    * JWT middleware for authenticating requests from Canva apps.
    * This should be applied to all routes that require user authentication.
    */
-  const jwtMiddleware = createJwtMiddleware(APP_ID);
-  router.use(jwtMiddleware);
+  router.use(user.verifyToken({ appId: APP_ID }));
 
   /**
    * Add routes for digital asset management.

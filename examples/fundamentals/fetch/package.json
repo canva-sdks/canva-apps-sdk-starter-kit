@@ -5,6 +5,7 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
+    "@canva/app-middleware": "^0.0.0-beta.4",
     "cors": "2.8.5",
     "dotenv": "16.6.0",
     "express": "4.22.1"

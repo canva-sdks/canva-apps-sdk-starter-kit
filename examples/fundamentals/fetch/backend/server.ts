@@ -3,7 +3,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
+import { user } from "@canva/app-middleware/express";
 
 async function main() {
   // Set the CANVA_APP_ID environment variable in the project's .env file
@@ -49,22 +49,23 @@ async function main() {
 
   // Initialize JWT middleware to verify Canva user tokens
   // This middleware validates tokens sent from the frontend and extracts user information
-  const jwtMiddleware = createJwtMiddleware(APP_ID);
-  router.use(jwtMiddleware);
+  router.use(user.verifyToken({ appId: APP_ID }));
 
   // IMPORTANT: You must define your own backend routes after initializing the jwt middleware
-  // This ensures all routes have access to verified user information via req.canva
+  // This ensures all routes have access to verified user information via req.canva.user
   router.get("/custom-route", async (req, res) => {
     // Log the authenticated user information (extracted from JWT token)
     /* eslint-disable-next-line no-console */
-    console.log("request", req.canva);
+    console.log("request", req.canva.user);
 
     // Return user context information from the verified JWT token
     // This demonstrates how to access app, user, and brand information
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- user is guaranteed by verifyToken middleware
+    const { appId, userId, brandId } = req.canva.user!;
     res.status(200).send({
-      appId: req.canva.appId,
-      userId: req.canva.userId,
-      brandId: req.canva.brandId,
+      appId,
+      userId,
+      brandId,
     });
   });
 

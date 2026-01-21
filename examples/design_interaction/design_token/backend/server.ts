@@ -1,10 +1,11 @@
 // For usage information, see the README.md file.
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- user is guaranteed by verifyToken middleware */
 import cors from "cors";
 
 import "dotenv/config";
 import express from "express";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
+import { user } from "@canva/app-middleware/express";
 import { createBrand, createInMemoryDatabase, createUser } from "./database";
 import { decodeAndVerifyDesignToken } from "./decode_jwt";
 import { SigningKeyNotFoundError } from "jwks-rsa";
@@ -25,11 +26,6 @@ if (!APP_ID) {
  * Initialize ExpressJS router.
  */
 const router = express.Router();
-
-/**
- * Instantiate JWT middleware to be used to parse the auth token from the header.
- */
-const jwtMiddleware = createJwtMiddleware(APP_ID);
 
 /**
  * In-memory database for demonstration purposes.
@@ -71,7 +67,7 @@ router.use(cors());
  * JWT middleware for authenticating requests from Canva apps.
  * This should be applied to all routes that require user authentication.
  */
-router.use(jwtMiddleware);
+router.use(user.verifyToken({ appId: APP_ID }));
 
 /**
  * Endpoint for retrieving the data associated with a particular design.
@@ -95,10 +91,10 @@ router.get("/design/:token", async (req, res) => {
       .json({ error: "unauthorized", message: getErrorMessage(e) });
   }
 
-  const { userId, brandId } = req.canva;
+  const { userId, brandId } = req.canva.user!;
   const brand = data.get(brandId);
-  const user = brand?.users?.get(userId);
-  return res.send(user?.designs?.get(designId) || {});
+  const userRecord = brand?.users?.get(userId);
+  return res.send(userRecord?.designs?.get(designId) || {});
 });
 
 /**
@@ -123,18 +119,18 @@ router.post("/design/:token", async (req, res) => {
       .json({ error: "unauthorized", message: getErrorMessage(e) });
   }
 
-  const { userId, brandId } = req.canva;
+  const { userId, brandId } = req.canva.user!;
   let brand = data.get(brandId);
   if (brand == null) {
     brand = createBrand();
     data.set(brandId, brand);
   }
-  let user = brand.users.get(userId);
-  if (user == null) {
-    user = createUser();
-    brand.users.set(userId, user);
+  let userRecord = brand.users.get(userId);
+  if (userRecord == null) {
+    userRecord = createUser();
+    brand.users.set(userId, userRecord);
   }
-  user.designs.set(designId, req.body);
+  userRecord.designs.set(designId, req.body);
   return res.sendStatus(200);
 });
 

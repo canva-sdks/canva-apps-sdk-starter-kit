@@ -1,9 +1,19 @@
+import { user } from "@canva/app-middleware/express";
 import cors from "cors";
 import express from "express";
 import { createBaseServer } from "../utils/backend/base_backend/create";
 import { createImageRouter } from "./routers/image";
 
 async function main() {
+  // TODO: Set the CANVA_APP_ID environment variable in the project's .env file
+  const APP_ID = process.env.CANVA_APP_ID;
+
+  if (!APP_ID) {
+    throw new Error(
+      `The CANVA_APP_ID environment variable is undefined. Set the variable in the project's .env file.`,
+    );
+  }
+
   const router = express.Router();
 
   /**
@@ -35,6 +45,12 @@ async function main() {
    * [here](https://www.npmjs.com/package/cors#configuring-cors-w-dynamic-origin).
    */
   router.use(cors());
+
+  /**
+   * Initialize JWT middleware to verify Canva user tokens
+   * This middleware validates tokens sent from the frontend and extracts user information
+   */
+  router.use(user.verifyToken({ appId: APP_ID }));
 
   /**
    * Add routes for image generation.

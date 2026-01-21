@@ -1,3 +1,4 @@
+import { user } from "@canva/app-middleware/express";
 import cors from "cors";
 import express from "express";
 import { createBaseServer } from "../utils/backend/base_backend/create";
@@ -44,6 +45,12 @@ async function main() {
    * [here](https://www.npmjs.com/package/cors#configuring-cors-w-dynamic-origin).
    */
   router.use(cors());
+
+  /**
+   * Initialize JWT middleware to verify Canva user tokens
+   * This middleware validates tokens sent from the frontend and extracts user information
+   */
+  router.use(user.verifyToken({ appId: APP_ID }));
 
   /**
    * Add routes for digital asset management.
