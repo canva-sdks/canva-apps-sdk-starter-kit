@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-01-22
+
+### 🔧 Changed
+
+- Upgraded `@canva/platform` to `2.2.1`.
+- Upgraded `@canva/error` to `2.2.0`.
+
+### 🗑️ Removed
+
+- Removed `jwt_middleware` and custom design token verification code, in favour of the brand new `@canva/app-middleware` SDK.
+
 ## 2026-01-14
 
 ### 🧰 Added

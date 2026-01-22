@@ -1,14 +1,12 @@
 // For usage information, see the README.md file.
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- user is guaranteed by verifyToken middleware */
 import cors from "cors";
 
 import "dotenv/config";
 import express from "express";
 import { createBaseServer } from "../../../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../../../utils/backend/jwt_middleware";
+import { user, design, tokenExtractors } from "@canva/app-middleware/express";
 import { createBrand, createInMemoryDatabase, createUser } from "./database";
-import { decodeAndVerifyDesignToken } from "./decode_jwt";
-import { SigningKeyNotFoundError } from "jwks-rsa";
-import jwt from "jsonwebtoken";
 
 /**
  * Retrieve the CANVA_APP_ID from environment variables.
@@ -25,11 +23,6 @@ if (!APP_ID) {
  * Initialize ExpressJS router.
  */
 const router = express.Router();
-
-/**
- * Instantiate JWT middleware to be used to parse the auth token from the header.
- */
-const jwtMiddleware = createJwtMiddleware(APP_ID);
 
 /**
  * In-memory database for demonstration purposes.
@@ -71,92 +64,64 @@ router.use(cors());
  * JWT middleware for authenticating requests from Canva apps.
  * This should be applied to all routes that require user authentication.
  */
-router.use(jwtMiddleware);
+router.use(user.verifyToken({ appId: APP_ID }));
 
 /**
  * Endpoint for retrieving the data associated with a particular design.
  * Design data is stored per-user. Users are also separated into brands.
+ *
+ * The design.verifyToken() middleware verifies the design token from the query parameter
+ * and populates req.canva.design with { designId, appId }. This ensures we only accept
+ * valid, Canva-generated design tokens and prevents unauthorized access to arbitrary design IDs.
  */
-router.get("/design/:token", async (req, res) => {
-  /**
-   * Ensure to retrieve Design ID by decoding a Canva-generated DesignToken JWT. We can trust the content of these
-   * tokens and safely assume that the current user has access.
-   *
-   * We strongly recommend you do not expose endpoints that receive plain Design IDs. Doing so will mean that anyone
-   * could pass through an arbitrary Design ID, including the IDs of designs they don't actually have access to
-   * within Canva.
-   */
-  let designId: string;
-  try {
-    ({ designId } = await decodeAndVerifyDesignToken(APP_ID, req.params.token));
-  } catch (e) {
-    return res
-      .status(401)
-      .json({ error: "unauthorized", message: getErrorMessage(e) });
-  }
+router.get(
+  "/design",
+  design.verifyToken({
+    appId: APP_ID,
+    tokenExtractor: tokenExtractors.fromQuery("designToken"),
+  }),
+  async (req, res) => {
+    const { designId } = req.canva.design!;
+    const { userId, brandId } = req.canva.user!;
 
-  const { userId, brandId } = req.canva;
-  const brand = data.get(brandId);
-  const user = brand?.users?.get(userId);
-  return res.send(user?.designs?.get(designId) || {});
-});
+    const brand = data.get(brandId);
+    const userRecord = brand?.users?.get(userId);
+    return res.send(userRecord?.designs?.get(designId) || {});
+  },
+);
 
 /**
  * Endpoint for saving the data associated with a particular design.
  * Design data is stored per-user. Users are also separated into brands.
+ *
+ * The design.verifyToken() middleware verifies the design token from the query parameter
+ * and populates req.canva.design with { designId, appId }. This ensures we only accept
+ * valid, Canva-generated design tokens and prevents unauthorized access to arbitrary design IDs.
  */
-router.post("/design/:token", async (req, res) => {
-  /**
-   * Ensure to retrieve Design ID by decoding a Canva-generated DesignToken JWT. We can trust the content of these
-   * tokens and safely assume that the current user has access.
-   *
-   * We strongly recommend you do not expose endpoints that receive plain Design IDs. Doing so will mean that anyone
-   * could pass through an arbitrary Design ID, including the IDs of designs they don't actually have access to
-   * within Canva.
-   */
-  let designId: string;
-  try {
-    ({ designId } = await decodeAndVerifyDesignToken(APP_ID, req.params.token));
-  } catch (e) {
-    return res
-      .status(401)
-      .json({ error: "unauthorized", message: getErrorMessage(e) });
-  }
+router.post(
+  "/design",
+  design.verifyToken({
+    appId: APP_ID,
+    tokenExtractor: tokenExtractors.fromQuery("designToken"),
+  }),
+  async (req, res) => {
+    const { designId } = req.canva.design!;
+    const { userId, brandId } = req.canva.user!;
 
-  const { userId, brandId } = req.canva;
-  let brand = data.get(brandId);
-  if (brand == null) {
-    brand = createBrand();
-    data.set(brandId, brand);
-  }
-  let user = brand.users.get(userId);
-  if (user == null) {
-    user = createUser();
-    brand.users.set(userId, user);
-  }
-  user.designs.set(designId, req.body);
-  return res.sendStatus(200);
-});
+    let brand = data.get(brandId);
+    if (brand == null) {
+      brand = createBrand();
+      data.set(brandId, brand);
+    }
+    let userRecord = brand.users.get(userId);
+    if (userRecord == null) {
+      userRecord = createUser();
+      brand.users.set(userId, userRecord);
+    }
+    userRecord.designs.set(designId, req.body);
+    return res.sendStatus(200);
+  },
+);
 
 const server = createBaseServer(router);
 server.start(process.env.CANVA_BACKEND_PORT);
-
-/**
- * Gets a readable error message to send back to the caller.
- * @param e - The Error object from which we derive the error message.
- */
-const getErrorMessage = (e: unknown) => {
-  if (e instanceof SigningKeyNotFoundError) {
-    return "Public key not found";
-  }
-
-  if (e instanceof jwt.JsonWebTokenError) {
-    return "Invalid token";
-  }
-
-  if (e instanceof jwt.TokenExpiredError) {
-    return "Token expired";
-  }
-
-  return "An error has occurred while decoding the token.";
-};
