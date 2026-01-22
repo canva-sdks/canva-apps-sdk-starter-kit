@@ -6,7 +6,6 @@
 
 - Upgraded `@canva/platform` to `2.2.1`.
 - Upgraded `@canva/error` to `2.2.0`.
-- Upgraded `@canva/app-middleware` to `0.0.0-beta.5`.
 
 ### 🗑️ Removed
 
