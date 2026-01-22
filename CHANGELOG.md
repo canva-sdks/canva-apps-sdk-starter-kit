@@ -10,7 +10,7 @@
 
 ### 🗑️ Removed
 
-- Removed `jwt_middleware` and replace its usage with the brand new `@canva/app-middleware` SDK.
+- Removed `jwt_middleware` and custom design token verification code, in favour of the brand new `@canva/app-middleware` SDK.
 
 ## 2026-01-14
 
