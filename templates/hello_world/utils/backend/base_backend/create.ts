@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { TokenVerificationError } from "@canva/app-middleware";
 import debug from "debug";
 import express from "express";
 import type { NextFunction, Request, Response } from "express";
@@ -63,6 +64,15 @@ export function createBaseServer(router: express.Router): BaseServer {
 
   // default error handler
   app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+    // Handle authentication errors from @canva/app-middleware
+    if (err instanceof TokenVerificationError) {
+      res.status(err.statusCode).json({
+        error: err.code,
+        message: err.message,
+      });
+      return;
+    }
+
     console.error(err.stack);
     res.status(500).send({
       error: "something went wrong",

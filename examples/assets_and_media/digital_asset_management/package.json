@@ -6,6 +6,7 @@
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
     "@canva/app-components": "^2.1.0",
+    "@canva/app-middleware": "^0.0.0-beta.5",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "express": "4.22.1"

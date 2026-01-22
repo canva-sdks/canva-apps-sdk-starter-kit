@@ -41,7 +41,7 @@ export const App = () => {
         auth.getCanvaUserToken(),
       ]);
       const response = await fetch(
-        `${BACKEND_HOST}/design/${designToken.token}`,
+        `${BACKEND_HOST}/design?designToken=${designToken.token}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -71,7 +71,7 @@ export const App = () => {
           getDesignMetadata(),
         ]);
 
-      await fetch(`${BACKEND_HOST}/design/${designToken.token}`, {
+      await fetch(`${BACKEND_HOST}/design?designToken=${designToken.token}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
