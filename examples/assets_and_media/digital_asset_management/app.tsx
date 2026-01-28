@@ -9,7 +9,7 @@ import * as styles from "./index.css";
 export function App() {
   const config = useConfig();
   return (
-    <Box className={styles.rootWrapper}>
+    <Box className={styles.rootWrapper} height="full">
       {/*
         SearchableListView is a Canva component that provides a complete digital asset management interface.
         It handles searching, filtering, browsing containers, and importing assets from external platforms.

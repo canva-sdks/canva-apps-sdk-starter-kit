@@ -64,25 +64,41 @@ function renderSettingsUi(request: RenderSettingsUiRequest) {
 // Render the preview UI showing how the content will appear after publishing
 function renderPreviewUi(request: RenderPreviewUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
+
+  // TODO: You should update this value to match the visuals you're hoping to achieve with your export preview
+  // Image width + padding + border
+  const previewWidth = 400 + 32 + 2;
+
   root.render(
     <AppUiProvider>
-      <div className={styles.previewContainer}>
-        <Box
-          className={styles.previewWrapper}
-          background="surface"
-          borderRadius="large"
-          padding="2u"
-          border="standard"
-        >
-          <Rows spacing="2u">
-            <Text>
-              This is the content publisher intent portion of the app. Here you
-              would render a preview for visualising how the design would appear
-              in the publishing platform.
-            </Text>
-          </Rows>
-        </Box>
-      </div>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+        width="full"
+        height="full"
+      >
+        <div style={{ width: previewWidth }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            background="surface"
+            borderRadius="large"
+            padding="2u"
+            border="standard"
+          >
+            <Rows spacing="2u">
+              <Text>
+                This is the content publisher intent portion of the app. Here
+                you would render a preview for visualizing how the design would
+                appear in the publishing platform.
+              </Text>
+            </Rows>
+          </Box>
+        </div>
+      </Box>
     </AppUiProvider>,
   );
 }

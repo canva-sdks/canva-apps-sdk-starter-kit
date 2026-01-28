@@ -8,7 +8,7 @@ import * as styles from "./index.css";
 export function App() {
   const config = useConfig();
   return (
-    <Box className={styles.rootWrapper}>
+    <Box className={styles.rootWrapper} height="full">
       <SearchableListView
         config={config}
         findResources={findResources}
