@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-01-29
+
+### 🔧 Changed
+
+- Updated examples and templates to use `@canva/app-ui-kit` component props instead of CSS classes for layout styling.
+- Upgraded `@canva/design` to `2.7.6-beta.1`.
+- Upgraded `@canva/user` to `2.1.3-beta.0`.
+
 ## 2026-01-22
 
 ### 🔧 Changed
