@@ -1,3 +1,4 @@
+import { auth } from "@canva/user";
 import { POLLING_INTERVAL_IN_SECONDS } from "src/config";
 
 /**
@@ -167,8 +168,11 @@ export const purchaseCredits = async (): Promise<RemainingCreditsResult> => {
  * @returns {Promise<Object>} - A promise that resolves to the response body.
  */
 const sendRequest = async <T>(url: URL, options?: RequestInit): Promise<T> => {
+  const userToken = await auth.getCanvaUserToken();
+
   const res = await fetch(url, {
     headers: {
+      Authorization: `Bearer ${userToken}`,
       ...options?.headers,
     },
     ...options,

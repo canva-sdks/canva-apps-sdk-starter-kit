@@ -1,22 +1,21 @@
+import { FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 import type {
+  PublishRefValidityState,
   RenderSettingsUiRequest,
   SettingsUiContext,
 } from "@canva/intents/content";
-import { FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import * as styles from "styles/components.css";
 import type { PublishSettings } from "./types";
 
 // Settings UI component for configuring publish settings
-export const SettingUi = ({
+export const SettingsUi = ({
   updatePublishSettings,
   registerOnSettingsUiContextChange,
 }: RenderSettingsUiRequest) => {
   const intl = useIntl();
-  const [settings, setSettings] = useState<PublishSettings>({
-    caption: "",
-  });
+  const [settings, setSettings] = useState<PublishSettings>({ caption: "" });
   const [settingsUiContext, setSettingsUiContext] =
     useState<SettingsUiContext | null>(null);
 
@@ -43,20 +42,21 @@ export const SettingUi = ({
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
-        <Text>{settingsUiContext?.outputType.displayName}</Text>
+        {settingsUiContext?.outputType.displayName && (
+          <Text>{settingsUiContext?.outputType.displayName}</Text>
+        )}
         <FormField
           label={intl.formatMessage({
             defaultMessage: "Caption",
-            description:
-              "Label for the caption input field in publish settings",
+            description: "Label for the caption input field",
           })}
           control={(props) => (
             <TextInput
               {...props}
               value={settings.caption}
-              onChange={(caption) =>
-                setAndPropagateSettings({ ...settings, caption })
-              }
+              onChange={(caption) => {
+                setAndPropagateSettings({ ...settings, caption });
+              }}
             />
           )}
         />
@@ -67,7 +67,9 @@ export const SettingUi = ({
 
 // Validates the publish settings to enable/disable the publish button
 // Returns "valid" when all required fields are filled
-const validatePublishRef = (publishRef: PublishSettings) => {
+const validatePublishRef = (
+  publishRef: PublishSettings,
+): PublishRefValidityState => {
   // caption is required
   if (publishRef.caption.length === 0) {
     return "invalid_missing_required_fields";

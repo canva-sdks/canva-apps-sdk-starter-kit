@@ -1,0 +1,49 @@
+/* Scale down preview on mobile devices */
+@media (max-width: 600px) {
+  .container {
+    transform: scale(0.3);
+  }
+}
+
+/* User profile section styling */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Avatar styling to match social media appearance */
+.avatar {
+  transform: scale(0.6);
+  width: 24px;
+  height: 24px;
+  transform-origin: top left;
+}
+
+/* Text placeholder for loading states */
+.textPlaceholder {
+  min-width: calc(8 * 20);
+}
+
+/* Container for media images */
+.imageContainer {
+  overflow: hidden; /* Enable border radius */
+}
+
+/* Row containing all images */
+.imageRow {
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 400px;
+  display: flex;
+}
+
+/* Individual image and placeholder styling */
+.imagePlaceholder,
+.image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  display: inline-block;
+  position: relative;
+}
