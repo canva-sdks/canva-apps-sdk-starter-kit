@@ -20,11 +20,12 @@
   "dependencies": {
     "@canva/app-hooks": "^0.0.0-beta.4",
     "@canva/app-i18n-kit": "^1.2.0",
+    "@canva/app-middleware": "^0.0.0-beta.5",
     "@canva/app-ui-kit": "^5.5.0",
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.7.5",
     "@canva/error": "^2.2.0",
-    "@canva/intents": "^2.0.0",
+    "@canva/intents": "^2.1.0",
     "@canva/platform": "^2.2.1",
     "@canva/user": "^2.1.2",
     "cookie-parser": "1.4.7",

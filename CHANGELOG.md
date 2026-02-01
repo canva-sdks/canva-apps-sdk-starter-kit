@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-02-02
+
+### 🧰 Added
+
+- Added `examples/design_interaction/template_metadata` to demonstrate the functionality of the preview getDesignTemplateMetadata API.
+- Added the content_publisher template
+
+### 🔧 Changed
+
+- Updated `content_publisher_intent` example to use helper function to propagate changes to canva from the app rather than a useEffect
+- Upgraded `@canva/intents` to `2.1.0`.
+
 ## 2026-01-29
 
 ### 🔧 Changed

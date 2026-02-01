@@ -1,0 +1,38 @@
+/* Scroll container */
+.scrollContainer {
+  box-sizing: border-box;
+  overflow-y: scroll;
+  height: 100%;
+  padding-top: var(--ui-kit-space-200);
+  padding-right: var(--ui-kit-space-200);
+  padding-bottom: var(--ui-kit-space-200);
+
+  /* for firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-kit-color-content-placeholder-fg) transparent;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  position: absolute;
+  width: var(--ui-kit-base-unit);
+  height: 0;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+  width: var(--ui-kit-base-unit);
+  margin-top: var(--ui-kit-space-100);
+  margin-bottom: var(--ui-kit-space-100);
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  border-radius: var(--ui-kit-radius-element-standard);
+  background: var(--ui-kit-color-content-placeholder-fg);
+  visibility: hidden;
+}
+
+.scrollContainer:hover::-webkit-scrollbar-thumb,
+.scrollContainer:focus::-webkit-scrollbar-thumb,
+.scrollContainer:focus-within::-webkit-scrollbar-thumb {
+  visibility: visible;
+}

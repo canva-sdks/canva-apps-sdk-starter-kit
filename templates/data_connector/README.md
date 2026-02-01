@@ -224,7 +224,7 @@ To run it and authenticate with the Canva Connect API via OAuth you must first c
 ### 0. Set up an App
 
 - If not already handled by the Canva CLI, you need to create an app via the [Developer Portal](https://www.canva.com/developers/apps).
-- On the **Compatibility** page, enable the `Data Connector` intent.
+- On the **Intents** page, enable the `Data Connector` intent.
 
 ### 1. Set up a Connect API Integration
 

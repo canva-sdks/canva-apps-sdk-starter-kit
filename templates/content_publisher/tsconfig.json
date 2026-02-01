@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2018",
+      "es2019.array",
+      "es2019.object",
+      "es2019.string",
+      "es2020.promise",
+      "es2020.string"
+    ],
+    "types": ["node", "webpack-env", "jest"],
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "noImplicitOverride": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "ES2019",
+    "sourceMap": true,
+    "inlineSources": true,
+    "module": "ESNext",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "styles": ["./styles"]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./backend/**/*",
+    "./utils/**/*",
+    "./scripts/**/*",
+    "./declarations/declarations.d.ts",
+    "./styles/**/*"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}

@@ -4,21 +4,13 @@
   "runtime": {
     "permissions": [
       {
-        "name": "canva:asset:private:write",
-        "type": "mandatory"
-      },
-      {
         "name": "canva:design:content:read",
-        "type": "mandatory"
-      },
-      {
-        "name": "canva:design:content:write",
         "type": "mandatory"
       }
     ]
   },
   "intent": {
-    "design_editor": {
+    "content_publisher": {
       "enrolled": true
     }
   }
