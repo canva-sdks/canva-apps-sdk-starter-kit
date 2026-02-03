@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-02-03
+
+### 🧰 Added
+
+- Added mocking for `@canva/intents` package in `jest.setup.ts`
+
+### 🔧 Changed
+
+- Updated Content Publisher intent examples to use `@canva/intents` `2.1.0`
+
 ## 2026-02-02
 
 ### 🧰 Added

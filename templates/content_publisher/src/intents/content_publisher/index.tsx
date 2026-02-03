@@ -18,7 +18,7 @@ const intl = initIntl();
 // Render the settings UI where users configure publishing options
 function renderSettingsUi({
   updatePublishSettings,
-  registerOnSettingsUiContextChange,
+  registerOnContextChange,
 }: RenderSettingsUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
   root.render(
@@ -26,7 +26,7 @@ function renderSettingsUi({
       <AppUiProvider>
         <SettingsUi
           updatePublishSettings={updatePublishSettings}
-          registerOnSettingsUiContextChange={registerOnSettingsUiContextChange}
+          registerOnContextChange={registerOnContextChange}
         />
       </AppUiProvider>
     </AppI18nProvider>,
