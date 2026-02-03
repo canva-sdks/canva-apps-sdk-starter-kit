@@ -172,13 +172,15 @@ const ImagePreview = ({
         </div>
       ) : (
         <div className={styles.imageRow} style={{ width: fullWidth }}>
-          {media?.previews.map((p) => {
-            return (
-              <div key={p.id} className={styles.image}>
-                <PreviewRenderer preview={p} />
-              </div>
-            );
-          })}
+          {media?.previews
+            .filter((p) => p.kind !== "email")
+            .map((p) => {
+              return (
+                <div key={p.id} className={styles.image}>
+                  <PreviewRenderer preview={p} />
+                </div>
+              );
+            })}
         </div>
       )}
     </Box>
@@ -187,6 +189,10 @@ const ImagePreview = ({
 
 // Renders individual preview based on its type and status
 const PreviewRenderer = ({ preview }: { preview: Preview }) => {
+  if (preview.kind === "email") {
+    return null;
+  }
+
   const intl = useIntl();
 
   // Handle different preview states

@@ -1,8 +1,8 @@
 import { FormField, Rows, Text, TextInput } from "@canva/app-ui-kit";
 import type {
   PublishRefValidityState,
+  PublishSettingsSettingsUiContext,
   RenderSettingsUiRequest,
-  SettingsUiContext,
 } from "@canva/intents/content";
 import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
@@ -12,20 +12,23 @@ import type { PublishSettings } from "./types";
 // Settings UI component for configuring publish settings
 export const SettingsUi = ({
   updatePublishSettings,
-  registerOnSettingsUiContextChange,
+  registerOnContextChange,
 }: RenderSettingsUiRequest) => {
   const intl = useIntl();
   const [settings, setSettings] = useState<PublishSettings>({ caption: "" });
   const [settingsUiContext, setSettingsUiContext] =
-    useState<SettingsUiContext | null>(null);
+    useState<PublishSettingsSettingsUiContext | null>(null);
 
   // Listen for settings UI context changes (e.g., when output type changes)
   useEffect(() => {
-    const dispose = registerOnSettingsUiContextChange((context) => {
-      setSettingsUiContext(context);
+    const dispose = registerOnContextChange({
+      onContextChange: (context) => {
+        if (context.reason !== "publish_settings") return;
+        setSettingsUiContext(context);
+      },
     });
     return dispose;
-  }, [registerOnSettingsUiContextChange]);
+  }, [registerOnContextChange]);
 
   // Helper function to both set the settings locally and propagate them to Canva
   const setAndPropagateSettings = useCallback(
