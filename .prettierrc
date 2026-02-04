@@ -17,5 +17,13 @@
   "trailingComma": "all",
   "useTabs": false,
   "embeddedLanguageFormatting": "auto",
-  "experimentalTernaries": false
+  "experimentalTernaries": false,
+  "overrides": [
+    {
+      "files": ".syncpackrc",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }
