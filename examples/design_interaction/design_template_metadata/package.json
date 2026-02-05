@@ -5,6 +5,6 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
-    "@canva/design": "^2.7.6-beta.1"
+    "@canva/design": "^2.7.6-beta.2"
   }
 }

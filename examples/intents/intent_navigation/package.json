@@ -6,6 +6,6 @@
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
     "@canva/intents": "^2.0.2-beta.3",
-    "@canva/design": "^2.7.6-beta.1"
+    "@canva/design": "^2.7.6-beta.2"
   }
 }

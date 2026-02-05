@@ -36,7 +36,7 @@
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.7.5",
     "@canva/error": "^2.2.0",
-    "@canva/intents": "^2.1.0",
+    "@canva/intents": "^2.1.2",
     "@canva/platform": "^2.2.1",
     "@canva/user": "^2.1.2",
     "react": "^19.2.3",
