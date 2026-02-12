@@ -16,30 +16,24 @@ import { SettingsUi } from "./settings_ui";
 const intl = initIntl();
 
 // Render the settings UI where users configure publishing options
-function renderSettingsUi({
-  updatePublishSettings,
-  registerOnContextChange,
-}: RenderSettingsUiRequest) {
+function renderSettingsUi(request: RenderSettingsUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
   root.render(
     <AppI18nProvider>
       <AppUiProvider>
-        <SettingsUi
-          updatePublishSettings={updatePublishSettings}
-          registerOnContextChange={registerOnContextChange}
-        />
+        <SettingsUi {...request} />
       </AppUiProvider>
     </AppI18nProvider>,
   );
 }
 
 // Render the preview UI showing how the content will appear after publishing
-function renderPreviewUi({ registerOnPreviewChange }: RenderPreviewUiRequest) {
+function renderPreviewUi(request: RenderPreviewUiRequest) {
   const root = createRoot(document.getElementById("root") as Element);
   root.render(
     <AppI18nProvider>
       <AppUiProvider>
-        <PreviewUi registerOnPreviewChange={registerOnPreviewChange} />
+        <PreviewUi {...request} />
       </AppUiProvider>
     </AppI18nProvider>,
   );

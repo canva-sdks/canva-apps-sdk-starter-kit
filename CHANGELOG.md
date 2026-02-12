@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-02-12
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `2.8.0`.
+- Updated intent_navigation example to use current versions of @canva/design and @canva/intents
+- Upgraded preview `@canva/intents` to `2.1.3-beta.0`.
+- Upgraded `@canva/intents` to `2.2.0`.
+- Updated preview package versions to be exact versions, without caret (^), to resolve an issue where during installs npm would resolve the stable release instead of the prerelease version.
+
 ## 2026-02-05
 
 ### 🔧 Changed

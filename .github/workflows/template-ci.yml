@@ -1,0 +1,47 @@
+name: template-ci
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  template-ci:
+    runs-on: ubuntu-latest
+    name: template-ci (${{ matrix.name }})
+    strategy:
+      matrix:
+        include:
+          - name: hello_world
+            path: templates/hello_world
+          - name: gen_ai
+            path: templates/gen_ai
+          - name: dam
+            path: templates/dam
+          - name: data_connector
+            path: templates/data_connector
+          - name: content_publisher
+            path: templates/content_publisher
+          - name: mls
+            path: reference_apps/real_estate_mls
+    defaults:
+      run:
+        working-directory: ./${{ matrix.path }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "${{ matrix.path }}/.nvmrc"
+      - name: Install dependencies
+        run: npm ci --include=optional
+      - name: Lint types
+        run: npm run lint:types
+      - name: Lint
+        run: npm run lint
+      # Templates don't have tests yet; re-enable when tests are added
+      # - name: Test
+      #   run: npm run test
+      - name: Run prettier
+        run: npm run format:check
+      - name: Build
+        run: npm run build
