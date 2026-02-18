@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-02-19
+
+### 🔧 Changed
+
+- Upgraded `@canva/error` to `2.2.1`.
+- Upgraded `@canva/platform` to `2.2.2`.
+
+### 🐞 Fixed
+
+- Removed unused backend utility files from the gen_ai template and fixed READMEs for content_publisher, data_connector, and gen_ai templates.
+
 ## 2026-02-12
 
 ### 🔧 Changed
