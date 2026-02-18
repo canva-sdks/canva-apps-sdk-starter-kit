@@ -24,9 +24,9 @@
     "@canva/app-ui-kit": "^5.5.0",
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.8.0",
-    "@canva/error": "^2.2.0",
+    "@canva/error": "^2.2.1",
     "@canva/intents": "^2.2.0",
-    "@canva/platform": "^2.2.1",
+    "@canva/platform": "^2.2.2",
     "@canva/user": "^2.1.2",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
@@ -97,5 +97,10 @@
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2",
     "yargs": "17.7.2"
+  },
+  "overrides": {
+    "react-infinite-scroller": {
+      "react": "^19.2.3"
+    }
   }
 }
