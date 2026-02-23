@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-02-23
+
+### 🔧 Changed
+
+- Upgraded `@canva/user` to `2.1.3`.
+- Upgraded `@canva/app-ui-kit` to `5.6.0`.
+- Dependencies audit bringing modules up to date:
+
+```
+webpack                            5.99.9  →   5.105.2
+```
+
+### 🐞 Fixed
+
+- The DAM template showed a React peer dependency warning on install.
+
 ## 2026-02-19
 
 ### 🔧 Changed
