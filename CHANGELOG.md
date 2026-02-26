@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-02-26
+
+### 🔧 Changed
+
+- Upgraded preview version of `@canva/intents` to `2.2.1-beta.0`.
+
 ## 2026-02-23
 
 ### 🔧 Changed
