@@ -8,8 +8,8 @@ import {
   outdatedSourceRef,
   remoteRequestFailed,
 } from "src/utils/fetch_result";
-import { DATA_SOURCES } from "./data_sources";
-import { DataAPIError } from ".";
+import { DATA_SOURCES } from "./data_sources/collection";
+import { DataAPIError } from "./data_source";
 
 /**
  * This function handles parsing the data fetch parameters and calling the appropriate handler for the data source.

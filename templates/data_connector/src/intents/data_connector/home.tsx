@@ -1,7 +1,7 @@
 import { Box, Rows } from "@canva/app-ui-kit";
 import { Outlet } from "react-router-dom";
 import * as styles from "styles/components.css";
-import { AppError } from "../../components";
+import { AppError } from "../../components/app_error";
 
 export const Home = () => (
   <div className={styles.scrollContainer}>

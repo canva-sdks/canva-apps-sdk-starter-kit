@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-03-05
+
+### 🧰 Added
+
+- Added bulk create and publishing capabilities to the Real Estate MLS reference app
+
+### 🔧 Changed
+
+- Removed barrel files from gen_ai and data_connector templates
+- Upgraded preview version of `@canva/intents` to `2.2.1-beta.1`.
+
 ## 2026-02-26
 
 ### 🔧 Changed

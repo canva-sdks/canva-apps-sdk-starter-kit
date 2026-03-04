@@ -10,8 +10,11 @@ import {
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { cancelImageGenerationJob, getImageGenerationJobStatus } from "src/api";
-import { useAppContext } from "src/context";
+import {
+  cancelImageGenerationJob,
+  getImageGenerationJobStatus,
+} from "src/api/api";
+import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
 
 const INTERVAL_DURATION_IN_MS = 100;

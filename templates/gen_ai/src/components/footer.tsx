@@ -2,12 +2,12 @@ import { Button, Rows } from "@canva/app-ui-kit";
 import { getPlatformInfo } from "@canva/platform";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import { purchaseCredits, queueImageGeneration } from "src/api";
-import { RemainingCredits } from "src/components";
+import { purchaseCredits, queueImageGeneration } from "src/api/api";
+import { RemainingCredits } from "src/components/remaining_credits";
 import { NUMBER_OF_IMAGES_TO_GENERATE } from "src/config";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
-import { getObsceneWords } from "src/utils";
+import { getObsceneWords } from "src/utils/obscenity_filter";
 import { FooterMessages as Messages } from "./footer.messages";
 
 export const Footer = () => {

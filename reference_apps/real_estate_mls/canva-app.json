@@ -18,6 +18,12 @@
     ]
   },
   "intent": {
+    "content_publisher": {
+      "enrolled": true
+    },
+    "data_connector": {
+      "enrolled": true
+    },
     "design_editor": {
       "enrolled": true
     }
