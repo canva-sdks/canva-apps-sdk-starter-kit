@@ -13,6 +13,8 @@ import {
   Text,
   TypographyCard,
 } from "@canva/app-ui-kit";
+import { bulkCreate } from "@canva/design";
+import { features } from "@canva/platform";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -33,8 +35,14 @@ export const ListingDetailsPage = () => {
 
   const { dragText, dragImage } = useDragElement();
 
+  const bulkCreateSupported = features.isSupported(bulkCreate.launch);
+
   if (!listing) {
     navigate(-1);
+  }
+
+  async function launchBulkCreate() {
+    await bulkCreate.launch({ withDataConnector: "self" });
   }
 
   const handleCopy = async (text: string) => {
@@ -278,6 +286,17 @@ export const ListingDetailsPage = () => {
                   <Text>{listing.price}</Text>
                 </TypographyCard>
               </Rows>
+              {bulkCreateSupported && (
+                <Box paddingBottom="2u">
+                  <Button variant="primary" onClick={launchBulkCreate} stretch>
+                    {intl.formatMessage({
+                      defaultMessage: "Bulk create",
+                      description:
+                        "Button to launch bulk create with listing data",
+                    })}
+                  </Button>
+                </Box>
+              )}
             </Rows>
           )}
 

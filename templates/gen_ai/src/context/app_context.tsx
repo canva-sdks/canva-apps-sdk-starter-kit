@@ -1,8 +1,8 @@
 import type { JSX } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import type { ImageType } from "src/api";
-import { getRemainingCredits } from "src/api";
+import type { ImageType } from "src/api/api";
+import { getRemainingCredits } from "src/api/api";
 import { ContextMessages as Messages } from "./context.messages";
 
 export interface AppContextType {

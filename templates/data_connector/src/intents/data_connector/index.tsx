@@ -7,7 +7,8 @@ import type {
 } from "@canva/intents/data";
 import { auth } from "@canva/user";
 import { createRoot } from "react-dom/client";
-import { buildDataTableResult, scope } from "../../api";
+import { buildDataTableResult } from "../../api/fetch_data_table";
+import { scope } from "../../api/oauth";
 import { App } from "./app";
 
 const dataConnector: DataConnectorIntent = {
@@ -49,7 +50,10 @@ const dataConnector: DataConnectorIntent = {
 
     if (module.hot) {
       module.hot.accept("./app", render);
-      module.hot.accept("../../api", render);
+      module.hot.accept(
+        ["../../api/fetch_data_table", "../../api/oauth"],
+        render,
+      );
     }
   },
 };

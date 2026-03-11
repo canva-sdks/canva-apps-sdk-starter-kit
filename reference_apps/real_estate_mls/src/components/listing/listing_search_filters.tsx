@@ -36,6 +36,7 @@ export const ListingSearchFilters = ({
 }: ListingSearchFiltersProps) => {
   const intl = useIntl();
   const [queryValue, setQueryValue] = useState(query);
+
   return (
     <Rows spacing="2u">
       <SearchInputMenu

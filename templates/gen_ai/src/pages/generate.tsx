@@ -1,5 +1,6 @@
 import { Rows } from "@canva/app-ui-kit";
-import { AppError, PromptInput } from "src/components";
+import { AppError } from "src/components/app_error";
+import { PromptInput } from "src/components/prompt_input";
 
 export const GeneratePage = () => (
   <Rows spacing="1u">

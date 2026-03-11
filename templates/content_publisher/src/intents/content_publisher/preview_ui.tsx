@@ -1,11 +1,16 @@
 import { Box } from "@canva/app-ui-kit";
-import type { OutputType, PreviewMedia } from "@canva/intents/content";
+import type {
+  OutputType,
+  PreviewMedia,
+  RenderPreviewUiInvocationContext,
+} from "@canva/intents/content";
 import { useEffect, useState } from "react";
 import * as styles from "../../../styles/preview_ui.css";
 import { PostPreview } from "./post_preview";
 import { parsePublishSettings } from "./types";
 
 interface PreviewUiProps {
+  invocationContext: RenderPreviewUiInvocationContext;
   registerOnPreviewChange: (
     callback: (opts: {
       previewMedia: PreviewMedia[];
@@ -22,13 +27,25 @@ const username = "username";
 
 // Main preview UI component that receives preview updates when settings or pages change.
 // Preview UI is more flexible to align with your platform's design system, so it is not constrained to the Canva design system.
-export const PreviewUi = ({ registerOnPreviewChange }: PreviewUiProps) => {
+export const PreviewUi = ({
+  invocationContext,
+  registerOnPreviewChange,
+}: PreviewUiProps) => {
   const [previewData, setPreviewData] = useState<{
-    previewMedia: PreviewMedia[];
-    outputType: OutputType;
+    previewMedia?: PreviewMedia[];
+    outputType?: OutputType;
     publishRef?: string;
-  } | null>(null);
-
+  } | null>(
+    invocationContext
+      ? {
+          previewMedia:
+            (invocationContext?.previewMedia as PreviewMedia[]) || [],
+          outputType:
+            (invocationContext?.outputType as OutputType) || undefined,
+          publishRef: invocationContext?.publishRef,
+        }
+      : null,
+  );
   // Register to receive preview updates whenever settings or pages change
   useEffect(() => {
     const dispose = registerOnPreviewChange((data) => {

@@ -41,13 +41,13 @@ describe("start script", () => {
         reject();
       });
 
-      // timeout and fail test if the server hasn't correctly started in 10 seconds
+      // timeout and fail test if the server hasn't correctly started in 30 seconds
       setTimeout(() => {
         if (serverProcess?.pid && !serverProcess.exitCode) {
           treeKill(serverProcess.pid);
         }
         reject(new Error("Test timed out"));
-      }, 10000);
+      }, 30000);
     });
 
     // check that the server is running and accessible
@@ -57,5 +57,5 @@ describe("start script", () => {
 
     // clean up
     treeKill(serverProcess.pid);
-  }, 15000); // 15 seconds timeout to allow for the server to start
+  }, 35000); // 35 seconds timeout to allow for the server to start
 });

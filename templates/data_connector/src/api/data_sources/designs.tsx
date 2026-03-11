@@ -5,16 +5,16 @@ import { Button, DatabaseIcon, HorizontalCard, Rows } from "@canva/app-ui-kit";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { Header } from "src/components";
+import { Header } from "src/components/header";
 import {
   ownershipFilter,
   sortOrderField,
 } from "src/components/inputs/messages";
 import { SearchFilter } from "src/components/inputs/search_filter";
 import { SelectField } from "src/components/inputs/select_field";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
-import { dateCell, numberCell, stringCell } from "src/utils";
+import { dateCell, numberCell, stringCell } from "src/utils/data_table";
 import type { CanvaItemResponse } from "../connect_client";
 import { DataAPIError, DataSourceHandler } from "../data_source";
 import type { APIResponseItem, DataSourceConfig } from "../data_source";

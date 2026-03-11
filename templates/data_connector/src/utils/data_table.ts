@@ -7,7 +7,7 @@ import type {
   NumberDataTableCell,
   StringDataTableCell,
 } from "@canva/intents/data";
-import type { APIResponseItem } from "src/api";
+import type { APIResponseItem } from "src/api/data_source";
 
 export interface DataTableColumn<T extends APIResponseItem> {
   label: string;

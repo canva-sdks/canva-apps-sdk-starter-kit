@@ -1,5 +1,5 @@
 import { Alert } from "@canva/app-ui-kit";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 
 export const AppError = () => {
   const { loadingApp, creditsError, appError, setAppError } = useAppContext();

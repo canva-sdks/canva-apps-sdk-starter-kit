@@ -1,7 +1,7 @@
 import { Rows } from "@canva/app-ui-kit";
 import { Outlet } from "react-router-dom";
 import * as styles from "styles/components.css";
-import { Footer } from "../../components";
+import { Footer } from "../../components/footer";
 
 export const Home = () => (
   <div className={styles.scrollContainer}>

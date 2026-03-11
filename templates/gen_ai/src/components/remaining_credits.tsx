@@ -2,7 +2,7 @@ import { Link, Rows, Text, TextPlaceholder } from "@canva/app-ui-kit";
 import { getPlatformInfo, requestOpenExternalUrl } from "@canva/platform";
 import type { JSX } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 
 // @TODO: Replace this URL with your custom upselling link.
 const PURCHASE_URL = "https://example.com";
