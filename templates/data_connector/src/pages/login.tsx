@@ -9,11 +9,11 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { defineMessages, FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { scope } from "src/api";
-import { Header } from "src/components";
+import { scope } from "src/api/oauth";
+import { Header } from "src/components/header";
 import { Paths } from "src/routes/paths";
 import * as styles from "styles/components.css";
-import { useAppContext } from "../context";
+import { useAppContext } from "../context/use_app_context";
 
 export const Login = () => {
   const intl = useIntl();

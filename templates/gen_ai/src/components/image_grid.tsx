@@ -4,8 +4,8 @@ import { upload } from "@canva/asset";
 import { addElementAtPoint, ui } from "@canva/design";
 import type { DragEvent } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import type { ImageType } from "src/api";
-import { useAppContext } from "src/context";
+import type { ImageType } from "src/api/api";
+import { useAppContext } from "src/context/use_app_context";
 import * as styles from "styles/utils.css";
 
 const THUMBNAIL_HEIGHT = 150;

@@ -1,6 +1,6 @@
 import type { DataTable } from "@canva/intents/data";
 import type { JSX } from "react";
-import { type DataTableColumn, toDataTable } from "src/utils";
+import { type DataTableColumn, toDataTable } from "src/utils/data_table";
 
 /**
  * This file defines types and classes related to data source configuration, fetching and outputting as a data table.

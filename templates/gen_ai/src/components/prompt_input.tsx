@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { useLocation } from "react-router-dom";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
 import { PromptInputMessages as Messages } from "./prompt_input.messages";
 

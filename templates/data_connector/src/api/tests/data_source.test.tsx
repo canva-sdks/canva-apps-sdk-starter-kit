@@ -1,11 +1,11 @@
 /* eslint-disable formatjs/no-literal-string-in-object */
 /* eslint-disable formatjs/no-literal-string-in-jsx */
-import { toDataTable } from "src/utils";
+import { toDataTable } from "src/utils/data_table";
 import type { APIResponseItem, DataSourceConfig } from "../data_source";
 import { DataAPIError, DataSourceHandler } from "../data_source";
 
 // Mock dependencies
-jest.mock("src/utils", () => ({
+jest.mock("src/utils/data_table", () => ({
   toDataTable: jest.fn().mockReturnValue({ rows: [] }),
 }));
 

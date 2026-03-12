@@ -1,5 +1,5 @@
 /* eslint-disable formatjs/no-literal-string-in-object */
-import type { APIResponseItem } from "src/api";
+import type { APIResponseItem } from "src/api/data_source";
 import {
   booleanCell,
   dateCell,

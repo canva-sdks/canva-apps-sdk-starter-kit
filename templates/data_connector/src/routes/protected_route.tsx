@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "src/routes/paths";
-import { useAppContext } from "../context";
+import { useAppContext } from "../context/use_app_context";
 
 interface ProtectedRouteProps {
   children: ReactNode;

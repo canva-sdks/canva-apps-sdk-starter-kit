@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-03-12
+
+### 🧰 Added
+
+- Added bulk create and publishing capabilities to the Real Estate MLS reference app
+- Add example for invocationContext
+- Updated the `content_publisher` template to use the new invocationContext prop, for more information on the invocationContext refer to [prepareContentPublisher docs](https://www.canva.dev/docs/apps/api/latest/intents-content-prepare-content-publisher/)
+
+### 🔧 Changed
+
+- Removed barrel files from gen_ai and data_connector templates
+- Upgraded preview version of `@canva/intents` to `2.2.1-beta.1`.
+- Upgraded `@canva/app-ui-kit` to `5.7.0`.
+
 ## 2026-02-26
 
 ### 🔧 Changed

@@ -1,6 +1,6 @@
 import { Button, Rows } from "@canva/app-ui-kit";
 import { useIntl } from "react-intl";
-import { useAppContext } from "src/context";
+import { useAppContext } from "src/context/use_app_context";
 
 export const Footer = () => {
   const { isAuthenticated, logout } = useAppContext();

@@ -8,14 +8,19 @@ import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import * as styles from "styles/components.css";
 import type { PublishSettings } from "./types";
+import { parsePublishSettings } from "./types";
 
 // Settings UI component for configuring publish settings
 export const SettingsUi = ({
+  invocationContext,
   updatePublishSettings,
   registerOnContextChange,
 }: RenderSettingsUiRequest) => {
   const intl = useIntl();
-  const [settings, setSettings] = useState<PublishSettings>({ caption: "" });
+  const [settings, setSettings] = useState<PublishSettings>(
+    parsePublishSettings(invocationContext?.publishRef) ??
+      ({ caption: "" } as PublishSettings),
+  );
   const [settingsUiContext, setSettingsUiContext] =
     useState<PublishSettingsSettingsUiContext | null>(null);
 

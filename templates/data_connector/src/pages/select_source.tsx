@@ -1,7 +1,8 @@
 import { Box, Rows } from "@canva/app-ui-kit";
 import { useIntl } from "react-intl";
-import { DATA_SOURCES } from "src/api/data_sources";
-import { Footer, Header } from "src/components";
+import { DATA_SOURCES } from "src/api/data_sources/collection";
+import { Footer } from "src/components/footer";
+import { Header } from "src/components/header";
 
 export const SelectSource = () => {
   const intl = useIntl();

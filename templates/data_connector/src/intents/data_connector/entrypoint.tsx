@@ -5,9 +5,9 @@ import type {
   APIResponseItem,
   DataSourceConfig,
   DataSourceHandler,
-} from "../../api";
-import { DATA_SOURCES } from "../../api/data_sources";
-import { useAppContext } from "../../context";
+} from "../../api/data_source";
+import { DATA_SOURCES } from "../../api/data_sources/collection";
+import { useAppContext } from "../../context/use_app_context";
 import { Paths } from "../../routes/paths";
 import {
   isDataRefEmpty,
