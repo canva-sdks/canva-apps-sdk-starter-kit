@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-03-19
+
+### 🔧 Changed
+
+- Upgraded `@canva/user` to `2.2.0`.
+- Renamed MCP server config from `canva` to `canva-dev`.
+- Upgraded `@canva/app-components` to `2.2.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+@types/jest                              29.5.14   ->   30.0.0
+jest                                      29.7.0   ->   30.2.0
+jest-environment-jsdom                    29.7.0   ->   30.2.0
+terser-webpack-plugin                     5.3.14   ->   5.4.0
+```
+
 ## 2026-03-12
 
 ### 🧰 Added

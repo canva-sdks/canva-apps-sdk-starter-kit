@@ -1,5 +1,5 @@
 import type { RenderSelectionUiRequest } from "@canva/intents/data";
-import type { AccessTokenResponse } from "@canva/user";
+import type { AccessTokenResponse, Oauth } from "@canva/user";
 import { auth } from "@canva/user";
 import type { JSX, ReactNode } from "react";
 import { createContext, useCallback, useState } from "react";
@@ -13,7 +13,7 @@ export interface AppContextType {
   isAuthenticated: boolean;
   accessToken: AccessTokenResponse | undefined;
   setAccessToken: (token: AccessTokenResponse | undefined) => void;
-  oauth: ReturnType<typeof auth.initOauth>;
+  oauth: Oauth;
   logout: () => Promise<void>;
   dataSourceHandler?: DataSourceHandler<DataSourceConfig, APIResponseItem>;
   setDataSourceHandler: (
