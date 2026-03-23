@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-23
+
+### 🔧 Changed
+
+- Updated supported Node.js versions to `^20 || ^22 || ^24`, dropping Node.js 18.
+- Updated `start` and `postinstall` scripts to run with `tsx`.
+
 ## 2026-03-19
 
 ### 🔧 Changed
