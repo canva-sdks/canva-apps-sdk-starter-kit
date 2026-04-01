@@ -4,6 +4,8 @@ Demonstrates how to make authenticated HTTP requests to external backends using 
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/fetch/.
 
+This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
+
 Related examples: See design_interaction/design_token for design-specific API access, or fundamentals/authentication for user authentication patterns.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:

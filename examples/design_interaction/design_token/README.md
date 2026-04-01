@@ -4,6 +4,8 @@ Demonstrates how to obtain design tokens for accessing design metadata through e
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-token/.
 
+This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
+
 Related examples: See fundamentals/fetch for general API communication, or design_interaction/export for design export functionality.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
