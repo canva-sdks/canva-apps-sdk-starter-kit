@@ -73,12 +73,6 @@ export function createBaseServer(router: express.Router): BaseServer {
       return;
     }
 
-    if (err.name === "JwksError") {
-      console.error(
-        "\x1b[38;5;208m\nCheck that CANVA_APP_ID in your .env matches the app you are currently previewing in Canva.\n\x1b[0m",
-      );
-    }
-
     console.error(err.stack);
     res.status(500).send({
       error: "something went wrong",

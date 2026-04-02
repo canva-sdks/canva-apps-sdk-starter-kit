@@ -8,7 +8,7 @@ This is a starting point for your app using your chosen template. The complete d
 
 ## Requirements
 
-- Node.js `v24`
+- Node.js `^24`
 - npm `v11`
 
 **Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The [.nvmrc](/.nvmrc) file in the root directory of this repo will ensure the correct version is used once you run `nvm install`.
