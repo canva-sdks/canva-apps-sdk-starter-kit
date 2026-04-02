@@ -4,8 +4,6 @@ Demonstrates how to integrate with external digital asset management systems usi
 
 For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/digital-asset-management/>.
 
-This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
-
 Related examples: See asset_upload for direct asset upload patterns, or content_replacement examples for asset substitution workflows.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
