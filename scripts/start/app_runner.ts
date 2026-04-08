@@ -113,6 +113,11 @@ export class AppRunner {
       const nodemonServer = nodemon({
         script: ctx.developerBackendEntryPath,
         ext: "ts",
+        // Uses esbuild-register to execute TypeScript without ts-node.
+        // Only relevant for backend-enabled templates; hello_world skips this path entirely.
+        execMap: {
+          ts: "node --require esbuild-register",
+        },
         env: {
           SHOULD_ENABLE_HTTPS: ctx.httpsEnabled,
           HTTPS_CERT_FILE: cert?.certFile || "",
