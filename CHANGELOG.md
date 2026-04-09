@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-04-09
+
+### 🧰 Added
+
+- Added automated start script tests to all templates and reference apps, bringing them in line with the root starter kit. These proactive health checks verify the development server starts correctly for all environments.
+
+### 🔧 Changed
+
+- Updated backend example READMEs to document the `CANVA_APP_ID` .env requirement, and improved server error messages when the app ID is misconfigured.
+- Replaced `ts-node` with `esbuild-register` for TypeScript webpack config loading.
+- Upgraded `@canva/intents` to `2.4.0`.
+- Upgraded preview version of `@canva/intents` to `2.4.1-beta.0`.
+
 ## 2026-03-23
 
 ### 🔧 Changed

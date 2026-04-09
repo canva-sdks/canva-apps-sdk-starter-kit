@@ -8,7 +8,7 @@ This repo contains everything you need to get an app up and running in a matter 
 
 ## Requirements
 
-- Node.js `^24`
+- Node.js `v24`
 - npm `v11`
 
 **Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The [.nvmrc](/.nvmrc) file in the root directory of this repo will ensure the correct version is used once you run `nvm install`.
