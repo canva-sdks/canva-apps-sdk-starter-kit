@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-04-21
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-components` to `2.3.0`.
+- Upgraded `@canva/intents` to `2.5.0`.
+- Upgraded preview version of `@canva/intents` to `2.5.1-beta.0`.
+- Upgraded `@canva/app-components` to `2.4.0`.
+
+### 🗑️ Removed
+
+- Dropped support for Node.js 20. The minimum supported version is now Node.js 22.
+
 ## 2026-04-09
 
 ### 🧰 Added
