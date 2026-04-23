@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-04-23
+
+### 🔧 Changed
+
+- Updated the multi-account authentication example to use `OauthAccountSwitcher` from `@canva/app-components`, added `@canva/app-components` as a dependency, and updated `@canva/user` to `^2.2.0` to satisfy peer dependency requirements.
+
 ## 2026-04-21
 
 ### 🔧 Changed
