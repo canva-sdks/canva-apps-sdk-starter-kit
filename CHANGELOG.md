@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-05
+
+### 🔧 Changed
+
+- Upgraded GitHub Actions workflows to use `actions/checkout` and `actions/setup-node` v6.
+- Upgraded `@canva/app-ui-kit` to `5.8.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+node-forge                                 1.3.2   ->   1.4.0
+```
+
 ## 2026-04-23
 
 ### 🔧 Changed
