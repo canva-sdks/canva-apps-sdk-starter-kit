@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-14
+
+### 🔧 Changed
+
+- Upgraded `@canva/cli` to `^2.0.0`.
+- Upgraded preview version of `@canva/design` to `2.8.1-beta.0`.
+- Upgraded preview version of `@canva/intents` to `2.5.1-beta.1`.
+
 ## 2026-05-05
 
 ### 🔧 Changed
