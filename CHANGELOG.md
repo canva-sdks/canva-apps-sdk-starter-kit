@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-21
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-components` to `2.5.0`.
+- Upgraded `@canva/app-ui-kit` to `5.9.0`.
+
 ## 2026-05-14
 
 ### 🔧 Changed
