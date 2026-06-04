@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-04
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `2.9.0`.
+- Upgraded preview version of `@canva/intents` to `2.5.1-beta.2`.
+- Upgraded `@canva/app-ui-kit` to `5.10.0`.
+
 ## 2026-05-21
 
 ### 🔧 Changed
