@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "digital_asset_management",
-  "description": "An example app leveraging @canva/app-components to develop a digital asset management (DAM) app.",
+  "description": "A DAM app that retrieves assets from a backend.",
   "engines": {
     "node": "^22 || ^24"
   },
@@ -29,7 +29,7 @@
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.9.0",
     "@canva/error": "^2.2.1",
-    "@canva/intents": "^2.5.0",
+    "@canva/intents": "^2.6.0",
     "@canva/platform": "^2.2.2",
     "@canva/user": "^2.2.0",
     "cookie-parser": "1.4.7",

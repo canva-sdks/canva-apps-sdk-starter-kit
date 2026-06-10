@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "data_connector",
-  "description": "An example Canva Data Connector App",
+  "description": "A data connector app that imports external data.",
   "engines": {
     "node": "^22 || ^24"
   },
@@ -28,7 +28,7 @@
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.9.0",
     "@canva/error": "^2.2.1",
-    "@canva/intents": "^2.5.0",
+    "@canva/intents": "^2.6.0",
     "@canva/platform": "^2.2.2",
     "@canva/user": "^2.2.0",
     "react": "^19.2.3",
