@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-11
+
+### 🔧 Changed
+
+- Updated templates descriptions in their package.json
+- Upgraded `@canva/intents` to `2.6.0`.
+
 ## 2026-06-04
 
 ### 🔧 Changed
