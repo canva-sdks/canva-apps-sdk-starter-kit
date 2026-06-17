@@ -24,6 +24,7 @@
     "outDir": "dist",
     "strict": true,
     "skipLibCheck": true,
+    "isolatedModules": true,
     "target": "ES2019",
     "sourceMap": true,
     "inlineSources": true,

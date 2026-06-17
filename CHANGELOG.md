@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-06-18
+
+### 🔧 Changed
+
+- Enabled `isolatedModules` in TypeScript configs across the starter kit.
+
 ## 2026-06-11
 
 ### 🔧 Changed
