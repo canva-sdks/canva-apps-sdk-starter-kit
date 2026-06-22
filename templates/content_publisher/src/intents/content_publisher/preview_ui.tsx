@@ -58,22 +58,23 @@ export const PreviewUi = ({
   const publishSettings = parsePublishSettings(publishRef);
 
   return (
-    <Box
-      className={styles.container}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
-      width="full"
-      height="full"
-    >
-      {outputType?.id === "post" && (
-        <PostPreview
-          previewMedia={previewMedia}
-          settings={publishSettings}
-          username={username}
-        />
-      )}
-    </Box>
+    <div className={styles.container}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+        width="full"
+        height="full"
+      >
+        {outputType?.id === "post" && (
+          <PostPreview
+            previewMedia={previewMedia}
+            settings={publishSettings}
+            username={username}
+          />
+        )}
+      </Box>
+    </div>
   );
 };

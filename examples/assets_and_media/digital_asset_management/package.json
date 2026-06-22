@@ -9,7 +9,7 @@
     "@canva/app-middleware": "^0.0.0-beta.5",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
-    "express": "4.22.1"
+    "express": "4.22.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.19"

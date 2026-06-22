@@ -1,6 +1,5 @@
 // For usage information, see the README.md file.
 import { SearchableListView } from "@canva/app-components";
-import { Box } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
 import { useConfig } from "./config";
 import { findResources } from "./adapter";
@@ -9,7 +8,7 @@ import * as styles from "./index.css";
 export function App() {
   const config = useConfig();
   return (
-    <Box className={styles.rootWrapper} height="full">
+    <div className={styles.rootWrapper}>
       {/*
         SearchableListView is a Canva component that provides a complete digital asset management interface.
         It handles searching, filtering, browsing containers, and importing assets from external platforms.
@@ -41,6 +40,6 @@ export function App() {
           });
         }}
       />
-    </Box>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import { SearchableListView } from "@canva/app-components";
-import { Box } from "@canva/app-ui-kit";
 import "@canva/app-ui-kit/styles.css";
 import { findResources } from "./adapter";
 import { useConfig } from "./config";
@@ -8,7 +7,7 @@ import * as styles from "./index.css";
 export function App() {
   const config = useConfig();
   return (
-    <Box className={styles.rootWrapper} height="full">
+    <div className={styles.rootWrapper}>
       <SearchableListView
         config={config}
         findResources={findResources}
@@ -30,6 +29,6 @@ export function App() {
           });
         }}
       />
-    </Box>
+    </div>
   );
 }
