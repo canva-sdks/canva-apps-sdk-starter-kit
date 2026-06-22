@@ -71,19 +71,20 @@ export const PreviewUi = ({
   const publishSettings = parsePublishSettings(publishRef);
 
   return (
-    <Box
-      className={styles.container}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
-      width="full"
-      height="full"
-    >
-      {outputType?.id === "post" && (
-        <PostPreview previewMedia={previewMedia} settings={publishSettings} />
-      )}
-    </Box>
+    <div className={styles.container}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+        width="full"
+        height="full"
+      >
+        {outputType?.id === "post" && (
+          <PostPreview previewMedia={previewMedia} settings={publishSettings} />
+        )}
+      </Box>
+    </div>
   );
 };
 
@@ -128,9 +129,9 @@ const UserInfo = ({ isLoading }: { isLoading: boolean }) => {
   return (
     <Columns spacing="1u" alignY="center">
       <Column width="content">
-        <Box className={styles.avatar}>
+        <div className={styles.avatar}>
           <Avatar name={username} />
-        </Box>
+        </div>
       </Column>
       <Column width="content">
         {isLoading ? (
@@ -183,7 +184,7 @@ const ImagePreview = ({
   const fullWidth = (media?.previews.length ?? 1) * IMAGE_WIDTH;
 
   return (
-    <Box borderRadius="large" className={styles.imageContainer}>
+    <div className={styles.imageContainer}>
       {isLoading || !media?.previews.length ? (
         <div className={styles.imagePlaceholder}>
           <Placeholder shape="rectangle" />
@@ -201,7 +202,7 @@ const ImagePreview = ({
             })}
         </div>
       )}
-    </Box>
+    </div>
   );
 };
 

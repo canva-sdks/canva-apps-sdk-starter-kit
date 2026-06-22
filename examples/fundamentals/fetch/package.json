@@ -8,7 +8,7 @@
     "@canva/app-middleware": "^0.0.0-beta.5",
     "cors": "2.8.5",
     "dotenv": "16.6.0",
-    "express": "4.22.1"
+    "express": "4.22.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.19"

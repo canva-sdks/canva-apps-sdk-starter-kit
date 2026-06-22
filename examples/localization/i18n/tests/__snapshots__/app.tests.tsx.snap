@@ -3,7 +3,7 @@
 exports[`app Renders token counts consistently 🎉 1`] = `
 <div>
   <p
-    class="aWBg0w aZskFA u16U_g"
+    class="aWBg0w aZskFA Yrg82w"
   >
     Use 5 of 50 credits
   </p>
@@ -13,7 +13,7 @@ exports[`app Renders token counts consistently 🎉 1`] = `
 exports[`app Renders token counts consistently 🎉 2`] = `
 <div>
   <p
-    class="aWBg0w aZskFA u16U_g"
+    class="aWBg0w aZskFA Yrg82w"
   >
     Use 1 of 1 credit
   </p>
@@ -23,7 +23,7 @@ exports[`app Renders token counts consistently 🎉 2`] = `
 exports[`app Renders token counts consistently 🎉 3`] = `
 <div>
   <p
-    class="aWBg0w aZskFA u16U_g"
+    class="aWBg0w aZskFA Yrg82w"
   >
     Use 1 of 0 credits
   </p>

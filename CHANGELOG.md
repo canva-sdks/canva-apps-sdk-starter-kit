@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-06-22
+
+### 🔧 Changed
+
+- Enabled `isolatedModules` in TypeScript configs across the starter kit.
+- Upgraded `@canva/app-ui-kit` to `5.11.0`.
+- Replaced deprecated `Box` `className` usage in examples and templates with native elements and App UI Kit design tokens.
+- Upgraded preview version of `@canva/intents` to `2.6.1-beta.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+@types/express                           4.17.21   ->   4.17.25
+express                                   4.22.1   ->   4.22.2
+tsx                                       4.20.5   ->   4.22.4
+webpack-dev-server                         5.2.2   ->   5.2.5
+```
+
 ## 2026-06-11
 
 ### 🔧 Changed

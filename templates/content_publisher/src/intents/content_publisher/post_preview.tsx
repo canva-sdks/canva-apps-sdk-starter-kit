@@ -67,9 +67,9 @@ const UserInfo = ({
 }) => {
   return (
     <div className={styles.user}>
-      <Box className={styles.avatar}>
+      <div className={styles.avatar}>
         <Avatar name={username} />
-      </Box>
+      </div>
       {isLoading ? (
         <div className={styles.textPlaceholder}>
           <TextPlaceholder size="medium" />
@@ -119,7 +119,7 @@ const ImagePreview = ({
   const fullWidth = (media?.previews.length ?? 1) * IMAGE_WIDTH;
 
   return (
-    <Box borderRadius="large" className={styles.imageContainer}>
+    <div className={styles.imageContainer}>
       {isLoading || !media?.previews.length ? (
         <div className={styles.imagePlaceholder}>
           <Placeholder shape="rectangle" />
@@ -137,7 +137,7 @@ const ImagePreview = ({
             })}
         </div>
       )}
-    </Box>
+    </div>
   );
 };
 
