@@ -63,7 +63,7 @@ The app, once submitted to Canva, will be rendered in a sandboxed iframe within 
 - **Prettier**: 80 char width, 2 spaces, trailing commas, double quotes.
 - **ESLint**: Canva's app plugin with i18n rules.
 - **Imports**: Use absolute paths for `styles` directory.
-- **Testing**: Jest with jsdom, test files match `*.tests.tsx?` pattern.
+- **Testing**: Jest with jsdom, test files match `*.test.tsx?` or `*.spec.tsx?` patterns.
 
 ## Canva CLI
 

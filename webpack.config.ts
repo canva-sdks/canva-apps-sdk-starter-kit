@@ -1,11 +1,11 @@
 import type { Configuration } from "webpack";
 import { DefinePlugin, optimize } from "webpack";
-import path from "path";
+import path from "node:path";
 import TerserPlugin from "terser-webpack-plugin";
 import { transform } from "@formatjs/ts-transformer";
 import chalk from "chalk";
 import { config } from "dotenv";
-import { Configuration as DevServerConfiguration } from "webpack-dev-server";
+import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 config();
 

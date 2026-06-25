@@ -1,9 +1,9 @@
+import { useFeatureSupport } from "@canva/app-hooks";
 import { Button, Rows, Text } from "@canva/app-ui-kit";
 import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 import { requestOpenExternalUrl } from "@canva/platform";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as styles from "styles/components.css";
-import { useFeatureSupport } from "@canva/app-hooks";
 
 export const DOCS_URL = "https://www.canva.dev/docs/apps/";
 

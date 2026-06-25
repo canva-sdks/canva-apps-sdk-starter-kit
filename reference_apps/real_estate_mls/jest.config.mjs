@@ -8,8 +8,20 @@ const { compilerOptions } = tsconfig;
 export default {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  testRegex: "(/(tests|__tests__)/.*\\.(tests))\\.tsx?$",
-  modulePathIgnorePatterns: ["./internal/", "./node_modules/"],
+  testRegex: "\\.(spec|test)\\.[mc]?tsx?$",
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.agents/",
+    "/.claude/",
+    "/.codex/",
+  ],
+  modulePathIgnorePatterns: [
+    "./internal/",
+    "./node_modules/",
+    "./.agents/",
+    "./.claude/",
+    "./.codex/",
+  ],
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}),
   transform: {

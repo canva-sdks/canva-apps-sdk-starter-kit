@@ -5,9 +5,15 @@ const { compilerOptions } = require("./tsconfig.json");
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  testRegex: "(/(tests|__tests__)/.*|(\\.|/)(tests))\\.tsx?$",
+  testRegex: "\\.(spec|test)\\.[mc]?tsx?$",
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  modulePathIgnorePatterns: [
+    "./node_modules/",
+    "./.agents/",
+    "./.claude/",
+    "./.codex/",
+  ],
   transform: {
     ".+\\.(css)$": "<rootDir>/node_modules/jest-css-modules-transform",
     "^.+\\.tsx?$": [
@@ -33,6 +39,9 @@ module.exports = {
     "/dist/",
     "/templates/",
     "/reference_apps/",
+    "/.agents/",
+    "/.claude/",
+    "/.codex/",
   ],
   setupFiles: ["<rootDir>/jest.setup.ts"],
 };

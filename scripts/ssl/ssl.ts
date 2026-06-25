@@ -1,7 +1,7 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { pki } from "node-forge";
-import path from "path";
-import fs from "fs/promises";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 const SSL_CERT_DIR = path.resolve(__dirname, "..", "..", ".ssl");
 const CERT_FILE = path.resolve(SSL_CERT_DIR, "certificate.pem");

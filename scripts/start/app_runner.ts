@@ -11,7 +11,7 @@ import open from "open";
 import { generatePreviewUrl } from "@canva/cli";
 import type { Certificate } from "../ssl/ssl";
 import { createOrRetrieveCertificate } from "../ssl/ssl";
-import os from "os";
+import os from "node:os";
 
 export const infoChalk = chalk.blue.bold;
 export const warnChalk = chalk.bgYellow.bold;
