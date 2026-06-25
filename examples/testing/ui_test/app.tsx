@@ -8,8 +8,8 @@ export const App = (props: { onClick(): void }) => {
       <Rows spacing="2u">
         <Text>This example demonstrates how to test your app's UI.</Text>
         <Text>
-          Check out <code>examples/testing/ui_test/tests/app.tests.tsx</code> to
-          learn how to start testing.
+          Check out <code>examples/testing/ui_test/__tests__/app.test.tsx</code>{" "}
+          to learn how to start testing.
         </Text>
         <Button variant="primary" onClick={props.onClick}>
           Do something cool

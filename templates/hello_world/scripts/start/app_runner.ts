@@ -5,7 +5,7 @@ import chalk from "chalk";
 import Table from "cli-table3";
 import nodemon from "nodemon";
 import open from "open";
-import os from "os";
+import os from "node:os";
 import webpack from "webpack";
 import WebpackDevServer from "webpack-dev-server";
 import { buildConfig } from "../../webpack.config";

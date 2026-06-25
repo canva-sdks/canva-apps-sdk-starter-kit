@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`app Renders 🎉 1`] = `
+<div>
+  <div
+    class="scrollContainer"
+  >
+    <div
+      class="jv_R6g"
+      style="--NZu1Zw: 16px;"
+    >
+      <p
+        class="aWBg0w aZskFA Yrg82w"
+      >
+        This example demonstrates how to test your app's UI.
+      </p>
+      <p
+        class="aWBg0w aZskFA Yrg82w"
+      >
+        Check out 
+        <code>
+          examples/testing/ui_test/__tests__/app.test.tsx
+        </code>
+         
+        to learn how to start testing.
+      </p>
+      <button
+        class="_5KtATA LQzFZw VgvqkQ _8ERLTg hw3gKA rV61VQ LQzFZw VgvqkQ _4_iekA j34Zww aqbYPg _3FvZZg"
+        type="button"
+      >
+        <span
+          class="khPe7Q"
+        >
+          Do something cool
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

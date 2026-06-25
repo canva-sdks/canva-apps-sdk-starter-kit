@@ -13,10 +13,11 @@
     "lint": "eslint .",
     "lint:strict": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
+    "lint:check": "npm run lint && npm run lint:types",
     "format": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js,mjs}' --write",
     "format:check": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js,mjs}' --check",
     "format:file": "prettier $1 --no-config --write",
-    "test": "jest --no-cache --detectOpenHandles",
+    "test": "jest --no-cache --detectOpenHandles --passWithNoTests",
     "test:watch": "jest --no-cache --watch",
     "postinstall": "tsx ./scripts/copy_env.ts"
   },
@@ -43,7 +44,7 @@
     "react-intl": "^7.1.11"
   },
   "devDependencies": {
-    "@canva/app-eslint-plugin": "^1.0.0-beta.7",
+    "@canva/app-eslint-plugin": "^1.0.0-beta.8",
     "@canva/cli": "^2.0.0",
     "@formatjs/cli": "6.7.2",
     "@formatjs/ts-transformer": "3.14.0",

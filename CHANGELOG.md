@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-25
+
+### 🔧 Changed
+
+- Changed imports of node packages to use the node: protocol across build and backend scripts. This is now enforced by the eslint config.
+- Upgraded `@canva/app-eslint-plugin` to `1.0.0-beta.8`.
+- Update all templates for coding agent compatibility: add .prettierignore, update ESLint and Jest configs to exclude agent directories (.agents, .claude, .codex), fix format:check script, add lint:check and --passWithNoTests
+
+- Update Jest to match _.spec and _.test files and add test helpers for rendering components with UI kit providers
+
 ## 2026-06-22
 
 ### 🔧 Changed

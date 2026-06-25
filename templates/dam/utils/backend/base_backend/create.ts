@@ -3,9 +3,9 @@ import { TokenVerificationError } from "@canva/app-middleware";
 import debug from "debug";
 import express from "express";
 import type { NextFunction, Request, Response } from "express";
-import fs from "fs";
-import http from "http";
-import https from "https";
+import fs from "node:fs";
+import http from "node:http";
+import https from "node:https";
 
 const serverDebug = debug("server");
 

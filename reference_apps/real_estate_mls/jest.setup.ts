@@ -7,7 +7,7 @@ import * as error from "@canva/error/test";
 import * as intents from "@canva/intents/test";
 import * as platform from "@canva/platform/test";
 import * as user from "@canva/user/test";
-import { TextEncoder } from "util";
+import { TextEncoder } from "node:util";
 
 // jsdom doesn't provide TextEncoder by default, so we polyfill it from Node's util module
 global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder;

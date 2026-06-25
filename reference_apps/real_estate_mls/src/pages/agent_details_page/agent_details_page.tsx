@@ -12,8 +12,8 @@ import {
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Agent } from "../../real_estate.type";
-import { useAddElement } from "../../util/use_add_element";
-import { useDragElement } from "../../util/use_drag_element";
+import { useAddElement } from "../../utils/use_add_element";
+import { useDragElement } from "../../utils/use_drag_element";
 
 export const AgentDetailsPage = () => {
   const navigate = useNavigate();

@@ -9,14 +9,15 @@
     "extract": "formatjs extract \"src/**/*.{ts,tsx}\" --out-file dist/messages_en.json",
     "build": "webpack --config webpack.config.ts --mode production && npm run extract",
     "format": "prettier '**/*.{css,ts,tsx}' --no-config --write",
-    "format:check": "prettier '**/*.{css,ts,tsx}' --no-config --check --ignore-path",
+    "format:check": "prettier '**/*.{css,ts,tsx}' --no-config --check",
     "format:file": "prettier $1 --no-config --write",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:check": "npm run lint && npm run lint:types",
     "lint:types": "tsc",
     "start": "tsx ./scripts/start/start.ts",
     "start:preview": "npm run start -- --preview",
-    "test": "jest --no-cache",
+    "test": "jest --no-cache --passWithNoTests",
     "test:watch": "jest --watchAll",
     "test:update": "npm run test -- -u",
     "postinstall": "tsx ./scripts/copy_env.ts"
@@ -38,7 +39,7 @@
     "react-router-dom": "7.17.0"
   },
   "devDependencies": {
-    "@canva/app-eslint-plugin": "^1.0.0-beta.7",
+    "@canva/app-eslint-plugin": "^1.0.0-beta.8",
     "@canva/cli": "^2.0.0",
     "@formatjs/cli": "6.7.2",
     "@formatjs/ts-transformer": "3.14.0",
