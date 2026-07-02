@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-02
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-ui-kit` to `5.12.0`.
+
 ## 2026-06-25
 
 ### 🔧 Changed
