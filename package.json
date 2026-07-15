@@ -34,13 +34,13 @@
     "@canva/app-middleware": "^0.0.0-beta.5",
     "@canva/app-ui-kit": "^5.12.0",
     "@canva/asset": "^2.3.0",
-    "@canva/design": "^2.9.0",
+    "@canva/design": "^2.10.0",
     "@canva/error": "^2.2.1",
     "@canva/intents": "^2.6.0",
     "@canva/platform": "^2.2.2",
     "@canva/user": "^2.2.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "react-intl": "^7.1.11"
   },
   "devDependencies": {

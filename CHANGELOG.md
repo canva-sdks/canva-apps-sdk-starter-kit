@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-16
+
+### 🔧 Changed
+
+- Upgraded preview version of `@canva/design` to `2.10.1-beta.1`.
+- Upgraded `@canva/design` to `2.10.0`.
+- Upgraded `react` and `react-dom` to `19.2.7`, and `react-refresh` to `0.18.0`.
+
+### 🐞 Fixed
+
+- Fixed the `*.svg` type declaration to match the webpack configuration, and added a `*.svg?react` module declaration for importing SVGs as React components.
+
 ## 2026-07-02
 
 ### 🔧 Changed
