@@ -7,7 +7,7 @@ import {
 } from "@canva/app-ui-kit";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { Office } from "../../real_estate.type";
+import type { Office } from "src/real_estate.type";
 
 export const Breadcrumb = () => {
   const office = (useLocation().state as { office: Office })?.office;

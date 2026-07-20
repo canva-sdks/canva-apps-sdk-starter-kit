@@ -1,5 +1,5 @@
 import { HorizontalCard, ImageCard, Rows, Text } from "@canva/app-ui-kit";
-import type { Property } from "../../real_estate.type";
+import type { Property } from "src/real_estate.type";
 
 export interface ListingCardProps<T extends Property> {
   item: T;

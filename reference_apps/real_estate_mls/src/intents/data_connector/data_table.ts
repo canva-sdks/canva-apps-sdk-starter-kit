@@ -23,7 +23,7 @@ import type {
   DataTableRow,
   GetDataTableRequest,
 } from "@canva/intents/data";
-import { listings } from "../../data";
+import { listings } from "src/data";
 
 // TODO: Define the shape of your data source configuration. This is
 // serialized into dataSourceRef.source by the selection UI and parsed

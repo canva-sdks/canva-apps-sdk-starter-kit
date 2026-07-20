@@ -5,15 +5,15 @@ import type {
   APIResponseItem,
   DataSourceConfig,
   DataSourceHandler,
-} from "../../api/data_source";
-import { DATA_SOURCES } from "../../api/data_sources/collection";
-import { useAppContext } from "../../context/use_app_context";
-import { Paths } from "../../routes/paths";
+} from "src/api/data_source";
+import { DATA_SOURCES } from "src/api/data_sources/collection";
+import { useAppContext } from "src/context/use_app_context";
+import { Paths } from "src/routes/paths";
 import {
   isDataRefEmpty,
   isLaunchedWithError,
   isOutdatedSource,
-} from "../../utils/data_params";
+} from "src/utils/data_params";
 
 const parseDataSource = (source: string) => {
   try {
@@ -64,7 +64,7 @@ export const Entrypoint = () => {
     }
 
     navigate(navigateTo || Paths.DATA_SOURCE_SELECTION);
-  }, [request]);
+  }, [navigate, request, setAppError, setDataSourceHandler]);
 
   return <LoadingIndicator />;
 };

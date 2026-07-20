@@ -1,4 +1,4 @@
-import type { Property } from "../../real_estate.type";
+import type { Property } from "src/real_estate.type";
 import { ListListingCard } from "./listing_card";
 
 interface ListingListProps {

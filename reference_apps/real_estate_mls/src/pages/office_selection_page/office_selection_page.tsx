@@ -11,7 +11,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { mockUserData, offices } from "../../data";
+import { mockUserData, offices } from "src/data";
 
 type FormValues = {
   office: string;

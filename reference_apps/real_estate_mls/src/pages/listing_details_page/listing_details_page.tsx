@@ -18,9 +18,9 @@ import { features } from "@canva/platform";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { Property } from "../../real_estate.type";
-import { useAddElement } from "../../utils/use_add_element";
-import { useDragElement } from "../../utils/use_drag_element";
+import type { Property } from "src/real_estate.type";
+import { useAddElement } from "src/utils/use_add_element";
+import { useDragElement } from "src/utils/use_drag_element";
 
 export const ListingDetailsPage = () => {
   const navigate = useNavigate();

@@ -20,9 +20,9 @@ import { SelectField } from "src/components/inputs/select_field";
 import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
 import { dateCell, stringCell } from "src/utils/data_table";
-import type { CanvaItemResponse } from "../connect_client";
-import { DataAPIError, DataSourceHandler } from "../data_source";
-import type { APIResponseItem, DataSourceConfig } from "../data_source";
+import type { CanvaItemResponse } from "src/api/connect_client";
+import { DataAPIError, DataSourceHandler } from "src/api/data_source";
+import type { APIResponseItem, DataSourceConfig } from "src/api/data_source";
 
 export interface BrandTemplatesDataSource extends DataSourceConfig {
   query: string;

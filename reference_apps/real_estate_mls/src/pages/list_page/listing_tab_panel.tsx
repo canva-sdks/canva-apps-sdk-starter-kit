@@ -4,15 +4,15 @@ import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { fetchListings } from "../../adapter";
-import { ListingGrid } from "../../components/listing/listing_grid";
-import { ListingList } from "../../components/listing/listing_list";
-import { ListingSearchFilters } from "../../components/listing/listing_search_filters";
+import { fetchListings } from "src/adapter";
+import { ListingGrid } from "src/components/listing/listing_grid";
+import { ListingList } from "src/components/listing/listing_list";
+import { ListingSearchFilters } from "src/components/listing/listing_search_filters";
 import {
   GridPlaceholder,
   ListPlaceholder,
-} from "../../components/placeholders/placeholders";
-import type { Office, Property } from "../../real_estate.type";
+} from "src/components/placeholders/placeholders";
+import type { Office, Property } from "src/real_estate.type";
 
 type Layout = "grid" | "list";
 

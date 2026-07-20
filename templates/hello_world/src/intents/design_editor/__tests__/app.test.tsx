@@ -2,9 +2,9 @@ import { useFeatureSupport } from "@canva/app-hooks";
 import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 import type { Feature } from "@canva/platform";
 import { requestOpenExternalUrl } from "@canva/platform";
-import { fireEvent } from "@testing-library/react";
-import { App, DOCS_URL } from "../app";
-import { renderInTestProvider } from "../../../utils/test_render";
+import { fireEvent, screen } from "@testing-library/react";
+import { App, DOCS_URL } from "src/intents/design_editor/app";
+import { renderInTestProvider } from "src/utils/test_render";
 
 jest.mock("@canva/app-hooks");
 
@@ -30,14 +30,14 @@ describe("Hello World Tests", () => {
     expect(mockUseFeatureSupport).not.toHaveBeenCalled();
     expect(addElementAtPoint).not.toHaveBeenCalled();
 
-    const result = renderInTestProvider(<App />);
+    renderInTestProvider(<App />);
 
     // the hook should have been called in the render process but not the callback
     expect(mockUseFeatureSupport).toHaveBeenCalled();
     expect(addElementAtPoint).not.toHaveBeenCalled();
 
     // get a reference to the do something cool button element
-    const doSomethingCoolBtn = result.getByRole("button", {
+    const doSomethingCoolBtn = screen.getByRole("button", {
       name: "Do something cool",
     });
 
@@ -54,10 +54,10 @@ describe("Hello World Tests", () => {
   it("should call `requestOpenExternalUrl` when the button is clicked", () => {
     expect(mockRequestOpenExternalUrl).not.toHaveBeenCalled();
 
-    const result = renderInTestProvider(<App />);
+    renderInTestProvider(<App />);
 
     // get a reference to the Apps SDK button by name
-    const sdkButton = result.getByRole("button", {
+    const sdkButton = screen.getByRole("button", {
       name: "Open Canva Apps SDK docs",
     });
 
