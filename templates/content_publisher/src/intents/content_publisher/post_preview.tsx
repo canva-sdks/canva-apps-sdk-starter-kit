@@ -9,7 +9,7 @@ import {
 } from "@canva/app-ui-kit";
 import type { Preview, PreviewMedia } from "@canva/intents/content";
 import { FormattedMessage, useIntl } from "react-intl";
-import * as styles from "../../../styles/preview_ui.css";
+import * as styles from "styles/preview_ui.css";
 import type { PublishSettings } from "./types";
 
 const IMAGE_WIDTH = 400;
@@ -143,11 +143,11 @@ const ImagePreview = ({
 
 // Renders individual preview based on its type and status
 const PreviewRenderer = ({ preview }: { preview: Preview }) => {
+  const intl = useIntl();
+
   if (preview.kind === "email") {
     return null;
   }
-
-  const intl = useIntl();
   // Handle different preview states
   if (preview.status === "loading") {
     return (

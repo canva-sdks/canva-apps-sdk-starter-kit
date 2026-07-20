@@ -1,7 +1,7 @@
 import { user } from "@canva/app-middleware/express";
 import cors from "cors";
 import express from "express";
-import { createBaseServer } from "../utils/backend/base_backend/create";
+import { createBaseServer } from "utils/backend/base_backend/create";
 import { createImageRouter } from "./routers/image";
 
 async function main() {

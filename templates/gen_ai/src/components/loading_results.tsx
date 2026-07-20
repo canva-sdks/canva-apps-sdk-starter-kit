@@ -114,8 +114,12 @@ export const LoadingResults = ({
   }, [
     durationInSeconds,
     isLoadingImages,
+    navigate,
+    setGeneratedImages,
     setIsLoadingImages,
+    setJobId,
     setProgress,
+    setRemainingCredits,
     jobId,
   ]);
 

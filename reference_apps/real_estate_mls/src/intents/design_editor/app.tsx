@@ -7,11 +7,11 @@ import {
   Routes,
 } from "react-router-dom";
 import * as styles from "styles/components.css";
-import { AgentDetailsPage } from "../../pages/agent_details_page/agent_details_page";
-import { ListPage } from "../../pages/list_page/list_page";
-import { ListingDetailsPage as ListingDetailsPage } from "../../pages/listing_details_page/listing_details_page";
-import { LoadingPage } from "../../pages/loading_page/loading_page";
-import { OfficeSelectionPage } from "../../pages/office_selection_page/office_selection_page";
+import { AgentDetailsPage } from "src/pages/agent_details_page/agent_details_page";
+import { ListPage } from "src/pages/list_page/list_page";
+import { ListingDetailsPage as ListingDetailsPage } from "src/pages/listing_details_page/listing_details_page";
+import { LoadingPage } from "src/pages/loading_page/loading_page";
+import { OfficeSelectionPage } from "src/pages/office_selection_page/office_selection_page";
 
 const queryClient = new QueryClient({
   defaultOptions: {

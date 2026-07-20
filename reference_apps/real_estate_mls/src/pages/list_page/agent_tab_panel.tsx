@@ -4,15 +4,15 @@ import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { fetchAgents } from "../../adapter";
-import { AgentGrid } from "../../components/agent/agent_grid";
-import { AgentList } from "../../components/agent/agent_list";
-import { AgentSearchFilters } from "../../components/agent/agent_search_filters";
+import { fetchAgents } from "src/adapter";
+import { AgentGrid } from "src/components/agent/agent_grid";
+import { AgentList } from "src/components/agent/agent_list";
+import { AgentSearchFilters } from "src/components/agent/agent_search_filters";
 import {
   GridPlaceholder,
   ListPlaceholder,
-} from "../../components/placeholders/placeholders";
-import type { Agent, Office } from "../../real_estate.type";
+} from "src/components/placeholders/placeholders";
+import type { Agent, Office } from "src/real_estate.type";
 
 type Layout = "grid" | "list";
 

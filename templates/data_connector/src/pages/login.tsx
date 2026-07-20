@@ -13,7 +13,7 @@ import { scope } from "src/api/oauth";
 import { Header } from "src/components/header";
 import { Paths } from "src/routes/paths";
 import * as styles from "styles/components.css";
-import { useAppContext } from "../context/use_app_context";
+import { useAppContext } from "src/context/use_app_context";
 
 export const Login = () => {
   const intl = useIntl();
@@ -22,29 +22,6 @@ export const Login = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Redirect if already authenticated
-    if (isAuthenticated) {
-      navigate(Paths.ENTRYPOINT);
-      return;
-    }
-
-    // check if the user is already authenticated
-    retrieveAndSetToken();
-  }, [isAuthenticated]);
-
-  const authorize = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      await oauth.requestAuthorization({ scope });
-      await retrieveAndSetToken();
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Unknown error");
-      setLoading(false);
-    }
-  }, [oauth]);
 
   // you MUST call getAccessToken every time you need a token, as the token may expire.
   // Canva will handle caching and refreshing the token for you.
@@ -61,6 +38,29 @@ export const Login = () => {
     },
     [oauth, setAccessToken],
   );
+
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+      navigate(Paths.ENTRYPOINT);
+      return;
+    }
+
+    // check if the user is already authenticated
+    retrieveAndSetToken();
+  }, [isAuthenticated, navigate, retrieveAndSetToken]);
+
+  const authorize = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await oauth.requestAuthorization({ scope });
+      await retrieveAndSetToken();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Unknown error");
+      setLoading(false);
+    }
+  }, [oauth, retrieveAndSetToken]);
 
   return (
     <div className={styles.scrollContainer}>

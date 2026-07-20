@@ -1,5 +1,5 @@
 import { Column, Columns, Rows } from "@canva/app-ui-kit";
-import type { Property } from "../../real_estate.type";
+import type { Property } from "src/real_estate.type";
 import { GridListingCard } from "./listing_card";
 
 interface ListingGridProps {

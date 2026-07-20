@@ -5,7 +5,7 @@ import type {
   RenderPreviewUiInvocationContext,
 } from "@canva/intents/content";
 import { useEffect, useState } from "react";
-import * as styles from "../../../styles/preview_ui.css";
+import * as styles from "styles/preview_ui.css";
 import { PostPreview } from "./post_preview";
 import { parsePublishSettings } from "./types";
 

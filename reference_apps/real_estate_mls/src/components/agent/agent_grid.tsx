@@ -1,5 +1,5 @@
 import { Column, Columns, Rows } from "@canva/app-ui-kit";
-import type { Agent } from "../../real_estate.type";
+import type { Agent } from "src/real_estate.type";
 import { GridAgentCard } from "./agent_card";
 
 interface AgentGridProps {

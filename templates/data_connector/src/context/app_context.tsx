@@ -3,8 +3,11 @@ import type { AccessTokenResponse, Oauth } from "@canva/user";
 import { auth } from "@canva/user";
 import type { JSX, ReactNode } from "react";
 import { createContext, useCallback, useState } from "react";
-import type { APIResponseItem, DataSourceHandler } from "src/api/data_source";
-import { type DataSourceConfig } from "src/api/data_source";
+import type {
+  APIResponseItem,
+  DataSourceConfig,
+  DataSourceHandler,
+} from "src/api/data_source";
 
 export interface AppContextType {
   appError: string;

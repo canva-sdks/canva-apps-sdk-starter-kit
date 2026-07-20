@@ -100,7 +100,7 @@ export const ContextProvider = ({
     };
 
     fetchDataOnMount();
-  }, []);
+  }, [intl, setAppError]);
 
   // Manages errors related to remaining credits
   useEffect(() => {
@@ -112,7 +112,7 @@ export const ContextProvider = ({
     const errorMessage = intl.formatMessage(Messages.alertNotEnoughCredits);
 
     setCreditsError(errorMessage);
-  }, [loadingApp, remainingCredits]);
+  }, [intl, loadingApp, remainingCredits]);
 
   const setPromptInputHandler = (value: string) => {
     if (

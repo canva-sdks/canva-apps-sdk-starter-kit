@@ -1,7 +1,7 @@
 import { HorizontalCard, ImageCard } from "@canva/app-ui-kit";
 import React from "react";
 import { useIntl } from "react-intl";
-import type { Agent } from "../../real_estate.type";
+import type { Agent } from "src/real_estate.type";
 
 interface AgentCardProps {
   item: Agent;

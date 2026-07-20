@@ -37,7 +37,7 @@
     "react-intl": "^7.1.11"
   },
   "devDependencies": {
-    "@canva/app-eslint-plugin": "^1.0.0-beta.9",
+    "@canva/app-eslint-plugin": "^1.0.0-beta.10",
     "@canva/cli": "^2.0.0",
     "@formatjs/cli": "6.7.2",
     "@formatjs/ts-transformer": "3.14.0",

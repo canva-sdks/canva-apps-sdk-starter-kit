@@ -6,8 +6,8 @@ import {
   numberCell,
   stringCell,
   toDataTable,
-} from "../data_table";
-import type { DataTableColumn } from "../data_table";
+} from "src/utils/data_table";
+import type { DataTableColumn } from "src/utils/data_table";
 
 describe("data table utils", () => {
   interface TestItem extends APIResponseItem {

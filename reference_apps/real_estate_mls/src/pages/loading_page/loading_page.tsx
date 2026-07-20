@@ -12,9 +12,9 @@ import { useQueries } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchAgents, fetchListings } from "../../adapter";
-import { Breadcrumb } from "../../components/breadcrumb/breadcrumb";
-import type { Office } from "../../real_estate.type";
+import { fetchAgents, fetchListings } from "src/adapter";
+import { Breadcrumb } from "src/components/breadcrumb/breadcrumb";
+import type { Office } from "src/real_estate.type";
 
 export const LoadingPage = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import { screen, waitFor } from "@testing-library/react";
 import React from "react";
-import { OfficeSelectionPage } from "../pages/office_selection_page/office_selection_page";
+import { OfficeSelectionPage } from "src/pages/office_selection_page/office_selection_page";
 import {
   renderInTestProvider,
   renderWithUserEvent,
-} from "../utils/test_render";
+} from "src/utils/test_render";
 const mockNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
@@ -17,7 +17,7 @@ const mockOffices = [
   { id: "office2", name: "Jermaine Street" },
 ];
 // Mock the adapter module
-jest.mock("../adapter.ts", () => ({
+jest.mock("src/adapter.ts", () => ({
   fetchOffices: jest.fn().mockResolvedValue(mockOffices),
 }));
 
@@ -67,9 +67,9 @@ describe("Office selection page", () => {
     user.click(screen.getByText("Continue"));
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledTimes(1);
-      expect(mockNavigate).toHaveBeenCalledWith("/loading", {
-        state: { office },
-      });
+    });
+    expect(mockNavigate).toHaveBeenCalledWith("/loading", {
+      state: { office },
     });
   });
 });

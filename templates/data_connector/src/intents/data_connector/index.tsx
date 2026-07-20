@@ -7,8 +7,8 @@ import type {
 } from "@canva/intents/data";
 import { auth } from "@canva/user";
 import { createRoot } from "react-dom/client";
-import { buildDataTableResult } from "../../api/fetch_data_table";
-import { scope } from "../../api/oauth";
+import { buildDataTableResult } from "src/api/fetch_data_table";
+import { scope } from "src/api/oauth";
 import { App } from "./app";
 
 const dataConnector: DataConnectorIntent = {

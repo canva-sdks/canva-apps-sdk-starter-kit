@@ -8,8 +8,8 @@ import {
 } from "@canva/app-ui-kit";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Breadcrumb } from "../../components/breadcrumb/breadcrumb";
-import type { Office } from "../../real_estate.type";
+import { Breadcrumb } from "src/components/breadcrumb/breadcrumb";
+import type { Office } from "src/real_estate.type";
 import { AgentTabPanel } from "./agent_tab_panel";
 import { ListingTabPanel } from "./listing_tab_panel";
 
