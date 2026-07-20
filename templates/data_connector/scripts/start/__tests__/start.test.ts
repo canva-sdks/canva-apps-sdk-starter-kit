@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import type { ChildProcess } from "node:child_process";
 import { spawn } from "node:child_process";
 import treeKill from "tree-kill";
@@ -28,6 +26,7 @@ describe("start script", () => {
 
     // wait for the server to start and collect output until it reports the running URL
     let output = "";
+    let errorOutput = "";
     await new Promise<void>((resolve, reject) => {
       serverProcess.stdout?.on("data", (data) => {
         output += data.toString();
@@ -36,9 +35,22 @@ describe("start script", () => {
         }
       });
 
+      // Collect stderr for diagnostics only. Tools in the process chain (e.g.
+      // npm) can emit warnings to stderr while the server still starts
+      // successfully, so stderr output alone must not fail the test.
       serverProcess.stderr?.on("data", (data) => {
-        console.error("Server process error: ", data.toString());
-        reject();
+        errorOutput += data.toString();
+      });
+
+      // A genuine startup failure surfaces as a non-zero exit.
+      serverProcess.on("exit", (code) => {
+        if (code != null && code !== 0) {
+          reject(
+            new Error(
+              `Server process exited with code ${code}.\n${errorOutput}`,
+            ),
+          );
+        }
       });
 
       // timeout and fail test if the server hasn't correctly started in 30 seconds

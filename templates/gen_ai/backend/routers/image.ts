@@ -10,7 +10,7 @@
  */
 import express from "express";
 
-interface ImageResponse {
+export interface ImageResponse {
   fullsize: { width: number; height: number; url: string };
   thumbnail: { width: number; height: number; url: string };
 }

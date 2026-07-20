@@ -19,10 +19,16 @@ declare module "*.png" {
 }
 
 declare module "*.svg" {
-  const content: React.FunctionComponent<{
-    size?: "tiny" | "small" | "medium" | "large";
-    className?: string;
-  }>;
+  const content: string;
+  export default content;
+}
+
+declare module "*.svg?react" {
+  import type React from "react";
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement>
+  >;
+  const content: string;
   export default content;
 }
 
