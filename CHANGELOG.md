@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-23
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `2.10.1`.
+- Upgraded preview version of `@canva/app-eslint-plugin` to `1.0.0-beta.11`.
+
 ## 2026-07-20
 
 ### 🔧 Changed
