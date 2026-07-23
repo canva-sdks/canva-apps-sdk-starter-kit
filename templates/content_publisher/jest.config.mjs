@@ -22,8 +22,9 @@ export default {
     "./.claude/",
     "./.codex/",
   ],
-  modulePaths: [compilerOptions.baseUrl],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
+    prefix: "<rootDir>/",
+  }),
   transform: {
     ".+\\.(css)$": "jest-css-modules-transform",
     "^.+\\.tsx?$": [

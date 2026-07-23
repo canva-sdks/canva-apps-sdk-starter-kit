@@ -8,9 +8,9 @@ import open from "open";
 import os from "node:os";
 import webpack from "webpack";
 import WebpackDevServer from "webpack-dev-server";
-import { buildConfig } from "../../webpack.config";
-import type { Certificate } from "../ssl/ssl";
-import { createOrRetrieveCertificate } from "../ssl/ssl";
+import type { Certificate } from "scripts/ssl/ssl";
+import { createOrRetrieveCertificate } from "scripts/ssl/ssl";
+import { buildConfig } from "webpack.config";
 import type { Context } from "./context";
 
 export const infoChalk = chalk.blue.bold;

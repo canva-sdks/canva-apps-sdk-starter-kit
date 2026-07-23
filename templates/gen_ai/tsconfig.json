@@ -36,9 +36,12 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
     "paths": {
-      "styles": ["./styles"]
+      "scripts/*": ["./scripts/*"],
+      "src/*": ["./src/*"],
+      "styles/*": ["./styles/*"],
+      "utils/*": ["./utils/*"],
+      "webpack.config": ["./webpack.config"]
     }
   },
   "include": [
