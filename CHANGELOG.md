@@ -5,9 +5,9 @@
 ### 🧰 Added
 
 - Added `examples/design_interaction/design_colors` to demonstrate how to retrieve and access design colors with the preview `getDesignColors` API.
-- Added a new example for the requestDataTable available now in beta under the intents package
+- Added a new example for the `requestDataTable` API available now in beta under the intents package.
 - Added a new Autofill example demonstrating how to match data fields and autofill the current design using a hardcoded data table.
-- Add example app for brand templates APIs workflow
+- Added a new example app for the Brand Template APIs workflow.
 
 ### 🔧 Changed
 
