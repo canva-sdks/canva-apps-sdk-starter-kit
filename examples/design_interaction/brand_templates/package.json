@@ -1,7 +1,7 @@
 {
-  "name": "design_token",
-  "title": "Design token",
-  "description": "Secure token-based authentication and design access.",
+  "name": "brand_templates",
+  "title": "Brand templates",
+  "description": "Choose a brand template, preview its details, and apply it to the current design using a securely verified brand template token.",
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "devDependencies": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@canva/app-middleware": "^0.0.0-beta.8",
+    "@canva/design": "2.10.2-beta.1",
     "cors": "2.8.5",
     "express": "4.22.2"
   }

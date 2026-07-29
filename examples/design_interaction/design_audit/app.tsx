@@ -95,7 +95,6 @@ export const App = () => {
 
       // Open the design with multi-page access
       // The "all_pages" context gives us access to all pages in the design
-      // The "all_pages" context is currently in preview and may change
       await openDesign({ type: "all_pages" }, async (session) => {
         // Get refs for all pages in the design
         // session.pageRefs is a List containing basic info about each page

@@ -1,0 +1,11 @@
+{
+  "name": "autofill",
+  "title": "Autofill",
+  "description": "Match data fields and autofill the current design using a hardcoded data table.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/design": "2.10.2-beta.1",
+    "@canva/intents": "2.6.1-beta.1"
+  }
+}
