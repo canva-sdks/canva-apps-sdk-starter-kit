@@ -1,7 +1,7 @@
 {
-  "name": "url_expander_intent",
-  "title": "URL expander intent",
-  "description": "URL expander integration for Canva AI to expand URLs to Canva supported assets.",
+  "name": "request_data_table",
+  "title": "Request data table",
+  "description": "Request a data table from the app's own Data Connector using requestDataTable.",
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {

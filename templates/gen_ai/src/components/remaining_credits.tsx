@@ -7,38 +7,39 @@ import { useAppContext } from "src/context/use_app_context";
 // @TODO: Replace this URL with your custom upselling link.
 const PURCHASE_URL = "https://example.com";
 
-export const RemainingCredits = (): JSX.Element | undefined => {
+const RemainingCreditsText = (): JSX.Element => {
   const { remainingCredits, loadingApp } = useAppContext();
-  const platformInfo = getPlatformInfo();
 
-  const RemainingCreditsText = () => {
-    if (loadingApp) {
-      return <TextPlaceholder size="small" />;
-    }
+  if (loadingApp) {
+    return <TextPlaceholder size="small" />;
+  }
 
-    return (
-      <Text alignment="center" size="small">
-        {remainingCredits > 0 ? (
-          <FormattedMessage
-            defaultMessage="Use <strong>1 of {remainingCredits, number}</strong> {remainingCredits, plural,
+  return (
+    <Text alignment="center" size="small">
+      {remainingCredits > 0 ? (
+        <FormattedMessage
+          defaultMessage="Use <strong>1 of {remainingCredits, number}</strong> {remainingCredits, plural,
             one {credit}
             other {credits}
             }."
-            description="A message to indicate the number of credits, of their total remaining credits, that will be used when generating an image"
-            values={{
-              remainingCredits,
-              strong: (chunks) => <strong>{chunks}</strong>,
-            }}
-          />
-        ) : (
-          <FormattedMessage
-            defaultMessage="No credits remaining."
-            description="A message to indicate that there are no credits available to be used"
-          />
-        )}
-      </Text>
-    );
-  };
+          description="A message to indicate the number of credits, of their total remaining credits, that will be used when generating an image"
+          values={{
+            remainingCredits,
+            strong: (chunks) => <strong>{chunks}</strong>,
+          }}
+        />
+      ) : (
+        <FormattedMessage
+          defaultMessage="No credits remaining."
+          description="A message to indicate that there are no credits available to be used"
+        />
+      )}
+    </Text>
+  );
+};
+
+export const RemainingCredits = (): JSX.Element | undefined => {
+  const platformInfo = getPlatformInfo();
 
   const openExternalUrl = async (url: string) => {
     await requestOpenExternalUrl({

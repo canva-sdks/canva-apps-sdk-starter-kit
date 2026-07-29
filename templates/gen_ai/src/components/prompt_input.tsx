@@ -90,13 +90,11 @@ export const PromptInput = () => {
     setPromptInput(value);
   };
 
-  const InspireMeButton = () => {
-    return (
-      <Button variant="secondary" icon={LightBulbIcon} onClick={onInspireClick}>
-        {inspireMeButtonLabel}
-      </Button>
-    );
-  };
+  const inspireMeButton = (
+    <Button variant="secondary" icon={LightBulbIcon} onClick={onInspireClick}>
+      {inspireMeButtonLabel}
+    </Button>
+  );
 
   const onClearClick = () => {
     setPromptInput("");
@@ -104,7 +102,7 @@ export const PromptInput = () => {
     setInspireMeButtonLabel(intl.formatMessage(Messages.promptInspireMe));
   };
 
-  const ClearButton = () => (
+  const clearButton = (
     <Button variant="tertiary" onClick={onClearClick}>
       {intl.formatMessage({
         defaultMessage: "Clear",
@@ -142,8 +140,8 @@ export const PromptInput = () => {
                 isHomeRoute && showInspireMeButton ? "spaceBetween" : "end"
               }
             >
-              {isHomeRoute && showInspireMeButton && <InspireMeButton />}
-              {promptInput && <ClearButton />}
+              {isHomeRoute && showInspireMeButton && inspireMeButton}
+              {promptInput && clearButton}
             </Box>
           }
           required={true}

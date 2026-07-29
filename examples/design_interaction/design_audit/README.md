@@ -8,7 +8,6 @@ Related examples: See design_interaction/design_editing for other complex design
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 
-- Uses the preview Design Editing API "all_pages" design context. Production apps must not use preview APIs
 - Element positioning logic is simplified for demonstration. Production apps should implement comprehensive positioning validation with support for different design types and element constraints
 - Error handling is simplified for demonstration. Production apps must implement comprehensive error handling with clear user feedback and graceful failure modes
 - Internationalization is not implemented. Production apps must support multiple languages using the `@canva/app-i18n-kit` package to pass Canva review requirements

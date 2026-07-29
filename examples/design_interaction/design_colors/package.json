@@ -1,0 +1,10 @@
+{
+  "name": "design_colors",
+  "title": "Design colors",
+  "description": "Retrieve and access design colors.",
+  "author": "Canva Pty Ltd.",
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/design": "2.10.2-beta.1"
+  }
+}

@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-07-30
+
+### 🧰 Added
+
+- Added `examples/design_interaction/design_colors` to demonstrate how to retrieve and access design colors with the preview `getDesignColors` API.
+- Added a new example for the `requestDataTable` API available now in preview under the intents package.
+- Added a new Autofill example demonstrating how to match data fields and autofill the current design using a hardcoded data table.
+- Added a new example app for the Brand Template APIs workflow.
+
+### 🔧 Changed
+
+- Updated `examples/design_interaction/design_audit` and `examples/design_interaction/design_template_metadata` to use the latest `@canva/design` API, as their preview APIs are now Generally Available.
+- Upgraded preview version of `@canva/design` to `2.10.2-beta.0`.
+- Upgraded preview version of `@canva/intents` to `2.6.1-beta.1`.
+- Upgraded preview version of `@canva/app-middleware` to `0.0.0-beta.8`.
+- Upgraded preview version of `@canva/design` to `2.10.2-beta.1`.
+- Upgraded `@canva/app-i18n-kit` to `1.3.0`.
+- Upgraded `@canva/app-ui-kit` to `5.14.0`.
+
+### 🛡️ Security
+
+- Dependencies audit bringing modules up to date:
+
+```text
+postcss                                   8.5.16   ->   8.5.23
+webpack-dev-server                         5.2.5   ->   5.2.6
+react-router                              6.30.3   ->   6.30.4
+react-router-dom                          6.30.3   ->   6.30.4
+react-router-dom                          7.17.0   ->   7.18.1
+```
+
 ## 2026-07-23
 
 ### 🔧 Changed
