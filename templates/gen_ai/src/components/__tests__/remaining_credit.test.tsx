@@ -2,6 +2,7 @@ import { getPlatformInfo, requestOpenExternalUrl } from "@canva/platform";
 import { fireEvent, screen } from "@testing-library/react";
 import { renderInTestProvider } from "src/utils/test_render";
 import { RemainingCredits } from "src/components/remaining_credits";
+import { APP_NAME } from "src/config";
 
 // This test demonstrates how to test code that uses functions from the Canva Apps SDK
 // For more information on testing with the Canva Apps SDK, see https://www.canva.dev/docs/apps/testing/
@@ -30,5 +31,23 @@ describe("Remaining Credit Tests", () => {
 
     // we expect that requestOpenExternalUrl has been called
     expect(mockRequestOpenExternalUrl).toHaveBeenCalled();
+  });
+
+  it("should disable the purchase link and show a warning when payments aren't supported", () => {
+    mockGetPlatformInfo.mockReturnValue({
+      canAcceptPayments: false,
+    });
+
+    renderInTestProvider(<RemainingCredits />);
+
+    fireEvent.click(screen.getByRole("button"));
+    expect(mockRequestOpenExternalUrl).not.toHaveBeenCalled();
+
+    expect(
+      screen.getByText(
+        `${APP_NAME} credits can only be purchased in a web browser.`,
+        { exact: false },
+      ),
+    ).toBeTruthy();
   });
 });

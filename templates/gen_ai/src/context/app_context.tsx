@@ -1,15 +1,18 @@
 import type { JSX } from "react";
 import { createContext, useEffect, useState } from "react";
-import { useIntl } from "react-intl";
 import type { ImageType } from "src/api/api";
 import { getRemainingCredits } from "src/api/api";
-import { ContextMessages as Messages } from "./context.messages";
+import {
+  AppErrorType,
+  CreditsErrorType,
+  PromptInputErrorType,
+} from "./error_type";
 
 export interface AppContextType {
-  appError: string;
-  setAppError: (value: string) => void;
-  creditsError: string;
-  setCreditsError: (value: string) => void;
+  appError: AppErrorType;
+  setAppError: (value: AppErrorType) => void;
+  creditsError: CreditsErrorType;
+  setCreditsError: (value: CreditsErrorType) => void;
   loadingApp: boolean;
   setLoadingApp: (value: boolean) => void;
   isLoadingImages: boolean;
@@ -20,16 +23,16 @@ export interface AppContextType {
   setRemainingCredits: (value: number) => void;
   promptInput: string;
   setPromptInput: (value: string) => void;
-  promptInputError: string;
-  setPromptInputError: (value: string) => void;
+  promptInputError: PromptInputErrorType;
+  setPromptInputError: (value: PromptInputErrorType) => void;
   generatedImages: ImageType[];
   setGeneratedImages: (value: ImageType[]) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
-  appError: "",
+  appError: AppErrorType.None,
   setAppError: () => {},
-  creditsError: "",
+  creditsError: CreditsErrorType.None,
   setCreditsError: () => {},
   loadingApp: true,
   setLoadingApp: () => {},
@@ -41,7 +44,7 @@ export const AppContext = createContext<AppContextType>({
   setRemainingCredits: () => {},
   promptInput: "",
   setPromptInput: () => {},
-  promptInputError: "",
+  promptInputError: PromptInputErrorType.None,
   setPromptInputError: () => {},
   generatedImages: [] as ImageType[],
   setGeneratedImages: () => {},
@@ -62,16 +65,18 @@ export const ContextProvider = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  const [appError, setAppError] = useState<string>("");
+  const [appError, setAppError] = useState<AppErrorType>(AppErrorType.None);
   const [loadingApp, setLoadingApp] = useState<boolean>(true); // set to true to prevent ui flash on load
   const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
   const [jobId, setJobId] = useState<string>("");
   const [remainingCredits, setRemainingCredits] = useState<number>(0);
   const [promptInput, setPromptInput] = useState<string>("");
-  const [promptInputError, setPromptInputError] = useState<string>("");
+  const [promptInputError, setPromptInputError] =
+    useState<PromptInputErrorType>(PromptInputErrorType.None);
   const [generatedImages, setGeneratedImages] = useState<ImageType[]>([]);
-  const [creditsError, setCreditsError] = useState<string>("");
-  const intl = useIntl();
+  const [creditsError, setCreditsError] = useState<CreditsErrorType>(
+    CreditsErrorType.None,
+  );
 
   // Fetches initial data on component mount
   useEffect(() => {
@@ -84,14 +89,12 @@ export const ContextProvider = ({
           const { credits } = await getRemainingCredits();
           setRemainingCredits(credits);
         } catch (error) {
-          setAppError(
-            intl.formatMessage(Messages.appErrorGetRemainingCreditsFailed),
-          );
+          setAppError(AppErrorType.GetRemainingCreditsFailed);
           // eslint-disable-next-line no-console
           console.error("Error fetching remaining credits:", error);
         }
       } catch (error) {
-        setAppError(intl.formatMessage(Messages.appErrorGeneral));
+        setAppError(AppErrorType.General);
         // eslint-disable-next-line no-console
         console.error("Error fetching data:", error);
       } finally {
@@ -100,29 +103,24 @@ export const ContextProvider = ({
     };
 
     fetchDataOnMount();
-  }, [intl, setAppError]);
+  }, [setAppError]);
 
-  // Manages errors related to remaining credits
+  // Clears the not-enough-credits alert once the user has credits again
+  // (e.g. after purchasing more). Setting the alert itself is handled by
+  // the Generate button's click handler in footer.tsx, so it only appears
+  // once the user has actually tried to generate with no credits left.
   useEffect(() => {
-    if (loadingApp || remainingCredits > 0) {
-      setCreditsError("");
-      return;
+    if (remainingCredits > 0) {
+      setCreditsError(CreditsErrorType.None);
     }
-
-    const errorMessage = intl.formatMessage(Messages.alertNotEnoughCredits);
-
-    setCreditsError(errorMessage);
-  }, [intl, loadingApp, remainingCredits]);
+  }, [remainingCredits]);
 
   const setPromptInputHandler = (value: string) => {
     if (
-      promptInputError ===
-      intl.formatMessage(Messages.promptMissingErrorMessage)
+      promptInputError === PromptInputErrorType.PromptMissing ||
+      value === ""
     ) {
-      setPromptInputError("");
-    }
-    if (value === "") {
-      setPromptInputError("");
+      setPromptInputError(PromptInputErrorType.None);
     }
 
     setPromptInput(value);

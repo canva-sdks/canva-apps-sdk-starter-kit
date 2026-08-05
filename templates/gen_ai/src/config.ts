@@ -18,4 +18,10 @@ export const POLLING_INTERVAL_IN_SECONDS = 3;
  * Your app's name. This is used when reporting generated content.
  * @TODO: Update your app's name here.
  */
-export const APP_NAME = "Add your app name here";
+export const APP_NAME = "{App Name}";
+
+/**
+ * The link that will open when a user needs to buy more credits.
+ * @TODO: Update your credit link here.
+ */
+export const PURCHASE_URL = "https://example.com";

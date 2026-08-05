@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-06
+
+### 🔧 Changed
+
+- Updated the Gen AI app template to match the [Monetization status guidelines](https://www.canva.dev/docs/apps/design-guidelines/monetization-status/) (credit attribution, low-credit alert, purchase flow)
+- Upgraded `@canva/app-eslint-plugin` to `1.0.0`.
+- Upgraded preview version of `@canva/design` to `2.10.2-beta.2`.
+- Upgraded preview version of `@canva/design` to `2.10.2-beta.3`.
+
 ## 2026-07-30
 
 ### 🧰 Added
