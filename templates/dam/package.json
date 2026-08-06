@@ -43,7 +43,7 @@
     "react-router-dom": "6.30.4"
   },
   "devDependencies": {
-    "@canva/app-eslint-plugin": "^1.0.0-beta.11",
+    "@canva/app-eslint-plugin": "^1.0.0",
     "@canva/cli": "^2.0.0",
     "@formatjs/cli": "6.7.2",
     "@formatjs/ts-transformer": "3.14.0",

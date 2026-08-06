@@ -1,13 +1,16 @@
 import {
   Box,
   Button,
+  Column,
   FormField,
   LightBulbIcon,
   MultilineInput,
 } from "@canva/app-ui-kit";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import type { IntlShape } from "react-intl";
 import { useIntl } from "react-intl";
 import { useLocation } from "react-router-dom";
+import { PromptInputErrorType } from "src/context/error_type";
 import { useAppContext } from "src/context/use_app_context";
 import { Paths } from "src/routes/paths";
 import { PromptInputMessages as Messages } from "./prompt_input.messages";
@@ -17,40 +20,43 @@ const MAX_INPUT_LENGTH = 280;
 const MIN_INPUT_ROWS = 3;
 
 /**
- * Array of example prompts that could be used to generate interesting pictures with an AI.
+ * Example prompts offered via "Inspire me" to spark ideas for what the user
+ * could ask the AI image generator to create.
  * Consider fetching these prompts from a server or API call for dynamic and varied content.
- * These would need to be localised, but that is left out here as the method would depend on
- * the specific implementation or API used.
  */
-const examplePrompts: string[] = [
-  "Cats ruling a parallel universe",
-  "Futuristic city with friendly robots",
-  "Magical forest with unicorns and dragons",
-  "Underwater kingdom with colorful fish and mermaids",
-  "World with altered gravity and flying people",
-  "Alien landscape with strange creatures",
-  "Steampunk adventure on a giant airship",
-  "Whimsical tea party with talking animals",
-  "Cyberpunk cityscape with neon lights",
-  "Post-apocalyptic world reclaimed by nature",
-  "Magical library where books come to life",
-  "Space station orbiting a distant planet",
-  "Time-traveling adventure through historical eras",
-  "Enchanted garden where flowers sing and dance",
-  "Fantasy castle floating among clouds",
-  "Fairytale scene with magical objects",
-  "Cosmic journey through distant galaxies",
-  "World where every day is Halloween",
-  "Futuristic sports arena with cyborgs",
-  "Scene inspired by a classic myth or legend",
+const EXAMPLE_PROMPT_MESSAGES = [
+  Messages.examplePromptCatsParallelUniverse,
+  Messages.examplePromptFuturisticCityRobots,
+  Messages.examplePromptMagicalForestUnicorns,
+  Messages.examplePromptUnderwaterKingdom,
+  Messages.examplePromptAlteredGravity,
+  Messages.examplePromptAlienLandscape,
+  Messages.examplePromptSteampunkAirship,
+  Messages.examplePromptWhimsicalTeaParty,
+  Messages.examplePromptCyberpunkCityscape,
+  Messages.examplePromptPostApocalypticWorld,
+  Messages.examplePromptMagicalLibrary,
+  Messages.examplePromptSpaceStation,
+  Messages.examplePromptTimeTravelingAdventure,
+  Messages.examplePromptEnchantedGarden,
+  Messages.examplePromptFantasyCastle,
+  Messages.examplePromptFairytaleScene,
+  Messages.examplePromptCosmicJourney,
+  Messages.examplePromptHalloweenWorld,
+  Messages.examplePromptFuturisticSportsArena,
+  Messages.examplePromptMythOrLegend,
 ];
 
 /**
  * Generates a new example prompt different from the current prompt.
  * @param {string} currentPrompt - The current prompt.
+ * @param {string[]} examplePrompts - The pool of example prompts to pick from.
  * @returns {string} A new example prompt different from the current prompt.
  */
-const generateExamplePrompt = (currentPrompt: string): string => {
+const generateExamplePrompt = (
+  currentPrompt: string,
+  examplePrompts: string[],
+): string => {
   let newPrompt = currentPrompt;
 
   // Prevents generating the same prompt twice in a row.
@@ -70,6 +76,59 @@ const generateExamplePrompt = (currentPrompt: string): string => {
   return newPrompt;
 };
 
+/**
+ * Resolves a `PromptInputErrorType` into the localized message shown to the
+ * user, or an empty string when there is no error to display.
+ * @param {PromptInputErrorType} errorType - The error type to resolve.
+ * @param {IntlShape} intl - The `react-intl` instance used to format messages.
+ * @returns {string} The localized error message, or "" when there is no error.
+ */
+const getPromptInputErrorMessage = (
+  errorType: PromptInputErrorType,
+  intl: IntlShape,
+): string => {
+  if (errorType === PromptInputErrorType.PromptMissing) {
+    return intl.formatMessage(Messages.promptMissingErrorMessage);
+  } else {
+    return "";
+  }
+};
+
+const InspireMeButton = ({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) => (
+  <Column width="content">
+    <Button
+      size="small"
+      variant="secondary"
+      icon={LightBulbIcon}
+      onClick={onClick}
+    >
+      {label}
+    </Button>
+  </Column>
+);
+
+const ClearButton = ({ onClick }: { onClick: () => void }) => {
+  const intl = useIntl();
+
+  return (
+    <Column width="content">
+      <Button variant="tertiary" onClick={onClick} size="small">
+        {intl.formatMessage({
+          defaultMessage: "Clear",
+          description:
+            "A button label to remove all contents of the prompt input field",
+        })}
+      </Button>
+    </Column>
+  );
+};
+
 export const PromptInput = () => {
   const intl = useIntl();
   const { pathname } = useLocation();
@@ -80,8 +139,13 @@ export const PromptInput = () => {
     intl.formatMessage(Messages.promptInspireMe),
   );
 
+  const examplePrompts = useMemo(
+    () => EXAMPLE_PROMPT_MESSAGES.map((message) => intl.formatMessage(message)),
+    [intl],
+  );
+
   const onInspireClick = () => {
-    setPromptInput(generateExamplePrompt(promptInput));
+    setPromptInput(generateExamplePrompt(promptInput, examplePrompts));
     setInspireMeButtonLabel(intl.formatMessage(Messages.promptTryAnother));
   };
 
@@ -90,36 +154,20 @@ export const PromptInput = () => {
     setPromptInput(value);
   };
 
-  const inspireMeButton = (
-    <Button variant="secondary" icon={LightBulbIcon} onClick={onInspireClick}>
-      {inspireMeButtonLabel}
-    </Button>
-  );
-
   const onClearClick = () => {
     setPromptInput("");
     setShowInspireMeButton(true);
     setInspireMeButtonLabel(intl.formatMessage(Messages.promptInspireMe));
   };
 
-  const clearButton = (
-    <Button variant="tertiary" onClick={onClearClick}>
-      {intl.formatMessage({
-        defaultMessage: "Clear",
-        description:
-          "A button label to remove all contents of the prompt input field",
-      })}
-    </Button>
-  );
-
   return (
     <FormField
       label={intl.formatMessage({
-        defaultMessage: "Describe what you want to create",
+        defaultMessage: "Describe what you'd like to create",
         description:
           "A label for the input field to describe what the user wants to create",
       })}
-      error={promptInputError}
+      error={getPromptInputErrorMessage(promptInputError, intl)}
       value={promptInput}
       control={(props) => (
         <MultilineInput
@@ -140,8 +188,13 @@ export const PromptInput = () => {
                 isHomeRoute && showInspireMeButton ? "spaceBetween" : "end"
               }
             >
-              {isHomeRoute && showInspireMeButton && inspireMeButton}
-              {promptInput && clearButton}
+              {isHomeRoute && showInspireMeButton && (
+                <InspireMeButton
+                  label={inspireMeButtonLabel}
+                  onClick={onInspireClick}
+                />
+              )}
+              {promptInput && <ClearButton onClick={onClearClick} />}
             </Box>
           }
           required={true}

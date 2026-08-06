@@ -1,5 +1,6 @@
 import { Rows } from "@canva/app-ui-kit";
 import { AppError } from "src/components/app_error";
+import { CreditError } from "src/components/credit_error";
 import { ImageGrid } from "src/components/image_grid";
 import { LoadingResults } from "src/components/loading_results";
 import { PromptInput } from "src/components/prompt_input";
@@ -21,8 +22,9 @@ export const ResultsPage = () => {
       <AppError />
       <Rows spacing="2u">
         <ImageGrid />
-        <PromptInput />
         <ReportBox />
+        <PromptInput />
+        <CreditError />
       </Rows>
     </Rows>
   );
