@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "data_connector",
-  "description": "A data connector app that imports external data.",
   "engines": {
     "node": "^22 || ^24"
   },
@@ -27,7 +26,7 @@
     "@canva/app-i18n-kit": "^1.3.0",
     "@canva/app-ui-kit": "^5.14.0",
     "@canva/asset": "^2.3.0",
-    "@canva/design": "^2.10.1",
+    "@canva/design": "^2.11.0",
     "@canva/error": "^2.2.1",
     "@canva/intents": "^2.6.0",
     "@canva/platform": "^2.2.2",
@@ -84,7 +83,6 @@
     "react-refresh": "0.18.0",
     "style-loader": "4.0.0",
     "terser-webpack-plugin": "5.4.0",
-    "tree-kill": "1.2.2",
     "ts-jest": "29.4.1",
     "ts-loader": "9.5.4",
     "tsx": "4.22.4",

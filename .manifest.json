@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "This manifest holds metadata about the starter kit which is processed by the @canva/cli tool. It is not required for a Canva app to run and may be deleted.",
+  "templates": {
+    "hello_world": {
+      "name": "Hello world",
+      "description": "A minimal Canva app that demonstrates the basics.",
+      "path": "templates/hello_world"
+    },
+    "dam": {
+      "name": "Digital Asset Management",
+      "description": "A DAM app that retrieves assets from a backend.",
+      "path": "templates/dam"
+    },
+    "gen_ai": {
+      "name": "Generative AI",
+      "description": "An app that lets users generate content using AI.",
+      "path": "templates/gen_ai"
+    },
+    "data_connector": {
+      "name": "Data Connector",
+      "description": "A data connector app that imports external data.",
+      "path": "templates/data_connector"
+    },
+    "content_publisher": {
+      "name": "Content Publisher",
+      "description": "A content publishing app that integrates with external platforms.",
+      "path": "templates/content_publisher"
+    }
+  },
+  "reference_apps": {
+    "mls": {
+      "name": "Real Estate MLS",
+      "description": "A Multiple Listing Service app that integrates real estate data into Canva.",
+      "path": "reference_apps/real_estate_mls"
+    }
+  }
+}

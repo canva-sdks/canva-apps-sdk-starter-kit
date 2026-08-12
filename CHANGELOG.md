@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-08-13
+
+### 🧰 Added
+
+- Added .manifest.json file to hold some repository metadata that can be used by the @canva/cli. This file is not required for the starter kit to run Canva Apps and may be deleted.
+
+### 🔧 Changed
+
+- Updated example app for richtext elements to include new formatting attributes
+- Replace `tree-kill` in start-script tests with Node.js native process teardown.
+- Extended GitHub Actions CI to run on macOS and Windows in addition to Ubuntu.
+- Upgraded `@canva/app-components` to `2.7.0`.
+- Upgraded `@canva/design` to `2.11.0`.
+
 ## 2026-08-06
 
 ### 🔧 Changed
