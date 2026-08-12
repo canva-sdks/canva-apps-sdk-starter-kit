@@ -5,7 +5,11 @@ import {
   addElementAtPoint,
   createRichtextRange,
 } from "@canva/design";
-import type { TextRegion } from "@canva/design";
+import type {
+  RichtextElement,
+  RichtextElementAtPoint,
+  TextRegion,
+} from "@canva/design";
 import * as styles from "styles/components.css";
 import { useEffect, useState } from "react";
 import { useFeatureSupport } from "@canva/app-hooks";
@@ -58,6 +62,8 @@ export const App = () => {
       {
         fontSize: 40,
         textAlign: "end",
+        lineHeightEm: 1,
+        letterSpacingEm: 0.1,
       },
     );
     setRegions(richtext.readTextRegions());
@@ -82,12 +88,28 @@ export const App = () => {
   };
 
   const addToDesign = async () => {
+    const elementInFixedDesigns: RichtextElementAtPoint = {
+      type: "richtext",
+      range: richtext,
+      top: 100,
+      left: 100,
+      width: 200,
+    };
+
+    const elementInResponsiveDesigns: RichtextElement = {
+      type: "richtext",
+      range: richtext,
+    };
+
     if (!addElement) {
       return;
+    } else if (isSupported(addElementAtPoint)) {
+      // Add RichtextElementAtPoint to fixed designs
+      await addElement(elementInFixedDesigns);
+    } else {
+      // Add RichtextElement to responsive designs
+      await addElement(elementInResponsiveDesigns);
     }
-
-    // Add the richtext element to the user's Canva design
-    await addElement({ type: "richtext", range: richtext });
   };
 
   return (

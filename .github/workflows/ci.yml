@@ -6,7 +6,11 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    name: ci (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6

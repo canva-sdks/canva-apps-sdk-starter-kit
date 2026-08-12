@@ -1,22 +1,36 @@
 import type { ChildProcess } from "node:child_process";
 import { spawn } from "node:child_process";
-import treeKill from "tree-kill";
+
+function killTree(pid: number) {
+  if (process.platform === "win32") {
+    spawn("taskkill", ["/pid", String(pid), "/T", "/F"], { stdio: "ignore" });
+    return;
+  }
+  // Negative pid = process group (requires spawn with `detached: true`).
+  // Only catch "ESRCH" meaning the process group is already dead.
+  try {
+    process.kill(-pid, "SIGTERM");
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code !== "ESRCH") throw err;
+  }
+}
 
 describe("start script", () => {
   let serverProcess: ChildProcess;
 
   afterEach(() => {
     if (serverProcess?.pid && !serverProcess.exitCode) {
-      treeKill(serverProcess.pid);
+      killTree(serverProcess.pid);
     }
   });
 
   it("should execute 'npm run start' and start a dev server", async () => {
     const testServerPort = 8089;
-    serverProcess = await spawn(
+    serverProcess = spawn(
       `npm run start -- -p ${testServerPort} --no-preview`,
       {
         shell: true,
+        detached: process.platform !== "win32",
       },
     );
 
@@ -56,7 +70,7 @@ describe("start script", () => {
       // timeout and fail test if the server hasn't correctly started in 30 seconds
       setTimeout(() => {
         if (serverProcess?.pid && !serverProcess.exitCode) {
-          treeKill(serverProcess.pid);
+          killTree(serverProcess.pid);
         }
         reject(new Error("Test timed out"));
       }, 30000);
@@ -68,6 +82,6 @@ describe("start script", () => {
     expect(serverProcess.exitCode).toBeNull();
 
     // clean up
-    treeKill(serverProcess.pid);
+    killTree(serverProcess.pid);
   }, 35000); // 35 seconds timeout to allow for the server to start
 });
