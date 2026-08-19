@@ -66,5 +66,10 @@
     "ts-jest": "29.4.1",
     "tsx": "4.22.4",
     "typescript": "5.9.2"
+  },
+  "overrides": {
+    "@canva/app-scripts": {
+      "@rspack/core": "$@rspack/core"
+    }
   }
 }

@@ -76,6 +76,9 @@
   "overrides": {
     "react-infinite-scroller": {
       "react": "^19.2.7"
+    },
+    "@canva/app-scripts": {
+      "@rspack/core": "$@rspack/core"
     }
   }
 }

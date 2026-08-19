@@ -101,6 +101,9 @@
   "overrides": {
     "react-infinite-scroller": {
       "react": "$react"
+    },
+    "@canva/app-scripts": {
+      "@rspack/core": "$@rspack/core"
     }
   }
 }
