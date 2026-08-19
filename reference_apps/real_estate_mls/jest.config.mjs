@@ -3,10 +3,9 @@ import tsconfig from "./tsconfig.json" with { type: "json" };
 
 const { compilerOptions } = tsconfig;
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+/** @type {import('jest').Config} */
 
 export default {
-  preset: "ts-jest",
   testEnvironment: "jsdom",
   testRegex: "\\.(spec|test)\\.[mc]?tsx?$",
   testPathIgnorePatterns: [
@@ -28,18 +27,21 @@ export default {
   transform: {
     ".+\\.(css)$": "jest-css-modules-transform",
     "^.+\\.tsx?$": [
-      "ts-jest",
+      "@swc/jest",
       {
-        astTransformers: {
-          before: [
-            {
-              path: "@formatjs/ts-transformer/ts-jest-integration",
-              options: {
-                overrideIdFn: "[sha512:contenthash:base64:6]",
-                ast: true,
-              },
-            },
-          ],
+        jsc: {
+          transform: { react: { runtime: "automatic" } },
+          experimental: {
+            plugins: [
+              [
+                "@swc/plugin-formatjs",
+                {
+                  idInterpolationPattern: "[sha512:contenthash:base64:6]",
+                  ast: true,
+                },
+              ],
+            ],
+          },
         },
       },
     ],

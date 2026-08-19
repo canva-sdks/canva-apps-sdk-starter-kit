@@ -37,11 +37,11 @@
       "scripts/*": ["./scripts/*"],
       "src/*": ["./src/*"],
       "styles/*": ["./styles/*"],
-      "utils/*": ["./utils/*"],
-      "webpack.config": ["./webpack.config"]
+      "utils/*": ["./utils/*"]
     }
   },
   "include": [
+    "./*.ts",
     "./src/**/*",
     "./backend/**/*",
     "./utils/**/*",
@@ -49,10 +49,5 @@
     "./declarations/declarations.d.ts",
     "./styles/**/*",
     "./node_modules/@types/**/*"
-  ],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
+  ]
 }

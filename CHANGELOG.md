@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-08-19
+
+### 🔧 Changed
+
+- Migrated the starter-kit and all templates to the new build tools in [`@canva/app-scripts`](https://www.npmjs.com/package/@canva/app-scripts). `npm start`, `npm run start:preview`, and `npm run build` now run through the Canva CLI's `apps start` / `apps build` commands for faster performance and a better developer experience. For more information, see the [Canva App Scripts documentation page](https://www.canva.dev/docs/apps/canva-app-scripts/) and for a guide on migrating your own apps, see the [@canva/app-scripts migration guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-scripts-migration-guide/).
+- Replaced ts-jest with @swc/jest as the Jest transformer.
+- Upgraded `@canva/design` to `2.12.0`.
+- Upgraded preview version of `@canva/design` to `2.12.1-beta.0`.
+
+### 🗑️ Removed
+
+- Removed leftover ts-node config now that scripts and webpack loading use tsx and esbuild-register.
+- Removed the webpack config and build `scripts/` from the starter-kit root and every app template - they have been replaced by using `@canva/app-scripts`.
+- Removed 33 dependencies that are replaced by using `@canva/app-scripts` across the starter-kit root and every app template: `@canva/cli`, `@formatjs/cli`, `@ngrok/ngrok`, `@pmmmwh/react-refresh-webpack-plugin`, `@svgr/webpack`, `@types/node-forge`, `@types/nodemon`, `@types/prompts`, `@types/webpack`, `@types/yargs`, `chalk`, `cli-table3`, `css-loader`, `css-modules-typescript-loader`, `cssnano`, `dotenv`, `esbuild-register`, `exponential-backoff`, `mini-css-extract-plugin`, `node-forge`, `nodemon`, `open`, `postcss-loader`, `prompts`, `react-refresh`, `style-loader`, `terser-webpack-plugin`, `ts-loader`, `url-loader`, `webpack`, `webpack-cli`, `webpack-dev-server`, and `yargs`.
+
+### 🛡️ Security
+
+- Dependencies audit bringing modules up to date:
+
+```text
+react-router-dom                          7.18.1   ->   7.18.2
+```
+
 ## 2026-08-13
 
 ### 🧰 Added

@@ -40,21 +40,16 @@
       "scripts/*": ["./scripts/*"],
       "src/*": ["./src/*"],
       "styles/*": ["./styles/*"],
-      "utils/*": ["./utils/*"],
-      "webpack.config": ["./webpack.config"]
+      "utils/*": ["./utils/*"]
     }
   },
   "include": [
+    "./*.ts",
     "./src/**/*",
     "./backend/**/*",
     "./utils/**/*",
     "./scripts/**/*",
     "./declarations/declarations.d.ts",
     "./styles/**/*"
-  ],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
+  ]
 }

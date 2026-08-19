@@ -92,7 +92,7 @@ To preview apps in Safari:
 npm start --use-https
 
 # Run an example
-npm start <example_name> --use-https
+npm run start:example <example_name> -- --use-https
 ```
 
 2. Navigate to <https://localhost:8080>.
@@ -119,13 +119,13 @@ The `examples` folder contains demonstration apps for a variety of Canva APIs.
 To see a list of all example apps, run the following command:
 
 ```bash
-npm start examples
+npm run start:example
 ```
 
 You can use arrow keys to navigate the list and press enter to run a specific example. It will look something like this:
 
 ```bash
-  npm start examples
+  npm run start:example
 
   ? Which example would you like to run? ›
   ❯   app elements > app element children
@@ -143,14 +143,14 @@ You can use arrow keys to navigate the list and press enter to run a specific ex
 To start a specific example app, run the following command:
 
 ```bash
-npm start <example_category>/<example_name>
+npm run start:example <example_category>/<example_name>
 // or simply
-npm start <example_name>
+npm run start:example <example_name>
 ```
 
 ## Running an example's backend
 
-Some examples have a backend. This backend is defined in the example's `backend/server.ts` file, automatically starts when the `npm start` command is run, and becomes available at <http://localhost:3001>.
+Some examples have a backend. This backend is defined in the example's `backend/server.ts` file, automatically starts when the `npm run start:example` command is run, and becomes available at <http://localhost:3001>.
 
 To run examples that have a backend:
 

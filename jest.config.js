@@ -1,9 +1,8 @@
 const { pathsToModuleNameMapper } = require("ts-jest");
 const { compilerOptions } = require("./tsconfig.json");
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+/** @type {import('jest').Config} */
 module.exports = {
-  preset: "ts-jest",
   testEnvironment: "jsdom",
   testRegex: "\\.(spec|test)\\.[mc]?tsx?$",
   modulePaths: [compilerOptions.baseUrl],
@@ -17,18 +16,21 @@ module.exports = {
   transform: {
     ".+\\.(css)$": "<rootDir>/node_modules/jest-css-modules-transform",
     "^.+\\.tsx?$": [
-      "ts-jest",
+      "@swc/jest",
       {
-        astTransformers: {
-          before: [
-            {
-              path: "@formatjs/ts-transformer/ts-jest-integration",
-              options: {
-                overrideIdFn: "[sha512:contenthash:base64:6]",
-                ast: true,
-              },
-            },
-          ],
+        jsc: {
+          transform: { react: { runtime: "automatic" } },
+          experimental: {
+            plugins: [
+              [
+                "@swc/plugin-formatjs",
+                {
+                  idInterpolationPattern: "[sha512:contenthash:base64:6]",
+                  ast: true,
+                },
+              ],
+            ],
+          },
         },
       },
     ],
