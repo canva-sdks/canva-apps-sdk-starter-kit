@@ -6,6 +6,8 @@ This repo contains everything you need to get an app up and running in a matter 
 
 **Note:** The starter kit and documentation assumes some experience with TypeScript and React.
 
+**Note:** If your app was created from an older snapshot of this starter kit and still has its own `webpack.config.ts` and `scripts/start/` runner, see the [`@canva/app-scripts` migration guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-scripts-migration-guide/) to move to the current build tooling.
+
 ## Requirements
 
 - Node.js `v24`

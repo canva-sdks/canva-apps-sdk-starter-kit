@@ -4,6 +4,12 @@
 
 ### 🔧 Changed
 
+- Linked the `@canva/app-scripts` migration guide from the README, for apps created from an older starter-kit snapshot.
+
+## 2026-08-19
+
+### 🔧 Changed
+
 - Migrated the starter-kit and all templates to the new build tools in [`@canva/app-scripts`](https://www.npmjs.com/package/@canva/app-scripts). `npm start`, `npm run start:preview`, and `npm run build` now run through the Canva CLI's `apps start` / `apps build` commands for faster performance and a better developer experience. For more information, see the [Canva App Scripts documentation page](https://www.canva.dev/docs/apps/canva-app-scripts/) and for a guide on migrating your own apps, see the [@canva/app-scripts migration guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-scripts-migration-guide/).
 - Replaced ts-jest with @swc/jest as the Jest transformer.
 - Upgraded `@canva/design` to `2.12.0`.
