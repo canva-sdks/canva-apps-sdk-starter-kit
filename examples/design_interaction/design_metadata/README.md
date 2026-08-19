@@ -1,6 +1,6 @@
 # Design metadata
 
-Demonstrates how to retrieve design information including title, dimensions, and other metadata properties. Shows design introspection and metadata access patterns.
+Demonstrates how to retrieve design information including title, dimensions, and page metadata with stable page IDs. Also shows how to get metadata for the page the user is currently viewing with `getCurrentPageMetadata`.
 
 For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-metadata/.
 

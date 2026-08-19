@@ -1,6 +1,18 @@
 // For usage information, see the README.md file.
-import { Alert, Button, Rows, Text } from "@canva/app-ui-kit";
-import type { Dimensions, EmbedElement, GroupElement } from "@canva/design";
+import {
+  Alert,
+  Button,
+  FormField,
+  MultilineInput,
+  Rows,
+  Text,
+} from "@canva/app-ui-kit";
+import type {
+  Dimensions,
+  EmbedElement,
+  GroupElement,
+  PageMetadata,
+} from "@canva/design";
 import { addPage, getDesignMetadata } from "@canva/design";
 import { CanvaError } from "@canva/error";
 /**
@@ -76,6 +88,10 @@ export const App = () => {
   const [defaultPageDimensions, setDefaultPageDimensions] = useState<
     Dimensions | undefined
   >();
+  // Metadata returned by addPage, including the new page's stable id
+  const [addedPageMetadata, setAddedPageMetadata] = useState<
+    PageMetadata | undefined
+  >();
   // Check if the current design type supports the addPage feature
   // Some design types like docs may not support page addition
   const isSupported = useFeatureSupport();
@@ -109,8 +125,9 @@ export const App = () => {
         defaultPageDimensions.width * EMBED_ELEMENT_SCALE_FACTOR;
       const headerElement = await createHeaderElement();
       // Add a new page to the current design with pre-populated elements
-      // The addPage API allows apps to create pages with content and layout
-      await addPage({
+      // The addPage API returns PageMetadata for the new page, including a
+      // stable id (PageId) when the page type is "absolute".
+      const pageMetadata = await addPage({
         title: "Weather forecast",
         elements: [
           {
@@ -134,6 +151,7 @@ export const App = () => {
           },
         ],
       });
+      setAddedPageMetadata(pageMetadata);
       setError(undefined);
     } catch (e) {
       // Handle Canva-specific errors that can occur during page addition
@@ -164,7 +182,8 @@ export const App = () => {
       <Rows spacing="3u">
         <Text>
           This example demonstrates how apps can add a new page with
-          pre-populated elements.
+          pre-populated elements. The returned page metadata includes a stable
+          page ID.
         </Text>
         {error && <Text tone="critical">{error}</Text>}
         <Button
@@ -179,6 +198,13 @@ export const App = () => {
           Add page
         </Button>
         {!isRequiredFeatureSupported && <UnsupportedAlert />}
+        <FormField
+          label="Added page metadata"
+          value={JSON.stringify(addedPageMetadata, null, 2)}
+          control={(props) => (
+            <MultilineInput {...props} maxRows={8} autoGrow readOnly />
+          )}
+        />
       </Rows>
     </div>
   );
