@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-26
+
+### 🔧 Changed
+
+- Linked the `@canva/app-scripts` migration guide from the README, for apps created from an older starter-kit snapshot.
+- Upgraded `@canva/intents` to `2.7.0`.
+- Updated the digital asset management example setup instructions to describe authentication in a new browser tab.
+- Upgraded `@canva/app-scripts` to `1.1.0`.
+
+### 🐞 Fixed
+
+- Updated the start command for several examples.
+
 ## 2026-08-19
 
 ### 🔧 Changed

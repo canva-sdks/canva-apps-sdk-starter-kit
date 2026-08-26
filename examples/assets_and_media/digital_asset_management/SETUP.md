@@ -20,7 +20,7 @@
 1. Run the following command:
 
    ```bash
-   npm start digital_asset_management
+   npm start:example digital_asset_management
    ```
 
    This will launch one development server for the frontend and backend.
@@ -67,7 +67,7 @@ From the `canva-apps-sdk-starter-kit` directory
 1. Stop any running scripts, and run the following command to launch the backend and frontend development servers. The `--ngrok` parameter exposes the backend server via a publicly accessible URL.
 
    ```bash
-   npm start digital_asset_management --ngrok
+   npm start:example digital_asset_management --ngrok
    ```
 
 2. After ngrok is running, copy your ngrok URL
@@ -115,7 +115,7 @@ From the `canva-apps-sdk-starter-kit` directory
    1. A new screen will appear asking if you want to authenticate.
       Press **Connect** to start the authentication flow.
    2. A ngrok screen may appear. If it does, select **Visit Site**
-   3. An authentication popup will appear. For the username, enter `username`, and
+   3. An authentication tab will appear. For the username, enter `username`, and
       for the password enter `password`.
    4. If successful, you will be redirected back to your app.
 

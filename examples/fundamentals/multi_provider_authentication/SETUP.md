@@ -17,5 +17,5 @@ Each provider needs to be configured separately in the Developer Portal with its
 Once both providers are configured, simply run the example from the root of `canva-apps-sdk-starter-kit` with:
 
 ```sh
-npm start multi_provider_authentication
+npm start:example multi_provider_authentication
 ```
