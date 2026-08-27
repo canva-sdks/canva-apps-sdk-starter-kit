@@ -28,7 +28,7 @@
     "@canva/asset": "^2.3.0",
     "@canva/design": "^2.12.0",
     "@canva/error": "^2.2.1",
-    "@canva/intents": "^2.6.0",
+    "@canva/intents": "^2.7.0",
     "@canva/platform": "^2.2.2",
     "@canva/user": "^2.2.0",
     "@tanstack/react-query": "5.87.1",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@canva/app-eslint-plugin": "^1.0.0",
-    "@canva/app-scripts": "^1.0.0",
+    "@canva/app-scripts": "^1.1.0",
     "@rspack/core": "2.0.8",
     "@swc/core": "1.15.1",
     "@swc/jest": "0.2.39",

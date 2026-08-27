@@ -6,6 +6,8 @@ This repo contains everything you need to get an app up and running in a matter 
 
 **Note:** The starter kit and documentation assumes some experience with TypeScript and React.
 
+**Note:** If your app was created from an older snapshot of this starter kit and still has its own `webpack.config.ts` and `scripts/start/` runner, see the [`@canva/app-scripts` migration guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-scripts-migration-guide/) to move to the current build tooling.
+
 ## Requirements
 
 - Node.js `v24`
@@ -173,7 +175,7 @@ To run examples that have a backend:
 1. Start the example:
 
    ```bash
-   npm start fetch
+   npm start:example fetch
    ```
 
 The ID of the app must be explicitly defined because it's required to [send and verify HTTP requests](https://www.canva.dev/docs/apps/verifying-http-requests/). If you don't set up the ID in the `.env` file, an error will be thrown when attempting to run the example.
