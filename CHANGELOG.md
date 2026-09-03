@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-09-03
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-scripts` to `1.1.1`.
+- Upgraded `@canva/design` to `2.13.0`.
+- Upgraded preview version of `@canva/design` to `2.13.1-beta.0`.
+- Upgraded `@canva/app-ui-kit` to `5.14.3`.
+
+### 🐞 Fixed
+
+- Pinned `nwsapi` to `2.2.24` in starter-kit templates to avoid Jest timeouts from a jsdom selector-engine regression.
+
+### 🛡️ Security
+
+- Dependencies audit bringing modules up to date:
+
+```text
+react-router                              6.30.4   ->   6.30.6
+react-router-dom                          6.30.4   ->   6.30.6
+postcss                                   8.5.23   ->   8.5.26
+```
+
 ## 2026-08-26
 
 ### 🔧 Changed

@@ -34,7 +34,7 @@ describe("Office selection page", () => {
 
     // Click the Continue button to submit the form (should show validation error first)
     const continueButton = screen.getByText("Continue");
-    user.click(continueButton);
+    await user.click(continueButton);
 
     // Should show validation error
     await waitFor(() => {
@@ -59,12 +59,12 @@ describe("Office selection page", () => {
       throw new Error("No mock office found");
     }
 
-    user.click(screen.getByText("Select office"));
+    await user.click(screen.getByText("Select office"));
     await waitFor(() => {
       expect(screen.getByText(office.name)).toBeInTheDocument();
     });
-    user.click(screen.getByText(office.name));
-    user.click(screen.getByText("Continue"));
+    await user.click(screen.getByText(office.name));
+    await user.click(screen.getByText("Continue"));
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledTimes(1);
     });
