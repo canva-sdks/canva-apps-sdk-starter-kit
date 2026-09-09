@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-09
+
+### 🔧 Changed
+
+- Upgraded preview version of `@canva/design` to `2.13.1-beta.1`.
+
 ## 2026-09-03
 
 ### 🔧 Changed
