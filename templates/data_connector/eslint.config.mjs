@@ -7,7 +7,6 @@ export default [
       "**/dist",
       "**/*.d.ts",
       "**/*.d.tsx",
-      "**/*.config.*",
       ".agents/**",
       ".claude/**",
       ".codex/**",

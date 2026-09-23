@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-09-23
+
+### 🔧 Changed
+
+- Upgraded preview version of `@canva/design` to `2.13.1-beta.2`.
+- Upgraded `@canva/error` to `2.2.2`.
+- Upgraded `@canva/intents` to `2.7.1`.
+- Upgraded `@canva/platform` to `2.2.3`.
+- Upgraded `@canva/user` to `2.2.1`.
+- Upgraded `@canva/asset` to `2.3.1`.
+- Upgraded preview version of `@canva/intents` to `2.7.2-beta.0`.
+- Upgraded `@canva/design` to `2.13.1`.
+- Upgraded `@canva/app-eslint-plugin` to `1.0.1`.
+- Updated all templates `eslint.config.mjs` to no longer explicitly ignore `**/*.config.ts` files since `@canva/app-eslint-plugin` now includes this config by default.
+
 ## 2026-09-09
 
 ### 🔧 Changed
