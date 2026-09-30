@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-30
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-components` to `2.8.0`.
+
 ## 2026-09-23
 
 ### 🔧 Changed

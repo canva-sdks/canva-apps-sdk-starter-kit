@@ -5,14 +5,12 @@
   "author": "Canva Pty Ltd.",
   "license": "Please refer to the LICENSE.md file in the root directory",
   "dependencies": {
-    "@canva/app-components": "^2.7.0",
+    "@canva/app-components": "^2.8.0",
     "@canva/app-middleware": "^0.0.0-beta.8",
     "@tanstack/react-query": "5.87.1",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
-    "express": "4.22.2",
-    "react-router": "6.30.6",
-    "react-router-dom": "6.30.6"
+    "express": "4.22.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.19"

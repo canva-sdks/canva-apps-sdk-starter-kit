@@ -94,8 +94,7 @@
     "typescript-eslint": "8.57.1",
     "webpack": "5.105.2",
     "webpack-dev-server": "5.2.6",
-    "yargs": "17.7.2",
-    "zod": "3.25.76"
+    "yargs": "17.7.2"
   },
   "overrides": {
     "nwsapi": "2.2.24",
