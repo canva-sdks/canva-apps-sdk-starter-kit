@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@canva/app-eslint-plugin": "^1.0.1",
-    "@canva/app-scripts": "^1.1.1",
+    "@canva/app-scripts": "^1.1.2",
     "@eslint/eslintrc": "3.3.5",
     "@rspack/core": "2.0.8",
     "@swc/core": "1.15.1",
@@ -94,8 +94,7 @@
     "typescript-eslint": "8.57.1",
     "webpack": "5.105.2",
     "webpack-dev-server": "5.2.6",
-    "yargs": "17.7.2",
-    "zod": "3.25.76"
+    "yargs": "17.7.2"
   },
   "overrides": {
     "nwsapi": "2.2.24",
