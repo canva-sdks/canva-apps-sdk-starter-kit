@@ -10,12 +10,12 @@ exports[`app Renders 🎉 1`] = `
       style="--x-rowGap: 16px;"
     >
       <p
-        class="xlh3980 xvmahel x1ghz6dp xyddcd2 x1enbaoa x1sk33t8 x7gbg69 xli2zx2 x1958duc x12oo3zp x8d2oow x1mzt3pk x1vvkbs x1yc453h xce744n LbzErQ"
+        class="xlh3980 xvmahel x1ghz6dp x1wtentn x1n2zxk4 x1sk33t8 x7gbg69 xli2zx2 x1958duc x12oo3zp x8d2oow x1mzt3pk xxrskpm x1vvkbs x1yc453h xce744n LbzErQ"
       >
         This example demonstrates how to test your app's UI.
       </p>
       <p
-        class="xlh3980 xvmahel x1ghz6dp xyddcd2 x1enbaoa x1sk33t8 x7gbg69 xli2zx2 x1958duc x12oo3zp x8d2oow x1mzt3pk x1vvkbs x1yc453h xce744n LbzErQ"
+        class="xlh3980 xvmahel x1ghz6dp x1wtentn x1n2zxk4 x1sk33t8 x7gbg69 xli2zx2 x1958duc x12oo3zp x8d2oow x1mzt3pk xxrskpm x1vvkbs x1yc453h xce744n LbzErQ"
       >
         Check out 
         <code>
@@ -25,11 +25,11 @@ exports[`app Renders 🎉 1`] = `
         to learn how to start testing.
       </p>
       <button
-        class="_5KtATA LQzFZw Qfw6fw Sp3u_w Gcy95A _8ERLTg hw3gKA rV61VQ LQzFZw Qfw6fw Sp3u_w Gcy95A _4_iekA j34Zww aqbYPg _3FvZZg"
+        class="x1lfrg59 xng3xce xc342km x6s0dn4 x9f619 x1ypdohk x3nfvp2 xxymvpz x193iq5w xmkbo9c x1oi6v9h x1u9bxl0 xlh3980 xvmahel x1ghz6dp x1wtentn x1n2zxk4 x1sk33t8 x7gbg69 xli2zx2 x1egkzza x12oo3zp x8d2oow x1mzt3pk xxrskpm x1vvkbs xcoeub6 xi9wb9w xxby36a x1j731v2 xe0628l xl56j7k xt970qd x1f3r89p xw04ij8 xa9d7gz xd58rb1 x1bsd2ls xvb79w2 x1riweet x1pest87 x3lxqog x1sewpe5 x1ewu8gn x1t137rt x14gwkfl x9f4r22 xdb5qux x1j1r3jh x1frudsz xvrpeq4 x1rr98o8 xm3grqg xv4o8wm x125j9rs xxtwuct"
         type="button"
       >
         <span
-          class="khPe7Q"
+          class="xb3r6kr x1lliihq xlyipyv xuxw1ft x193iq5w x1nkss2m xvueqy4 xx6bhzk x19991ni xz4gly6 khPe7Q"
         >
           Do something cool
         </span>
