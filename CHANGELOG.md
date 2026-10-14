@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-10-14
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-components` to `2.8.1`.
+- Upgraded preview version of `@canva/app-middleware` to `0.0.0-beta.10`.
+
+### 🐞 Fixed
+
+- Send a Retry-After header when token verification is temporarily unavailable.
+
+### 🛡️ Security
+
+- Dependencies audit bringing modules up to date:
+
+```text
+express                                   4.22.2   ->   4.22.3
+```
+
 ## 2026-10-07
 
 ### 🔧 Changed
