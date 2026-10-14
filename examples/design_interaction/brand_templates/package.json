@@ -8,9 +8,9 @@
     "@types/cors": "2.8.19"
   },
   "dependencies": {
-    "@canva/app-middleware": "^0.0.0-beta.8",
+    "@canva/app-middleware": "^0.0.0-beta.10",
     "@canva/design": "2.13.1-beta.2",
     "cors": "2.8.5",
-    "express": "4.22.2"
+    "express": "4.22.3"
   }
 }

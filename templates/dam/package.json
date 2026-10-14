@@ -20,10 +20,10 @@
     "postinstall": "tsx ./scripts/copy_env.ts"
   },
   "dependencies": {
-    "@canva/app-components": "^2.8.0",
+    "@canva/app-components": "^2.8.1",
     "@canva/app-hooks": "^0.0.0-beta.4",
     "@canva/app-i18n-kit": "^1.3.0",
-    "@canva/app-middleware": "^0.0.0-beta.8",
+    "@canva/app-middleware": "^0.0.0-beta.10",
     "@canva/app-ui-kit": "^5.15.0",
     "@canva/asset": "^2.3.1",
     "@canva/design": "^2.13.1",
@@ -57,7 +57,7 @@
     "@types/react-dom": "19.2.1",
     "@types/webpack-env": "1.18.8",
     "debug": "4.4.1",
-    "express": "4.22.2",
+    "express": "4.22.3",
     "express-basic-auth": "1.2.1",
     "jest": "30.2.0",
     "jest-css-modules-transform": "4.4.2",
