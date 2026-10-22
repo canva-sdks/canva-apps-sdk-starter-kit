@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-21
+
+### 🔧 Changed
+
+- Modifying the example to use the new preview version of `@canva/asset`.
+
 ## 2026-10-14
 
 ### 🔧 Changed

@@ -11,10 +11,13 @@ import {
   Title,
   SegmentedControl,
   ImageCard,
+  SearchInputMenu,
+  Menu,
+  MenuItem,
 } from "@canva/app-ui-kit";
 import type { Font, FontStyle, FontWeightName } from "@canva/asset";
-// Canva's Font APIs for discovering available fonts and opening the font picker
-import { findFonts, requestFontSelection } from "@canva/asset";
+// Canva's Font APIs for searching, discovering available fonts and opening the font picker
+import { findFonts, searchFonts, requestFontSelection } from "@canva/asset";
 import { addElementAtCursor, addElementAtPoint } from "@canva/design";
 import { useState, useEffect, useCallback } from "react";
 import * as styles from "styles/components.css";
@@ -51,6 +54,41 @@ export const App = () => {
   const [textConfig, setTextConfig] = useState<TextConfig>(initialConfig);
   const [selectedFont, setSelectedFont] = useState<Font | undefined>(undefined);
   const [availableFonts, setAvailableFonts] = useState<readonly Font[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<
+    readonly Font[] | undefined
+  >(undefined);
+
+  // Search Canva's font library and store the matches.
+  const performSearch = useCallback(
+    async (isCancelled: () => boolean) => {
+      if (searchQuery.trim().length === 0) {
+        setSearchResults(undefined);
+        return;
+      }
+      const result = await searchFonts({ query: searchQuery });
+
+      // Only returns the first page of results
+      for await (const page of result.pages) {
+        if (!isCancelled()) {
+          setSearchResults(page);
+        }
+        break;
+      }
+    },
+    [searchQuery, setSearchResults],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    const timeoutId = setTimeout(() => {
+      performSearch(() => cancelled);
+    }, 230);
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, [performSearch]);
 
   // Fetch all fonts available in Canva using the findFonts API
   const fetchFonts = useCallback(async () => {
@@ -116,6 +154,7 @@ export const App = () => {
           )}
         />
         <Title size="small">Font selection</Title>
+        <Title size="xsmall">Recommended fonts</Title>
         {availableFonts.length > 0 && (
           <FormField
             label="Font family"
@@ -137,6 +176,44 @@ export const App = () => {
             )}
           />
         )}
+        <Title size="xsmall">Font search</Title>
+        <FormField
+          label="Search fonts"
+          control={({ id }) => (
+            <SearchInputMenu
+              id={id}
+              value={searchQuery}
+              onChange={setSearchQuery}
+              onClear={() => {
+                setSearchQuery("");
+                setSearchResults(undefined);
+              }}
+              onOutsidePointerDown={() => setSearchResults(undefined)}
+              placeholder="Try `Calligraphy` or `Open Sans`"
+            >
+              {searchResults != null && (
+                <Menu>
+                  {searchResults.length === 0 ? (
+                    <MenuItem label="No fonts found" disabled />
+                  ) : (
+                    searchResults.map((font) => (
+                      <MenuItem
+                        key={font.ref}
+                        label={font.name}
+                        onClick={() => {
+                          setSelectedFont(font);
+                          resetSelectedFontStyleAndWeight(font);
+                          setSearchQuery("");
+                          setSearchResults(undefined);
+                        }}
+                      />
+                    ))
+                  )}
+                </Menu>
+              )}
+            </SearchInputMenu>
+          )}
+        />
         <Button
           variant="secondary"
           icon={ChevronDownIcon}

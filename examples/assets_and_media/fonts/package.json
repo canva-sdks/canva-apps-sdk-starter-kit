@@ -3,5 +3,8 @@
   "title": "Fonts",
   "description": "Use the fonts picker to apply custom fonts to text elements in designs.",
   "author": "Canva Pty Ltd.",
-  "license": "Please refer to the LICENSE.md file in the root directory"
+  "license": "Please refer to the LICENSE.md file in the root directory",
+  "dependencies": {
+    "@canva/asset": "2.3.2-beta.0"
+  }
 }
