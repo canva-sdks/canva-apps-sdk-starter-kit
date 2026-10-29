@@ -1,5 +1,56 @@
 # Changelog
 
+## 2026-10-28
+
+### 🔧 Changed
+
+- Upgraded preview version of `@canva/design` to `2.13.2-beta.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+@eslint/eslintrc                           3.3.5   ->   3.3.7
+@formatjs/ts-transformer                  3.14.0   ->   3.14.2
+@swc/core                                 1.15.1   ->   1.16.20
+@swc/plugin-formatjs                       8.0.0   ->   14.0.0
+@tanstack/react-query                     5.87.1   ->   5.104.5
+@testing-library/dom                      10.4.1   ->   10.4.2
+@testing-library/jest-dom                  6.8.0   ->   6.9.1
+@testing-library/react                    16.3.0   ->   16.3.3
+@testing-library/user-event               14.6.1   ->   14.6.8
+@types/cookie-parser                       1.4.9   ->   1.4.10
+@types/debug                              4.1.12   ->   4.1.13
+@types/express-serve-static-core          4.19.8   ->   4.19.9
+@types/node                             22.19.17   ->   22.20.5
+@types/react                              19.2.2   ->   19.3.0
+@types/react-dom                          19.2.1   ->   19.3.0
+@types/yargs                             17.0.33   ->   17.0.35
+ajv-cmd                                   0.16.1   ->   0.17.2
+cors                                       2.8.5   ->   2.8.6
+debug                                      4.4.1   ->   4.4.3
+dotenv                                    16.6.0   ->   16.6.1
+eslint                                    9.34.0   ->   9.39.5
+eslint-plugin-import-x                    4.16.1   ->   4.17.1
+eslint-plugin-testing-library             7.13.3   ->   7.16.2
+exponential-backoff                        3.1.2   ->   3.1.3
+globals                                   16.3.0   ->   16.5.0
+html-react-parser                          5.2.6   ->   5.2.17
+jest                                      30.2.0   ->   30.5.2
+jest-environment-jsdom                    30.2.0   ->   30.5.2
+jwks-rsa                                   3.2.0   ->   3.2.2
+obscenity                                  0.4.4   ->   0.4.6
+postcss                                   8.5.26   ->   8.5.31
+prettier                                   3.6.2   ->   3.9.10
+react-error-boundary                       6.0.0   ->   6.1.6
+react-hook-form                           7.66.0   ->   7.91.0
+react-router-dom                          7.18.2   ->   7.18.4
+ts-jest                                   29.4.1   ->   29.4.15
+tsx                                       4.22.4   ->   4.23.15
+typescript                                 5.9.2   ->   5.9.3
+typescript-eslint                         8.57.1   ->   8.72.0
+webpack                                  5.105.2   ->   5.112.2
+webpack-dev-server                         5.2.6   ->   5.2.7
+```
+
 ## 2026-10-21
 
 ### 🔧 Changed
