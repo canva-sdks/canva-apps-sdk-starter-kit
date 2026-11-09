@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-11-09
+
+### 🔧 Changed
+
+- Upgraded `@canva/design` to `2.14.0`.
+- Upgraded `@canva/intents` to `2.8.0`.
+- Removed the `nwsapi` `2.2.24` pin from starter-kit templates now that the latest `nwsapi` no longer causes Jest timeouts.
+- Upgraded `@canva/app-eslint-plugin` to `1.1.0` and removed the ESLint plugin dev dependencies that package now provides.
+- Upgraded preview version of `@canva/design` to `2.14.1-beta.0`.
+- Upgraded `@canva/asset` to `2.4.0`.
+- Upgraded `@canva/app-components` to `2.9.0`.
+- Dependencies audit bringing modules up to date:
+
+```text
+@swc/core                                1.16.20   ->   1.16.21
+postcss                                   8.5.31   ->   8.5.32
+@tanstack/react-query                    5.104.5   ->   5.105.1
+react-router-dom                          7.18.4   ->   7.18.5
+```
+
+### 🐞 Fixed
+
+- Corrected the mls app template to have @types/react-infinite-scoller as a devDependency instead of a dependency
+- Fixed an unsatisfied `eslint` peer dependency when installing app templates with npm.
+
 ## 2026-10-28
 
 ### 🔧 Changed
