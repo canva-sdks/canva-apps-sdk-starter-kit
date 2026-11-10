@@ -41,8 +41,7 @@
   },
   "devDependencies": {
     "@canva/app-eslint-plugin": "^1.1.0",
-    "@canva/app-scripts": "^1.1.2",
-    "@formatjs/ts-transformer": "3.14.2",
+    "@canva/app-scripts": "^1.2.0",
     "@rspack/core": "2.0.8",
     "@swc/core": "1.16.21",
     "@swc/jest": "0.2.39",
@@ -76,7 +75,7 @@
     "typescript": "5.9.3"
   },
   "engines": {
-    "node": "^22 || ^24"
+    "node": "^22 || ^24 || ^26"
   },
   "overrides": {
     "react-infinite-scroller": {

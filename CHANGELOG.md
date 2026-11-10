@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-10
+
+### 🧰 Added
+
+- Added Node.js `v26` as a supported version. Node.js `v24` remains the recommended version, and Node.js `v22` is still supported.
+
+### 🔧 Changed
+
+- Upgraded `@canva/app-scripts` to `1.2.0`.
+
 ## 2026-11-09
 
 ### 🔧 Changed

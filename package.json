@@ -2,7 +2,7 @@
   "name": "canva-apps-sdk-starter-kit",
   "description": "A boilerplate for creating Canva Apps.",
   "engines": {
-    "node": "^22 || ^24"
+    "node": "^22 || ^24 || ^26"
   },
   "scripts": {
     "start": "npx @canva/cli apps start",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@canva/app-eslint-plugin": "^1.1.0",
-    "@canva/app-scripts": "^1.1.2",
+    "@canva/app-scripts": "^1.2.0",
     "@rspack/core": "2.0.8",
     "@swc/core": "1.16.21",
     "@swc/jest": "0.2.39",
