@@ -23,8 +23,6 @@ intents in one app.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 
-- **Preview/beta API**: `requestDataTable` is a `@beta` API. Check the latest API
-  status in the docs before relying on it in a production app.
 - **Static/hardcoded data**: The Data Connector always returns the same fixed dataset.
   Production apps should use `request.dataSourceRef.source` to identify and fetch the
   actual data requested from an external source.
