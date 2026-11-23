@@ -2,7 +2,7 @@
 
 Demonstrates how to create custom vector shape elements using SVG path data. Shows shape creation, color customization, multiple path support, and viewBox configuration for building custom graphics.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/shape-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/shape-elements/.
 
 Related examples: See design_elements/shape_elements_with_asset for image-filled shapes, or app_shape_elements for shapes within app elements.
 

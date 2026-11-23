@@ -2,7 +2,7 @@
 
 Demonstrates how to position elements at specific coordinates and placements within designs. Shows element positioning patterns, placement configurations, and coordinate-based element insertion.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/positioning-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/positioning-elements/.
 
 Related examples: See design_interaction/design_editing for advanced element manipulation, or app_element_children for relative positioning within app elements.
 

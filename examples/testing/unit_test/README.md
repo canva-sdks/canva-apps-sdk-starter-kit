@@ -2,7 +2,7 @@
 
 Demonstrates how to structure app logic for unit testing, including testable functions, error handling, and API interaction patterns. Shows separation of concerns for better testability.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/unit-test/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/unit-test/.
 
 Related example: See testing/ui_test for testing UI components separately from business logic.
 

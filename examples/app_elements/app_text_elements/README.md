@@ -2,7 +2,7 @@
 
 Demonstrates how to create text elements inside app elements with comprehensive styling controls including color, font weight, style, decoration, alignment, and dimensions. Shows text formatting within re-editable app elements.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/app-text-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/app-text-elements/.
 
 Related examples: See `design_elements/text_elements` for direct text insertion, or `assets_and_media/fonts` for advanced font selection patterns.
 

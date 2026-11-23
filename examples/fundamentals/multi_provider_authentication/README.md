@@ -2,7 +2,7 @@
 
 Demonstrates how to implement OAuth authentication with multiple providers (Meta and Google) in a single app, allowing users to connect to different platforms simultaneously. Shows provider-specific token management, independent authorization flows, and authenticated API requests using tokens from different providers.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/multi-provider-authentication/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/multi-provider-authentication/.
 
 Related examples: See fundamentals/authentication for single-provider OAuth authentication, fundamentals/multi_account_authentication for multiple accounts from a single provider, or design_interaction/design_token for design-specific authentication patterns.
 

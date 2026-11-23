@@ -2,7 +2,7 @@
 
 Demonstrates how to upload and import various media types (images, videos, audio) into Canva designs using the upload function. Shows asynchronous upload handling, thumbnail support, and design type compatibility checks.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/asset-upload/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/asset-upload/.
 
 Related examples: See digital_asset_management for external asset browsing, or drag_and_drop examples for alternative asset insertion patterns.
 

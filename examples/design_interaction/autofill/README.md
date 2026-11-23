@@ -14,7 +14,7 @@ elements in the design. "Autofill design" calls `autofillDesign` with the same
 hardcoded table to fill in those tagged elements.
 
 For API reference docs and instructions on running this example, see:
-<https://www.canva.dev/docs/apps/examples/autofill/>.
+<https://www.canva.dev/docs/apps/feature-examples/autofill/>.
 
 Related examples: see `intents/request_data_table` for fetching a data table
 from a Data Connector instead of a hardcoded one, and `design_interaction/brand_templates`

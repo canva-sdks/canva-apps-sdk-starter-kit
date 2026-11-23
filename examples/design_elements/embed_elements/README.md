@@ -2,7 +2,7 @@
 
 Demonstrates how to add embed elements to designs using URLs from supported platforms. Shows embed creation, URL input handling, and embed insertion patterns.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/embed-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/embed-elements/.
 
 Related examples: See app_embed_elements for embeds within app elements, or drag_and_drop/drag_and_drop_embed for drag-and-drop embed insertion.
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to implement drag-and-drop functionality for text elements with configurable styling properties. Shows text formatting, typography card usage, feature detection, and graceful degradation for unsupported design contexts.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/drag-and-drop-text/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/drag-and-drop-text/>.
 
 Related examples: See drag_and_drop/drag_and_drop_image for implementing similar drag-and-drop functionality with image assets, or design_elements/text_elements for direct text insertion without drag-and-drop.
 

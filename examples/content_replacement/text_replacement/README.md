@@ -2,7 +2,7 @@
 
 Demonstrates how to replace selected plain text elements in a design with new text content. Shows simple text selection detection and text substitution patterns using the Canva Apps SDK selection API.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/text-replacement/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/text-replacement/.
 
 Related examples: See content_replacement/richtext_replacement for formatted text replacement, or content_replacement/text_translation for advanced text transformation.
 

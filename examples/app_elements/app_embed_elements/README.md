@@ -2,7 +2,7 @@
 
 Demonstrates how to create embed elements inside app elements, making embeds re-editable with customizable properties like URL, width, and height. Shows how to wrap embed functionality in an app element for enhanced control.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/app-embed-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/app-embed-elements/.
 
 Related examples: See design_elements/embed_elements for direct embed insertion, or app_video_elements for video-specific app elements.
 

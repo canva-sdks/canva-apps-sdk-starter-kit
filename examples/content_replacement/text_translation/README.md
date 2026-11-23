@@ -2,7 +2,7 @@
 
 Demonstrates advanced text transformation patterns including translation with and without formatting preservation. Shows bulk text editing, content session management, and complex text replacement workflows.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/text-translation/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/text-translation/.
 
 Related examples: See content_replacement/text_replacement for basic text substitution, or content_replacement/richtext_replacement for rich text modifications.
 

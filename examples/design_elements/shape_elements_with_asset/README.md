@@ -2,7 +2,7 @@
 
 Demonstrates how to create custom shape elements filled with image assets. Shows combining vector paths with image fills to create unique design elements with both shape and image properties.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/shape-elements-with-asset/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/shape-elements-with-asset/.
 
 Related examples: See design_elements/shape_elements for solid color shapes, or design_elements/image_elements for standalone image insertion.
 

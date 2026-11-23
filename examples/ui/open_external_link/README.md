@@ -2,7 +2,7 @@
 
 Demonstrates how to handle external link navigation with proper user consent and security patterns. Shows the use of `requestOpenExternalUrl` API, user confirmation workflows, and compliance with external navigation guidelines.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/open-external-link/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/open-external-link/>.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

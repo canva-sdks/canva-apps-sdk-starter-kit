@@ -2,7 +2,7 @@
 
 Demonstrates how to use image editing overlays to create simple interactive image editing experiences. Shows real-time preview of basic image effects, communication between overlay and object panel, and saving edited images back to the design.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/image-editing-overlay/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/image-editing-overlay/.
 
 Related examples: See assets_and_media/asset_upload for image importing, or design_elements/image_elements for basic image manipulation patterns.
 

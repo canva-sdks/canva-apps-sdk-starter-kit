@@ -2,7 +2,7 @@
 
 Demonstrates how to replace selected image elements in a design with new image content. Shows selection detection, image upload, and content replacement patterns for updating existing design elements using the Canva Apps SDK.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/image-replacement/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/image-replacement/>.
 
 Related examples: See content_replacement/video_replacement for video substitution patterns, or asset_upload for general image import and upload workflows.
 

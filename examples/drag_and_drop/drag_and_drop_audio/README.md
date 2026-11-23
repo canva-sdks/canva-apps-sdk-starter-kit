@@ -2,7 +2,7 @@
 
 This example demonstrates how to implement drag-and-drop functionality for audio files using AudioCard and startDragToPoint. It shows audio upload, playback preview, and design integration patterns.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/drag-and-drop-audio/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/drag-and-drop-audio/.
 
 Related examples: See drag_and_drop/drag_and_drop_video for video drag-and-drop patterns, or asset_upload for direct audio import without drag-and-drop.
 

@@ -14,7 +14,7 @@ The app implements two intents:
   loads, then renders it as a simple table.
 
 For API reference docs and instructions on running this example, see:
-<https://www.canva.dev/docs/apps/examples/request-data-table/>.
+<https://www.canva.dev/docs/apps/feature-examples/request-data-table/>.
 
 Related examples: see `intents/data_connector_intent` for a fuller Data Connector
 implementation (search, filtering, multiple data sources), and

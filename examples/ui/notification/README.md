@@ -2,7 +2,7 @@
 
 Demonstrates how to display toast notifications to users using the notification API.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/notification/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/notification/>.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to export designs in various formats (PNG, PDF, JPG, GIF, SVG, video, PPTX) using requestExport. Shows export configuration, file format selection, and export response handling.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/export/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/export/>.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

@@ -2,7 +2,7 @@
 
 Demonstrates the brand template workflow: choose a brand template with `requestBrandTemplates`, then send its token to a backend, where `brandTemplate.verifyToken()` from `@canva/app-middleware` verifies the token and decodes it into the real brand template ID. That ID — not the raw token — is what's used to preview the template's dataset fields with `getBrandTemplateMetadata` and apply it to the current design with `applyTemplate`, both from `@canva/design`. The backend also uses the ID to track how many times the template has been applied.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/brand-templates/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/brand-templates/.
 
 This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
 

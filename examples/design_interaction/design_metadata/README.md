@@ -2,7 +2,7 @@
 
 Demonstrates how to retrieve design information including title, dimensions, and page metadata with stable page IDs. Also shows how to get metadata for the page the user is currently viewing with `getCurrentPageMetadata`.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-metadata/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-metadata/.
 
 Related examples: See design_interaction/design_token for accessing designs via external APIs, or design_interaction/export for design export functionality.
 

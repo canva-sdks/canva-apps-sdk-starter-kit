@@ -2,7 +2,7 @@
 
 Demonstrates how to find, select, and apply fonts to text elements. Shows font discovery, weight and style selection, and font picker integration for creating styled text with custom typography.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/fonts/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/fonts/>.
 
 Related examples: See design_elements/text_elements for basic text insertion, or app_text_elements for text within app elements.
 

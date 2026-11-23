@@ -2,7 +2,7 @@
 
 Demonstrates how to replace and modify selected rich text elements including formatting changes like bold, italics, and other text properties. Shows advanced text selection and formatting manipulation.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/richtext-replacement/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/richtext-replacement/.
 
 Related examples: See content_replacement/text_replacement for plain text substitution, or design_elements/richtext_elements for rich text insertion.
 

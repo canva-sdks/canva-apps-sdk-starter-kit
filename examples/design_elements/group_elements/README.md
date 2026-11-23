@@ -2,7 +2,7 @@
 
 Demonstrates how to create group elements that contain multiple child elements positioned relative to each other. Shows grouping patterns for organizing related design elements.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/group-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/group-elements/.
 
 See `app_element_children` for similar multi-element patterns, or other `design_elements` examples for individual element creation.
 

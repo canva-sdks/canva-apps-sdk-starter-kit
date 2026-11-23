@@ -1,9 +1,9 @@
 # Image elements example
 
 This example demonstrates how to add image elements to a design.
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/image-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/image-elements/.
 
-See also the App image elements example: https://www.canva.dev/docs/apps/examples/app-image-elements/. Using app elements instead of regular design elements allows for more complex app interactions and behaviors.
+See also the App image elements example: https://www.canva.dev/docs/apps/feature-examples/app-image-elements/. Using app elements instead of regular design elements allows for more complex app interactions and behaviors.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

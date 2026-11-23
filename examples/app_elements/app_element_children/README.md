@@ -2,7 +2,7 @@
 
 Demonstrates how app elements can contain multiple child elements positioned relative to each other. Creates a customizable grid of square shapes where users can control rows, columns, spacing, and individual element properties. This example showcases the core app element renderer API and how to create complex multi-element designs programmatically.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/app-element-children/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/app-element-children/>.
 
 Related example: See app_image_elements for working with single elements within app elements.
 
