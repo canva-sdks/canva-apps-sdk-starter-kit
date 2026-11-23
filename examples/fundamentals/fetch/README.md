@@ -2,7 +2,7 @@
 
 Demonstrates how to make authenticated HTTP requests to external backends using user tokens. Shows proper authentication patterns, error handling, and data retrieval from custom APIs.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/fetch/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/fetch/.
 
 This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to implement drag-and-drop functionality for images using ImageCard and startDragToPoint. Shows both external URL and local asset handling with feature detection for different design contexts.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/drag-and-drop-image/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/drag-and-drop-image/.
 
 Related examples: See drag_and_drop/drag_and_drop_video for implementing similar drag-and-drop functionality with video assets, or assets_and_media/asset_upload for direct image import without drag-and-drop.
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to retrieve the colors currently used in the design.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-colors/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-colors/.
 
 Related examples: See `design_interaction/design_metadata` for reading other design information, or `ui/color` for opening Canva's built-in color selector.
 

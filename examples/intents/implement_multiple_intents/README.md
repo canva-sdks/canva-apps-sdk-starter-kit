@@ -10,7 +10,7 @@ For example, `src/index.tsx` calls `prepareDesignEditor` with the `DesignEditorI
 
 This example has a `canva-app.json` app config file with both intents enrolled.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/multiple-intents/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/implement-multiple-intents/>.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

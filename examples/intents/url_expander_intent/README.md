@@ -2,7 +2,7 @@
 
 This example demonstrates how to build a URL expander intent app that allows users to paste URLs from external platforms and have the app automatically fetch and import the associated assets into Canva designs. The app shows how to implement both the URL expansion logic and content retrieval for various asset types.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/url-expander-intent/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/url-expander-intent/.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

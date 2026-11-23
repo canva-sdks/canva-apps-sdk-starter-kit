@@ -2,7 +2,7 @@
 
 Demonstrates how to retrieve template metadata (including keywords and template domain) for templates used in a design.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-template-metadata/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-template-metadata/.
 
 Related examples: See design_interaction/design_metadata for retrieving design information.
 

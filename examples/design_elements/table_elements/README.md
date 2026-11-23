@@ -2,7 +2,7 @@
 
 Demonstrates how to create table elements with configurable rows, columns, cell spans, and formatting. Shows table structure definition, cell customization, and table insertion patterns.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/table-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/table-elements/.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

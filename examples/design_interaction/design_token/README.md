@@ -2,7 +2,7 @@
 
 Demonstrates how to obtain design tokens for accessing design metadata through external APIs. Shows token generation, authentication integration, and design data retrieval patterns.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-token/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-token/.
 
 This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
 

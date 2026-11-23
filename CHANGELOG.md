@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-11-23
+
+### 🔧 Changed
+
+- Removed the `@rspack/core` dev dependency and override from the starter-kit and templates, so `@rspack/core` now always matches the version `@canva/app-scripts` expects.
+
+### 🐞 Fixed
+
+- Fixed the broken documentation link in the `implement_multiple_intents` example README.
+
+### 📦 Dependencies
+
+- Upgraded `react` from `^19.2.7` to `^19.3.0`.
+- Upgraded `react-dom` from `^19.2.7` to `^19.3.0`.
+- Upgraded `@canva/app-ui-kit` from `5.15.0` to `5.16.1`.
+
 ## 2026-11-11
 
 ### 🔧 Changed

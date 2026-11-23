@@ -2,7 +2,7 @@
 
 This example demonstrates how to build a data connector intent app that allows users to import structured data from external sources into Canva designs. The app shows how to implement both the data fetching logic and the selection UI for filtering and configuring data imports.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/data-connector-intent/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/data-connector-intent/>.
 
 NOTE: This example differs from what is expected for public apps to pass a Canva review:
 

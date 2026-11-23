@@ -2,7 +2,7 @@
 
 Demonstrates how to set page backgrounds using solid colors, images, and videos. Shows background customization, asset upload for backgrounds, and background type handling.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/page-background/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/page-background/.
 
 Related examples: See design_interaction/page_addition for creating new pages, or asset_upload for general asset handling patterns.
 

@@ -2,7 +2,7 @@
 
 Demonstrates how to integrate with external digital asset management systems using SearchableListView. Shows patterns for browsing, searching, and importing assets from third-party platforms while supporting design export.
 
-For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/examples/digital-asset-management/>.
+For API reference docs and instructions on running this example, see: <https://www.canva.dev/docs/apps/feature-examples/digital-asset-management/>.
 
 This example requires a backend with a valid `CANVA_APP_ID` configured in the root `.env` file. See [Running an example's backend](../../../README.md#running-an-examples-backend) for setup instructions.
 

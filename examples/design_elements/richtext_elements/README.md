@@ -2,7 +2,7 @@
 
 Demonstrates how to create and format rich text elements using RichtextRange API. Shows text formatting, paragraph styling, and rich text manipulation for creating styled text content.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/richtext-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/richtext-elements/.
 
 Related examples: See design_elements/text_elements for basic text insertion, or content_replacement/richtext_replacement for modifying existing rich text.
 

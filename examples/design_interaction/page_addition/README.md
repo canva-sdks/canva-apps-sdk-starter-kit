@@ -2,7 +2,7 @@
 
 Demonstrates how to add new pages to designs with pre-populated content including images, text, and embed elements. Shows page creation, content layout, multi-element page composition, and the page metadata (including stable page ID) returned by `addPage`.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/page-addition/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/page-addition/.
 
 Related examples: See design_interaction/design_editing for page content manipulation, or design_elements examples for individual element creation patterns.
 

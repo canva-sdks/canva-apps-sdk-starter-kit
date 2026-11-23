@@ -2,7 +2,7 @@
 
 Demonstrates how to create image elements inside app elements, making them re-editable with controllable properties like dimensions and rotation. Users can select from predefined images and customize their appearance within the app element container.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/app-image-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/app-image-elements/.
 
 Related examples: See app_video_elements for videos within app elements, or design_elements/image_elements for direct image insertion.
 

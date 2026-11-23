@@ -2,7 +2,7 @@
 
 Demonstrates how to implement OAuth authentication flow for accessing external services on behalf of users. Shows token management, user authorization, and authenticated API requests.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/authentication/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/authentication/.
 
 Related examples: See fundamentals/fetch for general API communication, or design_interaction/design_token for design-specific authentication patterns.
 

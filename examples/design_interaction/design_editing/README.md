@@ -2,7 +2,7 @@
 
 Demonstrates advanced design manipulation including element updates, transformations, deletions, insertions, and grouping operations. Shows complex design editing workflows using the Design Editing API.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-editing/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-editing/.
 
 Related examples: See design_interaction/positioning_elements for element positioning, or design_interaction/page_addition for adding new pages.
 

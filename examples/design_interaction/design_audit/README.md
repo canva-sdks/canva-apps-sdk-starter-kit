@@ -2,7 +2,7 @@
 
 Demonstrates how to audit design elements for positioning issues and automatically fix elements that are positioned too close to page edges. Shows how to use the Design Editing API to iterate over every element on all pages of the design.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/design-audit/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/design-audit/.
 
 Related examples: See design_interaction/design_editing for other complex design editing workflows using the Design Editing API.
 

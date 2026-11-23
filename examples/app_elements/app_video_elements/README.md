@@ -2,7 +2,7 @@
 
 Demonstrates how to create video elements inside app elements, making them re-editable with controllable properties like dimensions and rotation. Users can select from predefined videos and customize their appearance.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/app-video-elements/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/app-video-elements/.
 
 Related examples: See app_image_elements for images within app elements, or design_elements/video_elements for direct video insertion.
 

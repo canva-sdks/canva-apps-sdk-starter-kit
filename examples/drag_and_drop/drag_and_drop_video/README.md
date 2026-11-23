@@ -2,7 +2,7 @@
 
 Demonstrates how to implement drag-and-drop functionality for video files using VideoCard and startDragToPoint. Shows video upload, thumbnail previews, and design integration with feature detection.
 
-For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/examples/drag-and-drop-video/.
+For API reference docs and instructions on running this example, see: https://www.canva.dev/docs/apps/feature-examples/drag-and-drop-video/.
 
 Related examples: See drag_and_drop/drag_and_drop_image for image drag-and-drop, or asset_upload for direct video import.
 
